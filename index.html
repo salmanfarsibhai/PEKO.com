@@ -1,614 +1,769 @@
 <!DOCTYPE html>
-<html lang="bn" data-theme="light">
+<html lang="bn">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>PEKO AI</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEKO AI • Admin Panel</title>
+    <link rel="icon" href="data:,">
 
     <style>
-        /* ===== THEME VARIABLES ===== */
         :root {
-            --bg: #f0f6ff;
-            --surface: #ffffff;
-            --topbar: #1a73e8;
-            --topbar2: #0d47a1;
-            --pri: #1a73e8;
-            --pri2: #0d47a1;
-            --user-msg: #1a73e8;
-            --ai-msg: #e8f0fe;
-            --ai-text: #1a237e;
-            --text: #0d1b2a;
-            --muted: #5f6b7a;
-            --border: #c5d8f8;
-            --input-bg: #f4f8ff;
-            --shadow: 0 2px 12px rgba(26, 115, 232, 0.08);
-            --dot: #1a73e8;
+            --bg: #f8fafc;
+            --card: rgba(255, 255, 255, 0.7);
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: rgba(0, 0, 0, 0.08);
+            --glass: blur(18px);
+            --pri: #4f46e5;
         }
 
-        [data-theme="dark"] {
-            --bg: #0d1117;
-            --surface: #161b22;
-            --topbar: #0d1b2a;
-            --topbar2: #0a1520;
-            --pri: #4da3ff;
-            --pri2: #1a73e8;
-            --user-msg: #1a73e8;
-            --ai-msg: #1c2a3a;
-            --ai-text: #a8c7fa;
-            --text: #e6edf3;
-            --muted: #8b949e;
-            --border: #21303f;
-            --input-bg: #161b22;
-            --shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-            --dot: #4da3ff;
+        .dark {
+            --bg: #1e293b;
+            --card: rgba(30, 41, 59, 0.7);
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.05);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
-            padding: 0;
+            padding: 0
         }
 
-        html,
         body {
-            height: 100%;
-            font-family: 'Nunito', system-ui, sans-serif;
-            color: var(--text);
+            font-family: system-ui;
             background: var(--bg);
-            overflow: hidden;
-            -webkit-tap-highlight-color: transparent;
+            color: var(--text);
+            min-height: 100vh;
+            transition: background 0.3s ease;
         }
 
-        /* ===== APP SHELL ===== */
-        .app {
+        /* HEADER */
+        .header {
             display: flex;
-            flex-direction: column;
-            height: 100dvh;
-            width: 100%;
-            max-width: 860px;
-            margin: 0 auto;
-            background: var(--surface);
-            box-shadow: 0 0 40px rgba(26, 115, 232, 0.10);
-            position: relative;
-        }
-
-        /* ===== TOP BAR ===== */
-        .topbar {
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
-            height: 52px;
-            background: linear-gradient(90deg, var(--topbar), var(--topbar2));
-            color: #fff;
-            z-index: 100;
-            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18);
-            position: sticky;
-            top: 0;
-        }
-
-        .brand {
-            font-size: 17px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            color: #fff;
-        }
-
-        .topbar-right {
-            display: flex;
             align-items: center;
-            gap: 8px;
+            padding: 16px 20px;
+            backdrop-filter: var(--glass);
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
         }
 
-        .user-name {
-            font-size: 12px;
-            opacity: 0.85;
-            max-width: 100px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        .title {
+            font-weight: 700;
+            font-size: 18px;
         }
 
-        .icon-btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: none;
-            border-radius: 8px;
-            color: #fff;
+        .toggle {
             cursor: pointer;
-            width: 32px;
-            height: 32px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: var(--pri);
+            color: #fff;
+            border: none;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
+
+
+        /* ===== CLEAN PREMIUM FILTER (STABLE VERSION) ===== */
+
+        #timeFilter {
+            width: 200px;
+            padding: 8px 12px;
+
+            border-radius: 10px;
+            border: 1px solid var(--border);
+
+            background: var(--card);
+            color: var(--text);
+
+            font-size: 13px;
+            font-weight: 500;
+
+            backdrop-filter: var(--glass);
+
+            cursor: pointer;
+
+            transition: border 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* subtle hover (no movement) */
+        #timeFilter:hover {
+            border-color: var(--pri);
+        }
+
+        /* clean focus */
+        #timeFilter:focus {
+            outline: none;
+            border-color: var(--pri);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
+        }
+
+        /* dropdown menu (important) */
+        #timeFilter option {
+            background: #0f172a;
+            color: #ffffff;
+            font-size: 13px;
+        }
+
+        /* dark mode adjust */
+        .dark #timeFilter {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+
+
+        /* CARD */
+        .card {
+            background: var(--card);
+            backdrop-filter: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+        /* TEXT */
+        .name {
+            font-weight: 600
+        }
+
+        .email {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        .meta {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .q {
+            margin-top: 6px;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        /* ACTIONS */
+        .actions {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            transition: background .2s;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        .icon-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
+        .icon {
+            border: none;
+            cursor: pointer;
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: 0.25s;
+            backdrop-filter: var(--glass);
         }
 
-        /* ===== LOGIN SCREEN ===== */
-        .login-screen {
+        .icon:hover {
+            transform: scale(1.1)
+        }
+
+        .copy {
+            background: rgba(79, 70, 229, 0.15);
+            color: #4f46e5;
+        }
+
+        .copy:hover {
+            background: #4f46e5;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+
+
+
+        .del {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .del:hover {
+            background: #ef4444;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        /* LOGIN */
+        #authBox {
             position: fixed;
             inset: 0;
-            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #e8f0fe 0%, #c9d8fb 40%, #dbeafe 100%);
-            overflow: hidden;
-        }
-
-        [data-theme="dark"] .login-screen {
-            background: linear-gradient(135deg, #0d1117 0%, #0a1520 60%, #0d1b2a 100%);
-        }
-
-        .login-screen::before {
-            content: '';
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(26, 115, 232, 0.15), transparent 70%);
-            top: -100px;
-            left: -100px;
-            animation: orb 10s ease-in-out infinite alternate;
-        }
-
-        .login-screen::after {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(13, 71, 161, 0.12), transparent 70%);
-            bottom: -80px;
-            right: -80px;
-            animation: orb 8s ease-in-out infinite alternate-reverse;
-        }
-
-        @keyframes orb {
-            from {
-                transform: translate(0, 0) scale(1);
-            }
-
-            to {
-                transform: translate(40px, 30px) scale(1.15);
-            }
-        }
-
-        .login-card {
-            position: relative;
-            z-index: 2;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
-            padding: 36px 28px;
-            width: 90%;
-            max-width: 360px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(26, 115, 232, 0.18);
-            animation: slideUp .5s ease;
-        }
-
-        [data-theme="dark"] .login-card {
-            background: rgba(22, 27, 34, 0.85);
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .login-logo {
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: var(--pri);
-            margin-bottom: 6px;
-        }
-
-        .login-sub {
-            font-size: 13px;
-            color: var(--muted);
-            margin-bottom: 28px;
-        }
-
-        .google-btn {
-            width: 100%;
-            padding: 13px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: var(--surface);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
             gap: 10px;
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text);
-            cursor: pointer;
-            box-shadow: 0 4px 16px rgba(26, 115, 232, 0.12);
-            transition: all .2s;
-        }
-
-        .google-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(26, 115, 232, 0.2);
-        }
-
-        .google-btn:active {
-            transform: scale(.97);
-        }
-
-        /* ===== CHAT AREA ===== */
-        .chat-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 14px 8px;
-            scroll-behavior: smooth;
-            background: var(--bg);
-        }
-
-        .chat-area::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .chat-area::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .chat-area::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-
-        /* ===== MESSAGES ===== */
-        .msg-row {
-            display: flex;
-            margin: 7px 0;
-            animation: popIn .22s ease;
-        }
-
-        @keyframes popIn {
-            from {
-                opacity: 0;
-                transform: translateY(8px) scale(.97);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .msg-row.user {
-            justify-content: flex-end;
-        }
-
-        .msg-row.ai {
-            justify-content: flex-start;
-        }
-
-        .bubble {
-            max-width: 72%;
-            padding: 10px 14px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.55;
-            font-weight: 600;
-        }
-
-        .msg-row.user .bubble {
-            background: var(--user-msg);
+            background: #0b1220;
             color: #fff;
-            border-bottom-right-radius: 4px;
+            z-index: 9999;
+            isolation: isolate;
         }
 
-        .msg-row.ai .bubble {
-            background: var(--ai-msg);
-            color: var(--ai-text);
-            border-bottom-left-radius: 4px;
-            border: 1px solid var(--border);
-        }
-
-        /* ===== TYPING / STATUS ===== */
-        .status-bar {
-            padding: 4px 14px 8px;
-            min-height: 28px;
-            font-size: 11.5px;
-            color: var(--pri);
-            font-weight: 600;
-            letter-spacing: 0.2px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            overflow: hidden;
-            background: var(--bg);
-        }
-
-        .dots-wrap {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-        }
-
-        .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--dot);
-            animation: bounce 0.9s infinite ease-in-out;
-            opacity: 0.85;
-        }
-
-        .dot:nth-child(2) {
-            animation-delay: .15s;
-        }
-
-        .dot:nth-child(3) {
-            animation-delay: .30s;
-        }
-
-        @keyframes bounce {
-
-            0%,
-            80%,
-            100% {
-                transform: translateY(0);
-                opacity: .5;
-            }
-
-            40% {
-                transform: translateY(-6px);
-                opacity: 1;
-            }
-        }
-
-        .status-text {
-            animation: fadeSlide 1.6s ease infinite;
-        }
-
-        @keyframes fadeSlide {
-            0% {
-                opacity: 0;
-                transform: translateX(-6px);
-            }
-
-            15% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-
-            80% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-            }
-        }
-
-        /* ===== INPUT BAR ===== */
-        .input-bar {
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 12px;
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            position: sticky;
-            bottom: 0;
-            z-index: 50;
-        }
-
-        .input-wrap {
-            flex: 1;
-            background: var(--input-bg);
-            border: 1.5px solid var(--border);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            padding: 0 14px;
-            transition: border-color .2s, box-shadow .2s;
-        }
-
-        .input-wrap:focus-within {
-            border-color: var(--pri);
-            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.10);
-        }
-
-        .input-wrap input {
-            flex: 1;
+        input {
+            padding: 10px;
+            border-radius: 10px;
             border: none;
-            background: transparent;
-            padding: 11px 0;
-            font-size: 14px;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 600;
-            color: var(--text);
-            outline: none;
+            width: 260px;
         }
 
-        .input-wrap input::placeholder {
-            color: var(--muted);
-            font-weight: 500;
-        }
-
-        /* WhatsApp-style send button */
-        .send-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
+        .btn {
+            padding: 10px 20px;
             border: none;
-            background: linear-gradient(135deg, var(--pri), var(--pri2));
+            border-radius: 10px;
+            background: #4f46e5;
             color: #fff;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 3px 12px rgba(26, 115, 232, 0.35);
-            transition: all .2s;
         }
 
-        .send-btn:hover {
-            transform: scale(1.07);
-            box-shadow: 0 5px 18px rgba(26, 115, 232, 0.45);
-        }
-
-        .send-btn:active {
-            transform: scale(.94);
-        }
-
-        .send-btn:disabled {
-            opacity: .5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .send-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: none;
-            stroke: #fff;
-            stroke-width: 2.2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        /* ===== TOAST ===== */
+        /* TOAST */
         .toast {
             position: fixed;
-            bottom: 80px;
+            bottom: 20px;
             left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            background: #0d1b2a;
+            transform: translateX(-50%);
+            background: #111;
             color: #fff;
-            padding: 9px 18px;
+            padding: 10px 14px;
             border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
             opacity: 0;
-            pointer-events: none;
-            transition: opacity .25s, transform .25s;
-            z-index: 9999;
-            white-space: nowrap;
+            transition: .3s;
         }
 
         .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
+            opacity: 1
         }
 
-        /* ===== WELCOME MSG ===== */
-        .welcome {
+        /* ===== VERIFY UPGRADE ===== */
+        /* ===== VERIFY UPGRADE (PREMIUM CLEAN VERSION) ===== */
+
+        .verifyBox {
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(0, 255, 150, 0.25);
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(14px);
             text-align: center;
-            padding: 40px 20px 10px;
-            color: var(--muted);
+            box-shadow: 0 0 40px rgba(0, 255, 150, 0.08);
         }
 
-        .welcome h2 {
+        /* TITLE */
+        .verifyTitle {
+            color: #00ff9c;
             font-size: 22px;
-            font-weight: 800;
-            color: var(--pri);
-            margin-bottom: 6px;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
 
-        .welcome p {
+        /* SUB TEXT */
+        .verifySub {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        /* ===== VERIFY FINAL (STABLE PREMIUM UI) ===== */
+
+        .verifyBox {
+            position: relative;
+            z-index: 2;
+            width: 420px;
+            max-width: 90%;
+            padding: 30px 24px;
+
+            background: rgba(0, 0, 0, 0.65);
+            border-radius: 18px;
+
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* TITLE */
+        .verifyTitle {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        /* SUB TEXT */
+        .verifySub {
+            color: #d1d5db;
             font-size: 13px;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 600px) {
-            .app {
-                max-width: 100%;
-                box-shadow: none;
-                border-radius: 0;
+        /* INPUT */
+        .inputBox {
+            width: 100%;
+            padding: 12px 14px;
+
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+
+            background: #ffffff;
+            color: #000000;
+
+            font-size: 14px;
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        /* INPUT FOCUS */
+        .inputBox:focus {
+            border: 1px solid #00eaff;
+            box-shadow: 0 0 0 2px rgba(0, 234, 255, 0.2);
+        }
+
+        /* ERROR (shape change হবে না) */
+        .inputBox.error {
+            border: 1px solid #ef4444;
+            background: #ffffff;
+        }
+
+        /* ERROR TEXT */
+        .errorText {
+            color: #ef4444;
+            font-size: 12px;
+            display: none;
+        }
+
+        /* ROW (input + button same line থাকবে সবসময়) */
+        .inputRow {
+            width: 100%;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* BUTTON */
+        .btnVerify {
+            white-space: nowrap;
+            padding: 12px 18px;
+
+            border-radius: 12px;
+            border: none;
+
+            background: #ffffff;
+            color: #000000;
+
+            font-weight: 600;
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        /* BUTTON HOVER */
+        .btnVerify:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        /* MOBILE FIX (shape break হবে না) */
+        @media(max-width: 500px) {
+            .inputRow {
+                flex-direction: column;
             }
 
-            .bubble {
-                max-width: 82%;
+            .btnVerify {
+                width: 100%;
+            }
+        }
+
+        /* ===== MODERN LOGIN UI ===== */
+
+        .authContainer {
+            width: 700px;
+            max-width: 95%;
+            height: 320px;
+            display: flex;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: auto;
+            background: white;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            transition: 0.5s;
+        }
+
+        /* PANEL */
+        .panel {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* LEFT */
+        .leftPanel {
+            background: linear-gradient(135deg, #6d5dfc, #8f6eff);
+            color: white;
+            text-align: center;
+        }
+
+        /* RIGHT */
+        .rightPanel {
+            background: white;
+            color: black;
+        }
+
+        /* INPUT */
+        .inputBox {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+        /* BUTTON */
+        .btnVerify {
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: #6d5dfc;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* SWITCH BUTTON */
+        .switchBtn {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid white;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* ERROR */
+        .errorText {
+            color: red;
+            font-size: 12px;
+            display: none;
+        }
+
+        /* TOGGLE MODE */
+        .authContainer.active .leftPanel {
+            order: 2;
+        }
+
+        .authContainer.active .rightPanel {
+            order: 1;
+        }
+
+        /* MOBILE */
+        @media(max-width:600px) {
+            .authContainer {
+                flex-direction: column;
+                height: auto;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* TOGGLE SWITCH */
+        .switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #cbd5f5;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+
+        .slider::before {
+            content: "";
+            position: absolute;
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        input:checked+.slider {
+            background: #4f46e5;
+        }
+
+        input:checked+.slider::before {
+            transform: translateX(24px);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* ===== PREMIUM DELETE MODAL ===== */
+
+        #confirmBox {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+
+            z-index: 9999;
+
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* modal card */
+        #confirmBox>div {
+            background: var(--card);
+            color: var(--text);
+
+            padding: 22px;
+            width: 300px;
+
+            border-radius: 18px;
+            text-align: center;
+
+            border: 1px solid var(--border);
+
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+
+            animation: scaleIn 0.25s ease;
+        }
+
+        /* text */
+        #confirmBox div div:first-child {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* buttons container */
+        #confirmBox div div:last-child {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        /* delete button */
+        #confirmBox button:first-child {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: none;
+
+            background: #ef4444;
+            color: white;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #confirmBox button:first-child:hover {
+            background: #dc2626;
+        }
+
+        /* cancel button */
+        #confirmBox button:last-child {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: none;
+
+            background: var(--pri);
+            color: white;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #confirmBox button:last-child:hover {
+            opacity: 0.9;
+        }
+
+        /* animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="app">
 
-        <!-- ===== TOP BAR ===== -->
-        <div class="topbar">
-            <div class="brand">PEKO AI</div>
-            <div class="topbar-right">
-                <span id="userInfo" class="user-name"></span>
-                <button id="darkBtn" class="icon-btn" title="Dark Mode" onclick="toggleDark()">🌙</button>
-                <button id="logoutBtn" class="icon-btn" style="display:none" title="Logout"
-                    onclick="doLogout()">⎋</button>
+    <div id="authBox">
+
+        <div class="authContainer" id="authUI">
+
+            <!-- LEFT PANEL -->
+            <div class="panel leftPanel">
+                <h2 id="leftTitle">Login</h2> <!-- LEFT -->
+                <p id="leftText">Don't have an account?</p>
+                <button onclick="switchInput()" id="switchBtn" class="switchBtn">Password</button>
             </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="panel rightPanel">
+
+                <h2 id="formTitle">Login</h2> <!-- RIGHT (এটা থাকবে) -->
+
+                <input id="emailInput" class="inputBox" placeholder="Email">
+                <input id="passwordInput" type="password" class="inputBox" placeholder="Password" style="display:none;">
+
+                <button class="btnVerify" onclick="loginNow()">Login</button>
+
+                <div id="errorText" class="errorText">Wrong credentials</div>
+
+            </div>
+
         </div>
 
-        <!-- ===== LOGIN SCREEN ===== -->
-        <div id="loginBox" class="login-screen">
-            <div class="login-card">
-                <div class="login-logo">PEKO AI</div>
-                <p class="login-sub">আপনার অ্যাকাউন্টে প্রবেশ করুন</p>
-                <button class="google-btn" onclick="login()">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18"
-                        alt="Google" />
-                    Google দিয়ে লগইন করুন
-                </button>
-            </div>
-        </div>
+    </div>
 
-        <!-- ===== CHAT AREA ===== -->
-        <div id="chat" class="chat-area" style="display:none">
-            <div class="welcome">
-                <h2>স্বাগতম!</h2>
-                <p>আপনার প্রশ্ন লিখুন, আমি উত্তর দেওয়ার চেষ্টা করব।</p>
-            </div>
-        </div>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="title">PEKO AI • admin panel</div>
+        <button onclick="delAll()" style="
+padding:8px 14px;
+border:none;
+border-radius:10px;
+background:#ef4444;
+color:white;
+cursor:pointer;
+font-size:12px;
+margin-left:10px;
+">
+            Delete All
+        </button>
+        <label class="switch">
+            <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+            <span class="slider"></span>
+        </label>
+    </div>
 
-        <!-- ===== STATUS BAR ===== -->
-        <div id="statusBar" class="status-bar" style="display:none"></div>
 
-        <!-- ===== INPUT BAR ===== -->
-        <div id="inputBar" class="input-bar" style="display:none">
-            <div class="input-wrap">
-                <input id="input" type="text" placeholder="প্রশ্ন লিখুন..." autocomplete="off" />
-            </div>
-            <button class="send-btn" id="sendBtn">
-                <svg viewBox="0 0 24 24">
-                    <line x1="22" y1="2" x2="11" y2="13" />
-                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                </svg>
-            </button>
-        </div>
 
-    </div><!-- /app -->
+    <div class="container">
+        <select id="timeFilter" onchange="render()" style="padding:10px;border-radius:10px;">
+            <option value="all">All</option>
+            <option value="today">Today</option>
+            <option value="7d">Last 7 Days</option>
+            <option value="1m">Last Month</option>
+            <option value="1y">Last Year</option>
+        </select>
+    </div>
+
+
+
+    <div class="container" id="grid"></div>
 
     <div id="toast" class="toast"></div>
 
-    <!-- ===== FIREBASE ===== -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
-        /* ===== FIREBASE CONFIG — অক্ষত ===== */
+
+        if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.classList.add("dark");
+            setTimeout(() => {
+                document.getElementById("themeToggle").checked = true;
+            }, 100);
+        }
+
+
         const firebaseConfig = {
             apiKey: "AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
             authDomain: "peko-ai.firebaseapp.com",
@@ -616,231 +771,348 @@
             projectId: "peko-ai"
         };
         firebase.initializeApp(firebaseConfig);
-        const AUTH = firebase.auth();
+
         const DB = firebase.database();
-        let USER = null;
-        let isBusy = false;
+        const auth = firebase.auth();
 
-        /* ===== HELPERS ===== */
-        const $ = id => document.getElementById(id);
+        const ADMIN_EMAIL = "salmanfarsi172007@gmail.com";
+
+        /* EMAIL OTP LOGIN */
+        function sendLink() {
+
+            const input = document.getElementById("emailInput");
+            const pass = document.getElementById("passwordInput");
+            const error = document.getElementById("errorText");
+
+            const email = input.value.trim();
+            const password = pass ? pass.value.trim() : "";
+
+            const ADMIN_PASS = "123456"; // 👉 নিজের password
+
+            // EMAIL CHECK
+            if (email !== ADMIN_EMAIL) {
+                input.classList.add("error");
+                error.style.display = "block";
+                return;
+            }
+
+            // PASSWORD CHECK
+            if (password !== ADMIN_PASS) {
+                if (pass) pass.classList.add("error");
+                error.style.display = "block";
+                return;
+            }
+
+            input.classList.remove("error");
+            if (pass) pass.classList.remove("error");
+            error.style.display = "none";
+
+            // SUCCESS LOGIN
+            document.getElementById("authBox").style.display = "none";
+            toast("Login Success");
+        }
+
+        if (auth.isSignInWithEmailLink(window.location.href)) {
+
+            let email = localStorage.getItem("emailForSignIn");
+
+            if (!email) {
+                email = prompt("Enter your email again");
+            }
+
+            auth.signInWithEmailLink(email, window.location.href)
+                .then(res => {
+                    if (res.user.email === ADMIN_EMAIL) {
+                        document.getElementById("authBox").style.display = "none";
+                        toast("Login Success (Email Link)");
+                    } else {
+                        alert("Denied");
+                    }
+                })
+                .catch(() => {
+                    alert("Login Failed");
+                });
+        }
+
+        /* THEME */
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle("dark");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+        }
+
+        /* TOAST */
         function toast(t) {
-            const el = $("toast");
-            el.textContent = t;
+            let el = document.getElementById("toast");
+            el.innerText = t;
             el.classList.add("show");
-            setTimeout(() => el.classList.remove("show"), 1800);
+            setTimeout(() => el.classList.remove("show"), 1500);
         }
 
-        /* ===== DARK MODE ===== */
-        function toggleDark() {
-            const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-            document.documentElement.setAttribute("data-theme", isDark ? "light" : "dark");
-            $("darkBtn").textContent = isDark ? "🌙" : "☀️";
-        }
+        /* RENDER DATA */
+        let RAW = {};
 
-        /* ===== AUTH ===== */
-        AUTH.onAuthStateChanged(user => {
-            if (user) {
-                USER = user;
-                $("userInfo").textContent = (user.displayName || user.email || "").split(" ")[0];
-                showApp();
-            } else {
-                USER = null;
-                showLogin();
-            }
+        DB.ref("all_logs").on("value", snap => {
+            RAW = snap.val() || {};
+            render();
         });
 
-        function login() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            AUTH.signInWithPopup(provider).catch(e => { console.error(e); toast("Login error"); });
-        }
+        function render() {
 
-        function doLogout() {
-            AUTH.signOut();
-            toast("Logged out");
-        }
 
-        function showApp() {
-            $("loginBox").style.display = "none";
-            $("chat").style.display = "block";
-            $("statusBar").style.display = "flex";
-            $("inputBar").style.display = "flex";
-            $("logoutBtn").style.display = "flex";
-        }
+            const filter = document.getElementById("timeFilter")?.value || "all";
+            const now = new Date();
 
-        function showLogin() {
-            $("loginBox").style.display = "flex";
-            $("chat").style.display = "none";
-            $("statusBar").style.display = "none";
-            $("inputBar").style.display = "none";
-            $("logoutBtn").style.display = "none";
-            $("userInfo").textContent = "";
-        }
+            let grid = document.getElementById("grid");
+            grid.innerHTML = "";
 
-        /* ===== ADD MESSAGE BUBBLE ===== */
-        function addBubble(text, type) {
-            const row = document.createElement("div");
-            row.className = "msg-row " + type;
-            const bub = document.createElement("div");
-            bub.className = "bubble";
+            Object.entries(RAW).reverse().forEach(([k, d]) => {
 
-            if (type === "ai") {
-                typeText(bub, text);
-            } else {
-                bub.textContent = text;
-            }
+                let div = document.createElement("div");
+                div.className = "card";
 
-            row.appendChild(bub);
-            $("chat").appendChild(row);
-            row.scrollIntoView({ behavior: "smooth", block: "end" });
-            return bub;
-        }
+                // ⏰ TIME তৈরি
+                let time = d.time ? new Date(d.time) : new Date();
 
-        /* ===== TYPEWRITER EFFECT ===== */
-        function typeText(el, text, speed = 28) {
-            let i = 0;
-            el.textContent = "";
-            const t = setInterval(() => {
-                el.textContent += text[i];
-                i++;
-                if (i >= text.length) clearInterval(t);
-                el.closest(".msg-row").scrollIntoView({ behavior: "smooth", block: "end" });
-            }, speed);
-        }
+                let diff = now - time;
+                let show = true;
 
-        /* ===== STATUS TEXT ROTATION ===== */
-        const statusMessages = [
-            "আপনার প্রশ্নটি আমাদের ডেটা সেন্টারে পাঠানো হয়েছে...",
-            "উত্তর খুঁজে বের করা হচ্ছে...",
-            "আমাদের সিস্টেম বিশ্লেষণ করছে...",
-        ];
-        let statusIdx = 0, statusTimer = null;
-
-        function showTyping() {
-            const sb = $("statusBar");
-            sb.innerHTML = `
-        <div class="dots-wrap">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-        <span class="status-text" id="statusText">${statusMessages[0]}</span>
-      `;
-            statusIdx = 0;
-            statusTimer = setInterval(() => {
-                statusIdx = (statusIdx + 1) % statusMessages.length;
-                const st = $("statusText");
-                if (st) st.textContent = statusMessages[statusIdx];
-            }, 1600);
-        }
-
-        function hideTyping() {
-            clearInterval(statusTimer);
-            $("statusBar").innerHTML = "";
-        }
-
-        /* ===== ANSWER ENGINE ===== */
-        const DATA = [
-            {
-                q: ["hello", "hi", "হ্যালো", "হেলো"],
-                a: [
-                    "হ্যালো! কীভাবে সাহায্য করতে পারি?",
-                    "স্বাগতম! আপনার প্রশ্ন করুন।",
-                    "হ্যালো! আমি PEKO AI, আপনার সেবায় প্রস্তুত।"
-                ]
-            },
-            {
-                q: ["আসসালামুআলাইকুম", "assalamu", "salam"],
-                a: [
-                    "ওয়ালাইকুম আস-সালাম! কীভাবে সাহায্য করতে পারি?",
-                    "ওয়ালাইকুম আস-সালাম ওয়া রাহমাতুল্লাহ!",
-                ]
-            },
-            {
-                q: ["capital", "bangladesh", "বাংলাদেশ", "রাজধানী"],
-                a: [
-                    "বাংলাদেশের রাজধানী হলো ঢাকা। এটি দেশের সবচেয়ে বড় শহরও বটে।",
-                    "ঢাকা বাংলাদেশের রাজধানী, যেটি বুড়িগঙ্গা নদীর তীরে অবস্থিত।",
-                    "বাংলাদেশের রাজধানী ঢাকা, জনসংখ্যার দিক থেকে বিশ্বের অন্যতম বড় শহর।"
-                ]
-            },
-            {
-                q: ["who are you", "tumi ke", "তুমি কে", "আপনি কে", "পেকো"],
-                a: [
-                    "আমি PEKO AI — আপনার বাংলা বুদ্ধিমান সহকারী।",
-                    "আমি PEKO AI, আপনার প্রশ্নের উত্তর দিতে এখানে আছি।"
-                ]
-            },
-            {
-                q: ["salman", "সালমান"],
-                a: [
-                    "আপনি কি সালমান ফারসি সম্পর্কে জানতে চাইছেন?",
-                    "সালমান — এই নামে অনেকেই আছেন! একটু বিস্তারিত বলুন।"
-                ]
-            },
-        ];
-
-        /* per-user last-answer tracking */
-        const lastAnswerIdx = {};
-
-        function getAnswer(q) {
-            q = q.toLowerCase();
-            for (const item of DATA) {
-                if (item.q.some(k => q.includes(k))) {
-                    const uid = USER ? USER.uid : "guest";
-                    const key = item.q[0] + "_" + uid;
-                    const prev = lastAnswerIdx[key] ?? -1;
-                    let next = (prev + 1) % item.a.length;
-                    lastAnswerIdx[key] = next;
-                    return item.a[next];
+                if (filter === "today") {
+                    show = time.toDateString() === now.toDateString();
                 }
+                else if (filter === "7d") {
+                    show = diff <= 7 * 86400000;
+                }
+                else if (filter === "1m") {
+                    show = diff <= 30 * 86400000;
+                }
+                else if (filter === "1y") {
+                    show = diff <= 365 * 86400000;
+                }
+
+                if (!show) return;
+
+                let fullTime = time.toLocaleString("en-BD", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                });
+
+                div.innerHTML = `
+<div class="name">${d.name || "Unknown"}</div>
+
+<div class="email">${d.email || "No Email"}</div>
+
+<div class="meta">${fullTime}</div>
+
+<div class="q">${d.question || ""}</div>
+
+<div class="actions">
+<button class="icon copy" onclick="copy('${k}')">Copy</button>
+<button class="icon del" onclick="del('${k}')">Delete</button>
+</div>
+`;
+
+                grid.appendChild(div);
+            });
+        }
+        /* ACTION */
+        function copy(k) {
+            navigator.clipboard.writeText(RAW[k].question || "");
+            toast("Copied");
+        }
+
+        let DELETE_ID = null;
+
+        function del(k) {
+            DELETE_ID = k;
+            document.getElementById("confirmBox").style.display = "flex";
+        }
+        function delAll() {
+            DELETE_ID = "ALL";
+            document.getElementById("confirmBox").style.display = "flex";
+        }
+
+
+
+
+        function loginNow() {
+
+            const email = document.getElementById("emailInput").value.trim();
+            const pass = document.getElementById("passwordInput").value.trim();
+            const error = document.getElementById("errorText");
+
+            const ADMIN_PASSWORD = "123456";
+
+            // 👉 PASSWORD MODE
+            if (showingPassword) {
+
+                // OFF থাকলে block
+                if (PASSWORD_ENABLED === "OFF") {
+                    error.style.display = "block";
+                    error.innerText = "Password login disabled";
+                    return;
+                }
+
+                if (pass === ADMIN_PASSWORD) {
+                    error.style.display = "none";
+                    document.getElementById("authBox").style.display = "none";
+                    toast("Login Success (Password)");
+                } else {
+                    error.style.display = "block";
+                    error.innerText = "Wrong password";
+                }
+
+                return;
             }
-            return "আমাদের কাছে এই উত্তরটি আপাতত নেই। আমরা এখনো আপডেট করছি — শীঘ্রই উত্তর পাবেন ইনশাআল্লাহ।";
+
+            // 👉 EMAIL MODE
+            else {
+
+                if (email !== ADMIN_EMAIL) {
+                    error.style.display = "block";
+                    error.innerText = "Wrong email";
+                    return;
+                }
+
+                error.style.display = "none";
+
+                const actionCodeSettings = {
+                    url: window.location.href,
+                    handleCodeInApp: true
+                };
+
+                auth.sendSignInLinkToEmail(email, actionCodeSettings)
+                    .then(() => {
+                        localStorage.setItem("emailForSignIn", email);
+                        toast("Link sent to your email");
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        toast("Email send failed");
+                    });
+
+                return;
+            }
         }
 
-        /* ===== ASK + SAVE ===== */
-        function ask() {
-            if (isBusy) return;
-            const text = ($("input").value || "").trim();
-            if (!text) { toast("কিছু লিখুন"); return; }
-            if (!USER) { toast("আগে লগইন করুন"); return; }
 
-            $("input").value = "";
-            isBusy = true;
-            $("sendBtn").disabled = true;
 
-            addBubble(text, "user");
-            showTyping();
 
-            const ans = getAnswer(text);
 
-            // Realistic delay (600–900ms)
-            const delay = 600 + Math.random() * 300;
+        function closeConfirm() {
+            const box = document.getElementById("confirmBox");
+
+            box.style.opacity = "0";
+
             setTimeout(() => {
-                hideTyping();
-                addBubble(ans, "ai");
-                isBusy = false;
-                $("sendBtn").disabled = false;
-                $("input").focus();
-            }, delay);
+                box.style.display = "none";
+                box.style.opacity = "1";
+            }, 200);
 
-            /* Firebase save — অক্ষত */
-            DB.ref("all_logs").push({
-                uid: USER.uid,
-                name: USER.displayName || "",
-                email: USER.email || "",
-                question: text,
-                time: Date.now()
-            })
-                .then(() => console.log("SAVE OK"))
-                .catch(err => console.error("SAVE ERROR:", err));
+            DELETE_ID = null;
         }
 
-        /* ===== EVENTS ===== */
-        $("sendBtn").addEventListener("click", ask);
-        $("input").addEventListener("keydown", e => {
-            if (e.key === "Enter") { e.preventDefault(); ask(); }
-        });
+        function confirmDelete() {
+
+            if (DELETE_ID === "ALL") {
+                DB.ref("all_logs").remove();
+                toast("All Deleted");
+            }
+            else if (DELETE_ID) {
+                DB.ref("all_logs/" + DELETE_ID).remove();
+                toast("Deleted");
+            }
+
+            closeConfirm();
+        }
+
+
+
+
+
+        let showingPassword = false;
+
+        const PASSWORD_ENABLED = "ON";
+        // 👉 "ON" দিলে password কাজ করবে
+        // 👉 "OFF" দিলে password সবসময় ভুল দেখাবে
+
+        function switchInput() {
+
+            const email = document.getElementById("emailInput");
+            const pass = document.getElementById("passwordInput");
+            const btn = document.getElementById("switchBtn");
+            const title = document.getElementById("formTitle");
+
+            showingPassword = !showingPassword;
+
+            if (showingPassword) {
+
+                // 👉 PASSWORD MODE
+                email.style.display = "none";
+                pass.style.display = "block";
+
+                btn.innerText = "Email";
+                title.innerText = "Login (Password)";
+
+            } else {
+
+                // 👉 EMAIL MODE
+                email.style.display = "block";
+                pass.style.display = "none";
+
+                btn.innerText = "Password";
+                title.innerText = "Login (Email)";
+            }
+        }
     </script>
+
+
+
+
+
+    <!-- CUSTOM DELETE MODAL -->
+    <div id="confirmBox" style="
+position:fixed;
+inset:0;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,0.4);
+backdrop-filter: blur(6px);
+z-index:9999;
+">
+
+        <div style="
+    background:var(--card);
+    padding:20px;
+    border-radius:16px;
+    width:300px;
+    text-align:center;
+    ">
+
+            <div style="font-weight:600;margin-bottom:10px;">
+                Delete this item?
+            </div>
+
+            <div style="display:flex;gap:10px;justify-content:center;margin-top:15px;">
+                <button onclick="confirmDelete()">Delete</button>
+                <button onclick="closeConfirm()">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>
