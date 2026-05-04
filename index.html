@@ -34,12 +34,12 @@
 
         .app {
             width: 100%;
-            height: 100dvh;
-            /* 🔥 FIX */
+            height: 100vh;
             background: transparent;
             display: flex;
             flex-direction: column;
 
+            /* 🔥 এই ২টা লাইন ADD করো */
             position: relative;
             z-index: 1;
         }
@@ -63,10 +63,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
         .brand {
@@ -229,8 +225,6 @@
             flex: 1;
             overflow-y: auto;
             padding: 14px;
-
-            height: 0;
         }
 
         .msg {
@@ -265,18 +259,11 @@
         }
 
         .inputBox {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-
             display: flex;
             gap: 8px;
             padding: 10px;
             border-top: 1px solid #e5e7eb;
-            background: #fff;
-
-            z-index: 10;
+            background: #fff
         }
 
         input {
@@ -312,7 +299,7 @@
 
         @media(max-width:600px) {
             .app {
-                height: 100dvh;
+                height: 100vh;
                 border-radius: 0
             }
         }
@@ -468,49 +455,6 @@
         $("input").addEventListener("keydown", e => {
             if (e.key === "Enter") { e.preventDefault(); ask(); }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // 🔥 PERFECT MOBILE KEYBOARD FIX
-        (function () {
-            const box = document.getElementById("inputBox");
-
-            if (!window.visualViewport) return;
-
-            function update() {
-                const vv = window.visualViewport;
-                const keyboardHeight = window.innerHeight - vv.height - vv.offsetTop;
-
-                if (keyboardHeight > 0) {
-                    box.style.bottom = keyboardHeight + "px";
-                } else {
-                    box.style.bottom = "0px";
-                }
-            }
-
-            window.visualViewport.addEventListener("resize", update);
-            window.visualViewport.addEventListener("scroll", update);
-        })();
-
-
     </script>
 </body>
 
