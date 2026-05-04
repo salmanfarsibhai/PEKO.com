@@ -1,275 +1,282 @@
 <!DOCTYPE html>
 <html lang="bn">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PEKO AI • Admin</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PEKO AI • Admin Panel</title>
 
-    <style>
-        /* ===== SAME YOUR DESIGN (unchanged) ===== */
-        :root {
-            --bg: #0b1220;
-            --card: #0f172a;
-            --muted: #94a3b8;
-            --text: #e5e7eb;
-            --pri: #4f46e5;
-            --pri2: #7c3aed;
-            --border: #1f2937;
-            --danger: #ef4444;
-        }
+<style>
+:root{
+--bg:#f8fafc;
+--card:rgba(255,255,255,0.7);
+--text:#0f172a;
+--muted:#64748b;
+--border:rgba(0,0,0,0.08);
+--glass:blur(18px);
+--pri:#4f46e5;
+}
 
-        .light {
-            --bg: #f6f8ff;
-            --card: #fff;
-            --muted: #6b7280;
-            --text: #0f172a;
-            --pri: #4f46e5;
-            --pri2: #7c3aed;
-            --border: #e5e7eb;
-            --danger: #ef4444;
-        }
+.dark{
+--bg:#0b1220;
+--card:rgba(15,23,42,0.6);
+--text:#e5e7eb;
+--muted:#94a3b8;
+--border:rgba(255,255,255,0.08);
+}
 
-        * {
-            box-sizing: border-box
-        }
+*{box-sizing:border-box;margin:0;padding:0}
 
-        body {
-            margin: 0;
-            font-family: system-ui;
-            background: linear-gradient(135deg, var(--bg), #0b1220);
-            color: var(--text)
-        }
+body{
+font-family:system-ui;
+background:linear-gradient(135deg,var(--bg),#e2e8f0);
+color:var(--text);
+min-height:100vh;
+}
 
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            display: flex;
-            justify-content: space-between;
-            padding: 14px;
-            border-bottom: 1px solid var(--border);
-            background: linear-gradient(135deg, #4f46e5, #7c3aed)
-        }
+/* HEADER */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px 20px;
+backdrop-filter:var(--glass);
+background:var(--card);
+border-bottom:1px solid var(--border);
+}
 
-        .btn {
-            border: none;
-            border-radius: 10px;
-            padding: 8px 10px;
-            cursor: pointer;
-            background: rgba(255, 255, 255, .15);
-            color: #fff
-        }
+.title{
+font-weight:700;
+font-size:18px;
+}
 
-        .container {
-            max-width: 1100px;
-            margin: 14px auto;
-            padding: 0 12px
-        }
+.toggle{
+cursor:pointer;
+padding:8px 12px;
+border-radius:10px;
+background:var(--pri);
+color:#fff;
+border:none;
+}
 
-        .grid {
-            display: grid;
-            gap: 10px
-        }
+/* CONTAINER */
+.container{
+max-width:1100px;
+margin:auto;
+padding:20px;
+}
 
-        .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 12px;
-            animation: fade .25s
-        }
+/* CARD */
+.card{
+background:var(--card);
+backdrop-filter:var(--glass);
+border:1px solid var(--border);
+border-radius:16px;
+padding:16px;
+margin-bottom:12px;
+transition:0.3s;
+}
 
-        @keyframes fade {
-            from {
-                opacity: .6;
-                transform: translateY(8px)
-            }
+.card:hover{
+transform:translateY(-3px);
+}
 
-            to {
-                opacity: 1
-            }
-        }
+/* TEXT */
+.name{font-weight:600}
+.email{font-size:12px;color:var(--muted)}
+.q{margin-top:6px}
 
-        .icon {
-            border-radius: 8px;
-            padding: 6px;
-            cursor: pointer;
-            border: 1px solid var(--border)
-        }
+/* ACTIONS */
+.actions{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
 
-        .icon.del {
-            color: red
-        }
+.icon{
+border:none;
+cursor:pointer;
+padding:8px;
+border-radius:10px;
+background:rgba(255,255,255,0.2);
+backdrop-filter:var(--glass);
+transition:0.2s;
+}
 
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #111;
-            color: #fff;
-            padding: 10px;
-            border-radius: 10px;
-            opacity: 0;
-            transition: .3s
-        }
+.icon:hover{transform:scale(1.1)}
 
-        .toast.show {
-            opacity: 1
-        }
+.copy{color:#4f46e5}
+.del{color:#ef4444}
 
-        /* ===== LOGIN SCREEN ===== */
-        #authBox {
-            position: fixed;
-            inset: 0;
-            background: #0b1220;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 9999;
-            color: #fff;
-        }
+/* LOGIN */
+#authBox{
+position:fixed;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+gap:10px;
+background:#0b1220;
+color:#fff;
+z-index:9999;
+}
 
-        .loginBtn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 10px;
-            background: #4f46e5;
-            color: #fff;
-            cursor: pointer;
-            font-size: 16px;
-        }
-    </style>
+input{
+padding:10px;
+border-radius:10px;
+border:none;
+width:260px;
+}
+
+.btn{
+padding:10px 20px;
+border:none;
+border-radius:10px;
+background:#4f46e5;
+color:#fff;
+cursor:pointer;
+}
+
+/* TOAST */
+.toast{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#111;
+color:#fff;
+padding:10px 14px;
+border-radius:10px;
+opacity:0;
+transition:.3s;
+}
+.toast.show{opacity:1}
+</style>
 </head>
 
 <body>
 
-    <!-- 🔐 LOGIN SCREEN -->
-    <div id="authBox">
-        <h2>Admin Login Required</h2>
-        <button class="loginBtn" onclick="login()">Login with Google</button>
-    </div>
+<!-- LOGIN -->
+<div id="authBox">
+<h2>PEKO AI Admin Verification</h2>
+<input id="emailInput" placeholder="Enter Admin Email">
+<button class="btn" onclick="sendLink()">Verify Access</button>
+</div>
 
-    <!-- ===== MAIN UI ===== -->
-    <div class="header">
-        <div>PEKO AI • Admin</div>
-        <div>
-            <button id="themeBtn" class="btn">Theme</button>
-            <button id="logoutBtn" class="btn">Logout</button>
-            <button id="clearBtn" class="btn">Clear All</button>
-        </div>
-    </div>
+<!-- HEADER -->
+<div class="header">
+<div class="title">PEKO AI • Admin Panel</div>
+<button class="toggle" onclick="toggleTheme()">Theme</button>
+</div>
 
-    <div class="container">
-        <input id="search" placeholder="Search..." class="btn" style="width:100%;margin-bottom:10px">
-        <div id="grid" class="grid"></div>
-    </div>
+<div class="container" id="grid"></div>
 
-    <div id="toast" class="toast"></div>
+<div id="toast" class="toast"></div>
 
-    <!-- ===== Firebase ===== -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-    <script>
-        // ===== CONFIG =====
-        const firebaseConfig = {
-            apiKey: "AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
-            authDomain: "peko-ai.firebaseapp.com",
-            databaseURL: "https://peko-ai-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "peko-ai"
-        };
-        firebase.initializeApp(firebaseConfig);
+<script>
+const firebaseConfig={
+apiKey:"AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
+authDomain:"peko-ai.firebaseapp.com",
+databaseURL:"https://peko-ai-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId:"peko-ai"
+};
+firebase.initializeApp(firebaseConfig);
 
-        const DB = firebase.database();
-        const auth = firebase.auth();
-        const provider = new firebase.auth.GoogleAuthProvider();
+const DB=firebase.database();
+const auth=firebase.auth();
 
-        // 👉 নিজের email বসাও
-        const ADMIN_EMAIL = "salmanfarsi172007@gmail.com";
+const ADMIN_EMAIL="salmanfarsi172007@gmail.com";
 
-        // ===== LOGIN =====
-        function login() {
-            auth.signInWithPopup(provider);
-        }
+/* EMAIL OTP LOGIN */
+function sendLink(){
+const email=document.getElementById("emailInput").value.trim();
+if(email!==ADMIN_EMAIL){
+alert("Access Denied");
+return;
+}
 
-        // ===== LOGOUT =====
-        document.getElementById("logoutBtn").onclick = () => {
-            auth.signOut();
-        };
+const actionCodeSettings={
+url:window.location.href,
+handleCodeInApp:true
+};
 
-        // ===== AUTH CHECK =====
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                if (user.email === ADMIN_EMAIL) {
-                    document.getElementById("authBox").style.display = "none";
-                } else {
-                    alert("Access Denied");
-                    auth.signOut();
-                }
-            }
-        });
+auth.sendSignInLinkToEmail(email,actionCodeSettings)
+.then(()=>{
+localStorage.setItem("emailForSignIn",email);
+alert("Check Gmail");
+});
+}
 
-        // ===== UI =====
-        const grid = document.getElementById("grid");
-        const toast = (t) => { let el = document.getElementById("toast"); el.innerText = t; el.classList.add("show"); setTimeout(() => el.classList.remove("show"), 1500) };
+if(auth.isSignInWithEmailLink(window.location.href)){
+let email=localStorage.getItem("emailForSignIn");
+auth.signInWithEmailLink(email,window.location.href)
+.then(res=>{
+if(res.user.email===ADMIN_EMAIL){
+document.getElementById("authBox").style.display="none";
+}else{
+alert("Denied");
+}
+});
+}
 
-        // ===== DATA =====
-        let RAW = {};
+/* THEME */
+function toggleTheme(){
+document.documentElement.classList.toggle("dark");
+}
 
-        DB.ref("all_logs").on("value", snap => {
-            RAW = snap.val() || {};
-            render();
-        });
+/* TOAST */
+function toast(t){
+let el=document.getElementById("toast");
+el.innerText=t;
+el.classList.add("show");
+setTimeout(()=>el.classList.remove("show"),1500);
+}
 
-        // ===== RENDER =====
-        function render() {
-            grid.innerHTML = "";
-            Object.entries(RAW).forEach(([k, d]) => {
-                let div = document.createElement("div");
-                div.className = "card";
-                div.innerHTML = `
-<b>${escapeHTML(d.name)}</b><br>
-<small>${escapeHTML(d.email)}</small>
-<p>${escapeHTML(d.question)}</p>
-<button class="icon" onclick="copy('${k}')">📋</button>
+/* RENDER DATA */
+let RAW={};
+
+DB.ref("all_logs").on("value",snap=>{
+RAW=snap.val()||{};
+render();
+});
+
+function render(){
+let grid=document.getElementById("grid");
+grid.innerHTML="";
+
+Object.entries(RAW).reverse().forEach(([k,d])=>{
+let div=document.createElement("div");
+div.className="card";
+div.innerHTML=`
+<div class="name">${d.name||""}</div>
+<div class="email">${d.email||""}</div>
+<div class="q">${d.question||""}</div>
+<div class="actions">
+<button class="icon copy" onclick="copy('${k}')">📋</button>
 <button class="icon del" onclick="del('${k}')">🗑️</button>
+</div>
 `;
-                grid.appendChild(div);
-            });
-        }
+grid.appendChild(div);
+});
+}
 
-        // ===== ACTIONS =====
-        function copy(k) {
-            let d = RAW[k];
-            navigator.clipboard.writeText(d.question);
-            toast("Copied");
-        }
+/* ACTION */
+function copy(k){
+navigator.clipboard.writeText(RAW[k].question||"");
+toast("Copied");
+}
 
-        function del(k) {
-            if (confirm("Delete?")) {
-                DB.ref("all_logs/" + k).remove();
-                toast("Deleted");
-            }
-        }
-
-        // ===== CLEAR ALL =====
-        document.getElementById("clearBtn").onclick = () => {
-            if (confirm("Delete all?")) {
-                DB.ref("all_logs").remove();
-            }
-        };
-
-        // ===== SECURITY =====
-        function escapeHTML(str) {
-            return String(str).replace(/[&<>"']/g, s => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[s]));
-        }
-    </script>
+function del(k){
+if(confirm("Delete?")){
+DB.ref("all_logs/"+k).remove();
+toast("Deleted");
+}
+}
+</script>
 
 </body>
-
 </html>
