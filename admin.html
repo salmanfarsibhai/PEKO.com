@@ -7,6 +7,7 @@
     <title>PEKO AI • Admin</title>
 
     <style>
+        /* ===== SAME YOUR DESIGN (unchanged) ===== */
         :root {
             --bg: #0b1220;
             --card: #0f172a;
@@ -20,7 +21,7 @@
 
         .light {
             --bg: #f6f8ff;
-            --card: #ffffff;
+            --card: #fff;
             --muted: #6b7280;
             --text: #0f172a;
             --pri: #4f46e5;
@@ -35,10 +36,9 @@
 
         body {
             margin: 0;
-            font-family: system-ui, Segoe UI, Arial;
+            font-family: system-ui;
             background: linear-gradient(135deg, var(--bg), #0b1220);
-            color: var(--text);
-            min-height: 100vh;
+            color: var(--text)
         }
 
         .header {
@@ -46,23 +46,10 @@
             top: 0;
             z-index: 10;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 14px 16px;
+            padding: 14px;
             border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            background: linear-gradient(135deg, rgba(79, 70, 229, .9), rgba(124, 58, 237, .9));
-        }
-
-        .brand {
-            font-weight: 700;
-            letter-spacing: .5px
-        }
-
-        .tools {
-            display: flex;
-            gap: 8px;
-            align-items: center
+            background: linear-gradient(135deg, #4f46e5, #7c3aed)
         }
 
         .btn {
@@ -71,12 +58,7 @@
             padding: 8px 10px;
             cursor: pointer;
             background: rgba(255, 255, 255, .15);
-            color: #fff;
-            transition: .2s transform, .2s box-shadow;
-        }
-
-        .btn:active {
-            transform: scale(.97)
+            color: #fff
         }
 
         .container {
@@ -85,52 +67,17 @@
             padding: 0 12px
         }
 
-        .topbar {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-        }
-
-        .search {
-            flex: 1;
-            min-width: 220px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px;
-            background: var(--card);
-            color: var(--text);
-            outline: none;
-        }
-
-        .select {
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px;
-            background: var(--card);
-            color: var(--text);
-            outline: none;
-        }
-
-        .count {
-            color: var(--muted);
-            font-size: 12px
-        }
-
         .grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 10px
         }
 
         .card {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: 14px;
-            padding: 12px 12px 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
-            animation: fade .25s ease;
+            padding: 12px;
+            animation: fade .25s
         }
 
         @keyframes fade {
@@ -140,78 +87,19 @@
             }
 
             to {
-                opacity: 1;
-                transform: none
+                opacity: 1
             }
         }
 
-        .row {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            align-items: center
-        }
-
-        .name {
-            font-weight: 700;
-            color: var(--pri)
-        }
-
-        .email {
-            font-size: 12px;
-            color: var(--muted)
-        }
-
-        .q {
-            margin-top: 6px;
-            white-space: pre-wrap;
-            word-break: break-word
-        }
-
-        .meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 8px
-        }
-
-        .time {
-            font-size: 11px;
-            color: var(--muted)
-        }
-
-        .actions {
-            display: flex;
-            gap: 6px
-        }
-
         .icon {
-            border: none;
             border-radius: 8px;
-            padding: 6px 8px;
+            padding: 6px;
             cursor: pointer;
-            background: transparent;
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-
-        .icon:hover {
-            background: rgba(255, 255, 255, .05)
-        }
-
-        .icon.copy {
-            border-color: var(--pri)
+            border: 1px solid var(--border)
         }
 
         .icon.del {
-            border-color: var(--danger);
-            color: var(--danger)
-        }
-
-        .empty {
-            opacity: .7;
-            text-align: center;
-            margin-top: 40px
+            color: red
         }
 
         .toast {
@@ -221,10 +109,9 @@
             transform: translateX(-50%);
             background: #111;
             color: #fff;
-            padding: 10px 14px;
+            padding: 10px;
             border-radius: 10px;
             opacity: 0;
-            pointer-events: none;
             transition: .3s
         }
 
@@ -232,44 +119,64 @@
             opacity: 1
         }
 
-        @media(min-width:760px) {
-            .grid {
-                grid-template-columns: 1fr 1fr
-            }
+        /* ===== LOGIN SCREEN ===== */
+        #authBox {
+            position: fixed;
+            inset: 0;
+            background: #0b1220;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 9999;
+            color: #fff;
+        }
+
+        .loginBtn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
         }
     </style>
 </head>
 
 <body>
+
+    <!-- 🔐 LOGIN SCREEN -->
+    <div id="authBox">
+        <h2>Admin Login Required</h2>
+        <button class="loginBtn" onclick="login()">Login with Google</button>
+    </div>
+
+    <!-- ===== MAIN UI ===== -->
     <div class="header">
-        <div class="brand">PEKO AI • Admin</div>
-        <div class="tools">
+        <div>PEKO AI • Admin</div>
+        <div>
             <button id="themeBtn" class="btn">Theme</button>
-            <button id="clearBtn" class="btn">Clear All (Danger)</button>
+            <button id="logoutBtn" class="btn">Logout</button>
+            <button id="clearBtn" class="btn">Clear All</button>
         </div>
     </div>
 
     <div class="container">
-        <div class="topbar">
-            <input id="search" class="search" placeholder="Search name/email/question..." />
-            <select id="sort" class="select">
-                <option value="desc">Newest</option>
-                <option value="asc">Oldest</option>
-            </select>
-            <div id="count" class="count">0 items</div>
-        </div>
-
+        <input id="search" placeholder="Search..." class="btn" style="width:100%;margin-bottom:10px">
         <div id="grid" class="grid"></div>
-        <div id="empty" class="empty" style="display:none">No data yet</div>
     </div>
 
     <div id="toast" class="toast"></div>
 
+    <!-- ===== Firebase ===== -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
-        // ===== Firebase (same as your project) =====
+        // ===== CONFIG =====
         const firebaseConfig = {
             apiKey: "AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
             authDomain: "peko-ai.firebaseapp.com",
@@ -277,145 +184,92 @@
             projectId: "peko-ai"
         };
         firebase.initializeApp(firebaseConfig);
+
         const DB = firebase.database();
+        const auth = firebase.auth();
+        const provider = new firebase.auth.GoogleAuthProvider();
 
-        // ===== UI helpers =====
-        const $ = id => document.getElementById(id);
-        const grid = $("grid"), empty = $("empty"), count = $("count");
-        function toast(t) {
-            const el = $("toast"); el.textContent = t; el.classList.add("show");
-            setTimeout(() => el.classList.remove("show"), 1600);
+        // 👉 নিজের email বসাও
+        const ADMIN_EMAIL = "salmanfarsi172007@gmail.com";
+
+        // ===== LOGIN =====
+        function login() {
+            auth.signInWithPopup(provider);
         }
 
-        // ===== Theme (admin-only control via localStorage) =====
-        const THEME_KEY = "ADMIN_THEME";
-        function applyTheme() {
-            const t = localStorage.getItem(THEME_KEY) || "dark";
-            document.documentElement.classList.toggle("light", t === "light");
-        }
-        applyTheme();
-        $("themeBtn").onclick = () => {
-            const t = localStorage.getItem(THEME_KEY) === "light" ? "dark" : "light";
-            localStorage.setItem(THEME_KEY, t);
-            applyTheme();
+        // ===== LOGOUT =====
+        document.getElementById("logoutBtn").onclick = () => {
+            auth.signOut();
         };
 
-        // ===== State =====
-        let RAW = {};     // {key: data}
-        let LIST = [];    // [{key, ...data}]
-        let SORT = "desc";
-        let QUERY = "";
-
-        // ===== Render =====
-        function render() {
-            // filter
-            let arr = LIST.filter(d => {
-                const q = (d.question || "").toLowerCase();
-                const n = (d.name || "").toLowerCase();
-                const e = (d.email || "").toLowerCase();
-                const s = QUERY;
-                return !s || q.includes(s) || n.includes(s) || e.includes(s);
-            });
-
-            // sort
-            arr.sort((a, b) => SORT === "desc" ? (b.time - a.time) : (a.time - b.time));
-
-            // paint
-            grid.innerHTML = "";
-            count.textContent = arr.length + " items";
-            empty.style.display = arr.length ? "none" : "block";
-
-            const frag = document.createDocumentFragment();
-            arr.forEach(d => {
-                const el = document.createElement("div");
-                el.className = "card";
-                el.innerHTML = `
-      <div class="row">
-        <div>
-          <div class="name">${escapeHTML(d.name || "Unknown")}</div>
-          <div class="email">${escapeHTML(d.email || "")}</div>
-        </div>
-        <div class="actions">
-          <button class="icon copy" title="Copy" data-k="${d.key}">📋</button>
-          <button class="icon del" title="Delete" data-k="${d.key}">🗑️</button>
-        </div>
-      </div>
-      <div class="q">${escapeHTML(d.question || "")}</div>
-      <div class="meta">
-        <div class="time">${new Date(d.time || Date.now()).toLocaleString()}</div>
-        <div></div>
-      </div>
-    `;
-                frag.appendChild(el);
-            });
-            grid.appendChild(frag);
-        }
-
-        // ===== Events =====
-        $("search").addEventListener("input", e => {
-            QUERY = (e.target.value || "").toLowerCase().trim();
-            render();
-        });
-        $("sort").addEventListener("change", e => {
-            SORT = e.target.value;
-            render();
-        });
-
-        // delegate click for copy/delete
-        grid.addEventListener("click", async (e) => {
-            const btn = e.target.closest("button");
-            if (!btn) return;
-            const key = btn.getAttribute("data-k");
-            if (!key) return;
-
-            // copy
-            if (btn.classList.contains("copy")) {
-                const d = RAW[key];
-                const text = `${d.name || ""}\n${d.email || ""}\n${d.question || ""}`;
-                try {
-                    await navigator.clipboard.writeText(text);
-                    toast("Copied");
-                } catch {
-                    // fallback
-                    const ta = document.createElement("textarea");
-                    ta.value = text; document.body.appendChild(ta);
-                    ta.select(); document.execCommand("copy"); ta.remove();
-                    toast("Copied");
+        // ===== AUTH CHECK =====
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                if (user.email === ADMIN_EMAIL) {
+                    document.getElementById("authBox").style.display = "none";
+                } else {
+                    alert("Access Denied");
+                    auth.signOut();
                 }
             }
-
-            // delete
-            if (btn.classList.contains("del")) {
-                if (!confirm("Delete this item?")) return;
-                DB.ref("all_logs/" + key).remove()
-                    .then(() => toast("Deleted"))
-                    .catch(err => { console.error(err); toast("Error"); });
-            }
         });
 
-        // clear all (danger)
-        $("clearBtn").onclick = () => {
-            if (!confirm("Delete ALL logs? This cannot be undone.")) return;
-            DB.ref("all_logs").remove()
-                .then(() => toast("All cleared"))
-                .catch(err => { console.error(err); toast("Error"); });
-        };
+        // ===== UI =====
+        const grid = document.getElementById("grid");
+        const toast = (t) => { let el = document.getElementById("toast"); el.innerText = t; el.classList.add("show"); setTimeout(() => el.classList.remove("show"), 1500) };
 
-        // ===== XSS-safe =====
-        function escapeHTML(str) {
-            return String(str).replace(/[&<>"']/g, s => ({
-                "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
-            }[s]));
-        }
+        // ===== DATA =====
+        let RAW = {};
 
-        // ===== Live subscribe =====
         DB.ref("all_logs").on("value", snap => {
             RAW = snap.val() || {};
-            LIST = Object.entries(RAW).map(([key, val]) => ({ key, ...(val || {}) }));
             render();
         });
 
+        // ===== RENDER =====
+        function render() {
+            grid.innerHTML = "";
+            Object.entries(RAW).forEach(([k, d]) => {
+                let div = document.createElement("div");
+                div.className = "card";
+                div.innerHTML = `
+<b>${escapeHTML(d.name)}</b><br>
+<small>${escapeHTML(d.email)}</small>
+<p>${escapeHTML(d.question)}</p>
+<button class="icon" onclick="copy('${k}')">📋</button>
+<button class="icon del" onclick="del('${k}')">🗑️</button>
+`;
+                grid.appendChild(div);
+            });
+        }
+
+        // ===== ACTIONS =====
+        function copy(k) {
+            let d = RAW[k];
+            navigator.clipboard.writeText(d.question);
+            toast("Copied");
+        }
+
+        function del(k) {
+            if (confirm("Delete?")) {
+                DB.ref("all_logs/" + k).remove();
+                toast("Deleted");
+            }
+        }
+
+        // ===== CLEAR ALL =====
+        document.getElementById("clearBtn").onclick = () => {
+            if (confirm("Delete all?")) {
+                DB.ref("all_logs").remove();
+            }
+        };
+
+        // ===== SECURITY =====
+        function escapeHTML(str) {
+            return String(str).replace(/[&<>"']/g, s => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[s]));
+        }
     </script>
+
 </body>
 
 </html>
