@@ -1,282 +1,515 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PEKO AI • Admin Panel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEKO AI • Admin Panel</title>
 
-<style>
-:root{
---bg:#f8fafc;
---card:rgba(255,255,255,0.7);
---text:#0f172a;
---muted:#64748b;
---border:rgba(0,0,0,0.08);
---glass:blur(18px);
---pri:#4f46e5;
-}
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: rgba(255, 255, 255, 0.7);
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: rgba(0, 0, 0, 0.08);
+            --glass: blur(18px);
+            --pri: #4f46e5;
+        }
 
-.dark{
---bg:#0b1220;
---card:rgba(15,23,42,0.6);
---text:#e5e7eb;
---muted:#94a3b8;
---border:rgba(255,255,255,0.08);
-}
+        .dark {
+            --bg: #0b1220;
+            --card: rgba(15, 23, 42, 0.6);
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+        }
 
-*{box-sizing:border-box;margin:0;padding:0}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
 
-body{
-font-family:system-ui;
-background:linear-gradient(135deg,var(--bg),#e2e8f0);
-color:var(--text);
-min-height:100vh;
-}
+        body {
+            font-family: system-ui;
+            background: linear-gradient(135deg, var(--bg), #e2e8f0);
+            color: var(--text);
+            min-height: 100vh;
+        }
 
-/* HEADER */
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:16px 20px;
-backdrop-filter:var(--glass);
-background:var(--card);
-border-bottom:1px solid var(--border);
-}
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            backdrop-filter: var(--glass);
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+        }
 
-.title{
-font-weight:700;
-font-size:18px;
-}
+        .title {
+            font-weight: 700;
+            font-size: 18px;
+        }
 
-.toggle{
-cursor:pointer;
-padding:8px 12px;
-border-radius:10px;
-background:var(--pri);
-color:#fff;
-border:none;
-}
+        .toggle {
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 10px;
+            background: var(--pri);
+            color: #fff;
+            border: none;
+        }
 
-/* CONTAINER */
-.container{
-max-width:1100px;
-margin:auto;
-padding:20px;
-}
+        /* CONTAINER */
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px;
+        }
 
-/* CARD */
-.card{
-background:var(--card);
-backdrop-filter:var(--glass);
-border:1px solid var(--border);
-border-radius:16px;
-padding:16px;
-margin-bottom:12px;
-transition:0.3s;
-}
+        /* CARD */
+        .card {
+            background: var(--card);
+            backdrop-filter: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: 0.3s;
+        }
 
-.card:hover{
-transform:translateY(-3px);
-}
+        .card:hover {
+            transform: translateY(-3px);
+        }
 
-/* TEXT */
-.name{font-weight:600}
-.email{font-size:12px;color:var(--muted)}
-.q{margin-top:6px}
+        /* TEXT */
+        .name {
+            font-weight: 600
+        }
 
-/* ACTIONS */
-.actions{
-display:flex;
-gap:10px;
-margin-top:10px;
-}
+        .email {
+            font-size: 12px;
+            color: var(--muted)
+        }
 
-.icon{
-border:none;
-cursor:pointer;
-padding:8px;
-border-radius:10px;
-background:rgba(255,255,255,0.2);
-backdrop-filter:var(--glass);
-transition:0.2s;
-}
+        .q {
+            margin-top: 6px
+        }
 
-.icon:hover{transform:scale(1.1)}
+        /* ACTIONS */
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
 
-.copy{color:#4f46e5}
-.del{color:#ef4444}
+        .icon {
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: var(--glass);
+            transition: 0.2s;
+        }
 
-/* LOGIN */
-#authBox{
-position:fixed;
-inset:0;
-display:flex;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-gap:10px;
-background:#0b1220;
-color:#fff;
-z-index:9999;
-}
+        .icon:hover {
+            transform: scale(1.1)
+        }
 
-input{
-padding:10px;
-border-radius:10px;
-border:none;
-width:260px;
-}
+        .copy {
+            color: #4f46e5
+        }
 
-.btn{
-padding:10px 20px;
-border:none;
-border-radius:10px;
-background:#4f46e5;
-color:#fff;
-cursor:pointer;
-}
+        .del {
+            color: #ef4444
+        }
 
-/* TOAST */
-.toast{
-position:fixed;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-background:#111;
-color:#fff;
-padding:10px 14px;
-border-radius:10px;
-opacity:0;
-transition:.3s;
-}
-.toast.show{opacity:1}
-</style>
+        /* LOGIN */
+        #authBox {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+            background: #0b1220;
+            color: #fff;
+            z-index: 9999;
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            width: 260px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            background: #4f46e5;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: .3s;
+        }
+
+        .toast.show {
+            opacity: 1
+        }
+
+        /* ===== VERIFY UPGRADE ===== */
+        .verifyBox {
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 255, 150, 0.2);
+            padding: 30px;
+            border-radius: 14px;
+            backdrop-filter: blur(12px);
+            text-align: center;
+        }
+
+        .verifyTitle {
+            color: #00ff9c;
+            font-size: 22px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .verifySub {
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .inputBox {
+            padding: 12px;
+            width: 260px;
+            border-radius: 10px;
+            border: 1px solid #1f2937;
+            background: #020617;
+            color: #fff;
+            outline: none;
+            transition: .2s;
+        }
+
+        .inputBox.error {
+            border-color: #ef4444;
+            background: #140202;
+        }
+
+        .errorText {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .btnVerify {
+            margin-top: 12px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #00ff9c, #0ea5e9);
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .btnVerify:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="authBox">
-<h2>PEKO AI Admin Verification</h2>
-<input id="emailInput" placeholder="Enter Admin Email">
-<button class="btn" onclick="sendLink()">Verify Access</button>
-</div>
+    <div id="authBox">
 
-<!-- HEADER -->
-<div class="header">
-<div class="title">PEKO AI • Admin Panel</div>
-<button class="toggle" onclick="toggleTheme()">Theme</button>
-</div>
+        <div class="verifyBox">
+            <div class="verifyTitle">PEKO AI Admin Verification</div>
 
-<div class="container" id="grid"></div>
+            <div class="verifySub">
+                আপনার অ্যাক্সেস লিংক ইমেইলে পাঠানো হবে
+            </div>
 
-<div id="toast" class="toast"></div>
+            <input id="emailInput" class="inputBox" placeholder="Enter Admin Email">
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+            <div id="errorText" class="errorText">
+                আপনি ভুল ইমেইল দিয়েছেন, আপনি কখনোই ঢুকতে পারবেন না
+            </div>
 
-<script>
-const firebaseConfig={
-apiKey:"AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
-authDomain:"peko-ai.firebaseapp.com",
-databaseURL:"https://peko-ai-default-rtdb.asia-southeast1.firebasedatabase.app",
-projectId:"peko-ai"
-};
-firebase.initializeApp(firebaseConfig);
+            <button class="btnVerify" onclick="sendLink()">
+                Send Access Link
+            </button>
+        </div>
 
-const DB=firebase.database();
-const auth=firebase.auth();
+    </div>
 
-const ADMIN_EMAIL="salmanfarsi172007@gmail.com";
+    <!-- HEADER -->
+    <div class="header">
+        <div class="title">PEKO AI • Admin Panel</div>
+        <button class="toggle" onclick="toggleTheme()">Theme</button>
+    </div>
 
-/* EMAIL OTP LOGIN */
-function sendLink(){
-const email=document.getElementById("emailInput").value.trim();
-if(email!==ADMIN_EMAIL){
-alert("Access Denied");
-return;
-}
+    <div class="container" id="grid"></div>
 
-const actionCodeSettings={
-url:window.location.href,
-handleCodeInApp:true
-};
+    <div id="toast" class="toast"></div>
 
-auth.sendSignInLinkToEmail(email,actionCodeSettings)
-.then(()=>{
-localStorage.setItem("emailForSignIn",email);
-alert("Check Gmail");
-});
-}
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-if(auth.isSignInWithEmailLink(window.location.href)){
-let email=localStorage.getItem("emailForSignIn");
-auth.signInWithEmailLink(email,window.location.href)
-.then(res=>{
-if(res.user.email===ADMIN_EMAIL){
-document.getElementById("authBox").style.display="none";
-}else{
-alert("Denied");
-}
-});
-}
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
+            authDomain: "peko-ai.firebaseapp.com",
+            databaseURL: "https://peko-ai-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "peko-ai"
+        };
+        firebase.initializeApp(firebaseConfig);
 
-/* THEME */
-function toggleTheme(){
-document.documentElement.classList.toggle("dark");
-}
+        const DB = firebase.database();
+        const auth = firebase.auth();
 
-/* TOAST */
-function toast(t){
-let el=document.getElementById("toast");
-el.innerText=t;
-el.classList.add("show");
-setTimeout(()=>el.classList.remove("show"),1500);
-}
+        const ADMIN_EMAIL = "salmanfarsi172007@gmail.com";
 
-/* RENDER DATA */
-let RAW={};
+        /* EMAIL OTP LOGIN */
+        function sendLink() {
+            const input = document.getElementById("emailInput");
+            const error = document.getElementById("errorText");
+            const email = input.value.trim();
 
-DB.ref("all_logs").on("value",snap=>{
-RAW=snap.val()||{};
-render();
-});
+            if (email !== ADMIN_EMAIL) {
+                input.classList.add("error");
+                error.style.display = "block";
+                return;
+            } else {
+                input.classList.remove("error");
+                error.style.display = "none";
+            }
 
-function render(){
-let grid=document.getElementById("grid");
-grid.innerHTML="";
+            const actionCodeSettings = {
+                url: window.location.href,
+                handleCodeInApp: true
+            };
 
-Object.entries(RAW).reverse().forEach(([k,d])=>{
-let div=document.createElement("div");
-div.className="card";
-div.innerHTML=`
-<div class="name">${d.name||""}</div>
-<div class="email">${d.email||""}</div>
-<div class="q">${d.question||""}</div>
+            auth.sendSignInLinkToEmail(email, actionCodeSettings)
+                .then(() => {
+                    localStorage.setItem("emailForSignIn", email);
+                    toast("✔ আপনার ইমেইলে অ্যাক্সেস লিংক পাঠানো হয়েছে");
+                })
+                .catch(() => {
+                    toast("❌ লিংক পাঠাতে সমস্যা হয়েছে");
+                });
+        }
+
+        if (auth.isSignInWithEmailLink(window.location.href)) {
+            let email = localStorage.getItem("emailForSignIn");
+            auth.signInWithEmailLink(email, window.location.href)
+                .then(res => {
+                    if (res.user.email === ADMIN_EMAIL) {
+                        document.getElementById("authBox").style.display = "none";
+                    } else {
+                        alert("Denied");
+                    }
+                });
+        }
+
+        /* THEME */
+        function toggleTheme() {
+            document.documentElement.classList.toggle("dark");
+        }
+
+        /* TOAST */
+        function toast(t) {
+            let el = document.getElementById("toast");
+            el.innerText = t;
+            el.classList.add("show");
+            setTimeout(() => el.classList.remove("show"), 1500);
+        }
+
+        /* RENDER DATA */
+        let RAW = {};
+
+        DB.ref("all_logs").on("value", snap => {
+            RAW = snap.val() || {};
+            render();
+        });
+
+        function render() {
+            let grid = document.getElementById("grid");
+            grid.innerHTML = "";
+
+            Object.entries(RAW).reverse().forEach(([k, d]) => {
+                let div = document.createElement("div");
+                div.className = "card";
+                div.innerHTML = `
+<div class="name">${d.name || ""}</div>
+<div class="email">${d.email || ""}</div>
+<div class="q">${d.question || ""}</div>
 <div class="actions">
 <button class="icon copy" onclick="copy('${k}')">📋</button>
 <button class="icon del" onclick="del('${k}')">🗑️</button>
 </div>
 `;
-grid.appendChild(div);
-});
-}
+                grid.appendChild(div);
+            });
+        }
 
-/* ACTION */
-function copy(k){
-navigator.clipboard.writeText(RAW[k].question||"");
-toast("Copied");
-}
+        /* ACTION */
+        function copy(k) {
+            navigator.clipboard.writeText(RAW[k].question || "");
+            toast("Copied");
+        }
 
-function del(k){
-if(confirm("Delete?")){
-DB.ref("all_logs/"+k).remove();
-toast("Deleted");
-}
-}
-</script>
+        function del(k) {
+            if (confirm("Delete?")) {
+                DB.ref("all_logs/" + k).remove();
+                toast("Deleted");
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ===============================
+        // 🎯 MATRIX CONTROL PANEL (এখানেই শুধু রং change করবে)
+        // ===============================
+
+        // 👉 BACKGROUND COLOR (স্ক্রিনের কালার)
+        const MATRIX_BG = "#F72933";
+
+        // 👉 TEXT COLOR MODE
+        // "single" = একটাই রং
+        // "multi" = একাধিক রং
+        const COLOR_MODE = "multi";
+
+        // 👉 SINGLE COLOR (যদি single mode হয়)
+        const SINGLE_COLOR = "#FFFFFF";
+
+        // 👉 MULTI COLOR (যদি multi mode হয়)
+        // 👉 এখানে ২-৩টা color দিলে mix হবে
+        const MULTI_COLORS = [
+            "#FFFFFF",
+            "#FFFFFF",
+            "#FFFFFF"
+        ];
+
+        // 👉 তোমার AI নাম (এটাও rain হবে)
+        const MATRIX_NAME = "PEKO";
+
+
+        // ===============================
+        // ⚙️ SYSTEM (এই অংশে হাত দিবা না)
+        // ===============================
+
+        const canvas = document.createElement("canvas");
+        canvas.id = "matrixCanvas";
+        document.getElementById("authBox").prepend(canvas);
+
+        const ctx = canvas.getContext("2d");
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener("resize", resize);
+
+        canvas.style.position = "absolute";
+        canvas.style.top = "0";
+        canvas.style.left = "0";
+        canvas.style.zIndex = "0";
+
+        // characters
+        const base = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+        const chars = (base + MATRIX_NAME).split("");
+
+        const fontSize = 11;
+        let columns = Math.floor(canvas.width / fontSize);
+
+        // random start (already running feel)
+        let drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * canvas.height / fontSize;
+        }
+
+        // 🎨 COLOR SYSTEM
+        function getColor() {
+            if (COLOR_MODE === "single") {
+                return SINGLE_COLOR;
+            } else {
+                return MULTI_COLORS[Math.floor(Math.random() * MULTI_COLORS.length)];
+            }
+        }
+
+        // draw
+        function draw() {
+
+            // background fade
+            ctx.fillStyle = MATRIX_BG + "15";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = fontSize + "px monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+
+                const char = chars[Math.floor(Math.random() * chars.length)];
+
+                ctx.fillStyle = getColor();
+
+                ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.97) {
+                    drops[i] = Math.random() * -20;
+                }
+
+                drops[i] += 0.7 + Math.random() * 1.5;
+            }
+        }
+
+        setInterval(draw, 20);
+
+
+    </script>
 
 </body>
+
 </html>
