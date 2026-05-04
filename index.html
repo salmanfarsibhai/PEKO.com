@@ -2,627 +2,728 @@
 <html lang="bn">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>PEKO AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PEKO AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
-  <style>
-    :root {
-      --bg-main: #0d1117;
-      --bg-chat: #161b22;
-      --bg-input: #21262d;
-      --bg-bubble-user: linear-gradient(135deg, #4f46e5, #7c3aed);
-      --bg-bubble-ai: #21262d;
-      --pri: #4f46e5;
-      --pri2: #7c3aed;
-      --accent: #58a6ff;
-      --text: #e6edf3;
-      --muted: #8b949e;
-      --border: #30363d;
-      --header-h: 56px;
-      --input-h: 80px;
-    }
+    <style>
+        :root {
+            --bg-main: #0d1117;
+            --bg-chat: #161b22;
+            --bg-input: #21262d;
+            --bg-bubble-user: linear-gradient(135deg, #4f46e5, #7c3aed);
+            --bg-bubble-ai: #21262d;
+            --pri: #4f46e5;
+            --pri2: #7c3aed;
+            --accent: #58a6ff;
+            --text: #e6edf3;
+            --muted: #8b949e;
+            --border: #30363d;
+            --header-h: 56px;
+            --input-h: 80px;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    body {
-      font-family: 'Noto Sans Bengali', system-ui, sans-serif;
-      background: var(--bg-main);
-      color: var(--text);
-      height: 100dvh;
-      overflow: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
+        body {
+            font-family: 'Noto Sans Bengali', system-ui, sans-serif;
+            background: var(--bg-main);
+            color: var(--text);
+            height: 100dvh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    /* ============================
+        /* ============================
        APP SHELL
     ============================ */
-    .app {
-      display: flex;
-      flex-direction: column;
-      height: 100dvh;
-      width: 100%;
-      position: relative;
-    }
+        .app {
+            display: flex;
+            flex-direction: column;
+            height: 100dvh;
+            width: 100%;
+            position: relative;
+        }
 
-    /* ============================
+        /* ============================
        HEADER
     ============================ */
-    .header {
-      height: var(--header-h);
-      min-height: var(--header-h);
-      flex-shrink: 0;
-      background: var(--bg-chat);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 18px;
-      position: relative;
-      z-index: 10;
-    }
+        .header {
+            height: var(--header-h);
+            min-height: var(--header-h);
+            flex-shrink: 0;
+            background: var(--bg-chat);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px;
+            position: relative;
+            z-index: 10;
+        }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      font-size: 17px;
-      letter-spacing: .5px;
-      color: var(--text);
-    }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: .5px;
+            color: var(--text);
+        }
 
-    .brand-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--pri), var(--pri2));
-      box-shadow: 0 0 8px rgba(124, 58, 237, 0.8);
-      animation: pulse 2s ease-in-out infinite;
-    }
+        .brand-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--pri), var(--pri2));
+            box-shadow: 0 0 8px rgba(124, 58, 237, 0.8);
+            animation: pulse 2s ease-in-out infinite;
+        }
 
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 6px rgba(124, 58, 237, 0.8); }
-      50% { box-shadow: 0 0 14px rgba(124, 58, 237, 1); }
-    }
+        @keyframes pulse {
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+            0%,
+            100% {
+                box-shadow: 0 0 6px rgba(124, 58, 237, 0.8);
+            }
 
-    .user-badge {
-      font-size: 12px;
-      color: var(--muted);
-      max-width: 120px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
+            50% {
+                box-shadow: 0 0 14px rgba(124, 58, 237, 1);
+            }
+        }
 
-    .logout-btn {
-      font-size: 12px;
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all .2s;
-      font-family: inherit;
-    }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .logout-btn:hover {
-      border-color: #ef4444;
-      color: #ef4444;
-    }
+        .user-badge {
+            font-size: 12px;
+            color: var(--muted);
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-    /* ============================
+        .logout-btn {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all .2s;
+            font-family: inherit;
+        }
+
+        .logout-btn:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        /* ============================
        LOGIN FULL SCREEN
     ============================ */
-    .login-overlay {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100dvh;
-      background: radial-gradient(ellipse at 30% 20%, #1e0a3c 0%, #0d1117 60%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      overflow: hidden;
-    }
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100dvh;
+            background: radial-gradient(ellipse at 30% 20%, #1e0a3c 0%, #0d1117 60%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            overflow: hidden;
+        }
 
-    .login-bg-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-    }
+        .login-bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+        }
 
-    .orb1 {
-      width: 350px;
-      height: 350px;
-      background: rgba(79, 70, 229, 0.25);
-      top: -80px;
-      left: -80px;
-      animation: orbMove1 8s ease-in-out infinite;
-    }
+        .orb1 {
+            width: 350px;
+            height: 350px;
+            background: rgba(79, 70, 229, 0.25);
+            top: -80px;
+            left: -80px;
+            animation: orbMove1 8s ease-in-out infinite;
+        }
 
-    .orb2 {
-      width: 280px;
-      height: 280px;
-      background: rgba(124, 58, 237, 0.2);
-      bottom: -60px;
-      right: -60px;
-      animation: orbMove2 10s ease-in-out infinite;
-    }
+        .orb2 {
+            width: 280px;
+            height: 280px;
+            background: rgba(124, 58, 237, 0.2);
+            bottom: -60px;
+            right: -60px;
+            animation: orbMove2 10s ease-in-out infinite;
+        }
 
-    @keyframes orbMove1 {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(40px, 30px); }
-    }
+        @keyframes orbMove1 {
 
-    @keyframes orbMove2 {
-      0%, 100% { transform: translate(0, 0); }
-      50% { transform: translate(-30px, -20px); }
-    }
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
 
-    .login-card {
-      position: relative;
-      z-index: 2;
-      width: 90%;
-      max-width: 360px;
-      padding: 40px 32px;
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(30px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      text-align: center;
-      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
-      animation: cardIn .5s cubic-bezier(.34, 1.56, .64, 1);
-    }
+            50% {
+                transform: translate(40px, 30px);
+            }
+        }
 
-    @keyframes cardIn {
-      from { opacity: 0; transform: translateY(30px) scale(.96); }
-      to { opacity: 1; transform: none; }
-    }
+        @keyframes orbMove2 {
 
-    .login-logo {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--pri), var(--pri2));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 22px;
-      font-weight: 800;
-      color: #fff;
-      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.5);
-    }
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
 
-    .login-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 8px;
-    }
+            50% {
+                transform: translate(-30px, -20px);
+            }
+        }
 
-    .login-sub {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.5);
-      margin-bottom: 28px;
-      line-height: 1.5;
-    }
+        .login-card {
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 360px;
+            padding: 40px 32px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
+            animation: cardIn .5s cubic-bezier(.34, 1.56, .64, 1);
+        }
 
-    .google-btn {
-      width: 100%;
-      padding: 13px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: all .25s ease;
-    }
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(.96);
+            }
 
-    .google-btn:hover {
-      background: rgba(255, 255, 255, 0.14);
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-1px);
-    }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
 
-    .google-btn:active { transform: scale(.97); }
+        .login-logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--pri), var(--pri2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.5);
+        }
 
-    /* ============================
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .login-sub {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 13px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all .25s ease;
+        }
+
+        .google-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .google-btn:active {
+            transform: scale(.97);
+        }
+
+        /* ============================
        CHAT AREA
     ============================ */
-    .chat-area {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 20px 16px;
-      scroll-behavior: smooth;
-      background: var(--bg-main);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px 16px;
+            scroll-behavior: smooth;
+            background: var(--bg-main);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-    .chat-area::-webkit-scrollbar { width: 4px; }
-    .chat-area::-webkit-scrollbar-track { background: transparent; }
-    .chat-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        .chat-area::-webkit-scrollbar {
+            width: 4px;
+        }
 
-    /* Welcome message */
-    .welcome-msg {
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-      padding: 30px 0;
-      animation: fadeIn .4s ease;
-    }
+        .chat-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-    .welcome-msg .w-icon {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
+        .chat-area::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
 
-    .welcome-msg h4 {
-      font-size: 18px;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
+        /* Welcome message */
+        .welcome-msg {
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px;
+            padding: 30px 0;
+            animation: fadeIn .4s ease;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: none; }
-    }
+        .welcome-msg .w-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
 
-    /* Message bubbles */
-    .msg-row {
-      display: flex;
-      animation: msgIn .25s cubic-bezier(.34, 1.4, .64, 1);
-    }
+        .welcome-msg h4 {
+            font-size: 18px;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
 
-    @keyframes msgIn {
-      from { opacity: 0; transform: translateY(10px) scale(.97); }
-      to { opacity: 1; transform: none; }
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
 
-    .msg-row.user { justify-content: flex-end; }
-    .msg-row.ai { justify-content: flex-start; }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
 
-    .bubble {
-      max-width: 75%;
-      padding: 11px 15px;
-      border-radius: 18px;
-      font-size: 14px;
-      line-height: 1.6;
-      word-break: break-word;
-    }
+        /* Message bubbles */
+        .msg-row {
+            display: flex;
+            animation: msgIn .25s cubic-bezier(.34, 1.4, .64, 1);
+        }
 
-    .bubble.user {
-      background: var(--bg-bubble-user);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-    }
+        @keyframes msgIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(.97);
+            }
 
-    .bubble.ai {
-      background: var(--bg-bubble-ai);
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-bottom-left-radius: 4px;
-    }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
 
-    /* Typing / loading bubble */
-    .typing-bubble {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+        .msg-row.user {
+            justify-content: flex-end;
+        }
 
-    .typing-dots {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-    }
+        .msg-row.ai {
+            justify-content: flex-start;
+        }
 
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--muted);
-      animation: dotBounce 1.2s ease-in-out infinite;
-    }
+        .bubble {
+            max-width: 75%;
+            padding: 11px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.6;
+            word-break: break-word;
+        }
 
-    .dot:nth-child(2) { animation-delay: .2s; }
-    .dot:nth-child(3) { animation-delay: .4s; }
+        .bubble.user {
+            background: var(--bg-bubble-user);
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
 
-    @keyframes dotBounce {
-      0%, 80%, 100% { transform: translateY(0); opacity: .5; }
-      40% { transform: translateY(-6px); opacity: 1; }
-    }
+        .bubble.ai {
+            background: var(--bg-bubble-ai);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: 4px;
+        }
 
-    .marquee-wrap {
-      overflow: hidden;
-      font-size: 11px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
+        /* Typing / loading bubble */
+        .typing-bubble {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-    .marquee-text {
-      display: inline-block;
-      animation: marquee 5s linear infinite;
-    }
+        .typing-dots {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
 
-    @keyframes marquee {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--muted);
+            animation: dotBounce 1.2s ease-in-out infinite;
+        }
 
-    /* ============================
+        .dot:nth-child(2) {
+            animation-delay: .2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: .4s;
+        }
+
+        @keyframes dotBounce {
+
+            0%,
+            80%,
+            100% {
+                transform: translateY(0);
+                opacity: .5;
+            }
+
+            40% {
+                transform: translateY(-6px);
+                opacity: 1;
+            }
+        }
+
+        .marquee-wrap {
+            overflow: hidden;
+            font-size: 11px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            animation: marquee 5s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* ============================
        INPUT BOX
     ============================ */
-    .input-box {
-      flex-shrink: 0;
-      background: var(--bg-chat);
-      border-top: 1px solid var(--border);
-      padding: 12px 14px;
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-    }
+        .input-box {
+            flex-shrink: 0;
+            background: var(--bg-chat);
+            border-top: 1px solid var(--border);
+            padding: 12px 14px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
 
-    .input-wrap {
-      flex: 1;
-      position: relative;
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      transition: border-color .2s;
-    }
+        .input-wrap {
+            flex: 1;
+            position: relative;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            transition: border-color .2s;
+        }
 
-    .input-wrap:focus-within {
-      border-color: var(--pri);
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-    }
+        .input-wrap:focus-within {
+            border-color: var(--pri);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
 
-    .msg-input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--text);
-      font-size: 14px;
-      font-family: inherit;
-      padding: 13px 16px;
-      resize: none;
-      max-height: 120px;
-      line-height: 1.5;
-    }
+        .msg-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+            padding: 13px 16px;
+            resize: none;
+            max-height: 120px;
+            line-height: 1.5;
+        }
 
-    .msg-input::placeholder { color: var(--muted); }
+        .msg-input::placeholder {
+            color: var(--muted);
+        }
 
-    .send-btn {
-      width: 42px;
-      height: 42px;
-      flex-shrink: 0;
-      border-radius: 12px;
-      border: none;
-      background: linear-gradient(135deg, var(--pri), var(--pri2));
-      color: #fff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all .2s ease;
-      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
-    }
+        .send-btn {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, var(--pri), var(--pri2));
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s ease;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+        }
 
-    .send-btn:hover {
-      transform: scale(1.07);
-      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
-    }
+        .send-btn:hover {
+            transform: scale(1.07);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+        }
 
-    .send-btn:active { transform: scale(.94); }
+        .send-btn:active {
+            transform: scale(.94);
+        }
 
-    .send-btn:disabled {
-      opacity: .45;
-      cursor: not-allowed;
-      transform: none;
-    }
+        .send-btn:disabled {
+            opacity: .45;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-    .send-btn svg {
-      width: 18px;
-      height: 18px;
-    }
+        .send-btn svg {
+            width: 18px;
+            height: 18px;
+        }
 
-    /* ============================
+        /* ============================
        TOAST
     ============================ */
-    .toast {
-      position: fixed;
-      bottom: 90px;
-      left: 50%;
-      transform: translateX(-50%) translateY(10px);
-      background: #1f2937;
-      color: #fff;
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-size: 13px;
-      border: 1px solid var(--border);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .3s, transform .3s;
-      white-space: nowrap;
-      z-index: 9000;
-    }
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #1f2937;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            border: 1px solid var(--border);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s, transform .3s;
+            white-space: nowrap;
+            z-index: 9000;
+        }
 
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
 
-    /* ============================
+        /* ============================
        RESPONSIVE
     ============================ */
-    @media (min-width: 700px) {
-      .chat-area { padding: 24px 10%; }
-      .bubble { max-width: 65%; font-size: 14.5px; }
-    }
+        @media (min-width: 700px) {
+            .chat-area {
+                padding: 24px 10%;
+            }
 
-    @media (min-width: 1100px) {
-      .chat-area { padding: 28px 20%; }
-    }
+            .bubble {
+                max-width: 65%;
+                font-size: 14.5px;
+            }
+        }
 
-    @supports not (height: 100dvh) {
-      body, .app, .login-overlay { height: 100vh; }
-    }
-  </style>
+        @media (min-width: 1100px) {
+            .chat-area {
+                padding: 28px 20%;
+            }
+        }
+
+        @supports not (height: 100dvh) {
+
+            body,
+            .app,
+            .login-overlay {
+                height: 100vh;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <div class="app">
+    <div class="app">
 
-    <!-- HEADER -->
-    <div class="header">
-      <div class="brand">
-        <div class="brand-dot"></div>
-        PEKO AI
-      </div>
-      <div class="header-right">
-        <span id="userInfo" class="user-badge"></span>
-        <button id="logoutBtn" class="logout-btn" style="display:none">Logout</button>
-      </div>
+        <!-- HEADER -->
+        <div class="header">
+            <div class="brand">
+                <div class="brand-dot"></div>
+                PEKO AI
+            </div>
+            <div class="header-right">
+                <span id="userInfo" class="user-badge"></span>
+                <button id="logoutBtn" class="logout-btn" style="display:none">Logout</button>
+            </div>
+        </div>
+
+        <!-- LOGIN OVERLAY -->
+        <div id="loginBox" class="login-overlay">
+            <div class="login-bg-orb orb1"></div>
+            <div class="login-bg-orb orb2"></div>
+            <div class="login-card">
+                <div class="login-logo">P</div>
+                <div class="login-title">স্বাগতম PEKO AI-তে</div>
+                <div class="login-sub">আপনার Google অ্যাকাউন্ট দিয়ে লগইন করুন<br>এবং AI-এর সাথে কথা বলুন</div>
+                <button class="google-btn" onclick="login()">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="G">
+                    Continue with Google
+                </button>
+            </div>
+        </div>
+
+        <!-- CHAT AREA -->
+        <div id="chat" class="chat-area" style="display:none">
+            <div class="welcome-msg" id="welcomeMsg">
+                <div class="w-icon">🤖</div>
+                <h4>আমি PEKO AI</h4>
+                <p>আপনার যেকোনো প্রশ্ন করুন, আমি সাহায্য করব।</p>
+            </div>
+        </div>
+
+        <!-- INPUT BOX -->
+        <div id="inputBox" class="input-box" style="display:none">
+            <div class="input-wrap">
+                <textarea id="input" class="msg-input" rows="1" placeholder="প্রশ্ন লিখুন..."></textarea>
+            </div>
+            <button class="send-btn" id="sendBtn" title="Send">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+
     </div>
 
-    <!-- LOGIN OVERLAY -->
-    <div id="loginBox" class="login-overlay">
-      <div class="login-bg-orb orb1"></div>
-      <div class="login-bg-orb orb2"></div>
-      <div class="login-card">
-        <div class="login-logo">P</div>
-        <div class="login-title">স্বাগতম PEKO AI-তে</div>
-        <div class="login-sub">আপনার Google অ্যাকাউন্ট দিয়ে লগইন করুন<br>এবং AI-এর সাথে কথা বলুন</div>
-        <button class="google-btn" onclick="login()">
-          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" alt="G">
-          Continue with Google
-        </button>
-      </div>
-    </div>
+    <div id="toast" class="toast"></div>
 
-    <!-- CHAT AREA -->
-    <div id="chat" class="chat-area" style="display:none">
-      <div class="welcome-msg" id="welcomeMsg">
-        <div class="w-icon">🤖</div>
-        <h4>আমি PEKO AI</h4>
-        <p>আপনার যেকোনো প্রশ্ন করুন, আমি সাহায্য করব।</p>
-      </div>
-    </div>
+    <!-- Firebase SDKs (unchanged) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-    <!-- INPUT BOX -->
-    <div id="inputBox" class="input-box" style="display:none">
-      <div class="input-wrap">
-        <textarea id="input" class="msg-input" rows="1" placeholder="প্রশ্ন লিখুন..."></textarea>
-      </div>
-      <button class="send-btn" id="sendBtn" title="Send">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"></line>
-          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-        </svg>
-      </button>
-    </div>
+    <script>
+        // ===== FIREBASE CONFIG (unchanged) =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
+            authDomain: "peko-ai.firebaseapp.com",
+            databaseURL: "https://peko-ai-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "peko-ai"
+        };
 
-  </div>
+        firebase.initializeApp(firebaseConfig);
+        const AUTH = firebase.auth();
+        const DB = firebase.database();
 
-  <div id="toast" class="toast"></div>
+        let USER = null;
+        let isBusy = false;
 
-  <!-- Firebase SDKs (unchanged) -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+        // Per-session: track last answer index per keyword per user session
+        const lastAnswerIndex = {};
 
-  <script>
-    // ===== FIREBASE CONFIG (unchanged) =====
-    const firebaseConfig = {
-      apiKey: "AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
-      authDomain: "peko-ai.firebaseapp.com",
-      databaseURL: "https://peko-ai-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "peko-ai"
-    };
+        // ===== UI HELPERS =====
+        const $ = id => document.getElementById(id);
 
-    firebase.initializeApp(firebaseConfig);
-    const AUTH = firebase.auth();
-    const DB = firebase.database();
+        function toast(t) {
+            const el = $("toast");
+            el.textContent = t;
+            el.classList.add("show");
+            setTimeout(() => el.classList.remove("show"), 2000);
+        }
 
-    let USER = null;
-    let isBusy = false;
+        function showApp() {
+            $("loginBox").style.display = "none";
+            $("chat").style.display = "flex";
+            $("inputBox").style.display = "flex";
+            $("logoutBtn").style.display = "inline-block";
+        }
 
-    // Per-session: track last answer index per keyword per user session
-    const lastAnswerIndex = {};
+        function showLogin() {
+            $("loginBox").style.display = "flex";
+            $("chat").style.display = "none";
+            $("inputBox").style.display = "none";
+            $("logoutBtn").style.display = "none";
+            $("userInfo").textContent = "";
+        }
 
-    // ===== UI HELPERS =====
-    const $ = id => document.getElementById(id);
+        function addUserMsg(text) {
+            const welcome = $("welcomeMsg");
+            if (welcome) welcome.remove();
 
-    function toast(t) {
-      const el = $("toast");
-      el.textContent = t;
-      el.classList.add("show");
-      setTimeout(() => el.classList.remove("show"), 2000);
-    }
+            const row = document.createElement("div");
+            row.className = "msg-row user";
+            row.innerHTML = `<div class="bubble user">${escHtml(text)}</div>`;
+            $("chat").appendChild(row);
+            scrollBottom();
+        }
 
-    function showApp() {
-      $("loginBox").style.display = "none";
-      $("chat").style.display = "flex";
-      $("inputBox").style.display = "flex";
-      $("logoutBtn").style.display = "inline-block";
-    }
+        function addAiMsg(text) {
+            const row = document.createElement("div");
+            row.className = "msg-row ai";
+            row.innerHTML = `<div class="bubble ai">${escHtml(text)}</div>`;
+            $("chat").appendChild(row);
+            scrollBottom();
+            return row;
+        }
 
-    function showLogin() {
-      $("loginBox").style.display = "flex";
-      $("chat").style.display = "none";
-      $("inputBox").style.display = "none";
-      $("logoutBtn").style.display = "none";
-      $("userInfo").textContent = "";
-    }
-
-    function addUserMsg(text) {
-      const welcome = $("welcomeMsg");
-      if (welcome) welcome.remove();
-
-      const row = document.createElement("div");
-      row.className = "msg-row user";
-      row.innerHTML = `<div class="bubble user">${escHtml(text)}</div>`;
-      $("chat").appendChild(row);
-      scrollBottom();
-    }
-
-    function addAiMsg(text) {
-      const row = document.createElement("div");
-      row.className = "msg-row ai";
-      row.innerHTML = `<div class="bubble ai">${escHtml(text)}</div>`;
-      $("chat").appendChild(row);
-      scrollBottom();
-      return row;
-    }
-
-    function addTypingBubble() {
-      const row = document.createElement("div");
-      row.className = "msg-row ai";
-      row.id = "typingBubble";
-      row.innerHTML = `
+        function addTypingBubble() {
+            const row = document.createElement("div");
+            row.className = "msg-row ai";
+            row.id = "typingBubble";
+            row.innerHTML = `
         <div class="bubble ai typing-bubble">
           <div class="typing-dots">
             <div class="dot"></div>
@@ -633,217 +734,217 @@
             <span class="marquee-text">আপনার প্রশ্নটি আমাদের ডাটা সেন্টারে পাঠানো হয়েছে — উত্তর খুঁজে বের করা হচ্ছে...</span>
           </div>
         </div>`;
-      $("chat").appendChild(row);
-      scrollBottom();
-    }
+            $("chat").appendChild(row);
+            scrollBottom();
+        }
 
-    function removeTypingBubble() {
-      const el = $("typingBubble");
-      if (el) el.remove();
-    }
+        function removeTypingBubble() {
+            const el = $("typingBubble");
+            if (el) el.remove();
+        }
 
-    function scrollBottom() {
-      const c = $("chat");
-      c.scrollTop = c.scrollHeight;
-    }
+        function scrollBottom() {
+            const c = $("chat");
+            c.scrollTop = c.scrollHeight;
+        }
 
-    function escHtml(t) {
-      return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
+        function escHtml(t) {
+            return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
 
-    function setBusy(state) {
-      isBusy = state;
-      $("sendBtn").disabled = state;
-      $("input").disabled = state;
-    }
+        function setBusy(state) {
+            isBusy = state;
+            $("sendBtn").disabled = state;
+            $("input").disabled = state;
+        }
 
-    // Auto-resize textarea
-    $("input").addEventListener("input", function () {
-      this.style.height = "auto";
-      this.style.height = Math.min(this.scrollHeight, 120) + "px";
-    });
+        // Auto-resize textarea
+        $("input").addEventListener("input", function () {
+            this.style.height = "auto";
+            this.style.height = Math.min(this.scrollHeight, 120) + "px";
+        });
 
-    // ===== AUTH =====
-    AUTH.onAuthStateChanged(user => {
-      if (user) {
-        USER = user;
-        $("userInfo").textContent = user.displayName || user.email || "";
-        showApp();
-      } else {
-        USER = null;
-        showLogin();
-      }
-    });
-
-    function login() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      AUTH.signInWithPopup(provider).catch(e => {
-        console.error(e);
-        toast("Login error: " + e.message);
-      });
-    }
-
-    $("logoutBtn").onclick = () => {
-      AUTH.signOut();
-      toast("লগআউট সফল");
-    };
-
-    // ===== IMPROVED ANSWER ENGINE =====
-    // Multiple answers per keyword, smart rotation (no repeat in a row for same user)
-    const DATA = [
-      {
-        keys: ["hello", "হ্যালো", "হেলো", "hi", "হাই"],
-        answers: [
-          "হ্যালো! কীভাবে সাহায্য করতে পারি? 😊",
-          "আরে, কেমন আছেন? কীভাবে সাহায্য করতে পারি?",
-          "হ্যালো! আপনাকে স্বাগতম। কী জানতে চান?"
-        ]
-      },
-      {
-        keys: ["আসসালামুআলাইকুম", "assalamu", "salam", "সালাম", "আস-সালামু"],
-        answers: [
-          "ওয়ালাইকুম আসসালাম! কীভাবে সাহায্য করতে পারি? 🌿",
-          "ওয়ালাইকুম আস-সালাম ওয়া রাহমাতুল্লাহ! কী প্রশ্ন করতে চান?",
-          "ওয়ালাইকুম আস-সালাম! আপনার সেবায় প্রস্তুত আছি।"
-        ]
-      },
-      {
-        keys: ["capital", "রাজধানী", "bangladesh", "বাংলাদেশ"],
-        answers: [
-          "বাংলাদেশের রাজধানী হলো ঢাকা। এটি দেশের বৃহত্তম শহর এবং অর্থনৈতিক কেন্দ্র।",
-          "ঢাকা বাংলাদেশের রাজধানী। জনসংখ্যার দিক দিয়ে এটি বিশ্বের অন্যতম ঘনবসতিপূর্ণ শহর।",
-          "বাংলাদেশ একটি দক্ষিণ এশিয়ার দেশ, রাজধানী ঢাকা। ১৯৭১ সালে স্বাধীনতা অর্জন করে।"
-        ]
-      },
-      {
-        keys: ["who are you", "তুমি কে", "তুমি কি", "তুমি কী", "আপনি কে", "peko"],
-        answers: [
-          "আমি PEKO AI — আপনার বাংলা ভাষার বুদ্ধিমান সহকারী। 🤖",
-          "আমার নাম PEKO AI। আমি আপনার প্রশ্নের উত্তর দিতে এখানে আছি।",
-          "PEKO AI হলো আমি — বাংলায় কথা বলতে সক্ষম একটি AI সিস্টেম।"
-        ]
-      },
-      {
-        keys: ["salman", "সালমান"],
-        answers: [
-          "আপনি কি সালমান ফার্সি সম্পর্কে জানতে চাইছেন?",
-          "সালমান সম্পর্কে আরো বিস্তারিত বলুন, আমি সাহায্য করব।"
-        ]
-      },
-      {
-        keys: ["ধন্যবাদ", "thanks", "thank you", "শুকরিয়া", "জাজাকাল্লাহ"],
-        answers: [
-          "আপনাকেও ধন্যবাদ! আরো কিছু জানতে চাইলে বলুন। 😊",
-          "ওয়া ইয়্যাকুম! সবসময় সাহায্য করতে পেরে আনন্দিত।",
-          "ধন্যবাদ আপনাকেও! আরো প্রশ্ন থাকলে নির্দ্বিধায় করুন।"
-        ]
-      },
-      {
-        keys: ["ভালো", "কেমন আছেন", "কেমন আছো", "how are you"],
-        answers: [
-          "আমি ভালো আছি! আপনি কেমন আছেন? 😊",
-          "আলহামদুলিল্লাহ, ভালো আছি। আপনার কথা বলুন!",
-          "চমৎকার! আপনার জন্য কী করতে পারি?"
-        ]
-      },
-      {
-        keys: ["আয়তন", "area", "বাংলাদেশের আয়তন", "square"],
-        answers: [
-          "বাংলাদেশের মোট আয়তন প্রায় ১,৪৭,৫৭০ বর্গকিলোমিটার।",
-          "বাংলাদেশ আয়তনে ছোট হলেও জনসংখ্যায় বিশ্বের ৮ম বৃহত্তম দেশ।"
-        ]
-      },
-      {
-        keys: ["জনসংখ্যা", "population"],
-        answers: [
-          "বাংলাদেশের জনসংখ্যা প্রায় ১৭ কোটিরও বেশি (২০২৪ অনুযায়ী)।",
-          "বর্তমানে বাংলাদেশের জনসংখ্যা প্রায় ১৭ কোটি। এটি বিশ্বের ঘনবসতিপূর্ণ দেশগুলোর মধ্যে অন্যতম।"
-        ]
-      }
-    ];
-
-    function getAnswer(q) {
-      q = q.toLowerCase().trim();
-
-      for (const item of DATA) {
-        for (const key of item.keys) {
-          if (q.includes(key.toLowerCase())) {
-            const pool = item.answers;
-            const lastIdx = lastAnswerIndex[key] ?? -1;
-
-            // Find an answer different from last one
-            let idx;
-            if (pool.length === 1) {
-              idx = 0;
+        // ===== AUTH =====
+        AUTH.onAuthStateChanged(user => {
+            if (user) {
+                USER = user;
+                $("userInfo").textContent = user.displayName || user.email || "";
+                showApp();
             } else {
-              do {
-                idx = Math.floor(Math.random() * pool.length);
-              } while (idx === lastIdx);
+                USER = null;
+                showLogin();
+            }
+        });
+
+        function login() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            AUTH.signInWithPopup(provider).catch(e => {
+                console.error(e);
+                toast("Login error: " + e.message);
+            });
+        }
+
+        $("logoutBtn").onclick = () => {
+            AUTH.signOut();
+            toast("লগআউট সফল");
+        };
+
+        // ===== IMPROVED ANSWER ENGINE =====
+        // Multiple answers per keyword, smart rotation (no repeat in a row for same user)
+        const DATA = [
+            {
+                keys: ["hello", "হ্যালো", "হেলো", "hi", "হাই"],
+                answers: [
+                    "হ্যালো! কীভাবে সাহায্য করতে পারি? 😊",
+                    "আরে, কেমন আছেন? কীভাবে সাহায্য করতে পারি?",
+                    "হ্যালো! আপনাকে স্বাগতম। কী জানতে চান?"
+                ]
+            },
+            {
+                keys: ["আসসালামুআলাইকুম", "assalamu", "salam", "সালাম", "আস-সালামু"],
+                answers: [
+                    "ওয়ালাইকুম আসসালাম! কীভাবে সাহায্য করতে পারি? 🌿",
+                    "ওয়ালাইকুম আস-সালাম ওয়া রাহমাতুল্লাহ! কী প্রশ্ন করতে চান?",
+                    "ওয়ালাইকুম আস-সালাম! আপনার সেবায় প্রস্তুত আছি।"
+                ]
+            },
+            {
+                keys: ["capital", "রাজধানী", "bangladesh", "বাংলাদেশ"],
+                answers: [
+                    "বাংলাদেশের রাজধানী হলো ঢাকা। এটি দেশের বৃহত্তম শহর এবং অর্থনৈতিক কেন্দ্র।",
+                    "ঢাকা বাংলাদেশের রাজধানী। জনসংখ্যার দিক দিয়ে এটি বিশ্বের অন্যতম ঘনবসতিপূর্ণ শহর।",
+                    "বাংলাদেশ একটি দক্ষিণ এশিয়ার দেশ, রাজধানী ঢাকা। ১৯৭১ সালে স্বাধীনতা অর্জন করে।"
+                ]
+            },
+            {
+                keys: ["who are you", "তুমি কে", "তুমি কি", "তুমি কী", "আপনি কে", "peko"],
+                answers: [
+                    "আমি PEKO AI — আপনার বাংলা ভাষার বুদ্ধিমান সহকারী। 🤖",
+                    "আমার নাম PEKO AI। আমি আপনার প্রশ্নের উত্তর দিতে এখানে আছি।",
+                    "PEKO AI হলো আমি — বাংলায় কথা বলতে সক্ষম একটি AI সিস্টেম।"
+                ]
+            },
+            {
+                keys: ["salman", "সালমান"],
+                answers: [
+                    "আপনি কি সালমান ফার্সি সম্পর্কে জানতে চাইছেন?",
+                    "সালমান সম্পর্কে আরো বিস্তারিত বলুন, আমি সাহায্য করব।"
+                ]
+            },
+            {
+                keys: ["ধন্যবাদ", "thanks", "thank you", "শুকরিয়া", "জাজাকাল্লাহ"],
+                answers: [
+                    "আপনাকেও ধন্যবাদ! আরো কিছু জানতে চাইলে বলুন। 😊",
+                    "ওয়া ইয়্যাকুম! সবসময় সাহায্য করতে পেরে আনন্দিত।",
+                    "ধন্যবাদ আপনাকেও! আরো প্রশ্ন থাকলে নির্দ্বিধায় করুন।"
+                ]
+            },
+            {
+                keys: ["ভালো", "কেমন আছেন", "কেমন আছো", "how are you"],
+                answers: [
+                    "আমি ভালো আছি! আপনি কেমন আছেন? 😊",
+                    "আলহামদুলিল্লাহ, ভালো আছি। আপনার কথা বলুন!",
+                    "চমৎকার! আপনার জন্য কী করতে পারি?"
+                ]
+            },
+            {
+                keys: ["আয়তন", "area", "বাংলাদেশের আয়তন", "square"],
+                answers: [
+                    "বাংলাদেশের মোট আয়তন প্রায় ১,৪৭,৫৭০ বর্গকিলোমিটার।",
+                    "বাংলাদেশ আয়তনে ছোট হলেও জনসংখ্যায় বিশ্বের ৮ম বৃহত্তম দেশ।"
+                ]
+            },
+            {
+                keys: ["জনসংখ্যা", "population"],
+                answers: [
+                    "বাংলাদেশের জনসংখ্যা প্রায় ১৭ কোটিরও বেশি (২০২৪ অনুযায়ী)।",
+                    "বর্তমানে বাংলাদেশের জনসংখ্যা প্রায় ১৭ কোটি। এটি বিশ্বের ঘনবসতিপূর্ণ দেশগুলোর মধ্যে অন্যতম।"
+                ]
+            }
+        ];
+
+        function getAnswer(q) {
+            q = q.toLowerCase().trim();
+
+            for (const item of DATA) {
+                for (const key of item.keys) {
+                    if (q.includes(key.toLowerCase())) {
+                        const pool = item.answers;
+                        const lastIdx = lastAnswerIndex[key] ?? -1;
+
+                        // Find an answer different from last one
+                        let idx;
+                        if (pool.length === 1) {
+                            idx = 0;
+                        } else {
+                            do {
+                                idx = Math.floor(Math.random() * pool.length);
+                            } while (idx === lastIdx);
+                        }
+
+                        lastAnswerIndex[key] = idx;
+                        return pool[idx];
+                    }
+                }
             }
 
-            lastAnswerIndex[key] = idx;
-            return pool[idx];
-          }
-        }
-      }
-
-      return null; // no answer found
-    }
-
-    // ===== ASK + SAVE =====
-    function ask() {
-      const text = ($("input").value || "").trim();
-      if (!text) { toast("কিছু লিখুন"); return; }
-      if (!USER) { toast("আগে লগইন করুন"); return; }
-      if (isBusy) return;
-
-      setBusy(true);
-      addUserMsg(text);
-      $("input").value = "";
-      $("input").style.height = "auto";
-
-      // Show typing indicator
-      addTypingBubble();
-
-      // Simulate processing delay (300-800ms) for realism
-      const delay = 400 + Math.random() * 400;
-
-      setTimeout(() => {
-        removeTypingBubble();
-
-        const ans = getAnswer(text);
-        if (ans) {
-          addAiMsg(ans);
-        } else {
-          addAiMsg("আমাদের কাছে এই প্রশ্নের উত্তর আপাতত নেই। আমরা এখনো আপডেট করছি — শীঘ্রই এই তথ্য যোগ করা হবে। 🔄");
+            return null; // no answer found
         }
 
-        setBusy(false);
-      }, delay);
+        // ===== ASK + SAVE =====
+        function ask() {
+            const text = ($("input").value || "").trim();
+            if (!text) { toast("কিছু লিখুন"); return; }
+            if (!USER) { toast("আগে লগইন করুন"); return; }
+            if (isBusy) return;
 
-      // Save to Firebase (unchanged structure)
-      const payload = {
-        uid: USER.uid,
-        name: USER.displayName || "",
-        email: USER.email || "",
-        question: text,
-        time: Date.now()
-      };
+            setBusy(true);
+            addUserMsg(text);
+            $("input").value = "";
+            $("input").style.height = "auto";
 
-      DB.ref("all_logs").push(payload)
-        .then(() => console.log("SAVE OK"))
-        .catch(err => console.error("SAVE ERROR:", err));
-    }
+            // Show typing indicator
+            addTypingBubble();
 
-    // ===== EVENTS =====
-    $("sendBtn").addEventListener("click", ask);
-    $("input").addEventListener("keydown", e => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        ask();
-      }
-    });
-  </script>
+            // Simulate processing delay (300-800ms) for realism
+            const delay = 400 + Math.random() * 400;
+
+            setTimeout(() => {
+                removeTypingBubble();
+
+                const ans = getAnswer(text);
+                if (ans) {
+                    addAiMsg(ans);
+                } else {
+                    addAiMsg("আমাদের কাছে এই প্রশ্নের উত্তর আপাতত নেই। আমরা এখনো আপডেট করছি — শীঘ্রই এই তথ্য যোগ করা হবে। 🔄");
+                }
+
+                setBusy(false);
+            }, delay);
+
+            // Save to Firebase (unchanged structure)
+            const payload = {
+                uid: USER.uid,
+                name: USER.displayName || "",
+                email: USER.email || "",
+                question: text,
+                time: Date.now()
+            };
+
+            DB.ref("all_logs").push(payload)
+                .then(() => console.log("SAVE OK"))
+                .catch(err => console.error("SAVE ERROR:", err));
+        }
+
+        // ===== EVENTS =====
+        $("sendBtn").addEventListener("click", ask);
+        $("input").addEventListener("keydown", e => {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                ask();
+            }
+        });
+    </script>
 </body>
 
 </html>
