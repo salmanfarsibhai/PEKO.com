@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PEKO AI</title>
 
     <style>
@@ -25,25 +25,23 @@
             margin: 0;
             font-family: system-ui, Segoe UI, Arial;
             color: var(--text);
-            background: linear-gradient(135deg, var(--bg1), var(--bg2));
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+            height: 100%;
+            min-height: 100vh;
+
+            overflow: hidden;
         }
 
         .app {
             width: 100%;
-            max-width: 900px;
-            height: 95vh;
-            border-radius: 20px;
-            background: var(--card);
-            backdrop-filter: blur(18px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, .15);
+            height: 100vh;
+            background: transparent;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            animation: fadeIn .5s ease;
+
+            /* 🔥 এই ২টা লাইন ADD করো */
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes fadeIn {
@@ -95,10 +93,39 @@
             transform: scale(.97)
         }
 
+        /* ===== PREMIUM GOOGLE BUTTON ===== */
         .btnPrimary {
-            background: #fff;
-            color: var(--pri);
-            font-weight: 600
+            width: 100%;
+            padding: 12px;
+
+            border-radius: 14px;
+            border: none;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            background: linear-gradient(135deg, #ffffff, #f3f4f6);
+            color: #111;
+
+            cursor: pointer;
+
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+
+            transition: all .25s ease;
+        }
+
+        .btnPrimary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        .btnPrimary:active {
+            transform: scale(.96);
         }
 
         .btnGhost {
@@ -106,28 +133,92 @@
             color: #fff
         }
 
+        /* ===== FULL SCREEN PREMIUM LOGIN ===== */
+
         .loginBox {
-            padding: 20px;
-            text-align: center
+            position: fixed;
+
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100dvh;
+            /* 🔥 main fix */
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: radial-gradient(circle at 20% 20%, #6366f1, #0f172a 70%);
+
+            z-index: 9999;
         }
 
+        /* fallback for older browsers */
+        @supports not (height: 100dvh) {
+            .loginBox {
+                height: 100vh;
+            }
+        }
+
+        /* glow effect */
+        .loginBox::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08), transparent 60%);
+            animation: moveGlow 8s linear infinite;
+        }
+
+        @keyframes moveGlow {
+            0% {
+                transform: translate(-25%, -25%);
+            }
+
+            50% {
+                transform: translate(-10%, -10%);
+            }
+
+            100% {
+                transform: translate(-25%, -25%);
+            }
+        }
+
+        /* center card */
         .loginCard {
-            margin: 30px auto;
-            max-width: 360px;
-            background: #fff;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
-            animation: fadeIn .4s ease;
+            position: relative;
+            z-index: 2;
+
+            width: 90%;
+            max-width: 380px;
+            padding: 32px;
+
+            border-radius: 24px;
+
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+
+            border: 1px solid rgba(255, 255, 255, 0.15);
+
+            text-align: center;
+
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+
+            animation: fadeIn .5s ease;
         }
 
+        /* title */
         .loginCard h3 {
-            margin: 0 0 10px
+            font-size: 26px;
+            color: #fff;
+            margin-bottom: 8px;
         }
 
+        /* subtitle */
         .loginCard p {
-            margin: 0 0 14px;
-            color: var(--muted)
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            margin-bottom: 25px;
         }
 
         .chat {
@@ -230,7 +321,10 @@
             <div class="loginCard">
                 <h3>Welcome</h3>
                 <p>Google দিয়ে লগইন করে শুরু করুন</p>
-                <button class="btn btnPrimary" onclick="login()">Login with Google</button>
+                <button class="btn btnPrimary" onclick="login()">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
+                    Continue with Google
+                </button>
             </div>
         </div>
 
