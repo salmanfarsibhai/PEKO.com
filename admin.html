@@ -319,13 +319,17 @@
                     localStorage.setItem("emailForSignIn", email);
                     toast("✔ আপনার ইমেইলে অ্যাক্সেস লিংক পাঠানো হয়েছে");
                 })
-                .catch(() => {
-                    toast("❌ লিংক পাঠাতে সমস্যা হয়েছে");
+                .catch((e) => {
+                    console.error("FULL ERROR:", e);
+                    toast("❌ " + e.message);
                 });
         }
 
         if (auth.isSignInWithEmailLink(window.location.href)) {
             let email = localStorage.getItem("emailForSignIn");
+            if (!email) {
+                email = prompt("Enter your email again");
+            }
             auth.signInWithEmailLink(email, window.location.href)
                 .then(res => {
                     if (res.user.email === ADMIN_EMAIL) {
@@ -457,6 +461,7 @@
         canvas.style.top = "0";
         canvas.style.left = "0";
         canvas.style.zIndex = "0";
+        canvas.style.pointerEvents = "none";
 
         // characters
         const base = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
