@@ -265,8 +265,10 @@
         }
 
         .inputBox {
-            position: sticky;
+            position: fixed;
             bottom: 0;
+            left: 0;
+            width: 100%;
 
             display: flex;
             gap: 8px;
@@ -469,6 +471,44 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // 🔥 PERFECT MOBILE KEYBOARD FIX
+        (function () {
+            const box = document.getElementById("inputBox");
+
+            if (!window.visualViewport) return;
+
+            function update() {
+                const vv = window.visualViewport;
+                const keyboardHeight = window.innerHeight - vv.height - vv.offsetTop;
+
+                if (keyboardHeight > 0) {
+                    box.style.bottom = keyboardHeight + "px";
+                } else {
+                    box.style.bottom = "0px";
+                }
+            }
+
+            window.visualViewport.addEventListener("resize", update);
+            window.visualViewport.addEventListener("scroll", update);
+        })();
 
 
     </script>
