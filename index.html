@@ -464,6 +464,39 @@
         $("input").addEventListener("keydown", e => {
             if (e.key === "Enter") { e.preventDefault(); ask(); }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // 🔥 MOBILE KEYBOARD FIX
+        const input = document.getElementById("input");
+
+        input.addEventListener("focus", () => {
+            setTimeout(() => {
+                document.getElementById("inputBox").scrollIntoView({
+                    behavior: "smooth",
+                    block: "end"
+                });
+            }, 300);
+        });
+
+        // keyboard hide হলে reset
+        input.addEventListener("blur", () => {
+            window.scrollTo(0, 0);
+        });
     </script>
 </body>
 
