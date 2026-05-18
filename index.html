@@ -8,6 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <title>PEKO</title>
 
     <style>
@@ -602,6 +603,20 @@ div {
     }
 
 }
+
+
+
+
+
+
+
+
+
+*{
+    user-select:none;
+    -webkit-user-select:none;
+    -webkit-touch-callout:none;
+}
     </style>
 </head>
 
@@ -723,22 +738,78 @@ div {
         };
 
         // ===== SIMPLE AI =====
-        const DATA = [
-            { q: ["hello", "hi"], a: ["হ্যালো! কীভাবে সাহায্য করতে পারি?", "স্বাগতম!"] },
-            { q: ["capital", "bangladesh"], a: ["বাংলাদেশের রাজধানী ঢাকা"] },
-            { q: ["who are you", "tumi ke"], a: ["আমি PEKO AI"] },
-            { q: ["salman"], a: ["apni to salman farsi"] },
-        ];
-        async function getAnswer(q) {
-            q = q.toLowerCase();
-            await new Promise(r => setTimeout(r, 1));
-            for (const it of DATA) {
-                for (const k of it.q) {
-                    if (q.includes(k)) return it.a[Math.floor(Math.random() * it.a.length)];
-                }
-            }
-            return "আমি এখনো শিখছি!";
-        }
+        const DATA = {
+
+
+// =========================
+// প্রশ্ন = hello
+// =========================
+
+"hello": [
+
+/* উত্তর ১ */
+"হ্যালো 👋",
+
+/* উত্তর ২ */
+"কেমন আছেন 😊",
+
+/* উত্তর ৩ */
+"স্বাগতম 💙"
+
+],
+
+
+// =========================
+// প্রশ্ন = facebook
+// =========================
+
+"facebook": [
+
+/* উত্তর ১ */
+"Facebook একটি social media platform 📘",
+
+/* উত্তর ২ */
+"Facebook তৈরি করেছেন Mark Zuckerberg 👨‍💻",
+
+/* উত্তর ৩ */
+"Facebook বিশ্বের অন্যতম জনপ্রিয় app 🌍",
+
+/* উত্তর ৪ */
+"Facebook দিয়ে মানুষ যোগাযোগ করে 💬"
+
+],
+
+
+// =========================
+// প্রশ্ন = youtube
+// =========================
+
+"youtube": [
+
+/* উত্তর ১ */
+"YouTube ভিডিও দেখার platform 🎬",
+
+/* উত্তর ২ */
+"YouTube Google এর মালিকানাধীন 📺"
+
+]
+
+};
+        async function getAnswer(q){
+
+q = q.toLowerCase().trim();
+
+if(DATA[q]){
+
+const answers = DATA[q];
+
+return answers[Math.floor(Math.random() * answers.length)];
+
+}
+
+return "আমি এখনো শিখছি!";
+
+}
 
         // ===== ASK + SAVE =====
         async function ask() {
@@ -848,6 +919,61 @@ setTimeout(() => {
                 inputEl.style.overflowY = "hidden"; // 🔥 scroll OFF
             }
         });
+
+
+        // RIGHT CLICK BLOCK
+document.addEventListener("contextmenu", e => {
+    e.preventDefault();
+});
+
+// SHORTCUT BLOCK
+document.addEventListener("keydown", e => {
+
+    // F12
+    if (e.key === "F12") {
+        e.preventDefault();
+    }
+
+    // CTRL + SHIFT + I
+    if (e.ctrlKey && e.shiftKey && e.key === "I") {
+        e.preventDefault();
+    }
+
+    // CTRL + SHIFT + J
+    if (e.ctrlKey && e.shiftKey && e.key === "J") {
+        e.preventDefault();
+    }
+
+    // CTRL + U
+    if (e.ctrlKey && e.key.toLowerCase() === "u") {
+        e.preventDefault();
+    }
+
+    // CTRL + S
+    if (e.ctrlKey && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+    }
+
+});
+
+// DEVTOOLS DETECT
+setInterval(() => {
+
+    const widthCheck =
+        window.outerWidth - window.innerWidth > 160;
+
+    const heightCheck =
+        window.outerHeight - window.innerHeight > 160;
+
+    if (widthCheck || heightCheck) {
+
+        document.body.innerHTML = "";
+
+        document.body.style.background = "#000";
+    }
+
+}, 1000);
+
     </script>
 </body>
 
