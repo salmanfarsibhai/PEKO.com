@@ -13,8 +13,8 @@
         :root {
             --bg1: #eef2ff;
             --bg2: #ffffff;
-            --pri: #4f46e5;
-            --pri2: #7c3aed;
+            --pri: #0083ff;
+            --pri2: #0083ff;
             --text: #0f172a;
             --muted: #6b7280;
             --card: rgba(255, 255, 255, .75);
@@ -161,7 +161,7 @@ overflow: hidden;
             align-items: center;
             justify-content: center;
 
-            background: radial-gradient(circle at 20% 20%, #6366f1, #0f172a 70%);
+            background: #0083ff;
 
             z-index: 9999;
 
@@ -258,6 +258,7 @@ overflow: hidden;
             /* 🔥 auto size */
 
             max-width: 75%;
+            
 
             padding: 10px 14px;
             margin: 6px 0;
@@ -396,9 +397,9 @@ overflow: hidden;
 
         /* focus effect */
         textarea:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-        }
+    border-color: transparent;
+    box-shadow: 0 0 10px rgba(0, 131, 255, 0.18);
+}
 
         /* 🔥 SCROLLBAR HIDE (CHROME, EDGE, SAFARI) */
         textarea::-webkit-scrollbar {
@@ -490,7 +491,6 @@ div {
 
 *:focus {
     outline: none !important;
-    box-shadow: none !important;
 }
     </style>
 </head>
