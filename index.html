@@ -32,10 +32,11 @@
         }
 
         body {
-            font-family: system-ui, Segoe UI, Arial;
-            color: var(--text);
-            overflow: hidden;
-        }
+    font-family: system-ui, Segoe UI, Arial;
+    color: var(--text);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
 
         .app {
             width: 100%;
@@ -47,6 +48,8 @@
             /* 🔥 এই ২টা লাইন ADD করো */
             position: relative;
             z-index: 1;
+            height: 100vh;
+overflow: hidden;
         }
 
         @keyframes fadeIn {
@@ -62,13 +65,20 @@
         }
 
         .header {
-            padding: 14px 16px;
-            background: linear-gradient(135deg, var(--pri), var(--pri2));
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+    padding: 14px 16px;
+    background: linear-gradient(135deg, var(--pri), var(--pri2));
+    color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    flex-shrink: 0;
+}
 
         .brand {
             font-weight: 700;
@@ -227,6 +237,7 @@
 
         .chat {
             flex: 1;
+            min-height: 0;
             overflow-y: auto;
 
             display: flex;
