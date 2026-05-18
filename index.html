@@ -439,6 +439,59 @@ overflow: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
+
+
+
+
+
+
+
+
+/* FULL SCROLLBAR HIDE */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: none;
+}
+
+/* IE & Old Edge */
+* {
+    -ms-overflow-style: none;
+}
+
+
+
+
+
+
+
+
+/* Remove Blue Click Highlight */
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button,
+textarea,
+input,
+a,
+div {
+    outline: none !important;
+    -webkit-focus-ring-color: transparent !important;
+}
+
+*:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
     </style>
 </head>
 
