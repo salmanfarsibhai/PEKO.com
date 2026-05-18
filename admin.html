@@ -4,6 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta http-equiv="X-Frame-Options" content="DENY">
+
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+
+<meta http-equiv="Permissions-Policy"
+content="camera=(), microphone=(), geolocation=()">
     <title>PEKO AI • Admin Panel</title>
     <link rel="icon" href="data:,">
 
@@ -677,6 +686,14 @@
                 transform: scale(1);
             }
         }
+
+        /* SECURITY LAYER */
+
+*{
+    user-select:none !important;
+    -webkit-user-select:none !important;
+    -webkit-touch-callout:none !important;
+}
     </style>
 </head>
 
@@ -774,6 +791,7 @@ margin-left:10px;
 
         const DB = firebase.database();
         const auth = firebase.auth();
+        auth.signInAnonymously().catch(console.error);
 
         const ADMIN_EMAIL = "salmanfarsi172007@gmail.com";
 
@@ -1035,7 +1053,7 @@ margin-left:10px;
 
         let showingPassword = false;
 
-        const PASSWORD_ENABLED = "OFF";
+        const PASSWORD_ENABLED = "ON";
         // 👉 "ON" দিলে password কাজ করবে
         // 👉 "OFF" দিলে password সবসময় ভুল দেখাবে
 
@@ -1067,6 +1085,130 @@ margin-left:10px;
                 title.innerText = "Login (Email)";
             }
         }
+
+
+
+
+        // ================================
+// PEKO MAX SECURITY LAYER
+// ================================
+
+// RIGHT CLICK BLOCK
+document.addEventListener("contextmenu", e => {
+    e.preventDefault();
+});
+
+// TEXT SELECT BLOCK
+document.addEventListener("selectstart", e => {
+    e.preventDefault();
+});
+
+// DRAG BLOCK
+document.addEventListener("dragstart", e => {
+    e.preventDefault();
+});
+
+// COPY BLOCK
+document.addEventListener("copy", e => {
+    e.preventDefault();
+});
+
+// DEVTOOLS SHORTCUT BLOCK
+document.addEventListener("keydown", e => {
+
+    // F12
+    if (e.key === "F12") {
+        e.preventDefault();
+        return false;
+    }
+
+    // CTRL+SHIFT+I
+    if (e.ctrlKey && e.shiftKey && e.key === "I") {
+        e.preventDefault();
+        return false;
+    }
+
+    // CTRL+SHIFT+J
+    if (e.ctrlKey && e.shiftKey && e.key === "J") {
+        e.preventDefault();
+        return false;
+    }
+
+    // CTRL+SHIFT+C
+    if (e.ctrlKey && e.shiftKey && e.key === "C") {
+        e.preventDefault();
+        return false;
+    }
+
+    // CTRL+U
+    if (e.ctrlKey && e.key.toLowerCase() === "u") {
+        e.preventDefault();
+        return false;
+    }
+
+    // CTRL+S
+    if (e.ctrlKey && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        return false;
+    }
+
+});
+
+// DEVTOOLS DETECTION
+setInterval(() => {
+
+    const devtoolsOpen =
+        window.outerWidth - window.innerWidth > 160 ||
+        window.outerHeight - window.innerHeight > 160;
+
+    if (devtoolsOpen) {
+
+        document.body.innerHTML = "";
+
+        document.body.style.background = "#000";
+
+        location.reload();
+    }
+
+}, 1000);
+
+// CONSOLE BLOCK
+setInterval(() => {
+
+    console.clear();
+
+}, 500);
+
+// ANTI DEBUG
+(function () {
+
+    function block() {
+
+        debugger;
+
+    }
+
+    setInterval(block, 100);
+
+})();
+
+// TAB SWITCH DETECT
+document.addEventListener("visibilitychange", () => {
+
+    if (document.hidden) {
+
+        console.clear();
+
+    }
+
+});
+
+// AUTO LOGOUT ON REFRESH ATTACK
+window.addEventListener("beforeunload", () => {
+
+    sessionStorage.clear();
+
+});
     </script>
 
 
