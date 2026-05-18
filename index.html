@@ -3,6 +3,9 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PEKO</title>
 
@@ -29,22 +32,25 @@
         }
 
         body {
-            font-family: system-ui, Segoe UI, Arial;
-            color: var(--text);
-            overflow: hidden;
-        }
+    font-family: system-ui, Segoe UI, Arial;
+    color: var(--text);
+    overflow: hidden;
+    height: 100dvh;
+}
 
         .app {
-            width: 100%;
-            min-height: 100%;
-            background: transparent;
-            display: flex;
-            flex-direction: column;
+    width: 100%;
+    height: 100dvh;
+    background: transparent;
 
-            /* 🔥 এই ২টা লাইন ADD করো */
-            position: relative;
-            z-index: 1;
-        }
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+    z-index: 1;
+
+    overflow: hidden;
+}
 
         @keyframes fadeIn {
             from {
@@ -235,6 +241,7 @@
             margin: 0 auto;
 
             padding: 20px 16px;
+            padding-bottom: 90px;
         }
 
         .msg {
@@ -287,8 +294,10 @@
         }
 
         .inputBox {
-            position: sticky;
-            bottom: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
 
             width: 100%;
             max-width: 800px;
@@ -305,20 +314,6 @@
             background: #fff;
         }
 
-        input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-            outline: none;
-
-            white-space: normal;
-            /* 🔥 line break enable */
-            word-break: break-word;
-            /* 🔥 force wrap */
-            overflow-wrap: break-word;
-            /* 🔥 safe fallback */
-        }
 
         .send {
             background: linear-gradient(135deg, var(--pri), var(--pri2));
