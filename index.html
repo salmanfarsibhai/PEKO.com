@@ -703,7 +703,7 @@ div {
                 $("userInfo").textContent = user.displayName || user.email || "";
                 showApp();
                 if(sessionStorage.getItem("peko_welcomed")!=="yes"){sessionStorage.setItem("peko_welcomed","yes");
-                setTimeout(()=>{add(`${user.displayName || "বন্ধু"} 💙\nএখানে আপনার বাংলা লেখা বসান`,"ai");},1200);}
+                setTimeout(()=>{add(`${user.displayName || "বন্ধু"} \n😊 আজকের দিনটা ভালো কাটুক_মনে যা আছে বলুন, আমি শুনছি।`,"ai");},1200);}
             } else {
                 USER = null;
                 showLogin();
