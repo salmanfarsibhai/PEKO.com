@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-Frame-Options" content="DENY">
 
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -41,14 +40,24 @@ content="camera=(), microphone=(), geolocation=()">
             padding: 0
         }
 
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100dvh; /* মোবাইলের স্ক্রিনের জন্য পারফেক্ট সাইজ */
+            overflow: hidden; /* বডির স্ক্রল ১০০% লক */
+        }
+
         body {
             font-family: system-ui;
             background: var(--bg);
             color: var(--text);
-            min-height: 100vh;
             transition: background 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* HEADER */
         /* HEADER */
         .header {
             display: flex;
@@ -58,8 +67,9 @@ content="camera=(), microphone=(), geolocation=()">
             backdrop-filter: var(--glass);
             background: var(--card);
             border-bottom: 1px solid var(--border);
+            flex-shrink: 0; /* 🔥 টপবারকে ছোট হতে বা গায়েব হতে দেবে না */
+            z-index: 1000;
         }
-
         .title {
             font-weight: 700;
             font-size: 18px;
@@ -77,10 +87,25 @@ content="camera=(), microphone=(), geolocation=()">
         /* CONTAINER */
         .container {
             max-width: 1100px;
-            margin: auto;
+            margin: 0 auto; /* 🔥 margin: auto; এর কারণেই মেসেজ গায়েব হয়েছিল! 0 auto দিলে ঠিক থাকবে */
             padding: 20px;
+            width: 100%;
+        }
+        
+        .container:not(#grid) {
+            flex-shrink: 0; /* ফিল্টার অপশন স্থির রাখবে */
         }
 
+        /* 🔥 শুধু মেসেজ স্ক্রল হবে */
+        #grid {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 60px;
+            -webkit-overflow-scrolling: touch; /* মোবাইলে স্মুথ স্ক্রল হবে */
+        }
+        
+        #grid::-webkit-scrollbar { display: none; }
+        #grid { scrollbar-width: none; -ms-overflow-style: none; }
 
         /* ===== CLEAN PREMIUM FILTER (STABLE VERSION) ===== */
 
@@ -340,7 +365,7 @@ content="camera=(), microphone=(), geolocation=()">
             background: #ffffff;
             color: #000000;
 
-            font-size: 14px;
+            font-size: 16px; /* 🔥 অ্যাপলে অটো-জুম ঠেকানোর জন্য */
             outline: none;
 
             transition: 0.2s;
