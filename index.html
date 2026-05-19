@@ -1219,7 +1219,6 @@ user.photoURL || "";
 
 $("sideUserName").textContent =
 user.displayName || "User";
-
                 if(sessionStorage.getItem("peko_welcomed")!=="yes"){sessionStorage.setItem("peko_welcomed","yes");
                 setTimeout(()=>{add(`${user.displayName || "বন্ধু"} \n😊 আজকের দিনটা ভালো কাটুক_মনে যা আছে বলুন, আমি শুনছি।`,"ai");},1200);}
             } else {
