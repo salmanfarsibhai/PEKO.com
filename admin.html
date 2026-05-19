@@ -893,18 +893,24 @@ margin-left:10px;
             setTimeout(() => el.classList.remove("show"), 1500);
         }
 
-        /* RENDER DATA */
+       /* RENDER DATA */
         let RAW = {};
 
-        DB.ref("all_logs").on("value", snap => {
-            RAW = snap.val() || {};
-            render();
+        // 🔥 ম্যাজিক ফিক্স: অথেন্টিকেশন সফল হলেই কেবল ডেটাবেস কল হবে, নাহলে মোবাইলে ফায়ারবেস ডেটা ব্লক করে দেয়!
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                DB.ref("all_logs").on("value", snap => {
+                    RAW = snap.val() || {};
+                    render();
+                });
+            }
         });
 
         function render() {
 
-
-            const filter = document.getElementById("timeFilter")?.value || "all";
+            // 🔥 ম্যাজিক ফিক্স: পুরোনো ব্রাউজারের ক্র্যাশ এড়াতে ?. বাদ দিয়ে নিরাপদ কোড লেখা হলো
+            const filterEl = document.getElementById("timeFilter");
+            const filter = filterEl ? filterEl.value : "all";
             const now = new Date();
 
             let grid = document.getElementById("grid");
@@ -936,16 +942,18 @@ margin-left:10px;
 
                 if (!show) return;
 
-                let fullTime = time.toLocaleString("en-US", {
-                    timeZone: "Asia/Dhaka",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit"
-                });
-
+                let fullTime;
+                try {
+                    // আধুনিক সব ব্রাউজার ও পিসির জন্য
+                    fullTime = time.toLocaleString("en-US", {
+                        timeZone: "Asia/Dhaka",
+                        year: "numeric", month: "long", day: "numeric",
+                        hour: "2-digit", minute: "2-digit", second: "2-digit"
+                    });
+                } catch(e) {
+                    // 🔥 ম্যাজিক ফিক্স: কোনো পুরোনো মোবাইলে টাইমজোন সাপোর্ট না করলে কোড ক্র্যাশ না করে লোকাল টাইম দেখাবে
+                    fullTime = time.toLocaleString(); 
+                }
                 div.innerHTML = `
 <div class="name">${d.name || "Unknown"}</div>
 
