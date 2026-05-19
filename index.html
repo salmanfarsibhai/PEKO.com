@@ -1173,12 +1173,28 @@ email@gmail.com
             setTimeout(() => el.classList.remove("show"), 1800);
         }
         function add(text, type) {
-            const d = document.createElement("div");
-            d.className = "msg " + type;
-            d.textContent = text;
-            $("chat").appendChild(d);
-            d.scrollIntoView({ behavior: "smooth" });
-        }
+
+    const d = document.createElement("div");
+
+    d.className = "msg " + type;
+
+    d.textContent = text;
+
+    $("chat").appendChild(d);
+
+    requestAnimationFrame(() => {
+
+        $("chat").scrollTo({
+
+            top: $("chat").scrollHeight,
+
+            behavior: "smooth"
+
+        });
+
+    });
+
+}
         function showApp() {
             $("loginBox").style.display = "none";
 
