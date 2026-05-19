@@ -701,7 +701,9 @@ div {
 
 .sideTop{
 
-    padding:20px;
+    height:70px;
+
+    padding:0 16px;
 
     display:flex;
 
@@ -712,6 +714,8 @@ div {
     background:#0083ff;
 
     color:white;
+
+    flex-shrink:0;
 }
 
 .profileWrap{
@@ -725,12 +729,12 @@ div {
 
 .profileIcon{
 
-    width:48px;
-    height:48px;
+    width:52px;
+    height:52px;
 
     border-radius:50%;
 
-    background:rgba(255,255,255,.2);
+    background:#ffffff;
 
     display:flex;
 
@@ -738,8 +742,22 @@ div {
 
     justify-content:center;
 
-    font-size:24px;
+    overflow:hidden;
+
+    flex-shrink:0;
 }
+
+.profileImg{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+
 
 .sideUserName{
 
@@ -933,8 +951,13 @@ body.dark .sideMenu{
         <div class="profileWrap">
 
             <div class="profileIcon">
-                👤
-            </div>
+
+<img 
+src="https://drive.google.com/thumbnail?id=12a2tHjkFXlsMPn7wW-ErdvLTtqHH7hO2&sz=w4000"
+class="profileImg"
+>
+
+</div>
 
             <div id="sideUserName" class="sideUserName">
                 User
@@ -1008,7 +1031,7 @@ body.dark .sideMenu{
 
             $("chat").style.display = "block";
             $("inputBox").style.display = "flex";
-            $("logoutBtn").style.display = "inline-block";
+
 
             document.querySelector(".header").style.display = "flex"; // 🔥 ADD
         }
@@ -1017,7 +1040,7 @@ body.dark .sideMenu{
 
             $("chat").style.display = "none";
             $("inputBox").style.display = "none";
-            $("logoutBtn").style.display = "none";
+            
             $("userInfo").textContent = "";
 
             document.querySelector(".header").style.display = "none"; // 🔥 ADD
