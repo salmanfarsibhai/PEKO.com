@@ -81,10 +81,73 @@
     flex-shrink: 0;
 }
 
-        .brand {
-            font-weight: 700;
-            letter-spacing: .5px
-        }
+        .brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    min-width:0;
+}
+
+/* LOGO CIRCLE */
+
+.brandLogoWrap{
+
+    width:42px;
+
+    height:42px;
+
+    min-width:42px;
+
+    min-height:42px;
+
+    border-radius:50%;
+
+    overflow:hidden;
+
+    background:#ffffff;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-shrink:0;
+}
+
+/* LOGO IMAGE */
+
+.brandLogo{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+}
+
+/* TEXT */
+
+.brandText{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+
+    color:#ffffff;
+
+    line-height:1;
+
+    white-space:nowrap;
+}
 
         .right {
             display: flex;
@@ -873,8 +936,22 @@ div {
     flex-shrink:0;
 
     cursor:pointer;
+    overflow:hidden;
 }
 
+.logoutIcon{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:block;
+
+    border-radius:16px;
+
+    pointer-events:none;
+}
 /* DARK MODE */
 
 body.dark{
@@ -1046,7 +1123,22 @@ justify-content:center;
 
     <div class="app">
         <div class="header">
-            <div class="brand">PEKO</div>
+            <div class="brand">
+
+    <div class="brandLogoWrap">
+
+        <img
+        src="https://drive.google.com/thumbnail?id=1oWPTahVStySbJDHygtN5EuINqLSy5wyp&sz=w4000"
+        class="brandLogo"
+        >
+
+    </div>
+
+    <span class="brandText">
+        PEKO
+    </span>
+
+</div>
             <div class="right">
 
     <button id="menuBtn" class="menuBtn">
@@ -1145,7 +1237,10 @@ email@gmail.com
 
 <button id="logoutMenuBtn" class="logoutMenuBtn">
 
-<span class="powerSymbol">⏻</span>
+<img
+src="https://drive.google.com/thumbnail?id=1nYjGTph3z5G3uIChGGxhJ5uzRK6IWEXD&sz=w4000"
+class="logoutIcon"
+>
 
 </button>
 
