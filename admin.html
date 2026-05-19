@@ -44,8 +44,9 @@ content="camera=(), microphone=(), geolocation=()">
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%; /* 🔥 100dvh সব মোবাইলে সাপোর্ট করে না। 100% দিলে ডাটা গায়েব হবে না, একদম নিরাপদ */
+            height: 100%; 
             overflow: hidden; 
+            position: fixed; /* 🔥 ম্যাজিক ফিক্স: এটি দিলে মোবাইল পেজকে উপরে ধাক্কা দিতে পারবে না, টপবার একদম স্থির থাকবে */
         }
 
         body {
@@ -935,7 +936,8 @@ margin-left:10px;
 
                 if (!show) return;
 
-                let fullTime = time.toLocaleString("en-BD", {
+                let fullTime = time.toLocaleString("en-US", {
+                    timeZone: "Asia/Dhaka",
                     year: "numeric",
                     month: "long",
                     day: "numeric",
