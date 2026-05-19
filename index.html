@@ -2170,29 +2170,56 @@ setInterval(() => {
 
 
 // ========================================
-        // 100% STABLE TOPBAR & KEYBOARD FIX
+        // 100% STABLE TOPBAR & KEYBOARD FIX (APPLE iOS + ANDROID)
         // ========================================
         function setAppHeight() {
             const appWrap = document.querySelector('.app');
-            // কিবোর্ড ওপেন হওয়ার পর স্ক্রিনের যতটুকু হাইট বাকি থাকে, অ্যাপকে ততটুকু করে দেওয়া হবে
-            appWrap.style.height = window.innerHeight + 'px';
             
-            // চ্যাট স্ক্রল নিচে রাখা
+            // Apple/iOS এর জন্য visualViewport ব্যবহার (সবচেয়ে জরুরি)
+            let vh = window.innerHeight;
+            let offset = 0;
+            
+            if (window.visualViewport) {
+                vh = window.visualViewport.height;
+                offset = window.visualViewport.offsetTop; // iOS এ কিবোর্ড পুরো পেজকে যতটুকু ধাক্কা দিয়ে উপরে তুলবে, এটা তার মাপ
+            }
+            
+            // অ্যাপের হাইট ঠিক করা
+            appWrap.style.height = vh + 'px';
+            
+            // 🔥 ম্যাজিক ফিক্স: iOS এ বডি ধাক্কা দিয়ে উপরে উঠলে অ্যাপটিকে ঠিক ততটুকু নিচে নামিয়ে স্ক্রিনে লক করা
+            appWrap.style.transform = `translateY(${offset}px)`; 
+            
+            // পেজ যেন অযথা স্ক্রল না হয় সেটা লক রাখা
+            window.scrollTo(0, 0);
+
+            // চ্যাট স্ক্রল সবসময় নিচে রাখা
             const chatContainer = document.getElementById('chat');
             if (chatContainer) {
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
         }
 
-        // পেজ লোড ও রিসাইজ (কিবোর্ড ওঠা/নামা) হলে ফাংশন কল হবে
+        // সাধারণ পেজ লোড ও রিসাইজ ইভেন্ট (Android & PC)
         window.addEventListener('resize', setAppHeight);
+        
+        // 🔥 Apple/iOS এর স্পেশাল ইভেন্ট লিসেনার
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', setAppHeight);
+            window.visualViewport.addEventListener('scroll', setAppHeight); // iOS এ কিবোর্ড উঠলে মূলত scroll ইভেন্ট ফায়ার হয়
+        }
+        
         setAppHeight(); // প্রথমবার কল
 
         // ইনপুট বক্সে ক্লিক করলে নিশ্চিতভাবে হাইট ফিক্স করার জন্য
         const chatInputBox = document.getElementById('input');
         if (chatInputBox) {
             chatInputBox.addEventListener('focus', () => {
-                setTimeout(setAppHeight, 150);
+                setTimeout(setAppHeight, 100); 
+                setTimeout(setAppHeight, 300); // Apple ডিভাইসে কিবোর্ডের অ্যানিমেশন শেষ হতে একটু বেশি সময় লাগে
+            });
+            chatInputBox.addEventListener('blur', () => {
+                setTimeout(setAppHeight, 100); // কিবোর্ড নামার সময় ফিক্স
             });
         }
     </script>
