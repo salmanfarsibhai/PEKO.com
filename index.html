@@ -44,11 +44,13 @@ body{
     inset:0;
 }
 
-        body {
-    font-family: 'Noto Sans Bengali', system-ui, sans-serif;
-    color: var(--text);
-    overflow-x: hidden;
-    overflow-y: auto;
+        body{
+
+    font-family:'Noto Sans Bengali',system-ui,sans-serif;
+
+    color:var(--text);
+
+    overflow:hidden;
 }
 
         .app{
@@ -324,7 +326,7 @@ body{
             max-width: 800px;
             margin: 0 auto;
 
-            padding:20px 16px 90px;
+            padding:20px 16px 110px;
         }
 
         .msg {
@@ -381,6 +383,14 @@ font-weight: 400;
 
         .inputBox{
 
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    bottom:0;
+
     width:100%;
 
     max-width:800px;
@@ -397,7 +407,7 @@ font-weight: 400;
 
     background:#fff;
 
-    flex-shrink:0;
+    z-index:50;
 }
 
         .send {
@@ -436,13 +446,6 @@ font-weight: 400;
 
         .toast.show {
             opacity: 1
-        }
-
-        @media(max-width:600px) {
-            .app {
-                height: 100vh;
-                border-radius: 0
-            }
         }
 
         /* ===== AUTO EXPAND TEXTAREA (NO SCROLL) ===== */
@@ -2163,7 +2166,12 @@ document.addEventListener("keydown", e => {
 
 function updateAppHeight(){
 
-    document.querySelector(".app").style.height =
+    const app = document.querySelector(".app");
+
+    app.style.height =
+    window.innerHeight + "px";
+
+    app.style.maxHeight =
     window.innerHeight + "px";
 
 }
