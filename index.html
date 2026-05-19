@@ -392,6 +392,20 @@ font-weight: 400;
             transform: scale(1.1);
         }
 
+        /* 🔥 AI ভাবার সময় ভেতরের সাদা চতুর্ভুজের ডিজাইন ও অ্যানিমেশন */
+        .thinking-square {
+            width: 14px;
+            height: 14px;
+            background-color: white;
+            border-radius: 3px;
+            animation: pulseSquare 0.8s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseSquare {
+            0% { transform: scale(0.85); opacity: 0.8; border-radius: 3px; }
+            100% { transform: scale(1.1); opacity: 1; border-radius: 5px; }
+        }
+
         .toast {
             position: fixed;
             bottom: 20px;
@@ -1997,7 +2011,11 @@ return "আমি এখনো শিখছি!";
 }
 
         // ===== ASK + SAVE =====
+        let isWaitingForAI = false; // 🔥 স্প্যাম ঠেকানোর ভেরিয়েবল
+
         async function ask() {
+            if (isWaitingForAI) return; // 🔥 AI উত্তর না দেওয়া পর্যন্ত নতুন মেসেজ ব্লক
+
             const text = ($("input").value || "").trim();
             
             if (!text) { toast("কিছু লিখুন"); return; }
@@ -2014,6 +2032,12 @@ return "আমি এখনো শিখছি!";
     return;
 }
             if (!USER) { toast("আগে লগইন করুন"); return; }
+
+            // 🔥 মেসেজ পাঠানো শুরু হলে গোল বাটনের ভেতরের আইকনটি চতুর্ভুজ হবে
+            isWaitingForAI = true;
+            const btn = $("sendBtn");
+            btn.innerHTML = `<div class="thinking-square"></div>`;
+            btn.style.opacity = "0.8"; // বাটনটা হালকা একটু ঘোলা হবে বুঝানোর জন্য যে প্রসেস হচ্ছে
 
             add(text, "user");
             $("input").value = "";
@@ -2051,6 +2075,13 @@ setTimeout(() => {
     load.remove();
 
     add(ans, "ai");
+
+    // 🔥 AI রিপ্লাই দেওয়ার পর ভেতরের আইকনটি আবার আগের সাদা অ্যারো (Arrow) হয়ে যাবে
+    isWaitingForAI = false;
+    btn.style.opacity = "1";
+    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>`;
 
 }, 900);
 
