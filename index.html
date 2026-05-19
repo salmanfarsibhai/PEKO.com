@@ -901,7 +901,24 @@ div {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* DARK MODE */
+
+
+/* 🔥 Premium AI Typing Cursor */
+        .typing-cursor::after {
+            content: '▋'; /* প্রিমিয়াম ব্লক কার্সর */
+            display: inline-block;
+            color: var(--pri); /* আপনার ওয়েবসাইটের নীল কালার */
+            margin-left: 4px;
+            animation: blinkCursor 0.8s infinite;
+            vertical-align: baseline;
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+
 /* DARK MODE */
 
 body.dark{
@@ -2035,14 +2052,39 @@ setTimeout(() => {
 
     load.remove();
 
-    add(ans, "ai");
-
-    // 🔥 AI রিপ্লাই দেওয়ার পর ভেতরের আইকনটি আবার আগের সাদা অ্যারো (Arrow) হয়ে যাবে
-    isWaitingForAI = false;
-    btn.style.opacity = "1";
-    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-        <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>`;
+    // 🔥 Premium Typing Effect Logic (বিশ্বের প্রথম ইউনিক সিস্টেম)
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "msg ai typing-cursor"; // কার্সরসহ নতুন মেসেজ বক্স
+    $("chat").appendChild(msgDiv);
+    
+    let i = 0;
+    
+    function typeWriter() {
+        if (i < ans.length) {
+            msgDiv.textContent += ans.charAt(i); // একটা একটা অক্ষর বসাবে
+            i++;
+            
+            // অটোমেটিক স্ক্রল নিচে নামবে যেন ইউজার টাইপিং দেখতে পারে
+            const chatBox = $("chat");
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            // মানুষের মতো রিয়েলিস্টিক টাইপিং স্পিড (কিছু অক্ষর দ্রুত, কিছু একটু স্লো)
+            let speed = Math.random() > 0.8 ? 30 : 10; 
+            setTimeout(typeWriter, speed);
+        } else {
+            // টাইপিং সম্পূর্ণ শেষ হলে কার্সর গায়েব হয়ে যাবে
+            msgDiv.classList.remove("typing-cursor");
+            
+            // 🔥 সম্পূর্ণ লেখা শেষ হওয়ার পর সেন্ড বাটন আনলক হবে
+            isWaitingForAI = false;
+            btn.style.opacity = "1";
+            btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>`;
+        }
+    }
+    
+    typeWriter(); // টাইপিং স্টার্ট
 
 }, 900);
 
