@@ -1042,7 +1042,21 @@ justify-content:center;
             <div class="brand">PEKO</div>
             <div class="right">
 
-    <span id="userInfo" class="badge"></span>
+    <div class="badge" id="topSettings">
+
+<img
+src="YOUR-ICON-LINK"
+style="
+width:16px;
+height:16px;
+object-fit:contain;
+vertical-align:middle;
+margin-right:6px;
+filter:brightness(0) invert(1);
+"
+>
+
+</div>
 
     <button id="menuBtn" class="menuBtn">
         ⋮
@@ -1088,7 +1102,7 @@ justify-content:center;
             <div class="profileIcon">
 
 <img 
-src="https://drive.google.com/thumbnail?id=12a2tHjkFXlsMPn7wW-ErdvLTtqHH7hO2&sz=w4000"
+src="https://drive.google.com/thumbnail?id=1eLd3Yb1rk6Lcx0i1mTNybHreazLS4QB8&sz=w4000"
 class="profileImg"
 >
 
@@ -1196,7 +1210,7 @@ email@gmail.com
             $("chat").style.display = "none";
             $("inputBox").style.display = "none";
             
-            $("userInfo").textContent = "";
+            //$("userInfo").textContent = "";
 
             document.querySelector(".header").style.display = "none"; // 🔥 ADD
         }
@@ -1205,7 +1219,7 @@ email@gmail.com
         AUTH.onAuthStateChanged(user => {
             if (user) {
                 USER = user;
-                $("userInfo").textContent = user.displayName || user.email || "";
+                //$("userInfo").textContent = user.displayName || user.email || "";
                 showApp();
 
                 $("accountName").textContent =
@@ -1218,7 +1232,7 @@ $("accountPhoto").src =
 user.photoURL || "";
 
 $("sideUserName").textContent =
-user.displayName || "User";
+"Settings";
                 if(sessionStorage.getItem("peko_welcomed")!=="yes"){sessionStorage.setItem("peko_welcomed","yes");
                 setTimeout(()=>{add(`${user.displayName || "বন্ধু"} \n😊 আজকের দিনটা ভালো কাটুক_মনে যা আছে বলুন, আমি শুনছি।`,"ai");},1200);}
             } else {
