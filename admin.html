@@ -44,8 +44,8 @@ content="camera=(), microphone=(), geolocation=()">
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100dvh; /* মোবাইলের স্ক্রিনের জন্য পারফেক্ট সাইজ */
-            overflow: hidden; /* বডির স্ক্রল ১০০% লক */
+            height: 100%; /* 🔥 100dvh সব মোবাইলে সাপোর্ট করে না। 100% দিলে ডাটা গায়েব হবে না, একদম নিরাপদ */
+            overflow: hidden; 
         }
 
         body {
@@ -58,7 +58,6 @@ content="camera=(), microphone=(), geolocation=()">
         }
 
         /* HEADER */
-        /* HEADER */
         .header {
             display: flex;
             justify-content: space-between;
@@ -67,9 +66,10 @@ content="camera=(), microphone=(), geolocation=()">
             backdrop-filter: var(--glass);
             background: var(--card);
             border-bottom: 1px solid var(--border);
-            flex-shrink: 0; /* 🔥 টপবারকে ছোট হতে বা গায়েব হতে দেবে না */
+            flex-shrink: 0; /* টপবার স্থির রাখবে */
             z-index: 1000;
         }
+
         .title {
             font-weight: 700;
             font-size: 18px;
@@ -87,7 +87,7 @@ content="camera=(), microphone=(), geolocation=()">
         /* CONTAINER */
         .container {
             max-width: 1100px;
-            margin: 0 auto; /* 🔥 margin: auto; এর কারণেই মেসেজ গায়েব হয়েছিল! 0 auto দিলে ঠিক থাকবে */
+            margin: 0 auto; 
             padding: 20px;
             width: 100%;
         }
@@ -96,12 +96,13 @@ content="camera=(), microphone=(), geolocation=()">
             flex-shrink: 0; /* ফিল্টার অপশন স্থির রাখবে */
         }
 
-        /* 🔥 শুধু মেসেজ স্ক্রল হবে */
+        /* 🔥 ম্যাজিক: শুধু মেসেজ স্ক্রল হবে এবং মোবাইলে ডেটা শো করবে */
         #grid {
             flex: 1;
+            min-height: 0; /* 🔥 এটি না দিলে মোবাইলে ফ্লেক্সবক্স ক্র্যাশ করে এবং ডেটা ব্ল্যাঙ্ক হয়ে যায়! এটি দিতেই হবে */
             overflow-y: auto;
             padding-bottom: 60px;
-            -webkit-overflow-scrolling: touch; /* মোবাইলে স্মুথ স্ক্রল হবে */
+            -webkit-overflow-scrolling: touch; 
         }
         
         #grid::-webkit-scrollbar { display: none; }
