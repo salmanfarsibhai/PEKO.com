@@ -1154,23 +1154,26 @@ document.addEventListener("keydown", e => {
 
 });
 
-// DEVTOOLS DETECTION
+// SAFE DEVTOOLS DETECTION
 setInterval(() => {
 
+    const widthGap =
+        window.outerWidth - window.innerWidth;
+
+    const heightGap =
+        window.outerHeight - window.innerHeight;
+
     const devtoolsOpen =
-        window.outerWidth - window.innerWidth > 160 ||
-        window.outerHeight - window.innerHeight > 160;
+        widthGap > 300 ||
+        heightGap > 300;
 
     if (devtoolsOpen) {
 
-        document.body.innerHTML = "";
+        console.clear();
 
-        document.body.style.background = "#000";
-
-        location.reload();
     }
 
-}, 1000);
+}, 1500);
 
 // CONSOLE BLOCK
 setInterval(() => {
@@ -1182,13 +1185,11 @@ setInterval(() => {
 // ANTI DEBUG
 (function () {
 
-    function block() {
+    setInterval(() => {
 
-        debugger;
+        console.clear();
 
-    }
-
-    setInterval(block, 100);
+    }, 2000);
 
 })();
 
