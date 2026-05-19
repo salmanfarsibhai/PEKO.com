@@ -26,12 +26,23 @@
             box-sizing: border-box
         }
 
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+       html,
+body{
+
+    width:100%;
+
+    height:100%;
+
+    margin:0;
+
+    padding:0;
+
+    overflow:hidden;
+
+    position:fixed;
+
+    inset:0;
+}
 
         body {
     font-family: 'Noto Sans Bengali', system-ui, sans-serif;
@@ -40,18 +51,22 @@
     overflow-y: auto;
 }
 
-        .app {
-            width: 100%;
-            min-height: 100%;
-            background: transparent;
-            display: flex;
-            flex-direction: column;
+        .app{
 
-            /* 🔥 এই ২টা লাইন ADD করো */
-            position: relative;
-            z-index: 1;
-            height: 100vh;
-        }
+    width:100%;
+
+    height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    overflow:hidden;
+
+    position:relative;
+
+    background:transparent;
+}
 
         @keyframes fadeIn {
             from {
@@ -73,9 +88,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    position: sticky;
-    top: 0;
     z-index: 1000;
 
     flex-shrink: 0;
@@ -312,7 +324,7 @@
             max-width: 800px;
             margin: 0 auto;
 
-            padding: 20px 16px;
+            padding:20px 16px 90px;
         }
 
         .msg {
@@ -367,24 +379,26 @@ font-weight: 400;
             /* 🔥 main fix (left side) */
         }
 
-        .inputBox {
-            position: sticky;
-            bottom: 0;
+        .inputBox{
 
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
+    width:100%;
 
-            display: flex;
-            align-items: flex-end;
-            /* 🔥 button নিচে ধরে রাখবে */
-            gap: 8px;
+    max-width:800px;
 
-            padding: 12px;
+    margin:0 auto;
 
-            background: #fff;
-        }
+    display:flex;
 
+    align-items:flex-end;
+
+    gap:8px;
+
+    padding:12px;
+
+    background:#fff;
+
+    flex-shrink:0;
+}
 
         .send {
             background: linear-gradient(135deg, var(--pri), var(--pri2));
@@ -475,22 +489,6 @@ font-weight: 400;
         textarea {
             scrollbar-width: none;
         }
-
-        @media (max-width: 768px) {
-
-    .inputBox {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 999;
-    }
-
-    .chat {
-        padding-bottom: 90px;
-    }
-
-}
 
 
 
@@ -2155,6 +2153,27 @@ document.addEventListener("keydown", e => {
     }
 
 });
+
+
+
+
+
+
+
+
+function updateAppHeight(){
+
+    document.querySelector(".app").style.height =
+    window.innerHeight + "px";
+
+}
+
+window.addEventListener(
+    "resize",
+    updateAppHeight
+);
+
+updateAppHeight();
 
 // SAFE DEVTOOLS DETECT
 setInterval(() => {
