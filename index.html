@@ -31,12 +31,13 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* স্ক্রল বন্ধ করা হলো */
-            position: fixed; /* পেজ প্যানিং বা উপরে ওঠা বন্ধ করা হলো */
+            overflow: hidden; 
+            position: fixed; 
             top: 0;
             left: 0;
             font-family: 'Noto Sans Bengali', system-ui, sans-serif;
             color: var(--text);
+            transition: background-color 0.3s ease, color 0.3s ease; /* 🔥 ডার্ক মোডের স্মুথ সিঙ্ক */
         }
 
         .app {
@@ -434,30 +435,21 @@ font-weight: 400;
         /* ===== AUTO EXPAND TEXTAREA (NO SCROLL) ===== */
         textarea {
             flex: 1;
-
             min-height: 44px;
             max-height: 35vh;
-            /* 🔥 স্ক্রিনের ~এক-তৃতীয়াংশ, safe limit */
-
             padding: 12px 14px;
-
             border: 1px solid #d1d5db;
             border-radius: 14px;
-
             outline: none;
             resize: none;
-
             font-family: inherit;
             font-size: 14px;
             line-height: 1.5;
-
             background: #fff;
             color: #000;
-
             overflow-y: auto;
-            /* 🔥 scrollbar থাকবে না */
-
-            transition: 0.2s ease;
+            /* 🔥 ফোকাস অ্যানিমেশনের জন্য 0.2s, আর ডার্ক মোডের জন্য 0.3s */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
         }
 
         /* focus effect */
@@ -716,27 +708,18 @@ div {
 /* SIDE MENU */
 
 .sideMenu{
-
     position:fixed;
-
     top:0;
     right:-340px;
-
     width:320px;
     max-width:85%;
-
     height:100dvh;
-
     background:white;
-
     z-index:9999;
-
-    transition:.35s ease;
-
+    /* 🔥 স্লাইড হওয়ার জন্য right .35s, আর ডার্ক মোডের কালারের জন্য 0.3s */
+    transition: right .35s ease, background-color 0.3s ease, color 0.3s ease;
     display:flex;
-
     flex-direction:column;
-
     box-shadow:-10px 0 40px rgba(0,0,0,.15);
 }
 
@@ -936,6 +919,13 @@ div {
 
     pointer-events:none;
 }
+
+/* 🔥 ডার্ক মোড সিঙ্ক ফিক্স: সব কন্টেইনার একসাথে স্মুথলি চেঞ্জ হবে */
+.chat, .inputBox, .ai {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* DARK MODE */
 /* DARK MODE */
 
 body.dark{
