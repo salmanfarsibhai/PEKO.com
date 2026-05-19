@@ -868,25 +868,25 @@ div {
     left:29px;
 }
 
-.logoutMenuBtn{
-            margin: 0; /* 🔥 ম্যাজিক ফিক্স: এটি বাটনটিকে ডানে সরিয়ে দেবে এবং বক্সের সাইজ পারফেক্ট করবে */
-            width:52px;
-            height:52px;
-            min-width:52px;
-            min-height:52px;
-            max-width:52px;
-            max-height:52px;
-            padding:0;
-            border:none;
-            border-radius:16px;
-            background:#ef4444;
-            color:white;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            flex-shrink:0;
-            cursor:pointer;
-            overflow:hidden;
+.logoutMenuBtn {
+            margin: 0 0 0 auto !important; /* 🔥 ম্যাজিক ফিক্স: এটি বাটনটিকে জোর করে একদম ডান পাশে লক করে দেবে */
+            width: 48px;  /* বক্সের সাথে মানানসই করার জন্য সাইজ একটু কিউট করা হলো */
+            height: 48px;
+            min-width: 48px;
+            min-height: 48px;
+            max-width: 48px;
+            max-height: 48px;
+            padding: 0;
+            border: none;
+            border-radius: 14px;
+            background: #ef4444;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            cursor: pointer;
+            overflow: hidden;
         }
 
 .logoutIcon{
@@ -956,22 +956,16 @@ body.dark .sideMenu{
 
 
 
-.accountBox{
-
-margin:20px;
-
-padding:12px;
-
-border-radius:16px;
-
-background:rgba(255,255,255,.05);
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-}
+.accountBox {
+            margin: 20px;
+            padding: 10px 14px; /* 🔥 উপরে-নিচে প্যাডিং কমানো হলো যেন শ্যাডো বক্স চিকন ও পারফেক্ট লাগে */
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            height: 70px; /* 🔥 বক্সের সাইজ ফিক্সড করা হলো যেন কোনোভাবেই আর লম্বা না হয় */
+        }
 
 .accountPhoto{
 
