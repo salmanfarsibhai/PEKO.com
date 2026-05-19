@@ -318,7 +318,6 @@ font-weight: 400;
             gap: 8px;
 
             padding: 12px;
-            border-top: 1px solid #e5e7eb;
 
             background: #fff;
         }
@@ -842,8 +841,8 @@ div {
 .logoutMenuBtn{
 
     margin:20px;
-
-    height:50px;
+    width: 42;
+    height:42px;
 
     border:none;
 
@@ -897,6 +896,142 @@ body.dark .sideMenu{
 
     color:white;
 }
+
+
+
+
+
+
+
+
+.accountBox{
+
+margin:20px;
+
+padding:12px;
+
+border-radius:16px;
+
+background:rgba(255,255,255,.05);
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+}
+
+.accountPhoto{
+
+width:46px;
+height:46px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+flex-shrink:0;
+}
+
+.accountInfo{
+
+flex:1;
+
+overflow:hidden;
+}
+
+.accountName{
+
+font-size:14px;
+
+font-weight:600;
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+}
+
+.accountEmail{
+
+font-size:11px;
+
+opacity:.7;
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+}
+
+.logoutMenuBtn{
+
+margin:0;
+
+padding:10px 14px;
+
+height:auto;
+
+border-radius:12px;
+}
+
+
+
+
+
+
+
+.powerIcon{
+
+width:22px;
+height:22px;
+
+border:4px solid white;
+border-radius:50%;
+
+position:relative;
+
+box-sizing:border-box;
+}
+
+.powerIcon::before{
+
+content:"";
+
+position:absolute;
+
+width:5px;
+height:16px;
+
+background:white;
+
+top:-11px;
+left:50%;
+
+transform:translateX(-50%);
+
+border-radius:20px;
+}
+
+
+.powerSymbol{
+
+font-size:30px;
+
+color:white;
+
+font-weight:700;
+
+line-height:1;
+
+display:flex;
+
+align-items:center;
+justify-content:center;
+}
+
     </style>
 </head>
 
@@ -987,9 +1122,29 @@ class="profileImg"
 
     </div>
 
-    <button id="logoutMenuBtn" class="logoutMenuBtn">
-        Logout
-    </button>
+    <div class="accountBox">
+
+<img id="accountPhoto" class="accountPhoto">
+
+<div class="accountInfo">
+
+<div id="accountName" class="accountName">
+User
+</div>
+
+<div id="accountEmail" class="accountEmail">
+email@gmail.com
+</div>
+
+</div>
+
+<button id="logoutMenuBtn" class="logoutMenuBtn">
+
+<span class="powerSymbol">⏻</span>
+
+</button>
+
+</div>
 
 </div>
 
@@ -1052,6 +1207,19 @@ class="profileImg"
                 USER = user;
                 $("userInfo").textContent = user.displayName || user.email || "";
                 showApp();
+
+                $("accountName").textContent =
+user.displayName || "User";
+
+$("accountEmail").textContent =
+user.email || "";
+
+$("accountPhoto").src =
+user.photoURL || "";
+
+$("sideUserName").textContent =
+user.displayName || "User";
+
                 if(sessionStorage.getItem("peko_welcomed")!=="yes"){sessionStorage.setItem("peko_welcomed","yes");
                 setTimeout(()=>{add(`${user.displayName || "বন্ধু"} \n😊 আজকের দিনটা ভালো কাটুক_মনে যা আছে বলুন, আমি শুনছি।`,"ai");},1200);}
             } else {
@@ -1118,16 +1286,6 @@ logoutMenuBtn.onclick = () => {
 };
 
 
-// USER NAME
-
-AUTH.onAuthStateChanged(user => {
-
-    if(user){
-
-        $("sideUserName").textContent =
-        user.displayName || "User";
-    }
-});
 
 
 // DARK MODE
@@ -1773,6 +1931,8 @@ return "আমি এখনো শিখছি!";
             if (!USER) { toast("আগে লগইন করুন"); return; }
 
             add(text, "user");
+            $("input").value = "";
+            $("input").style.height = "44px";
             const load = document.createElement("div");
 
 load.className = "msg ai pekoLoading";
@@ -1821,8 +1981,6 @@ setTimeout(() => {
                 .then(() => console.log("SAVE OK"))
                 .catch(err => console.error("SAVE ERROR:", err));
 
-            $("input").value = "";
-            $("input").style.height = "44px";
         }
 
         // ===== EVENTS =====
@@ -1883,20 +2041,23 @@ document.addEventListener("keydown", e => {
 
 });
 
-// DEVTOOLS DETECT
+// SAFE DEVTOOLS DETECT
 setInterval(() => {
 
-    const widthCheck =
-        window.outerWidth - window.innerWidth > 160;
+    const widthGap =
+        window.outerWidth - window.innerWidth;
 
-    const heightCheck =
-        window.outerHeight - window.innerHeight > 160;
+    const heightGap =
+        window.outerHeight - window.innerHeight;
 
-    if (widthCheck || heightCheck) {
+    // ONLY detect huge devtools open
+    const devtoolsOpen =
+        widthGap > 300 || heightGap > 300;
 
-        document.body.innerHTML = "";
+    if (devtoolsOpen) {
 
-        document.body.style.background = "#000";
+        console.clear();
+
     }
 
 }, 1000);
