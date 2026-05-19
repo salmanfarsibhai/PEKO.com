@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     
     <title>PEKO</title>
@@ -26,49 +26,27 @@
             box-sizing: border-box
         }
 
-       html,
-body{
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* স্ক্রল বন্ধ করা হলো */
+            position: fixed; /* পেজ প্যানিং বা উপরে ওঠা বন্ধ করা হলো */
+            top: 0;
+            left: 0;
+            font-family: 'Noto Sans Bengali', system-ui, sans-serif;
+            color: var(--text);
+        }
 
-    width:100%;
-
-    height:100%;
-
-    margin:0;
-
-    padding:0;
-
-    overflow:hidden;
-
-    position:fixed;
-
-    inset:0;
-}
-
-        body{
-
-    font-family:'Noto Sans Bengali',system-ui,sans-serif;
-
-    color:var(--text);
-
-    overflow:hidden;
-}
-
-        .app{
-
-    width:100%;
-
-    height:100%;
-
-    display:flex;
-
-    flex-direction:column;
-
-    overflow:hidden;
-
-    position:relative;
-
-    background:transparent;
-}
+        .app {
+            width: 100%;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
 
         @keyframes fadeIn {
             from {
@@ -91,8 +69,7 @@ body{
     align-items: center;
     justify-content: space-between;
     z-index: 1000;
-
-    flex-shrink: 0;
+    flex-shrink: 0; /* কিবোর্ড উঠলে টপবার ছোট হবে না */
 }
 
         .brand{
@@ -326,7 +303,7 @@ body{
             max-width: 800px;
             margin: 0 auto;
 
-            padding:20px 16px 110px;
+            padding: 20px 16px;
         }
 
         .msg {
@@ -381,34 +358,19 @@ font-weight: 400;
             /* 🔥 main fix (left side) */
         }
 
-        .inputBox{
+        .inputBox {
+            flex-shrink: 0; /* কিবোর্ড উঠলে ইনপুট বক্স গায়েব হবে না */
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            padding: 12px;
+            background: #fff; /* ডার্ক মোডের জন্য আপনার আগের কোডই কাজ করবে */
+            z-index: 1000;
+        }
 
-    position:absolute;
-
-    left:0;
-
-    right:0;
-
-    bottom:0;
-
-    width:100%;
-
-    max-width:800px;
-
-    margin:0 auto;
-
-    display:flex;
-
-    align-items:flex-end;
-
-    gap:8px;
-
-    padding:12px;
-
-    background:#fff;
-
-    z-index:50;
-}
 
         .send {
             background: linear-gradient(135deg, var(--pri), var(--pri2));
@@ -446,6 +408,13 @@ font-weight: 400;
 
         .toast.show {
             opacity: 1
+        }
+
+        @media(max-width:600px) {
+            .app {
+                height: 100vh;
+                border-radius: 0
+            }
         }
 
         /* ===== AUTO EXPAND TEXTAREA (NO SCROLL) ===== */
@@ -2157,32 +2126,6 @@ document.addEventListener("keydown", e => {
 
 });
 
-
-
-
-
-
-
-
-function updateAppHeight(){
-
-    const app = document.querySelector(".app");
-
-    app.style.height =
-    window.innerHeight + "px";
-
-    app.style.maxHeight =
-    window.innerHeight + "px";
-
-}
-
-window.addEventListener(
-    "resize",
-    updateAppHeight
-);
-
-updateAppHeight();
-
 // SAFE DEVTOOLS DETECT
 setInterval(() => {
 
@@ -2204,6 +2147,33 @@ setInterval(() => {
 
 }, 1000);
 
+
+// ========================================
+        // 100% STABLE TOPBAR & KEYBOARD FIX
+        // ========================================
+        function setAppHeight() {
+            const appWrap = document.querySelector('.app');
+            // কিবোর্ড ওপেন হওয়ার পর স্ক্রিনের যতটুকু হাইট বাকি থাকে, অ্যাপকে ততটুকু করে দেওয়া হবে
+            appWrap.style.height = window.innerHeight + 'px';
+            
+            // চ্যাট স্ক্রল নিচে রাখা
+            const chatContainer = document.getElementById('chat');
+            if (chatContainer) {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        }
+
+        // পেজ লোড ও রিসাইজ (কিবোর্ড ওঠা/নামা) হলে ফাংশন কল হবে
+        window.addEventListener('resize', setAppHeight);
+        setAppHeight(); // প্রথমবার কল
+
+        // ইনপুট বক্সে ক্লিক করলে নিশ্চিতভাবে হাইট ফিক্স করার জন্য
+        const chatInputBox = document.getElementById('input');
+        if (chatInputBox) {
+            chatInputBox.addEventListener('focus', () => {
+                setTimeout(setAppHeight, 150);
+            });
+        }
     </script>
 </body>
 
