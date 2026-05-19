@@ -51,7 +51,6 @@
             position: relative;
             z-index: 1;
             height: 100vh;
-overflow: hidden;
         }
 
         @keyframes fadeIn {
@@ -617,6 +616,269 @@ div {
     -webkit-user-select:none;
     -webkit-touch-callout:none;
 }
+
+
+/* MENU BUTTON */
+
+.menuBtn{
+
+    width:40px;
+    height:40px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:rgba(255,255,255,.18);
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    backdrop-filter:blur(10px);
+}
+
+/* OVERLAY */
+
+.menuOverlay{
+
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.35);
+
+    backdrop-filter:blur(6px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.3s;
+
+    z-index:9998;
+}
+
+.menuOverlay.show{
+
+    opacity:1;
+
+    pointer-events:auto;
+}
+
+/* SIDE MENU */
+
+.sideMenu{
+
+    position:fixed;
+
+    top:0;
+    right:-340px;
+
+    width:320px;
+    max-width:85%;
+
+    height:100dvh;
+
+    background:white;
+
+    z-index:9999;
+
+    transition:.35s ease;
+
+    display:flex;
+
+    flex-direction:column;
+
+    box-shadow:-10px 0 40px rgba(0,0,0,.15);
+}
+
+.sideMenu.show{
+
+    right:0;
+}
+
+.sideTop{
+
+    padding:20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    background:#0083ff;
+
+    color:white;
+}
+
+.profileWrap{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+}
+
+.profileIcon{
+
+    width:48px;
+    height:48px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.2);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:24px;
+}
+
+.sideUserName{
+
+    font-weight:600;
+}
+
+.closeMenu{
+
+    width:38px;
+    height:38px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.15);
+
+    color:white;
+
+    cursor:pointer;
+}
+
+.menuContent{
+
+    padding:20px;
+
+    flex:1;
+}
+
+.darkModeRow{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.darkToggle{
+
+    width:56px;
+    height:30px;
+
+    background:#d1d5db;
+
+    border-radius:999px;
+
+    position:relative;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.darkBall{
+
+    width:24px;
+    height:24px;
+
+    background:white;
+
+    border-radius:50%;
+
+    position:absolute;
+
+    top:3px;
+    left:3px;
+
+    transition:.3s;
+}
+
+.darkToggle.active{
+
+    background:#0083ff;
+}
+
+.darkToggle.active .darkBall{
+
+    left:29px;
+}
+
+.logoutMenuBtn{
+
+    margin:20px;
+
+    height:50px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#ef4444;
+
+    color:white;
+
+    font-weight:600;
+
+    cursor:pointer;
+}
+
+/* DARK MODE */
+
+body.dark{
+
+    background:#07111f;
+}
+
+body.dark .chat{
+
+    background:#07111f;
+}
+
+body.dark .inputBox{
+
+    background:#07111f;
+}
+
+body.dark textarea{
+
+    background:#162033;
+
+    color:white;
+
+    border:none;
+}
+
+body.dark .ai{
+
+    background:#162033;
+
+    color:white;
+}
+
+body.dark .sideMenu{
+
+    background:#0f172a;
+
+    color:white;
+}
     </style>
 </head>
 
@@ -626,11 +888,16 @@ div {
         <div class="header">
             <div class="brand">PEKO</div>
             <div class="right">
-                <span id="userInfo" class="badge"></span>
-                <button id="logoutBtn" class="btn btnGhost" style="display:none">Logout</button>
-            </div>
-        </div>
 
+    <span id="userInfo" class="badge"></span>
+
+    <button id="menuBtn" class="menuBtn">
+        ⋮
+    </button>
+
+</div>
+        </div>
+ 
         <div id="loginBox" class="loginBox">
             <div class="loginCard">
                 <h3>Welcome</h3>
@@ -657,6 +924,51 @@ div {
 
     <div id="toast" class="toast"></div>
     <div id="limitPopup" class="limitPopup">এত লেখা পাঠানো যাবে না</div>
+    <div id="menuOverlay" class="menuOverlay"></div>
+
+<div id="sideMenu" class="sideMenu">
+
+    <div class="sideTop">
+
+        <div class="profileWrap">
+
+            <div class="profileIcon">
+                👤
+            </div>
+
+            <div id="sideUserName" class="sideUserName">
+                User
+            </div>
+
+        </div>
+
+        <button id="closeMenu" class="closeMenu">
+            ✕
+        </button>
+
+    </div>
+
+    <div class="menuContent">
+
+        <div class="darkModeRow">
+
+            <span>Dark Mode</span>
+
+            <div id="darkToggle" class="darkToggle">
+
+                <div class="darkBall"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <button id="logoutMenuBtn" class="logoutMenuBtn">
+        Logout
+    </button>
+
+</div>
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -732,10 +1044,93 @@ div {
                 console.error(e); toast("Login error");
             });
         }
-        $("logoutBtn").onclick = () => {
-            AUTH.signOut();
-            toast("Logged out");
-        };
+        // MENU
+
+const menuBtn = $("menuBtn");
+
+const sideMenu = $("sideMenu");
+
+const menuOverlay = $("menuOverlay");
+
+const closeMenu = $("closeMenu");
+
+const logoutMenuBtn = $("logoutMenuBtn");
+
+const darkToggle = $("darkToggle");
+
+
+// OPEN MENU
+
+menuBtn.onclick = () => {
+
+    sideMenu.classList.add("show");
+
+    menuOverlay.classList.add("show");
+};
+
+
+// CLOSE MENU
+
+function closeSideMenu(){
+
+    sideMenu.classList.remove("show");
+
+    menuOverlay.classList.remove("show");
+}
+
+closeMenu.onclick = closeSideMenu;
+
+menuOverlay.onclick = closeSideMenu;
+
+
+// LOGOUT
+
+logoutMenuBtn.onclick = () => {
+
+    closeSideMenu();
+
+    AUTH.signOut();
+
+    toast("Logged out");
+};
+
+
+// USER NAME
+
+AUTH.onAuthStateChanged(user => {
+
+    if(user){
+
+        $("sideUserName").textContent =
+        user.displayName || "User";
+    }
+});
+
+
+// DARK MODE
+
+if(localStorage.getItem("peko_dark")==="on"){
+
+    document.body.classList.add("dark");
+
+    darkToggle.classList.add("active");
+}
+
+darkToggle.onclick = () => {
+
+    darkToggle.classList.toggle("active");
+
+    document.body.classList.toggle("dark");
+
+    if(document.body.classList.contains("dark")){
+
+        localStorage.setItem("peko_dark","on");
+
+    }else{
+
+        localStorage.setItem("peko_dark","off");
+    }
+};
 
         // ===== SIMPLE AI =====
         const DATA = {
@@ -804,10 +1199,522 @@ div {
 /* উত্তর ১ */
 "আমি PEKO AI — Salman Farsi এর তৈরি একটি কৃত্রিম বুদ্ধিমত্তা 😊 তোমার প্রশ্ন বুঝে সহজ ও স্মার্টভাবে সাহায্য করার জন্য আমাকে তৈরি করা হয়েছে।",
 
+
 ]
 
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ========================================
+// PEKO ULTRA SMART DETECTOR v3
+// ========================================
+// PLACE THIS ABOVE:
+// async function getAnswer(q)
+// ========================================
+
+
+
+// ===============================
+// CUSTOM RESPONSES
+// ===============================
+
+const DETECTOR_RESPONSES = {
+
+    keyboardSmash: [
+        "আপনি মনে হচ্ছে এলোমেলো keyboard typing করেছেন 🙂",
+        "এটার কোন পরিষ্কার অর্থ খুঁজে পাচ্ছি না 🤔"
+    ],
+
+    banglaSmash: [
+        "বাংলা লেখাটা এলোমেলো মনে হচ্ছে 🙂",
+        "আপনি হয়তো ভুলে random Bangla typing পাঠিয়েছেন"
+    ],
+
+    repeatedChars: [
+        "একই অক্ষর বারবার পাঠানো হয়েছে 🙂",
+        "এটা meaningful text মনে হচ্ছে না"
+    ],
+
+    numberSpam: [
+        "শুধু সংখ্যা পাঠানো হয়েছে 🤔",
+        "এটার পরিষ্কার কোনো প্রশ্ন বুঝতে পারিনি"
+    ],
+
+    symbolSpam: [
+        "অতিরিক্ত symbol detect হয়েছে 🙂",
+        "শুধু symbol পাঠালে বুঝতে অসুবিধা হয়"
+    ],
+
+    emojiSpam: [
+        "অনেক emoji detect হয়েছে 😄",
+        "একটু পরিষ্কারভাবে লিখে পাঠান 🙂"
+    ],
+
+    mixedGarbage: [
+        "এখানে অনেক mixed random text detect হয়েছে 🤔",
+        "লেখাটা কিছুটা এলোমেলো মনে হচ্ছে"
+    ],
+
+    fakeMath: [
+        "এটা valid math expression মনে হচ্ছে না 🙂",
+        "Math expression এ কিছু সমস্যা আছে 🤔"
+    ],
+
+    repeatQuestion: [
+        "একই প্রশ্ন বারবার detect হয়েছে 🙂",
+        "একটু ভিন্নভাবে লিখে পাঠাতে পারেন"
+    ],
+
+    tinyNoise: [
+        "লেখাটা খুব ছোট এবং unclear 🙂",
+        "আরও পরিষ্কারভাবে লিখুন 🤔"
+    ],
+
+    longGarbage: [
+        "দীর্ঘ random typing detect হয়েছে 🙂",
+        "এটার কোনো পরিষ্কার meaning খুঁজে পাইনি"
+    ],
+
+    usernameSpam: [
+        "এটা username বা random ID এর মতো লাগছে 🙂",
+        "প্রশ্নটা আরেকটু পরিষ্কারভাবে লিখুন"
+    ],
+
+    fakeLink: [
+        "এটা broken link বা random URL মনে হচ্ছে 🤔",
+        "সঠিক link বা প্রশ্ন লিখুন 🙂"
+    ],
+
+    capsSpam: [
+        "অনেক CAPS typing detect হয়েছে 🙂",
+        "স্বাভাবিকভাবে লিখে পাঠাতে পারেন"
+    ],
+
+    emptySpam: [
+        "খালি বা meaningless text detect হয়েছে 🙂",
+        "একটু বিস্তারিত লিখুন 🤔"
+    ]
+};
+
+
+
+// ===============================
+// RANDOM PICKER
+// ===============================
+
+function pick(arr){
+
+    return arr[
+        Math.floor(Math.random() * arr.length)
+    ];
+
+}
+
+
+
+// ===============================
+// MAIN DETECTOR
+// ===============================
+
+function detectSpamType(text){
+
+    if(!text) return null;
+
+    const q = text.trim();
+
+    const lower = q.toLowerCase();
+
+
+
+
+    // =========================
+    // EMPTY / DOT SPAM
+    // =========================
+
+    if(/^[.\-_ ]+$/.test(q)){
+
+        return "emptySpam";
+
+    }
+
+
+
+
+    // =========================
+    // EMOJI SPAM
+    // =========================
+
+    const emojiCount =
+        (q.match(/[\u{1F300}-\u{1FAFF}]/gu)||[]).length;
+
+    if(emojiCount >= 4){
+
+        return "emojiSpam";
+
+    }
+
+
+
+
+    // =========================
+    // SYMBOL SPAM
+    // =========================
+
+    if(/^[^a-zA-Z0-9\u0980-\u09FF]+$/.test(q)){
+
+        return "symbolSpam";
+
+    }
+
+
+
+
+    // =========================
+    // REPEATED CHARACTER
+    // =========================
+
+    if(/(.)\1{4,}/i.test(q)){
+
+        return "repeatedChars";
+
+    }
+
+
+
+
+    // =========================
+    // NUMBER SPAM
+    // =========================
+
+    if(/^\d+$/.test(q)){
+
+        return "numberSpam";
+
+    }
+
+
+
+
+    // =========================
+    // FAKE MATH
+    // =========================
+
+    if(
+        /^[0-9+\-*/%=(). ]+$/.test(q)
+        &&
+        !/^\d+([+\-*/]\d+)+$/.test(q)
+    ){
+
+        return "fakeMath";
+
+    }
+
+
+
+
+    // =========================
+    // FAKE LINK
+    // =========================
+
+    if(
+
+        /(http|www)/i.test(q)
+        &&
+        !/^https?:\/\/.+\..+/.test(q)
+
+    ){
+
+        return "fakeLink";
+
+    }
+
+
+
+
+    // =========================
+    // CAPS SPAM
+    // =========================
+
+    if(
+
+        q.length > 6
+        &&
+        q === q.toUpperCase()
+        &&
+        /[A-Z]/.test(q)
+
+    ){
+
+        return "capsSpam";
+
+    }
+
+
+
+
+    // =========================
+    // USERNAME STYLE
+    // =========================
+
+    if(
+
+        /^[a-zA-Z0-9_]{8,20}$/.test(q)
+        &&
+        /\d/.test(q)
+        &&
+        /[A-Z]/.test(q)
+
+    ){
+
+        return "usernameSpam";
+
+    }
+
+
+
+
+    // =========================
+    // KEYBOARD SMASH ENGLISH
+    // =========================
+
+    const englishOnly =
+        /^[a-z0-9]+$/i.test(q);
+
+    const vowels =
+        (lower.match(/[aeiou]/g)||[]).length;
+
+    if(
+
+        englishOnly
+        &&
+        q.length >= 6
+        &&
+        vowels <= 1
+
+    ){
+
+        return "keyboardSmash";
+
+    }
+
+
+
+
+    // =========================
+    // BANGLA SMASH
+    // =========================
+
+    const banglaOnly =
+        /^[\u0980-\u09FF]+$/.test(q);
+
+    if(
+
+        banglaOnly
+        &&
+        q.length >= 5
+
+    ){
+
+        const banglaReadable =
+            /(আমি|তুমি|কি|কেন|হয়|না|এটা|ভালো|কেমন)/.test(q);
+
+        if(!banglaReadable){
+
+            return "banglaSmash";
+
+        }
+
+    }
+
+
+
+
+    // =========================
+    // TINY RANDOM NOISE
+    // =========================
+
+    if(
+
+        q.length <= 4
+        &&
+        /^[a-z]+$/i.test(q)
+
+    ){
+
+        const validTinyWords = [
+
+            "hi",
+            "hey",
+            "ok",
+            "yo",
+            "no",
+            "yes"
+
+        ];
+
+        if(
+
+            !validTinyWords.includes(lower)
+
+        ){
+
+            return "tinyNoise";
+
+        }
+
+    }
+
+
+
+
+    // =========================
+    // LONG RANDOM GARBAGE
+    // =========================
+
+    if(
+
+        q.length >= 15
+
+    ){
+
+        const spaces =
+            (q.match(/ /g)||[]).length;
+
+        const vowels2 =
+            (lower.match(/[aeiou]/g)||[]).length;
+
+        if(
+
+            spaces === 0
+            &&
+            vowels2 <= 2
+
+        ){
+
+            return "longGarbage";
+
+        }
+
+    }
+
+
+
+
+    // =========================
+    // MIXED RANDOM GARBAGE
+    // =========================
+
+    const hasEnglish =
+        /[a-z]/i.test(q);
+
+    const hasBangla =
+        /[\u0980-\u09FF]/.test(q);
+
+    const hasNumber =
+        /\d/.test(q);
+
+    if(
+
+        (
+            hasEnglish +
+            hasBangla +
+            hasNumber
+        ) >= 2
+
+        &&
+
+        q.length >= 8
+
+    ){
+
+        const words =
+            q.split(/\s+/);
+
+        if(words.length <= 2){
+
+            return "mixedGarbage";
+
+        }
+
+    }
+
+
+
+
+    // =========================
+    // REPEAT WORD SPAM
+    // =========================
+
+    const repeatMatch =
+        lower.match(/\b(\w+)\s+\1\b/);
+
+    if(repeatMatch){
+
+        return "repeatQuestion";
+
+    }
+
+
+
+
+    return null;
+
+}
+
+
+
+
+// ========================================
+// SMART RESPONSE
+// ========================================
+
+function getDetectorReply(type){
+
+    if(!DETECTOR_RESPONSES[type]){
+
+        return null;
+
+    }
+
+    return pick(
+        DETECTOR_RESPONSES[type]
+    );
+
+}
+
+
         async function getAnswer(q){
+
+
+            const detectedType = detectSpamType(q);
+
+if(detectedType){
+
+    return getDetectorReply(detectedType);
+
+}
 
 q = q.toLowerCase().trim();
 
