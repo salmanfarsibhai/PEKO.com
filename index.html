@@ -945,11 +945,17 @@ transparent
 
 .themeDropdown.show{
 
-   max-height:260px;
+    height:260px;
+
+    max-height:260px;
 
     opacity:1;
 
     pointer-events:auto;
+
+    overflow-y:auto;
+
+    -webkit-overflow-scrolling:touch;
 }
 .rotateArrow{
 
@@ -2045,13 +2051,21 @@ function closeSideMenu(){
 closeMenu.onclick = closeSideMenu;
 
 menuOverlay.onclick = closeSideMenu;
-document.addEventListener("click",(e)=>{
+document.addEventListener("pointerdown",(e)=>{
 
     const clickedInsideMenu =
     sideMenu.contains(e.target);
 
     const clickedMenuButton =
     menuBtn.contains(e.target);
+
+    const clickedThemeDropdown =
+    themeDropdown.contains(e.target);
+
+    const clickedThemeButton =
+    themeBtn.contains(e.target);
+
+    // SIDE MENU CLOSE
 
     if(
 
@@ -2068,6 +2082,31 @@ document.addEventListener("click",(e)=>{
     ){
 
         closeSideMenu();
+    }
+
+    // THEME DROPDOWN CLOSE
+
+    if(
+
+        themeDropdown.classList.contains("show")
+
+        &&
+
+        !clickedThemeDropdown
+
+        &&
+
+        !clickedThemeButton
+
+    ){
+
+        themeDropdown.classList.remove("show");
+
+        document.querySelector(
+            ".themeArrow"
+        ).classList.remove(
+            "rotateArrow"
+        );
     }
 
 });
