@@ -978,6 +978,35 @@ transparent
     color:#fff;
 }
 
+.languageItem{
+
+    padding:14px 16px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    color:#fff;
+}
+
+.languageItem:hover{
+
+    background:rgba(255,255,255,.05);
+}
+
+.languageItem.activeLanguage .themeCheck{
+
+    opacity:1;
+
+    transform:scale(1);
+}
+
 .themeItem:hover{
 
     background:rgba(255,255,255,.05);
@@ -1879,7 +1908,258 @@ stroke-linejoin="round"/>
 </div>
 
 
-    
+   <!-- LANGUAGE ROW -->
+
+<div class="themeRow">
+
+    <span id="languageTitle">
+        Language
+    </span>
+
+    <button id="languageToggleBtn"
+            class="themeToggleBtn">
+
+        <div class="themeSelected">
+
+            <span id="selectedLanguageText">
+                English
+            </span>
+
+        </div>
+
+        <span class="themeArrow languageArrow">
+
+<svg
+width="16"
+height="16"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M7 10L12 15L17 10"
+stroke="currentColor"
+stroke-width="2.2"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+    </button>
+
+</div>
+
+<!-- LANGUAGE DROPDOWN -->
+
+<div id="languageDropdown"
+     class="themeDropdown">
+
+    <div class="languageItem activeLanguage"
+         data-lang="en">
+
+        <div class="themeLeft">
+
+            <span>
+                English
+            </span>
+
+        </div>
+
+        <span class="themeCheck">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M6 12.5L10 16L18 8"
+stroke="currentColor"
+stroke-width="2.4"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+    </div>
+
+    <div class="languageItem"
+         data-lang="bn">
+
+        <div class="themeLeft">
+
+            <span>
+                বাংলা
+            </span>
+
+        </div>
+
+        <span class="themeCheck">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M6 12.5L10 16L18 8"
+stroke="currentColor"
+stroke-width="2.4"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+    </div>
+
+    <div class="languageItem"
+     data-lang="jp">
+
+    <div class="themeLeft">
+
+        <span>
+            日本語
+        </span>
+
+    </div>
+
+    <span class="themeCheck">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M6 12.5L10 16L18 8"
+stroke="currentColor"
+stroke-width="2.4"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+</div>
+
+
+
+<div class="languageItem"
+     data-lang="cn">
+
+    <div class="themeLeft">
+
+        <span>
+            中文
+        </span>
+
+    </div>
+
+    <span class="themeCheck">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M6 12.5L10 16L18 8"
+stroke="currentColor"
+stroke-width="2.4"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+</div>
+
+
+
+<div class="languageItem"
+     data-lang="kr">
+
+    <div class="themeLeft">
+
+        <span>
+            한국어
+        </span>
+
+    </div>
+
+    <span class="themeCheck">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M6 12.5L10 16L18 8"
+stroke="currentColor"
+stroke-width="2.4"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+</div>
+
+
+<div class="languageItem"
+     data-lang="ar">
+
+    <div class="themeLeft">
+
+        <span>
+            العربية
+        </span>
+
+    </div>
+
+    <span class="themeCheck">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M6 12.5L10 16L18 8"
+stroke="currentColor"
+stroke-width="2.4"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+</div>
+
+</div> 
 
     <div class="accountBox">
 
@@ -2061,10 +2341,40 @@ document.addEventListener("pointerdown",(e)=>{
 
     const clickedThemeDropdown =
     themeDropdown.contains(e.target);
+    const clickedLanguageDropdown =
+languageDropdown.contains(e.target);
+
+const clickedLanguageButton =
+languageBtn.contains(e.target);
 
     const clickedThemeButton =
     themeBtn.contains(e.target);
+// LANGUAGE CLOSE
 
+if(
+
+    languageDropdown.classList.contains("show")
+
+    &&
+
+    !clickedLanguageDropdown
+
+    &&
+
+    !clickedLanguageButton
+
+){
+
+    languageDropdown.classList.remove(
+        "show"
+    );
+
+    document.querySelector(
+        ".languageArrow"
+    ).classList.remove(
+        "rotateArrow"
+    );
+}
     // SIDE MENU CLOSE
 
     if(
@@ -2297,6 +2607,343 @@ themeItems.forEach(item=>{
 
         item.classList.add(
             "activeTheme"
+        );
+    };
+});
+
+
+// ======================
+// LANGUAGE SYSTEM
+// ======================
+
+const languageBtn =
+document.getElementById(
+    "languageToggleBtn"
+);
+
+const languageDropdown =
+document.getElementById(
+    "languageDropdown"
+);
+
+const languageItems =
+document.querySelectorAll(
+    ".languageItem"
+);
+
+const selectedLanguageText =
+document.getElementById(
+    "selectedLanguageText"
+);
+
+
+// TOGGLE
+
+languageBtn.onclick = ()=>{
+
+    languageDropdown.classList.toggle(
+        "show"
+    );
+
+    document.querySelector(
+        ".languageArrow"
+    ).classList.toggle(
+        "rotateArrow"
+    );
+};
+
+
+// TRANSLATIONS
+
+const LANG = {
+
+    en: {
+
+        settings: "Settings",
+
+        darkmode: "Dark Mode",
+
+        webtheme: "Web Theme",
+
+        language: "Language",
+
+        ask: "Ask PEKO...",
+
+        Blue: "Blue",
+
+        Green: "Green",
+
+        Yellow: "Yellow",
+
+        Pink: "Pink",
+
+        Orange: "Orange",
+
+        Purple: "Purple",
+
+        Gray: "Gray"
+    },
+
+    bn: {
+
+        settings: "সেটিংস",
+
+        darkmode: "ডার্ক মোড",
+
+        webtheme: "ওয়েব থিম",
+
+        language: "ভাষা",
+
+        ask: "PEKO কে জিজ্ঞেস করুন...",
+
+        Blue: "নীল",
+
+        Green: "সবুজ",
+
+        Yellow: "হলুদ",
+
+        Pink: "গোলাপি",
+
+        Orange: "কমলা",
+
+        Purple: "বেগুনি",
+
+        Gray: "ধূসর"
+    },
+
+    jp: {
+
+    settings: "設定",
+
+    darkmode: "ダークモード",
+
+    webtheme: "ウェブテーマ",
+
+    language: "言語",
+
+    ask: "PEKO に質問してください...",
+
+    Blue: "ブルー",
+
+    Green: "グリーン",
+
+    Yellow: "イエロー",
+
+    Pink: "ピンク",
+
+    Orange: "オレンジ",
+
+    Purple: "パープル",
+
+    Gray: "グレー"
+},
+
+cn: {
+
+    settings: "设置",
+
+    darkmode: "深色模式",
+
+    webtheme: "网页主题",
+
+    language: "语言",
+
+    ask: "向 PEKO 提问...",
+
+    Blue: "蓝色",
+
+    Green: "绿色",
+
+    Yellow: "黄色",
+
+    Pink: "粉色",
+
+    Orange: "橙色",
+
+    Purple: "紫色",
+
+    Gray: "灰色"
+},
+
+kr: {
+
+    settings: "설정",
+
+    darkmode: "다크 모드",
+
+    webtheme: "웹 테마",
+
+    language: "언어",
+
+    ask: "PEKO에게 질문하세요...",
+
+    Blue: "블루",
+
+    Green: "그린",
+
+    Yellow: "옐로우",
+
+    Pink: "핑크",
+
+    Orange: "오렌지",
+
+    Purple: "퍼플",
+
+    Gray: "그레이"
+},
+
+ar: {
+
+    settings: "الإعدادات",
+
+    darkmode: "الوضع الداكن",
+
+    webtheme: "مظهر الويب",
+
+    language: "اللغة",
+
+    ask: "اسأل PEKO...",
+
+    Blue: "أزرق",
+
+    Green: "أخضر",
+
+    Yellow: "أصفر",
+
+    Pink: "وردي",
+
+    Orange: "برتقالي",
+
+    Purple: "بنفسجي",
+
+    Gray: "رمادي"
+}
+
+};
+
+
+// APPLY LANGUAGE
+
+function applyLanguage(lang){
+
+    const t = LANG[lang];
+
+    $("sideUserName").textContent =
+    t.settings;
+
+    document.querySelector(
+        ".darkModeRow span"
+    ).textContent =
+    t.darkmode;
+
+    document.querySelector(
+        ".themeRow span"
+    ).textContent =
+    t.webtheme;
+
+    $("languageTitle").textContent =
+    t.language;
+
+    $("input").placeholder =
+    t.ask;
+
+    document.querySelectorAll(
+        ".themeItem"
+    ).forEach(item=>{
+
+        const name =
+        item.dataset.name;
+
+        item.querySelector("span")
+        .textContent =
+        t[name];
+    });
+
+    if(lang === "bn"){
+
+    selectedLanguageText.textContent =
+    "বাংলা";
+
+}else if(lang === "jp"){
+
+    selectedLanguageText.textContent =
+    "日本語";
+
+}else if(lang === "cn"){
+
+    selectedLanguageText.textContent =
+    "中文";
+
+}else if(lang === "kr"){
+
+    selectedLanguageText.textContent =
+    "한국어";
+    
+}else if(lang === "ar"){
+
+    selectedLanguageText.textContent =
+    "العربية";
+
+}else{
+
+    selectedLanguageText.textContent =
+    "English";
+}
+}
+
+
+// LOAD SAVED LANGUAGE
+
+const savedLanguage =
+localStorage.getItem(
+    "peko_lang"
+) || "en";
+
+applyLanguage(savedLanguage);
+
+languageItems.forEach(item=>{
+
+    item.classList.remove(
+        "activeLanguage"
+    );
+
+    if(
+        item.dataset.lang
+        === savedLanguage
+    ){
+
+        item.classList.add(
+            "activeLanguage"
+        );
+    }
+});
+
+
+// SELECT LANGUAGE
+
+languageItems.forEach(item=>{
+
+    item.onclick = ()=>{
+
+        const lang =
+        item.dataset.lang;
+
+        localStorage.setItem(
+            "peko_lang",
+            lang
+        );
+
+        applyLanguage(lang);
+
+        languageItems.forEach(i=>{
+
+            i.classList.remove(
+                "activeLanguage"
+            );
+        });
+
+        item.classList.add(
+            "activeLanguage"
         );
     };
 });
