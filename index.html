@@ -2771,158 +2771,111 @@ logoutMenuBtn.onclick = () => {
 
 
 
-
 // ======================
-// SOUND EFFECT SYSTEM
+// SOUND EFFECT SYSTEM & ULTRA ENGINE (MASTER FIX)
 // ======================
 
-const soundToggle =
-document.getElementById(
-    "soundToggle"
-);
+const soundToggle = document.getElementById("soundToggle");
 
-let SOUND_ENABLED =
-localStorage.getItem(
-    "peko_sound"
-) === "on";
+// 🔥 ম্যাজিক ফিক্স ১: সাউন্ড বাই ডিফল্ট ON থাকবে
+let SOUND_ENABLED = localStorage.getItem("peko_sound") !== "off";
 
-if(SOUND_ENABLED){
-
-    soundToggle.classList.add(
-        "active"
-    );
+if (SOUND_ENABLED) {
+    soundToggle.classList.add("active");
 }
 
-soundToggle.onclick = ()=>{
-
-    // 🔥 আগে sound play হবে
-
-    if(SOUND_ENABLED){
-
-        const audio =
-        new Audio(
-            "sound/toggle-off.mp3"
-        );
-
-        audio.volume = 0.4;
-
-        audio.play().catch(()=>{});
-
-    }else{
-
-        const audio =
-        new Audio(
-            "sound/toggle-on.mp3"
-        );
-
-        audio.volume = 0.4;
-
-        audio.play().catch(()=>{});
-
-    }
-
-    // তারপর toggle change হবে
-
-    SOUND_ENABLED =
-    !SOUND_ENABLED;
-
-    soundToggle.classList.toggle(
-        "active"
-    );
-
-    localStorage.setItem(
-        "peko_sound",
-        SOUND_ENABLED ? "on" : "off"
-    );
-};
-// ======================
-// ULTRA STABLE SOUND ENGINE
-// ======================
-
+// 🔥 ম্যাজিক ফিক্স ২: Google Drive-এর বদলে Google-এর নিজস্ব Official Fast CDN সাউন্ড ব্যবহার করা হলো। 
+// এতে কোনো ব্রাউজার সাউন্ড ব্লক করবে না (No CORS Error)।
 const SOUNDS = {
-
-    click: new Audio("sound/click.mp3"),
-    send: new Audio("sound/send.mp3"),
-
-    login: new Audio("sound/login.mp3"),
-
-    logout: new Audio("sound/logout.mp3"),
-
-    notification: new Audio(
-        "sound/notification.mp3"
-    ),
-
-    popup: new Audio(
-        "sound/popup.mp3"
-    ),
-
-    toggleOn: new Audio(
-        "sound/toggle-on.mp3"
-    ),
-
-    toggleOff: new Audio(
-        "sound/toggle-off.mp3"
-    )
+    click: new Audio("https://actions.google.com/sounds/v1/ui/button_click.ogg"),
+    send: new Audio("https://actions.google.com/sounds/v1/water/water_drop.ogg"),
+    login: new Audio("https://actions.google.com/sounds/v1/doors/wood_door_open.ogg"),
+    logout: new Audio("https://actions.google.com/sounds/v1/doors/wood_door_close.ogg"),
+    notification: new Audio("https://actions.google.com/sounds/v1/alarms/spaceship_alarm.ogg"),
+    popup: new Audio("https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg"),
+    toggleOn: new Audio("https://actions.google.com/sounds/v1/ui/button_click.ogg"),
+    toggleOff: new Audio("https://actions.google.com/sounds/v1/ui/button_click.ogg")
 };
 
-
-// PRELOAD
-
-Object.values(SOUNDS).forEach(audio=>{
-
-    audio.preload = "auto";
-
-    audio.volume = 0.5;
-});
-
-
-// AUDIO UNLOCK
-
-document.addEventListener(
-    "touchstart",
-    unlockAudio,
-    { once:true }
-);
-
-document.addEventListener(
-    "click",
-    unlockAudio,
-    { once:true }
-);
-
-function unlockAudio(){
-
-    Object.values(SOUNDS).forEach(audio=>{
-
-        audio.play()
-        .then(()=>{
-
-            audio.pause();
-
-            audio.currentTime = 0;
-
-        })
-        .catch(()=>{});
+// PRELOAD (Safe Mode)
+try {
+    Object.values(SOUNDS).forEach(audio => {
+        if (audio) {
+            audio.crossOrigin = "anonymous"; // ব্রাউজার ব্লকিং বাইপাস করার জন্য
+            audio.preload = "auto";
+            audio.volume = 0.5;
+        }
     });
+} catch (e) {}
+
+// AUDIO UNLOCK (মোবাইল ব্রাউজারের রেস্ট্রিকশন ভাঙার জন্য)
+const unlockAudio = () => {
+    try {
+        Object.values(SOUNDS).forEach(audio => {
+            if (audio) {
+                let playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        audio.pause();
+                        audio.currentTime = 0;
+                    }).catch(() => {});
+                }
+            }
+        });
+    } catch (e) {}
+    // একবার আনলক হয়ে গেলে ইভেন্ট মুছে ফেলা হলো যেন বারবার ট্রিগার না হয়
+    document.removeEventListener("touchstart", unlockAudio);
+    document.removeEventListener("click", unlockAudio);
+};
+
+document.addEventListener("touchstart", unlockAudio, { once: true });
+document.addEventListener("click", unlockAudio, { once: true });
+
+// PLAY FUNCTION (Safe, Fast & Stable)
+function playSound(type) {
+    try {
+        if (!SOUND_ENABLED) return; // সাউন্ড অফ থাকলে রিটার্ন করবে
+
+        const audio = SOUNDS[type];
+        if (!audio) return;
+
+        // 🔥 ম্যাজিক ফিক্স ৩: অডিও লোড না হওয়ার আগেই currentTime সেট করতে গেলে যে ক্র্যাশ হতো, তা ঠেকানো হলো।
+        try { audio.currentTime = 0; } catch (err) {} 
+        
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch((err) => {
+                console.log("Audio temporarily blocked by browser:", err);
+            });
+        }
+    } catch (e) {
+        console.log("Sound system safe block");
+    }
 }
 
+// TOGGLE BUTTON CLICK EVENT
+soundToggle.onclick = () => {
+    try {
+        SOUND_ENABLED = !SOUND_ENABLED;
+        soundToggle.classList.toggle("active");
+        localStorage.setItem("peko_sound", SOUND_ENABLED ? "on" : "off");
 
-// PLAY FUNCTION
+        // অবস্থা পরিবর্তনের সাথে সাথে সাউন্ড প্লে করা
+        if (SOUND_ENABLED) {
+            playSound("toggleOn");
+        } else {
+            // অফ করার সময় ম্যানুয়ালি বাজাতে হবে, কারণ PlaySound ফাংশন অফ অবস্থায় রিটার্ন করে দেয়
+            const offSound = SOUNDS["toggleOff"];
+            if (offSound) {
+                try { offSound.currentTime = 0; } catch(e){}
+                offSound.play().catch(()=>{});
+            }
+        }
+    } catch (error) {
+        console.log("Toggle Error Prevented");
+    }
+};
 
-function playSound(type){
-
-    if(!SOUND_ENABLED) return;
-
-    const audio = SOUNDS[type];
-
-    if(!audio) return;
-
-    audio.pause();
-
-    audio.currentTime = 0;
-
-    audio.play().catch(()=>{});
-}
 
 // DARK MODE
 
@@ -4266,10 +4219,6 @@ return "আমি এখনো শিখছি!";
             btn.style.opacity = "0.8"; // বাটনটা হালকা একটু ঘোলা হবে বুঝানোর জন্য যে প্রসেস হচ্ছে
 
             add(text, "user");
-
-setTimeout(() => {
-    playSound("send");
-}, 10);
             $("input").value = "";
             $("input").style.height = "44px";
             const load = document.createElement("div");
@@ -4357,7 +4306,12 @@ setTimeout(() => {
         }
 
         // ===== EVENTS =====
-        $("sendBtn").addEventListener("click", ask);
+        $("sendBtn").addEventListener("pointerdown", () => {
+
+    playSound("send");
+
+});
+$("sendBtn").addEventListener("click", ask);
         $("input").addEventListener("keydown", e => {
             if (e.key === "Enter") { e.preventDefault(); ask(); }
         });
