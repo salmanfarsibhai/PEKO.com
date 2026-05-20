@@ -2290,6 +2290,7 @@ stroke-linejoin="round"/>
 
     </div>
 
+
     <span class="themeCheck">
 
 <svg
@@ -2425,6 +2426,22 @@ stroke-linejoin="round"/>
 
 </div>
 
+<!-- SOUND EFFECT ROW -->
+
+<div class="themeRow">
+
+    <span>
+        Sound Effects
+    </span>
+
+    <div id="soundToggle"
+         class="darkToggle">
+
+        <div class="darkBall"></div>
+
+    </div>
+
+</div>
 
     <div class="accountBox">
 
@@ -2553,12 +2570,25 @@ $("sideUserName").textContent =
             }
         });
 
-        function login() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            AUTH.signInWithPopup(provider).catch(e => {
-                console.error(e); toast("Login error");
-            });
-        }
+        async function login() {
+
+    playSound("login");
+
+    setTimeout(()=>{
+
+        const provider =
+        new firebase.auth.GoogleAuthProvider();
+
+        AUTH.signInWithPopup(provider)
+        .catch(e=>{
+
+            console.error(e);
+
+            toast("Login error");
+        });
+
+    }, 180);
+}
         // MENU
 
 const menuBtn = $("menuBtn");
@@ -2578,6 +2608,8 @@ const darkToggle = $("darkToggle");
 
 menuBtn.onclick = () => {
 
+    playSound("click");
+
     sideMenu.classList.add("show");
 
     menuOverlay.classList.add("show");
@@ -2593,7 +2625,13 @@ function closeSideMenu(){
     menuOverlay.classList.remove("show");
 }
 
-closeMenu.onclick = closeSideMenu;
+
+closeMenu.onclick = ()=>{
+
+    playSound("click");
+
+    closeSideMenu();
+};
 
 menuOverlay.onclick = closeSideMenu;
 document.addEventListener("pointerdown",(e)=>{
@@ -2722,6 +2760,8 @@ if(
 
 logoutMenuBtn.onclick = () => {
 
+    playSound("logout");
+
     closeSideMenu();
 
     AUTH.signOut();
@@ -2731,6 +2771,158 @@ logoutMenuBtn.onclick = () => {
 
 
 
+
+// ======================
+// SOUND EFFECT SYSTEM
+// ======================
+
+const soundToggle =
+document.getElementById(
+    "soundToggle"
+);
+
+let SOUND_ENABLED =
+localStorage.getItem(
+    "peko_sound"
+) === "on";
+
+if(SOUND_ENABLED){
+
+    soundToggle.classList.add(
+        "active"
+    );
+}
+
+soundToggle.onclick = ()=>{
+
+    // 🔥 আগে sound play হবে
+
+    if(SOUND_ENABLED){
+
+        const audio =
+        new Audio(
+            "sound/toggle-off.mp3"
+        );
+
+        audio.volume = 0.4;
+
+        audio.play().catch(()=>{});
+
+    }else{
+
+        const audio =
+        new Audio(
+            "sound/toggle-on.mp3"
+        );
+
+        audio.volume = 0.4;
+
+        audio.play().catch(()=>{});
+
+    }
+
+    // তারপর toggle change হবে
+
+    SOUND_ENABLED =
+    !SOUND_ENABLED;
+
+    soundToggle.classList.toggle(
+        "active"
+    );
+
+    localStorage.setItem(
+        "peko_sound",
+        SOUND_ENABLED ? "on" : "off"
+    );
+};
+// ======================
+// ULTRA STABLE SOUND ENGINE
+// ======================
+
+const SOUNDS = {
+
+    click: new Audio("sound/click.mp3"),
+    send: new Audio("sound/send.mp3"),
+
+    login: new Audio("sound/login.mp3"),
+
+    logout: new Audio("sound/logout.mp3"),
+
+    notification: new Audio(
+        "sound/notification.mp3"
+    ),
+
+    popup: new Audio(
+        "sound/popup.mp3"
+    ),
+
+    toggleOn: new Audio(
+        "sound/toggle-on.mp3"
+    ),
+
+    toggleOff: new Audio(
+        "sound/toggle-off.mp3"
+    )
+};
+
+
+// PRELOAD
+
+Object.values(SOUNDS).forEach(audio=>{
+
+    audio.preload = "auto";
+
+    audio.volume = 0.5;
+});
+
+
+// AUDIO UNLOCK
+
+document.addEventListener(
+    "touchstart",
+    unlockAudio,
+    { once:true }
+);
+
+document.addEventListener(
+    "click",
+    unlockAudio,
+    { once:true }
+);
+
+function unlockAudio(){
+
+    Object.values(SOUNDS).forEach(audio=>{
+
+        audio.play()
+        .then(()=>{
+
+            audio.pause();
+
+            audio.currentTime = 0;
+
+        })
+        .catch(()=>{});
+    });
+}
+
+
+// PLAY FUNCTION
+
+function playSound(type){
+
+    if(!SOUND_ENABLED) return;
+
+    const audio = SOUNDS[type];
+
+    if(!audio) return;
+
+    audio.pause();
+
+    audio.currentTime = 0;
+
+    audio.play().catch(()=>{});
+}
 
 // DARK MODE
 
@@ -2743,17 +2935,42 @@ if(localStorage.getItem("peko_dark")==="on"){
 
 darkToggle.onclick = () => {
 
-    darkToggle.classList.toggle("active");
-
-    document.body.classList.toggle("dark");
+    // 🔥 আগে sound play হবে
 
     if(document.body.classList.contains("dark")){
 
-        localStorage.setItem("peko_dark","on");
+        playSound("toggleOff");
 
     }else{
 
-        localStorage.setItem("peko_dark","off");
+        playSound("toggleOn");
+    }
+
+    // তারপর mode change হবে
+
+    darkToggle.classList.toggle(
+        "active"
+    );
+
+    document.body.classList.toggle(
+        "dark"
+    );
+
+    // save mode
+
+    if(document.body.classList.contains("dark")){
+
+        localStorage.setItem(
+            "peko_dark",
+            "on"
+        );
+
+    }else{
+
+        localStorage.setItem(
+            "peko_dark",
+            "off"
+        );
     }
 };
 
@@ -2786,6 +3003,7 @@ document.getElementById(
 // TOGGLE DROPDOWN
 
 themeBtn.onclick = ()=>{
+    playSound("click");
 
     themeDropdown.classList.toggle(
         "show"
@@ -2868,6 +3086,8 @@ themeItems.forEach(item=>{
 
     item.onclick = ()=>{
 
+        playSound("click");
+
         const color =
         item.dataset.color;
 
@@ -2936,6 +3156,7 @@ document.getElementById(
 // TOGGLE
 
 languageBtn.onclick = ()=>{
+    playSound("click");
 
     languageDropdown.classList.toggle(
         "show"
@@ -3220,6 +3441,7 @@ languageItems.forEach(item=>{
 languageItems.forEach(item=>{
 
     item.onclick = ()=>{
+        playSound("click");
 
         const lang =
         item.dataset.lang;
@@ -3282,6 +3504,7 @@ document.querySelector(
 // TOGGLE
 
 fontSizeBtn.onclick = ()=>{
+    playSound("click");
 
     fontSizeDropdown.classList.toggle(
         "show"
@@ -3367,6 +3590,7 @@ fontSizeItems.forEach(item=>{
 fontSizeItems.forEach(item=>{
 
     item.onclick = ()=>{
+        playSound("click");
 
         const size =
         item.dataset.size;
@@ -4014,6 +4238,7 @@ return "আমি এখনো শিখছি!";
         let isWaitingForAI = false; // 🔥 স্প্যাম ঠেকানোর ভেরিয়েবল
 
         async function ask() {
+       
             if (isWaitingForAI) return; // 🔥 AI উত্তর না দেওয়া পর্যন্ত নতুন মেসেজ ব্লক
 
             const text = ($("input").value || "").trim();
@@ -4022,6 +4247,7 @@ return "আমি এখনো শিখছি!";
             if (text.length > 1000) {
 
     const pop = $("limitPopup");
+    playSound("popup");
 
     pop.classList.add("show");
 
@@ -4040,6 +4266,10 @@ return "আমি এখনো শিখছি!";
             btn.style.opacity = "0.8"; // বাটনটা হালকা একটু ঘোলা হবে বুঝানোর জন্য যে প্রসেস হচ্ছে
 
             add(text, "user");
+
+setTimeout(() => {
+    playSound("send");
+}, 10);
             $("input").value = "";
             $("input").style.height = "44px";
             const load = document.createElement("div");
@@ -4097,6 +4327,7 @@ setTimeout(() => {
         } else {
             // টাইপিং সম্পূর্ণ শেষ হলে কার্সর গায়েব হয়ে যাবে
             msgDiv.classList.remove("typing-cursor");
+            playSound("notification");
             
             // 🔥 সম্পূর্ণ লেখা শেষ হওয়ার পর সেন্ড বাটন আনলক হবে
             isWaitingForAI = false;
@@ -4146,6 +4377,14 @@ setTimeout(() => {
                 inputEl.style.overflowY = "hidden"; // 🔥 scroll OFF
             }
         });
+
+        $("input").addEventListener(
+    "keydown",
+    ()=>{
+
+    playSound("click");
+
+});
 
 
         // RIGHT CLICK BLOCK
