@@ -2772,6 +2772,7 @@ function initAudioContext() {
 }
 
 // মাস্টার সাউন্ড প্লে লজিক (যা কখনো নেটওয়ার্কের কারণে ফেইল হবে না)
+// মাস্টার সাউন্ড প্লে লজিক (🔥 HIGH-VOLUME OPTIMIZED BY MASTER DEVELOPER)
 function playSound(type) {
     if (!SOUND_ENABLED) return;
     
@@ -2786,36 +2787,36 @@ function playSound(type) {
         
         const now = audioCtx.currentTime;
         
-        // বিভিন্ন অ্যাকশনের জন্য ইউনিক ফ্রিকোয়েন্সি সাউন্ড ডিজাইন
+        // বিভিন্ন অ্যাকশনের জন্য ইউনিক ফ্রিকোয়েন্সি ও পারফেক্ট ভলিউম বুস্ট
         if (type === "click" || type === "type") {
-            // হালকা কিউট কিবোর্ড/বাটন ক্লিক সাউন্ড
+            // কিবোর্ড/বাটন ক্লিক সাউন্ড (ভলিউম বাড়িয়ে ৪০% করা হলো)
             osc.type = "sine";
-            osc.frequency.setValueAtTime(600, now); // ফ্রিকোয়েন্সি
-            gainNode.gain.setValueAtTime(0.08, now); // ভলিউম (8%)
+            osc.frequency.setValueAtTime(600, now); 
+            gainNode.gain.setValueAtTime(0.40, now); // 🔥 Boosted to 40%
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.05);
             osc.start(now);
             osc.stop(now + 0.05);
         } 
         else if (type === "send") {
-            // মেসেজ সেন্ডিং স্যুইশ সাউন্ড
+            // মেসেজ সেন্ডিং স্যুইশ সাউন্ড (ভলিউম বাড়িয়ে ৫০% করা হলো)
             osc.type = "triangle";
             osc.frequency.setValueAtTime(400, now);
             osc.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
-            gainNode.gain.setValueAtTime(0.12, now);
+            gainNode.gain.setValueAtTime(0.50, now); // 🔥 Boosted to 50%
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.15);
             osc.start(now);
             osc.stop(now + 0.15);
         } 
         else if (type === "notification") {
-            // এআই এর মেসেজ আসার কিউট ডাবল বিইপ নোটিফিকেশন
+            // এআই এর মেসেজ আসার নোটিফিকেশন সাউন্ড (ভলিউম বাড়িয়ে ৪৫% করা হলো)
             osc.type = "sine";
             osc.frequency.setValueAtTime(880, now);
-            gainNode.gain.setValueAtTime(0.1, now);
+            gainNode.gain.setValueAtTime(0.45, now); // 🔥 Boosted to 45%
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.1);
             osc.start(now);
             osc.stop(now + 0.1);
             
-            // সেকেন্ড বিইপ
+            // সেকেন্ড বিইপ (এটির ভলিউমও ৪৫% করা হলো)
             setTimeout(() => {
                 if (!SOUND_ENABLED) return;
                 const osc2 = audioCtx.createOscillator();
@@ -2824,39 +2825,39 @@ function playSound(type) {
                 gain2.connect(audioCtx.destination);
                 osc2.type = "sine";
                 osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
-                gain2.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain2.gain.setValueAtTime(0.45, audioCtx.currentTime); // 🔥 Boosted to 45%
                 gain2.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.12);
                 osc2.start(audioCtx.currentTime);
                 osc2.stop(audioCtx.currentTime + 0.12);
             }, 80);
         } 
         else if (type === "login" || type === "toggleOn") {
-            // সাকসেস বা অন করার প্রিমিয়াম সাউন্ড
+            // সাকসেস বা অন করার প্রিমিয়াম সাউন্ড (ভলিউম বাড়িয়ে ৫৫% করা হলো)
             osc.type = "sine";
-            osc.frequency.setValueAtTime(523.25, now); // C5 note
-            osc.frequency.setValueAtTime(659.25, now + 0.08); // E5 note
-            osc.frequency.setValueAtTime(783.99, now + 0.16); // G5 note
-            gainNode.gain.setValueAtTime(0.15, now);
+            osc.frequency.setValueAtTime(523.25, now); 
+            osc.frequency.setValueAtTime(659.25, now + 0.08); 
+            osc.frequency.setValueAtTime(783.99, now + 0.16); 
+            gainNode.gain.setValueAtTime(0.55, now); // 🔥 Boosted to 55%
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.3);
             osc.start(now);
             osc.stop(now + 0.3);
         } 
         else if (type === "logout" || type === "toggleOff") {
-            // অফ বা লগআউট ডাউন সাউন্ড
+            // অফ বা লগআউট ডাউন সাউন্ড (ভলিউম বাড়িয়ে ৫৫% করা হলো)
             osc.type = "sine";
             osc.frequency.setValueAtTime(783.99, now); 
             osc.frequency.setValueAtTime(659.25, now + 0.08); 
             osc.frequency.setValueAtTime(523.25, now + 0.16); 
-            gainNode.gain.setValueAtTime(0.15, now);
+            gainNode.gain.setValueAtTime(0.55, now); // 🔥 Boosted to 55%
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.3);
             osc.start(now);
             osc.stop(now + 0.3);
         }
         else if (type === "popup") {
-            // ওয়ার্নিং বা লিমিট পপআপ সাউন্ড
+            // ওয়ার্নিং বা লিমিট পপআপ সাউন্ড (ভলিউম বাড়িয়ে ৫০% করা হলো)
             osc.type = "sawtooth";
             osc.frequency.setValueAtTime(150, now);
-            gainNode.gain.setValueAtTime(0.15, now);
+            gainNode.gain.setValueAtTime(0.50, now); // 🔥 Boosted to 50%
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.2);
             osc.start(now);
             osc.stop(now + 0.2);
@@ -2865,13 +2866,6 @@ function playSound(type) {
         console.log("Audio Context Error: ", e);
     }
 }
-
-// প্রথম টাচেই ব্রাউজারের অডিও রেস্ট্রিকশন লক খোলার মাস্টার লজিক
-["click", "touchstart", "keydown"].forEach(evt => {
-    document.addEventListener(evt, () => {
-        initAudioContext();
-    }, { once: false }); // গ্লোবাল অ্যাক্টিভ রাখার জন্য false
-});
 
 // সাউন্ড অন/অফ টগল বাটন অ্যাকশন
 soundToggle.onclick = () => {
