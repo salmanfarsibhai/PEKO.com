@@ -910,15 +910,18 @@ transparent
 .themeDropdown{
 
     margin-top:14px;
+
     width:50%;
 
-margin-left:auto;
+    margin-left:auto;
 
     background:#353535;
 
     border-radius:18px;
 
-    overflow:hidden;
+    overflow-y:auto;
+
+    overflow-x:hidden;
 
     max-height:0;
 
@@ -929,11 +932,20 @@ margin-left:auto;
     opacity .25s ease;
 
     pointer-events:none;
+
+    scrollbar-width:none;
+
+    -ms-overflow-style:none;
+}
+
+.themeDropdown::-webkit-scrollbar{
+
+    display:none;
 }
 
 .themeDropdown.show{
 
-    max-height:500px;
+   max-height:260px;
 
     opacity:1;
 
@@ -2033,6 +2045,32 @@ function closeSideMenu(){
 closeMenu.onclick = closeSideMenu;
 
 menuOverlay.onclick = closeSideMenu;
+document.addEventListener("click",(e)=>{
+
+    const clickedInsideMenu =
+    sideMenu.contains(e.target);
+
+    const clickedMenuButton =
+    menuBtn.contains(e.target);
+
+    if(
+
+        sideMenu.classList.contains("show")
+
+        &&
+
+        !clickedInsideMenu
+
+        &&
+
+        !clickedMenuButton
+
+    ){
+
+        closeSideMenu();
+    }
+
+});
 
 
 // LOGOUT
