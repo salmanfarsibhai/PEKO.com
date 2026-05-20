@@ -596,7 +596,144 @@ div {
 }
 
 
+/* =======================================
+   🔥 PREMIUM REPORT POPUP SYSTEM (BY MASTER DEVELOPER)
+   ======================================= */
+.reportOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(14px); /* পেছনের স্ক্রিন সম্পূর্ণ ব্লার করার জন্য */
+    -webkit-backdrop-filter: blur(14px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100002;
+}
 
+.reportOverlay.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.reportPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -45%) scale(0.9);
+    width: 90%;
+    max-width: 400px;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 100003;
+}
+
+body.dark .reportPopup {
+    background: #0f172a; /* ডার্ক মোডে সেটিংসের সাথে মিল রেখে ডার্ক থিম */
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reportOverlay.show .reportPopup {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.reportHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.reportTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--pri); /* আপনার সিলেক্টেড থিম কালার অটোম্যাটিক পাবে */
+}
+
+.reportCloseBtn {
+    border: none;
+    background: rgba(0, 0, 0, 0.05);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: inherit;
+}
+
+body.dark .reportCloseBtn {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.reportTextarea {
+    width: 100% !important;
+    min-height: 120px !important;
+    max-height: 180px !important;
+    padding: 12px 14px !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 16px !important;
+    font-size: 14px !important;
+    outline: none !important;
+    resize: none !important;
+    background: #f8fafc !important;
+    color: #000000 !important;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 16px;
+    display: block !important;
+}
+
+body.dark .reportTextarea {
+    background: #1e293b !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.reportTextarea:focus {
+    border-color: var(--pri) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--pri) 20%, transparent) !important;
+}
+
+.reportSubmitBtn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--pri), var(--pri2));
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--pri) 25%, transparent);
+}
+
+.reportSubmitBtn:active {
+    transform: scale(0.97);
+}
+
+/* স্লাইডারের রিপোর্ট রো বাটন */
+.reportMenuBtn {
+    background: transparent;
+    border: none;
+    color: inherit;
+    width: 100%;
+    padding: 0;
+    text-align: left;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+}
 
 /* 🔥 Premium Neural Wave Animation */
 .pekoLoading {
@@ -813,12 +950,18 @@ transparent
     cursor:pointer;
 }
 
-.menuContent{
-    padding:20px;
-    flex:1;
+.menuContent {
+    padding: 20px 20px 100px 20px; /* নিচে ১০০ পিক্সেল গ্যাপ রাখা হয়েছে যাতে ফিচার অ্যাকাউন্ট বক্সের পেছনে না লুকায় */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* ফিচার বেশি হলে ভেতরেই স্ক্রল হবে, অ্যাকাউন্ট বক্স নড়বে না */
+    scrollbar-width: none; /* ফায়ারফক্স স্ক্রলবার হাইড */
+    -ms-overflow-style: none;
+}
 
-    display:flex;
-    flex-direction:column;
+.menuContent::-webkit-scrollbar {
+    display: none; /* ক্রোম/সাফারি স্ক্রলবার হাইড */
 }
 
 .darkModeRow{
@@ -1280,129 +1423,97 @@ body.dark .fontSelect{
 
 
 
-.accountBox{
-
-    margin-top:auto;
-
-    margin-left:20px;
-    margin-right:20px;
-    margin-bottom:20px;
-
-    padding:10px 14px;
-
-    border-radius:16px;
-
-    background:rgba(255,255,255,0.05);
-
-    display:flex;
-
-    align-items:center;
-
-    gap:12px;
-
-    height:70px;
-
-    flex-shrink:0;
+/* 🔥 ACCOUNT BOX: BOTTOM FIXED WITH PERFECT BALANCE */
+.accountBox {
+    position: absolute; 
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    padding: 12px 14px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.04); 
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* এটি বাটনকে ডানে এবং প্রোফাইলকে বামে সমান দূরত্বে লক রাখবে */
+    gap: 12px;
+    height: 74px;
+    z-index: 10;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.accountPhoto{
-
-width:46px;
-height:46px;
-
-border-radius:50%;
-
-object-fit:cover;
-
-flex-shrink:0;
+body.dark .accountBox {
+    background: rgba(255, 255, 255, 0.05); /* ডার্ক মোডে প্রিমিয়াম গ্লো */
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.accountInfo{
-
-flex:1;
-
-overflow:hidden;
+.accountPhoto {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    display: block;
+    background: transparent;
 }
 
-.accountName{
-
-font-size:14px;
-
-font-weight:600;
-
-white-space:nowrap;
-
-overflow:hidden;
-
-text-overflow:ellipsis;
+.accountInfo {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
 }
 
-.accountEmail{
-
-font-size:11px;
-
-opacity:.7;
-
-white-space:nowrap;
-
-overflow:hidden;
-
-text-overflow:ellipsis;
+.accountName {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-
-
-
-
-
-
-.powerIcon{
-
-width:22px;
-height:22px;
-
-border:4px solid white;
-border-radius:50%;
-
-position:relative;
-
-box-sizing:border-box;
+.accountEmail {
+    font-size: 11px;
+    opacity: .65;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.powerIcon::before{
-
-content:"";
-
-position:absolute;
-
-width:5px;
-height:16px;
-
-background:white;
-
-top:-11px;
-left:50%;
-
-transform:translateX(-50%);
-
-border-radius:20px;
+/* 🔥 LOGOUT BUTTON: LEFT ALIGNED & COMPACT */
+.logoutMenuBtn {
+    width: 46px;  
+    height: 46px;
+    min-width: 46px;
+    min-height: 46px;
+    padding: 0;
+    border: none;
+    border-radius: 14px;
+    background: #ef4444;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+    transition: transform 0.2s ease;
 }
 
+.logoutMenuBtn:active {
+    transform: scale(0.95);
+}
 
-.powerSymbol{
-
-font-size:24px;
-
-color:white;
-
-font-weight:700;
-
-line-height:1;
-
-display:flex;
-
-align-items:center;
-justify-content:center;
+.logoutIcon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
 }
 
 
@@ -1638,6 +1749,16 @@ transparent
     <div id="limitPopup" class="limitPopup">এত লেখা পাঠানো যাবে না</div>
     <div id="menuOverlay" class="menuOverlay"></div>
 
+    <div id="reportOverlay" class="reportOverlay">
+        <div class="reportPopup">
+            <div class="reportHeader">
+                <div class="reportTitle" id="reportModalTitle">Report Issue</div>
+                <button id="reportCloseBtn" class="reportCloseBtn">✕</button>
+            </div>
+            <textarea id="reportInput" class="reportTextarea" placeholder="আপনার সমস্যা বা মতামতটি বিস্তারিত বাংলায় লিখুন..."></textarea>
+            <button id="reportSubmitBtn" class="reportSubmitBtn">Submit Report</button>
+        </div>
+    </div>
 <div id="sideMenu" class="sideMenu">
 
     <div class="sideTop">
@@ -2443,35 +2564,31 @@ stroke-linejoin="round"/>
 
 </div>
 
-    <div class="accountBox">
-
-<img id="accountPhoto" class="accountPhoto">
-
-<div class="accountInfo">
-
-<div id="accountName" class="accountName">
-User
+<div class="themeRow">
+    <button id="reportToggleBtn" class="reportMenuBtn">
+        <div class="themeSelected" style="justify-content: space-between; width: 100%;">
+            <span id="reportTextLabel">Report Issue</span>
+            <span class="themeArrow">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+        </div>
+    </button>
 </div>
 
-<div id="accountEmail" class="accountEmail">
-email@gmail.com
-</div>
+    </div> <div class="accountBox">
+        <img id="accountPhoto" class="accountPhoto" alt="User Image" crossorigin="anonymous" referrerpolicy="no-referrer">
+        
+        <div class="accountInfo">
+            <div id="accountName" class="accountName">User</div>
+            <div id="accountEmail" class="accountEmail">email@gmail.com</div>
+        </div>
 
-</div>
-
-<button id="logoutMenuBtn" class="logoutMenuBtn">
-
-<img
-src="https://drive.google.com/thumbnail?id=1nYjGTph3z5G3uIChGGxhJ5uzRK6IWEXD&sz=w4000"
-class="logoutIcon"
->
-
-</button>
-
-</div>
-
-</div>
-
+        <button id="logoutMenuBtn" class="logoutMenuBtn">
+            <img src="https://drive.google.com/thumbnail?id=1nYjGTph3z5G3uIChGGxhJ5uzRK6IWEXD&sz=w4000" class="logoutIcon">
+        </button>
+    </div>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -2634,24 +2751,16 @@ closeMenu.onclick = ()=>{
 };
 
 menuOverlay.onclick = closeSideMenu;
-document.addEventListener("pointerdown",(e)=>{
+document.addEventListener("pointerdown", (e) => {
 
-    const clickedInsideMenu =
-    sideMenu.contains(e.target);
+    const clickedInsideMenu = sideMenu.contains(e.target);
+    const clickedMenuButton = menuBtn.contains(e.target);
+    const clickedThemeDropdown = themeDropdown.contains(e.target);
+    const clickedLanguageDropdown = languageDropdown.contains(e.target);
 
-    const clickedMenuButton =
-    menuBtn.contains(e.target);
-
-    const clickedThemeDropdown =
-    themeDropdown.contains(e.target);
-    const clickedLanguageDropdown =
-languageDropdown.contains(e.target);
-
-const clickedLanguageButton =
-languageBtn.contains(e.target);
-
-    const clickedThemeButton =
-    themeBtn.contains(e.target);
+    // 🔥 MASTER FIX: ভেরিয়েবলের সঠিক নাম (Case-Sensitivity Fix)
+    const clickedLanguageButton = languageBtn ? languageBtn.contains(e.target) : false;
+    const clickedThemeButton = themeBtn ? themeBtn.contains(e.target) : false;
 // LANGUAGE CLOSE (🔥 FIXED BY MASTER DEVELOPER)
 const langBtnEl = $("languageToggleBtn");
 if(
@@ -2773,6 +2882,7 @@ function initAudioContext() {
 
 // মাস্টার সাউন্ড প্লে লজিক (যা কখনো নেটওয়ার্কের কারণে ফেইল হবে না)
 // মাস্টার সাউন্ড প্লে লজিক (🔥 HIGH-VOLUME OPTIMIZED BY MASTER DEVELOPER)
+// মাস্টার সাউন্ড প্লে লজিক (🔥 2X ULTRA VOL BOOSTED BY MASTER DEVELOPER)
 function playSound(type) {
     if (!SOUND_ENABLED) return;
     
@@ -2787,36 +2897,36 @@ function playSound(type) {
         
         const now = audioCtx.currentTime;
         
-        // বিভিন্ন অ্যাকশনের জন্য ইউনিক ফ্রিকোয়েন্সি ও পারফেক্ট ভলিউম বুস্ট
+        // প্রত্যেকটা সাউন্ডের ভলিউম আগের চেয়ে ঠিক দ্বিগুণ (২ গুণ) করা হলো
         if (type === "click" || type === "type") {
-            // কিবোর্ড/বাটন ক্লিক সাউন্ড (ভলিউম বাড়িয়ে ৪০% করা হলো)
+            // কিবোর্ড/বাটন ক্লিক সাউন্ড (দ্বিগুণ বাড়িয়ে ৮০% করা হলো)
             osc.type = "sine";
             osc.frequency.setValueAtTime(600, now); 
-            gainNode.gain.setValueAtTime(0.40, now); // 🔥 Boosted to 40%
+            gainNode.gain.setValueAtTime(0.80, now); // 🔥 2X Boost (80% Vol)
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.05);
             osc.start(now);
             osc.stop(now + 0.05);
         } 
         else if (type === "send") {
-            // মেসেজ সেন্ডিং স্যুইশ সাউন্ড (ভলিউম বাড়িয়ে ৫০% করা হলো)
+            // মেসেজ সেন্ডিং স্যুইশ সাউন্ড (সর্বোচ্চ ১০০% বা ফুল ১.০ ভলিউম)
             osc.type = "triangle";
             osc.frequency.setValueAtTime(400, now);
             osc.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
-            gainNode.gain.setValueAtTime(0.50, now); // 🔥 Boosted to 50%
+            gainNode.gain.setValueAtTime(1.0, now); // 🔥 MAXIMUM BOOST (100% Vol)
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.15);
             osc.start(now);
             osc.stop(now + 0.15);
         } 
         else if (type === "notification") {
-            // এআই এর মেসেজ আসার নোটিফিকেশন সাউন্ড (ভলিউম বাড়িয়ে ৪৫% করা হলো)
+            // এআই এর মেসেজ আসার নোটিফিকেশন সাউন্ড (দ্বিগুণ বাড়িয়ে ৯০% করা হলো)
             osc.type = "sine";
             osc.frequency.setValueAtTime(880, now);
-            gainNode.gain.setValueAtTime(0.45, now); // 🔥 Boosted to 45%
+            gainNode.gain.setValueAtTime(0.90, now); // 🔥 2X Boost (90% Vol)
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.1);
             osc.start(now);
             osc.stop(now + 0.1);
             
-            // সেকেন্ড বিইপ (এটির ভলিউমও ৪৫% করা হলো)
+            // সেকেন্ড বিইপ
             setTimeout(() => {
                 if (!SOUND_ENABLED) return;
                 const osc2 = audioCtx.createOscillator();
@@ -2825,39 +2935,39 @@ function playSound(type) {
                 gain2.connect(audioCtx.destination);
                 osc2.type = "sine";
                 osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
-                gain2.gain.setValueAtTime(0.45, audioCtx.currentTime); // 🔥 Boosted to 45%
+                gain2.gain.setValueAtTime(0.90, audioCtx.currentTime); // 🔥 2X Boost (90% Vol)
                 gain2.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.12);
                 osc2.start(audioCtx.currentTime);
                 osc2.stop(audioCtx.currentTime + 0.12);
             }, 80);
         } 
         else if (type === "login" || type === "toggleOn") {
-            // সাকসেস বা অন করার প্রিমিয়াম সাউন্ড (ভলিউম বাড়িয়ে ৫৫% করা হলো)
+            // সাকসেস বা অন করার প্রিমিয়াম সাউন্ড (সর্বোচ্চ ১০০% বা ফুল ১.০ ভলিউম)
             osc.type = "sine";
             osc.frequency.setValueAtTime(523.25, now); 
             osc.frequency.setValueAtTime(659.25, now + 0.08); 
             osc.frequency.setValueAtTime(783.99, now + 0.16); 
-            gainNode.gain.setValueAtTime(0.55, now); // 🔥 Boosted to 55%
+            gainNode.gain.setValueAtTime(1.0, now); // 🔥 MAXIMUM BOOST (100% Vol)
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.3);
             osc.start(now);
             osc.stop(now + 0.3);
         } 
         else if (type === "logout" || type === "toggleOff") {
-            // অফ বা লগআউট ডাউন সাউন্ড (ভলিউম বাড়িয়ে ৫৫% করা হলো)
+            // অফ বা লগআউট ডাউন সাউন্ড (সর্বোচ্চ ১০০% বা ফুল ১.০ ভলিউম)
             osc.type = "sine";
             osc.frequency.setValueAtTime(783.99, now); 
             osc.frequency.setValueAtTime(659.25, now + 0.08); 
             osc.frequency.setValueAtTime(523.25, now + 0.16); 
-            gainNode.gain.setValueAtTime(0.55, now); // 🔥 Boosted to 55%
+            gainNode.gain.setValueAtTime(1.0, now); // 🔥 MAXIMUM BOOST (100% Vol)
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.3);
             osc.start(now);
             osc.stop(now + 0.3);
         }
         else if (type === "popup") {
-            // ওয়ার্নিং বা লিমিট পপআপ সাউন্ড (ভলিউম বাড়িয়ে ৫০% করা হলো)
+            // ওয়ার্নিং বা লিমিট পপআপ সাউন্ড (সর্বোচ্চ ১০০% বা ফুল ১.০ ভলিউম)
             osc.type = "sawtooth";
             osc.frequency.setValueAtTime(150, now);
-            gainNode.gain.setValueAtTime(0.50, now); // 🔥 Boosted to 50%
+            gainNode.gain.setValueAtTime(1.0, now); // 🔥 MAXIMUM BOOST (100% Vol)
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.2);
             osc.start(now);
             osc.stop(now + 0.2);
@@ -4411,6 +4521,91 @@ setInterval(() => {
     }
 
 }, 1000);
+
+
+// =======================================
+        // 🔥 PREMIUM REPORT POPUP LOGIC (FIREBASE RTDB LIVE)
+        // =======================================
+        const reportToggleBtn = $("reportToggleBtn");
+        const reportOverlay = $("reportOverlay");
+        const reportCloseBtn = $("reportCloseBtn");
+        const reportSubmitBtn = $("reportSubmitBtn");
+        const reportInput = $("reportInput");
+
+        // পপআপ ওপেন করা
+        if (reportToggleBtn && reportOverlay) {
+            reportToggleBtn.onclick = () => {
+                playSound("click");
+                closeSideMenu(); // পপআপ খোলার সাথে সাথে পেছনের স্লাইডার মেনু বন্ধ হবে
+                reportOverlay.classList.add("show");
+                if(reportInput) reportInput.value = ""; // আগের লেখা ক্লিয়ার হবে
+            };
+        }
+
+        // পপআপ বন্ধ করা
+        if (reportCloseBtn && reportOverlay) {
+            reportCloseBtn.onclick = () => {
+                playSound("click");
+                reportOverlay.classList.remove("show");
+            };
+        }
+
+        // পপআপের বাইরে ব্লার এরিয়াতে ক্লিক করলে বন্ধ করা
+        if (reportOverlay) {
+            reportOverlay.addEventListener("click", (e) => {
+                if (e.target === reportOverlay) {
+                    playSound("click");
+                    reportOverlay.classList.remove("show");
+                }
+            });
+        }
+
+        // ফায়ারবেসে ডাটা পুশ এবং সাবমিট অ্যাকশন
+        if (reportSubmitBtn) {
+            reportSubmitBtn.onclick = () => {
+                const reportText = (reportInput.value || "").trim();
+                
+                if (!reportText) {
+                    toast("দয়া করে কিছু লিখুন!");
+                    playSound("popup");
+                    return;
+                }
+
+                if (!USER) {
+                    toast("আগে লগইন করুন");
+                    return;
+                }
+
+                // সাবমিট বাটন সাময়িক লক করা
+                reportSubmitBtn.disabled = true;
+                reportSubmitBtn.innerText = "Sending...";
+                playSound("send");
+
+                const reportPayload = {
+                    uid: USER.uid,
+                    name: USER.displayName || "Anonymous User",
+                    email: USER.email || "No Email",
+                    report: reportText,
+                    time: Date.now()
+                };
+
+                // ফায়ারবেসের নতুন নোড 'all_reports' এ সেভ করা হচ্ছে
+                DB.ref("all_reports").push(reportPayload)
+                    .then(() => {
+                        toast("Thank You! আপনার রিপোর্ট জমা হয়েছে।");
+                        playSound("login"); // সাকসেস সাউন্ড
+                        reportOverlay.classList.remove("show");
+                    })
+                    .catch((err) => {
+                        console.error("Report Save Error:", err);
+                        toast("Error! আবার চেষ্টা করুন।");
+                    })
+                    .finally(() => {
+                        reportSubmitBtn.disabled = false;
+                        reportSubmitBtn.innerText = "Submit Report";
+                    });
+            };
+        }
 
 
 // ========================================
