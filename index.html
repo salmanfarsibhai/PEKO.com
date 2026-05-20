@@ -4320,19 +4320,22 @@ setTimeout(() => {
 
         }
 
-        // ===== EVENTS =====
-        $("sendBtn").addEventListener("pointerdown", () => {
+        // ===== EVENTS (🔥 100% WORKING FIXED BY MASTER DEVELOPER) =====
+        
+        // মাউস দিয়ে ক্লিক বা মোবাইলে সেন্ড বাটনে টাচ করলে মেসেজ পাঠানোর মাস্টার লজিক
+        $("sendBtn").onclick = () => {
+            playSound("send");
+            ask(); // মাউস বা হাত দিয়ে ক্লিক করলে মেসেজ সেন্ড হবে
+        };
 
-    playSound("send");
-
-});
-$("input").addEventListener("keydown", e => {
-    if (e.key === "Enter") { 
-        e.preventDefault(); 
-        playSound("send"); // 🔥 এন্টার মারলে মেসেজ সেন্ড হওয়ার সাউন্ড হবে
-        ask(); 
-    }
-});
+        // কিবোর্ডের এন্টার বাটন প্রেস লজিক
+        $("input").addEventListener("keydown", e => {
+            if (e.key === "Enter") { 
+                e.preventDefault(); 
+                playSound("send"); // এন্টার মারলে মেসেজ সেন্ড হওয়ার সাউন্ড হবে
+                ask(); 
+            }
+        });
         const inputEl = $("input");
 
         inputEl.addEventListener("input", () => {
