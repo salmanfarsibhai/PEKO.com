@@ -20,6 +20,7 @@
             --text: #0f172a;
             --muted: #6b7280;
             --card: rgba(255, 255, 255, .75);
+            --fontSize:14px;
         }
 
         * {
@@ -314,6 +315,7 @@
             /* 🔥 auto size */
 
             max-width: 75%;
+            font-size: var(--fontSize);
             
 
             padding: 10px 14px;
@@ -443,7 +445,7 @@ font-weight: 400;
             outline: none;
             resize: none;
             font-family: inherit;
-            font-size: 14px;
+            font-size: var(--fontSize);
             line-height: 1.5;
             background: #fff;
             color: #000;
@@ -945,7 +947,7 @@ transparent
 
 .themeDropdown.show{
 
-    height:260px;
+    height:auto;
 
     max-height:260px;
 
@@ -1001,6 +1003,35 @@ transparent
 }
 
 .languageItem.activeLanguage .themeCheck{
+
+    opacity:1;
+
+    transform:scale(1);
+}
+
+.fontSizeItem{
+
+    padding:14px 16px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    color:#fff;
+}
+
+.fontSizeItem:hover{
+
+    background:rgba(255,255,255,.05);
+}
+
+.fontSizeItem.activeFontSize .themeCheck{
 
     opacity:1;
 
@@ -1210,7 +1241,40 @@ body.dark .sideMenu{
 }
 
 
+.fontSelect{
 
+    background:#353535;
+
+    color:white;
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:10px 14px;
+
+    font-size:14px;
+
+    cursor:pointer;
+
+    outline:none;
+
+    min-width:130px;
+    appearance:none;
+-webkit-appearance:none;
+-moz-appearance:none;
+
+box-shadow:none;
+
+background-image:none;
+}
+
+body.dark .fontSelect{
+
+    background:#162033;
+
+    color:white;
+}
 
 
 
@@ -2160,6 +2224,207 @@ stroke-linejoin="round"/>
 </div>
 
 </div> 
+<!-- LANGUAGE DROPDOWN END -->
+<!-- FONT SIZE ROW -->
+
+<div class="themeRow">
+
+    <span>
+        Font Size
+    </span>
+
+    <button id="fontSizeToggleBtn"
+            class="themeToggleBtn">
+
+        <div class="themeSelected">
+
+            <span id="selectedFontSizeText">
+                Default
+            </span>
+
+        </div>
+
+        <span class="themeArrow fontSizeArrow">
+
+<svg
+width="16"
+height="16"
+viewBox="0 0 24 24"
+fill="none">
+
+<path
+d="M7 10L12 15L17 10"
+stroke="currentColor"
+stroke-width="2.2"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+    </button>
+
+</div>
+
+
+
+
+
+<!-- FONT SIZE DROPDOWN -->
+
+<div id="fontSizeDropdown"
+     class="themeDropdown">
+
+
+
+
+<div class="fontSizeItem activeFontSize"
+     data-size="14px">
+
+    <div class="themeLeft">
+
+        <span>
+            Small
+        </span>
+
+    </div>
+
+    <span class="themeCheck">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M6 12.5L10 16L18 8"
+stroke="currentColor"
+stroke-width="2.6"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+</div>
+
+
+
+
+
+<div class="fontSizeItem"
+     data-size="16px">
+
+    <div class="themeLeft">
+
+        <span>
+            Default
+        </span>
+
+    </div>
+
+    <span class="themeCheck">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M6 12.5L10 16L18 8"
+stroke="currentColor"
+stroke-width="2.6"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+</div>
+
+
+
+
+
+<div class="fontSizeItem"
+     data-size="18px">
+
+    <div class="themeLeft">
+
+        <span>
+            Medium
+        </span>
+
+    </div>
+
+    <span class="themeCheck">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M6 12.5L10 16L18 8"
+stroke="currentColor"
+stroke-width="2.6"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+</div>
+
+
+
+
+
+<div class="fontSizeItem"
+     data-size="20px">
+
+    <div class="themeLeft">
+
+        <span>
+            Large
+        </span>
+
+    </div>
+
+    <span class="themeCheck">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+fill="none"
+xmlns="http://www.w3.org/2000/svg">
+
+<path
+d="M6 12.5L10 16L18 8"
+stroke="currentColor"
+stroke-width="2.6"
+stroke-linecap="round"
+stroke-linejoin="round"/>
+
+</svg>
+
+</span>
+
+</div>
+
+</div>
+
 
     <div class="accountBox">
 
@@ -2372,6 +2637,37 @@ if(
     document.querySelector(
         ".languageArrow"
     ).classList.remove(
+        "rotateArrow"
+    );
+}
+
+// FONT SIZE CLOSE
+
+const clickedFontDropdown =
+fontSizeDropdown.contains(e.target);
+
+const clickedFontButton =
+fontSizeBtn.contains(e.target);
+
+if(
+
+    fontSizeDropdown.classList.contains("show")
+
+    &&
+
+    !clickedFontDropdown
+
+    &&
+
+    !clickedFontButton
+
+){
+
+    fontSizeDropdown.classList.remove(
+        "show"
+    );
+
+    fontSizeArrow.classList.remove(
         "rotateArrow"
     );
 }
@@ -2944,6 +3240,174 @@ languageItems.forEach(item=>{
 
         item.classList.add(
             "activeLanguage"
+        );
+    };
+});
+
+
+
+// ======================
+// FONT SIZE SYSTEM
+// ======================
+
+// ======================
+// FONT SIZE SYSTEM
+// ======================
+
+const fontSizeBtn =
+document.getElementById(
+    "fontSizeToggleBtn"
+);
+
+const fontSizeDropdown =
+document.getElementById(
+    "fontSizeDropdown"
+);
+
+const fontSizeItems =
+document.querySelectorAll(
+    ".fontSizeItem"
+);
+
+const selectedFontSizeText =
+document.getElementById(
+    "selectedFontSizeText"
+);
+
+const fontSizeArrow =
+document.querySelector(
+    ".fontSizeArrow"
+);
+
+// TOGGLE
+
+fontSizeBtn.onclick = ()=>{
+
+    fontSizeDropdown.classList.toggle(
+        "show"
+    );
+
+    document.querySelector(
+        ".fontSizeArrow"
+    ).classList.toggle(
+        "rotateArrow"
+    );
+};
+
+
+// APPLY SIZE
+
+function applyFontSize(size){
+
+    document.documentElement
+    .style
+    .setProperty(
+        "--fontSize",
+        size
+    );
+}
+
+
+// LOAD SAVED
+
+const savedFontSize =
+localStorage.getItem(
+    "peko_font_size"
+) || "16px";
+
+applyFontSize(savedFontSize);
+
+
+// TEXT
+
+if(savedFontSize === "14px"){
+
+    selectedFontSizeText.textContent =
+    "Small";
+
+}else if(savedFontSize === "18px"){
+
+    selectedFontSizeText.textContent =
+    "Medium";
+
+}else if(savedFontSize === "20px"){
+
+    selectedFontSizeText.textContent =
+    "Large";
+
+}else{
+
+    selectedFontSizeText.textContent =
+    "Default";
+}
+
+
+// ACTIVE
+
+fontSizeItems.forEach(item=>{
+
+    item.classList.remove(
+        "activeFontSize"
+    );
+
+    if(
+        item.dataset.size
+        === savedFontSize
+    ){
+
+        item.classList.add(
+            "activeFontSize"
+        );
+    }
+});
+
+
+// SELECT
+
+fontSizeItems.forEach(item=>{
+
+    item.onclick = ()=>{
+
+        const size =
+        item.dataset.size;
+
+        applyFontSize(size);
+
+        localStorage.setItem(
+            "peko_font_size",
+            size
+        );
+
+        if(size === "14px"){
+
+            selectedFontSizeText.textContent =
+            "Small";
+
+        }else if(size === "18px"){
+
+            selectedFontSizeText.textContent =
+            "Medium";
+
+        }else if(size === "20px"){
+
+            selectedFontSizeText.textContent =
+            "Large";
+
+        }else{
+
+            selectedFontSizeText.textContent =
+            "Default";
+        }
+
+        fontSizeItems.forEach(i=>{
+
+            i.classList.remove(
+                "activeFontSize"
+            );
+        });
+
+        item.classList.add(
+            "activeFontSize"
         );
     };
 });
