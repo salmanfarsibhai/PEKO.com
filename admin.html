@@ -823,6 +823,76 @@ content="camera=(), microphone=(), geolocation=()">
             border-top: 1px solid var(--border);
             padding-top: 8px;
         }
+
+        /* 👑 PREMIUM LANDSCAPE POPUP CSS SYSTEMS */
+        .premium-popup-flex {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 20px !important;
+            text-align: left !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        .popup-icon-zone {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+        }
+        .popup-content-zone {
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 8px !important;
+            min-width: 0 !important;
+        }
+        .popup-landscape-card {
+            background: rgba(0, 0, 0, 0.02) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 12px !important;
+            padding: 10px 14px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 6px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        .popup-card-row {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+        .popup-card-label {
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            color: var(--muted) !important;
+            white-space: nowrap !important;
+        }
+        .popup-card-value {
+            color: var(--text) !important;
+            font-weight: 600 !important;
+            font-size: 13px !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap !important;
+            flex: 1 !important;
+        }
+        
+        /* মোবাইল স্ক্রিনের জন্য ফ্লেক্সবক্স অটো অ্যাডজাস্টমেন্ট */
+        @media (max-width: 480px) {
+            .premium-popup-flex {
+                flex-direction: column !important;
+                text-align: center !important;
+                gap: 12px !important;
+            }
+            .popup-landscape-card {
+                padding: 8px 10px !important;
+            }
+        }
+
     </style>
 </head>
 
@@ -913,10 +983,12 @@ margin-left:10px;
 
 <div id="pro-space-wrapper" style="display: none; padding: 0 20px;">
         <div class="card" style="margin-bottom: 30px; width: 100%;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                <span style="font-size: 20px;">👑</span>
-                <h2 style="font-size: 18px; font-weight: 700; margin: 0; color: var(--pri);">Premium Subscription Requests</h2>
+
+           <div style="display: flex; gap: 10px; margin: 10px 0 20px 0; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+                <button id="tabNewRequests" onclick="switchProTab('pending')" style="background: var(--pri); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px;">📥 New Requests</button>
+                <button id="tabAcceptedMembers" onclick="switchProTab('active')" style="background: transparent; color: var(--text); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px;">✅ Accepted Members</button>
             </div>
+
             <div style="overflow-x: auto; width: 100%;">
                 <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
                     <thead>
@@ -987,88 +1059,478 @@ margin-left:10px;
     }
 
     // 🔥 REALTIME SUBSCRIPTION REQUESTS LOADER (FIREBASE ENGINE)
-    function loadProRequests() {
-        const container = document.getElementById("proMembersListContainer");
-        if (!container) return;
+    // 👑 গ্লোবাল ট্র্যাকার কোন ট্যাব বর্তমানে খোলা আছে
+    window.currentProTab = "pending";
 
-        // ফায়ারবেসের 'pro_requests' নোড থেকে ডাটা রিয়েলটাইম রিড করা হচ্ছে
-        DB.ref("pro_requests").on("value", (snapshot) => {
-            if (!snapshot.exists()) {
-                container.innerHTML = `<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--muted); font-weight: 500;">কোনো প্রিমিয়াম অনুরোধ পাওয়া যায়নি।</td></tr>`;
+    window.switchProTab = function(tabName) {
+        window.currentProTab = tabName;
+        const btnNew = document.getElementById("tabNewRequests");
+        const btnAccepted = document.getElementById("tabAcceptedMembers");
+        
+        if (tabName === "pending") {
+            if(btnNew) { btnNew.style.background = "var(--pri)"; btnNew.style.color = "white"; btnNew.style.border = "none"; }
+            if(btnAccepted) { btnAccepted.style.background = "transparent"; btnAccepted.style.color = "var(--text)"; btnAccepted.style.border = "1px solid var(--border)"; }
+        } else {
+            if(btnAccepted) { btnAccepted.style.background = "#10b981"; btnAccepted.style.color = "white"; btnAccepted.style.border = "none"; }
+            if(btnNew) { btnNew.style.background = "transparent"; btnNew.style.color = "var(--text)"; btnNew.style.border = "1px solid var(--border)"; }
+        }
+        loadProRequests(); // বাটন পরিবর্তনের সাথে সাথে ডাটা সাথে সাথে আলাদা হয়ে যাবে
+    };
+
+   // ⏳ গ্লোবাল টাইমার ট্র্যাকিং অ্যারে
+window.adminTimerIntervals = window.adminTimerIntervals || [];
+
+// আগের চলমান টাইমারগুলো পরিষ্কার করার সেফটি মেকানিজম
+function clearAdminTimers() {
+    window.adminTimerIntervals.forEach(clearInterval);
+    window.adminTimerIntervals = [];
+}
+
+// 🗑 ডিলিট রিকোয়েস্ট মেকানিজম ফাংশন (কঠোর মেম্বারশিপ লক এবং ১০০% কাস্টম UI ল্যান্ডস্কেপ পপআপ)
+window.deleteProUserRequest = function(requestId, userUid, currentStatus) {
+    // ফায়ারবেস স্ন্যাপশট থেকে তাৎক্ষণিক ইউজারের লাইভ নাম ও ইমেল বের করার মেকানিজম
+    DB.ref(`pro_requests/${requestId}`).once("value").then((snap) => {
+        const uData = snap.val() || {};
+        const uName = uData.name || "Unknown";
+        const uEmail = uData.email || "No Email";
+
+        // ❌ কন্ডিশন ১: মেম্বার বর্তমানে ACTIVE মোডে থাকলে কাস্টম অ্যালার্ট পপআপ
+        if (currentStatus === 'active') {
+            showCustomAlert(`
+                <div class="premium-popup-flex">
+                    <div class="popup-icon-zone">
+                        <div style="width: 50px; height: 50px; background: rgba(239, 68, 68, 0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(239, 68, 68, 0.15);">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="#ef4444" style="width: 22px; height: 22px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="popup-content-zone">
+                        <h3 style="color: #ef4444; font-size: 16.5px; font-weight: 700; margin: 0;">ডিলিট করা সম্ভব নয়!</h3>
+                        <p style="color: var(--muted); font-size: 11.5px; margin: 0;">ইউজার বর্তমানে মেম্বারশিপে একটিভ আছেন</p>
+                        <p style="color: var(--text); font-size: 13px; line-height: 1.5; margin: 4px 0 0 0; opacity: 0.85;">
+                            নিরাপত্তার স্বার্থে একটিভ মেম্বারের ডাটা ডাটাবেজ থেকে মুছে ফেলা সম্পূর্ণ নিষিদ্ধ। দয়া করে প্রথমে তার ডানপাশের <b>টগল বাটনটি অফ বা আনঅ্যাক্টিভ করুন</b>, তারপর ডিলিট করা যাবে।
+                        </p>
+                    </div>
+                </div>
+            `);
+            return;
+        }
+
+        // 🟢 কন্ডিশন ২: মেম্বার বর্তমানে EXPIRED বা OFF থাকলে ল্যান্ডস্কেপ ডিলিট কনফার্মেশন পপআপ
+        showCustomConfirm(`
+            <div class="premium-popup-flex">
+                <div class="popup-icon-zone">
+                    <div style="width: 50px; height: 50px; background: rgba(0, 131, 255, 0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 131, 255, 0.15);">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.2" stroke="#0083ff" style="width: 22px; height: 22px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.34 6m-4.74 0l-.34-6m4.74 6h1.14l1.18-8.31a1.21 1.21 0 00-1.25-1.38H5.73a1.21 1.21 0 00-1.25 1.38L5.66 14.5a1.21 1.21 0 001.25 1.25h8.83zm-2.48-11.23h-2.14a1.25 1.25 0 00-1.14.77l-.27.67H16.3l-.27-.67a1.25 1.25 0 00-1.14-.77z" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="popup-content-zone">
+                    <h3 style="color: var(--text); font-size: 16.5px; font-weight: 700; margin: 0;">অনুরোধটি ডিলিট করবেন?</h3>
+                    <p style="color: var(--muted); font-size: 11.5px; margin: 0;">স্ট্যাটাস: <span style="color: #ff6a00; font-weight: 600;">Expired / Off</span></p>
+                    
+                    <div class="popup-landscape-card">
+                        <div class="popup-card-row">
+                            <span class="popup-card-label">👤 ইউজার নাম:</span>
+                            <span class="popup-card-value">${uName}</span>
+                        </div>
+                        <div class="popup-card-row" style="border-top: 1px dashed var(--border); padding-top: 6px;">
+                            <span class="popup-card-label">📧 ইমেল আইডি:</span>
+                            <span class="popup-card-value" style="color: var(--pri) !important;">${uEmail}</span>
+                        </div>
+                    </div>
+                    
+                    <p style="color: var(--text); font-size: 13px; line-height: 1.5; margin: 0; opacity: 0.85;">
+                        এই মেম্বারটির মেয়াদ শেষ হয়েছে, তাই ডাটাবেজ থেকে রিকোয়েস্ট হিস্ট্রি ডিলিট করলে কোনো সমস্যা নেই। আপনি কি নিশ্চিতভাবে এটি মুছে ফেলতে চান?
+                    </p>
+                </div>
+            </div>
+        `, () => {
+            DB.ref(`pro_requests/${requestId}`).remove()
+            .then(() => {
+                localStorage.removeItem(`offline_pro_end_${userUid}`);
+                toast("অনুরোধের ইতিহাস সফলভাবে মুছে ফেলা হয়েছে! 🗑");
+            })
+            .catch(err => {
+                toast("মুছে ফেলতে ব্যর্থ হয়েছে: " + err.message);
+            });
+        });
+    });
+};
+
+// 🎨 কাস্টম অ্যালার্ট বক্স ফাংশন (ডিফল্ট alert / confirm এর সম্পূর্ণ বিকল্প)
+function showCustomAlert(message) {
+    const confirmBox = document.getElementById("confirmBox");
+    const confirmMessage = document.getElementById("confirmMessage");
+    if (!confirmBox || !confirmMessage) return;
+
+    confirmMessage.innerHTML = message;
+    confirmBox.style.display = "flex";
+    
+    // কনফার্ম বক্সের ভেতরের বাটন এরিয়া কাস্টমাইজ করে শুধু একটি ওয়ান-ওয়ে ক্লোজ বাটন রাখা
+    const buttonGroup = confirmBox.querySelector("div[style*='display:flex']");
+    if (buttonGroup) {
+        buttonGroup.innerHTML = `
+            <button onclick="closeCustomAlert()" style="background:var(--pri); color:white; border:none; padding:10px 24px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; width:100%; min-height:40px; display:flex; align-items:center; justify-content:center;">ঠিক আছে</button>
+        `;
+    }
+}
+
+window.closeCustomAlert = function() {
+    const confirmBox = document.getElementById("confirmBox");
+    if (confirmBox) confirmBox.style.display = "none";
+};
+
+// 🤝 কাস্টম কনফার্ম বক্স ফাংশন
+function showCustomConfirm(message, onConfirmCallback) {
+    const confirmBox = document.getElementById("confirmBox");
+    const confirmMessage = document.getElementById("confirmMessage");
+    if (!confirmBox || !confirmMessage) return;
+
+    confirmMessage.innerHTML = message;
+    confirmBox.style.display = "flex";
+
+    const buttonGroup = confirmBox.querySelector("div[style*='display:flex']");
+    if (buttonGroup) {
+        buttonGroup.innerHTML = `
+            <button id="customCancelBtn" style="flex:1; background:rgba(0,0,0,0.05); color:var(--text); border:none; padding:10px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px; display:flex; align-items:center; justify-content:center;">বাতিল</button>
+            <button id="customConfirmBtn" style="flex:1; background:#ef4444; color:white; border:none; padding:10px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px; display:flex; align-items:center; justify-content:center;">হ্যাঁ, ডিলিট করুন</button>
+        `;
+
+        document.getElementById("customCancelBtn").onclick = function() {
+            confirmBox.style.display = "none";
+        };
+
+        document.getElementById("customConfirmBtn").onclick = function() {
+            confirmBox.style.display = "none";
+            if (typeof onConfirmCallback === "function") onConfirmCallback();
+        };
+    }
+}
+
+// 📅 কাস্টম মেম্বারশিপ মেয়াদ নির্ধারণ পপআপ মডাল (মিনিট, ঘণ্টা, দিন ও মাসের আল্ট্রা কন্ট্রোল মেকানিজম)
+function showCustomDaysPrompt(onSuccessCallback, onCancelCallback) {
+    let promptModal = document.getElementById("customPromptModal");
+    if (!promptModal) {
+        promptModal = document.createElement("div");
+        promptModal.id = "customPromptModal";
+        promptModal.style = "position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index:99999; padding:16px; box-sizing:border-box;";
+        document.body.appendChild(promptModal);
+    }
+
+    // ১০০% কাস্টম ল্যান্ডস্কেপ উইন্ডো ইনজেকশন উইথ টাইম ইউনিট ড্রপডাউন
+    promptModal.innerHTML = `
+        <div style="background:var(--card); padding:24px; border-radius:24px; width:100%; max-width:420px; text-align:center; border:1px solid var(--border); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; animation: scaleIn 0.25s ease;">
+            <div style="font-weight:700; color:var(--text); font-size:17px; letter-spacing: -0.3px;">👑 মেম্বারশিপ মেয়াদ নির্ধারণ করুন</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.4;">এই ইউজারকে কত সময়ের জন্য PRO মেম্বারশিপ দিতে চান? সংখ্যা এবং ইউনিট সিলেক্ট করুন।</div>
+            
+            <div style="display:flex; gap:10px; margin: 4px 0; width:100%; box-sizing:border-box;">
+                <input type="number" id="customPromptValueInput" value="7" min="1" style="flex:1; padding:11px; border-radius:12px; border:1px solid var(--border); background:rgba(0,0,0,0.02); color:var(--text); font-weight:600; text-align:center; font-size:15px; outline:none; box-sizing:border-box; width:50%;">
+                <select id="customPromptUnitSelect" style="flex:1; padding:11px; border-radius:12px; border:1px solid var(--border); background: var(--bg); color:var(--text); font-weight:600; font-size:14px; outline:none; cursor:pointer; box-sizing:border-box; width:50%;">
+                    <option value="minutes">মিনিট (Minutes)</option>
+                    <option value="hours">ঘণ্টা (Hours)</option>
+                    <option value="days" selected>দিন (Days)</option>
+                    <option value="months">মাস (Months)</option>
+                </select>
+            </div>
+
+            <div style="display:flex; gap:12px; justify-content:center; width:100%; box-sizing:border-box; margin-top:5px;">
+                <button id="promptCancelBtn" style="flex:1; background:rgba(0,0,0,0.05); color:var(--text); border:none; padding:10px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px; display:flex; align-items:center; justify-content:center;">বাতিল</button>
+                <button id="promptSubmitBtn" style="flex:1; background:var(--pri); color:white; border:none; padding:10px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px; display:flex; align-items:center; justify-content:center;">অ্যাক্টিভ করুন</button>
+            </div>
+        </div>
+    `;
+
+    const valueField = document.getElementById("customPromptValueInput");
+    const unitField = document.getElementById("customPromptUnitSelect");
+    promptModal.style.display = "flex";
+    valueField.focus();
+
+    document.getElementById("promptCancelBtn").onclick = function() {
+        promptModal.style.display = "none";
+        if (typeof onCancelCallback === "function") onCancelCallback();
+    };
+
+    document.getElementById("promptSubmitBtn").onclick = function() {
+        const rawValue = valueField.value.trim();
+        const amount = parseInt(rawValue);
+        const unit = unitField.value;
+
+        if (isNaN(amount) || amount <= 0) {
+            toast("❌ দয়া করে সঠিক সংখ্যা ইনপুট দিন!");
+            return;
+        }
+
+        // কাস্টম টাইম ইউনিট কনভার্সন মেকানিজম (মিনিট, ঘণ্টা, দিন, মাস)
+        let durationMiliseconds = 0;
+        if (unit === "minutes") {
+            durationMiliseconds = amount * 60 * 1000;
+        } else if (unit === "hours") {
+            durationMiliseconds = amount * 60 * 60 * 1000;
+        } else if (unit === "days") {
+            durationMiliseconds = amount * 24 * 60 * 60 * 1000;
+        } else if (unit === "months") {
+            // সর্বোচ্চ ১ মাস লিমিট সেফটি প্রোটেকশন
+            if (amount > 1) {
+                toast("⚠ সর্বোচ্চ ১ মাস মেম্বারশিপ দেওয়া যাবে!");
+                valueField.value = "1";
                 return;
             }
+            durationMiliseconds = amount * 30 * 24 * 60 * 60 * 1000;
+        }
 
-            let html = "";
-            snapshot.forEach((childSnapshot) => {
-                const reqId = childSnapshot.key;
-                const data = childSnapshot.val();
-                const dateStr = data.time ? new Date(data.time).toLocaleString('bn-BD') : "N/A";
-                
-                const isChecked = data.status === "active" ? "checked" : "";
-                const statusLabel = data.status === "active" ? 
-                    `<span style="color: #10b981; font-weight: 700; font-size: 12px;">🟢 Active</span>` : 
-                    `<span style="color: #f59e0b; font-weight: 700; font-size: 12px;">🟡 Pending</span>`;
+        promptModal.style.display = "none";
+        if (typeof onSuccessCallback === "function") onSuccessCallback(durationMiliseconds, amount, unit);
+    };
+}
 
-                html += `
-                <tr style="border-bottom: 1px solid var(--border); transition: background 0.2s;">
-                    <td style="padding: 12px 8px; line-height: 1.5;">
-                        <div style="font-weight: 600; color: var(--text); font-size: 14px;">${data.name || 'Unknown'}</div>
-                        <div style="font-size: 11px; color: var(--muted);">${data.email || 'No Email'}</div>
-                        <div style="font-size: 12px; font-weight: 700; margin-top: 4px;">
-                            <a href="tel:${data.phone}" style="color: var(--pri); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📞 ${data.phone || 'No Number'}</a>
-                        </div>
-                    </td>
-                    <td style="padding: 12px 8px; color: var(--text); vertical-align: middle;">
-                        <span style="background: rgba(79, 70, 229, 0.1); color: var(--pri); padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; display: inline-block;">
-                            ${data.requestedPlan || 'Starter'}
-                        </span>
-                        <div style="font-size: 10px; color: var(--muted); margin-top: 6px;">📅 ${dateStr}</div>
-                    </td>
-                    <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
-                        ${data.screenshot ? 
-                            `<img src="${data.screenshot}" onclick="previewImage('${data.screenshot}')" style="width: 48px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">` : 
-                            `<span style="color: var(--muted); font-size: 11px;">No Screenshot</span>`
-                        }
-                    </td>
-                    <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
-                        <div style="margin-bottom: 6px;">${statusLabel}</div>
-                        <label style="position: relative; display: inline-block; width: 42px; height: 22px; cursor: pointer; vertical-align: middle;">
-                            <input type="checkbox" ${isChecked} onchange="toggleUserPremium('${reqId}', '${data.uid}', this)" style="opacity: 0; width: 0; height: 0;">
-                            <span style="position: absolute; inset: 0; background-color: ${data.status === 'active' ? '#10b981' : '#cbd5e1'}; border-radius: 22px; transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
-                                <span style="position: absolute; content: ''; height: 16px; width: 16px; left: ${data.status === 'active' ? '23px' : '3px'}; bottom: 3px; background-color: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></span>
-                            </span>
-                        </label>
-                    </td>
-                </tr>`;
-            });
-            container.innerHTML = html;
-        }, (error) => {
-            console.error("Firebase Fetch Error:", error);
-            container.innerHTML = `<tr><td colspan="4" style="color: #ef4444; text-align: center; padding: 10px;">ডাটা রিড করতে ব্যর্থ!</td></tr>`;
-        });
+window.switchProTab = function(tabName) {
+    window.currentProTab = tabName;
+    const btnNew = document.getElementById("tabNewRequests");
+    const btnAccepted = document.getElementById("tabAcceptedMembers");
+    
+    if (tabName === "pending") {
+        if(btnNew) { btnNew.style.background = "var(--pri)"; btnNew.style.color = "white"; btnNew.style.border = "none"; }
+        if(btnAccepted) { btnAccepted.style.background = "transparent"; btnAccepted.style.color = "var(--text)"; btnAccepted.style.border = "1px solid var(--border)"; }
+    } else {
+        if(btnAccepted) { btnAccepted.style.background = "#10b981"; btnAccepted.style.color = "white"; btnAccepted.style.border = "none"; }
+        if(btnNew) { btnNew.style.background = "transparent"; btnNew.style.color = "var(--text)"; btnNew.style.border = "1px solid var(--border)"; }
     }
+    loadProRequests();
+};
 
-    // 🔥 MANUAL ACCESS ACTIVATOR & DEACTIVATOR TOGGLE
-    function toggleUserPremium(requestId, userUid, toggleElement) {
-        const isActivating = toggleElement.checked;
-        const nextStatus = isActivating ? "active" : "pending";
-        const nextProState = isActivating ? true : false;
+// 🔥 REALTIME SUBSCRIPTION REQUESTS LOADER & SMART FILTER ENGINE
+function loadProRequests() {
+    const container = document.getElementById("proMembersListContainer");
+    if (!container) return;
 
-        // ১. রিকোয়েস্ট ট্র্যাকিং আপডেট
-        DB.ref(`pro_requests/${requestId}`).update({ status: nextStatus })
+    clearAdminTimers(); // ফ্রেশ লোডের আগে পুরানো টাইমার ক্লিয়ার
+
+    DB.ref("pro_requests").on("value", (snapshot) => {
+        container.innerHTML = "";
+        clearAdminTimers();
+
+        if (!snapshot.exists()) {
+            container.innerHTML = `<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--muted); font-weight: 500;">কোনো প্রিমিয়াম অনুরোধ পাওয়া যায়নি।</td></tr>`;
+            return;
+        }
+
+        let html = "";
+        let itemsCount = 0;
+        let activeRequests = [];
+
+        snapshot.forEach((childSnapshot) => {
+            const reqId = childSnapshot.key;
+            const data = childSnapshot.val();
+
+            // ফিল্টারিং ট্রিক: 'active' এবং 'expired' উভয় ডাটাই চিরদিনের জন্য Accepted Members ট্যাবে থাকবে!
+            let targetTab = data.status;
+            if (data.status === "expired") {
+                targetTab = "active";
+            }
+
+            if (targetTab !== window.currentProTab) return;
+            itemsCount++;
+
+            const dateStr = data.time ? new Date(data.time).toLocaleString('bn-BD') : "N/A";
+            const isChecked = data.status === "active" ? "checked" : "";
+            
+            let statusLabel = "";
+            let deleteButtonHtml = "";
+
+            if (data.status === "active") {
+                statusLabel = `<span id="status_lbl_${reqId}" style="color: #10b981; font-weight: 700; font-size: 12px;">🟢 Active Member</span>`;
+                deleteButtonHtml = `<button onclick="deleteProUserRequest('${reqId}', '${data.uid}', 'active')" style="margin-left: 10px; background: rgba(239, 68, 68, 0.08); color: #ef4444; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 11px; transition: 0.2s;">Delete</button>`;
+            } else if (data.status === "expired") {
+                statusLabel = `<span id="status_lbl_${reqId}" style="color: #ef4444; font-weight: 700; font-size: 12px;">🔴 Expired / Off</span>`;
+                deleteButtonHtml = `<button onclick="deleteProUserRequest('${reqId}', '${data.uid}', 'expired')" style="margin-left: 10px; background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 11px; transition: 0.2s;">Delete</button>`;
+            } else {
+                statusLabel = `<span style="color: #f59e0b; font-weight: 700; font-size: 12px;">🟡 Pending Request</span>`;
+                deleteButtonHtml = ""; 
+            }
+
+            html += `
+            <tr style="border-bottom: 1px solid var(--border); transition: background 0.2s;">
+                <td style="padding: 12px 8px; line-height: 1.5;">
+                    <div style="font-weight: 600; color: var(--text); font-size: 14px;">${data.name || 'Unknown'}</div>
+                    <div style="font-size: 11px; color: var(--muted);">${data.email || 'No Email'}</div>
+                    <div style="font-size: 12px; font-weight: 700; margin-top: 4px;">
+                        <a href="tel:${data.phone}" style="color: var(--pri); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📞 ${data.phone || 'No Number'}</a>
+                    </div>
+                </td>
+                <td style="padding: 12px 8px; color: var(--text); vertical-align: middle;">
+                    <span style="background: rgba(79, 70, 229, 0.1); color: var(--pri); padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; display: inline-block;">
+                        ${data.requestedPlan || 'Starter'}
+                    </span>
+                    <div style="font-size: 10px; color: var(--muted); margin-top: 6px;">📅 ${dateStr}</div>
+                    
+                    <div id="admin_timer_${reqId}" style="font-size: 11px; font-weight: 700; color: #10b981; margin-top: 6px; display: none; background: rgba(16, 185, 129, 0.08); padding: 2px 6px; border-radius: 4px; width: max-content;"></div>
+                </td>
+                <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
+                    ${data.screenshot ? 
+                        `<img src="${data.screenshot}" onclick="previewImage('${data.screenshot}')" style="width: 48px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">` : 
+                        `<span style="color: var(--muted); font-size: 11px;">No Screenshot</span>`
+                    }
+                </td>
+                <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
+                    <div style="margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                        ${statusLabel}
+                        ${deleteButtonHtml}
+                    </div>
+                    <label style="position: relative; display: inline-block; width: 42px; height: 22px; cursor: pointer; vertical-align: middle;">
+                        <input type="checkbox" id="chk_${reqId}" ${isChecked} onchange="toggleUserPremium('${reqId}', '${data.uid}', this)" style="opacity: 0; width: 0; height: 0;">
+                        <span style="position: absolute; inset: 0; background-color: ${data.status === 'active' ? '#10b981' : '#cbd5e1'}; border-radius: 22px; transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                            <span style="position: absolute; content: ''; height: 16px; width: 16px; left: ${data.status === 'active' ? '23px' : '3px'}; bottom: 3px; background-color: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></span>
+                        </span>
+                    </label>
+                </td>
+            </tr>`;
+
+            if (data.uid) {
+                activeRequests.push({ reqId: reqId, userUid: data.uid });
+            }
+        });
+
+        if (itemsCount === 0) {
+            container.innerHTML = `<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--muted); font-weight: 500;">এই সেকশনে বর্তমানে কোনো ডেটা নেই।</td></tr>`;
+        } else {
+            container.innerHTML = html;
+            
+            // ⏳ রিয়েল-টাইম অফলাইন-সেফ কাউন্টডাউন ক্লক ইন্টিগ্রেশন
+            activeRequests.forEach(item => {
+                DB.ref(`users/${item.userUid}`).on("value", (userSnap) => {
+                    const uData = userSnap.val();
+                    const timerBox = document.getElementById(`admin_timer_${item.reqId}`);
+                    
+                    if (uData && uData.isPro === true && uData.proEndDate) {
+                        if (timerBox) timerBox.style.display = "block";
+                        
+                        localStorage.setItem(`offline_pro_end_${item.userUid}`, uData.proEndDate);
+
+                        const intId = setInterval(() => {
+                            const savedEndTime = localStorage.getItem(`offline_pro_end_${item.userUid}`) || uData.proEndDate;
+                            const timeLeft = savedEndTime - Date.now();
+                            const liveTimerBox = document.getElementById(`admin_timer_${item.reqId}`);
+                            
+                            if (timeLeft <= 0) {
+                                if (liveTimerBox) liveTimerBox.innerHTML = "❌ মেয়াদ শেষ";
+                                clearInterval(intId);
+                                
+                                DB.ref(`users/${item.userUid}`).update({ isPro: false, proStartDate: 0, proEndDate: 0 });
+                                DB.ref(`pro_requests/${item.reqId}`).update({ status: "expired" });
+                                localStorage.removeItem(`offline_pro_end_${item.userUid}`);
+                                return;
+                            }
+
+                            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                            if (liveTimerBox) {
+                                liveTimerBox.innerHTML = `⏳ বাকি: ${days}দিন ${hours}ঘ ${minutes}মি ${seconds}সে`;
+                            }
+                        }, 1000);
+                        
+                        window.adminTimerIntervals.push(intId);
+                    } else {
+                        if (timerBox) timerBox.style.display = "none";
+                    }
+                });
+            });
+        }
+    });
+}
+
+function toggleUserPremium(requestId, userUid, toggleElement) {
+    const isActivating = toggleElement.checked;
+
+    if (isActivating === true) {
+        showCustomDaysPrompt((durationMiliseconds, amount, unit) => {
+            const now = Date.now();
+            const expireTime = now + durationMiliseconds;
+
+            let unitText = unit === "minutes" ? "মিনিট" : unit === "hours" ? "ঘণ্টা" : unit === "months" ? "মাস" : "দিন";
+
+            DB.ref(`pro_requests/${requestId}`).update({ status: "active" })
+            .then(() => {
+                return DB.ref(`users/${userUid}`).update({ 
+                    isPro: true,
+                    proStartDate: now,
+                    proEndDate: expireTime
+                });
+            })
+            .then(() => {
+                localStorage.setItem(`offline_pro_end_${userUid}`, expireTime);
+                toast(`ইউজারকে সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
+                window.switchProTab('active');
+            })
+            .catch((error) => {
+                toggleElement.checked = false;
+                toast("ডাটাবেজ আপডেট ব্যর্থ হয়েছে");
+            });
+        }, () => {
+            toggleElement.checked = false;
+        });
+
+    } else {
+        DB.ref(`pro_requests/${requestId}`).update({ status: "expired" })
         .then(() => {
-            // ২. কারেন্ট ইউজার মেমোরির লাইসেন্স লক/আনলক করা (উইন্ডো অবজেক্ট সেফ মেথড)
-            return DB.ref(`users/${userUid}`).update({ isPro: nextProState });
+            return DB.ref(`users/${userUid}`).update({
+                isPro: false,
+                proStartDate: 0,
+                proEndDate: 0
+            });
         })
         .then(() => {
-            toast(isActivating ? "Pro Activated Successfully 👑" : "Pro Deactivated 🔒");
+            localStorage.removeItem(`offline_pro_end_${userUid}`);
+            toast("ইউজারের PRO স্ট্যাটাস সফলভাবে বন্ধ করা হয়েছে। 🔒");
+            window.switchProTab('active');
         })
         .catch((error) => {
-            console.error("Firebase Update Error:", error);
-            toggleElement.checked = !isActivating; // ফেইল হলে টগল ব্যাক হবে
-            toast("Database Update Failed");
+            toggleElement.checked = true;
+            toast("ডাটাবেজ আপডেট ব্যর্থ হয়েছে");
         });
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // 🖼️ SCREENSHOT PREVIEW CORES
     function previewImage(src) {
@@ -1307,6 +1769,22 @@ margin-left:10px;
 
 
 
+
+        // 🔥 KEYBOARD ENTER DETECTION FOR INSTANT LOGIN (COMPUTERS & MOBILE KEYBOARDS)
+        document.addEventListener("DOMContentLoaded", () => {
+            const emailInp = document.getElementById("emailInput");
+            const passInp = document.getElementById("passwordInput");
+
+            const triggerLoginOnEnter = (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    loginNow(); // কীবোর্ডের এন্টার প্রেস করলেই সরাসরি লগইন ফাংশন রান হবে
+                }
+            };
+
+            if (emailInp) emailInp.addEventListener("keydown", triggerLoginOnEnter);
+            if (passInp) passInp.addEventListener("keydown", triggerLoginOnEnter);
+        });
 
         function loginNow() {
 
@@ -1665,18 +2143,19 @@ window.addEventListener("beforeunload", () => {
 });
     </script>
 
-<div id="confirmBox" style="position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.4); backdrop-filter: blur(6px); z-index:9999; transition: opacity 0.2s ease;">
-        <div style="background:var(--card); padding:20px; border-radius:16px; width:300px; text-align:center; border:1px solid var(--border); backdrop-filter: var(--glass);">
-            <div id="confirmMessage" style="font-weight:600; margin-bottom:10px; color:var(--text);">
+<div id="confirmBox" style="position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index:99999; padding: 16px; box-sizing: border-box;">
+        <div style="background:var(--card); padding: 24px; border-radius:24px; width: 100%; max-width: 420px; text-align:center; border:1px solid var(--border); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); box-sizing: border-box; display: flex; flex-direction: column; gap: 14px;">
+            
+            <div id="confirmMessage" style="width: 100%; box-sizing: border-box;">
                 Delete this item?
             </div>
-            <div style="display:flex; gap:10px; justify-content:center; margin-top:15px;">
-                <button onclick="confirmDelete()" style="background:#ef4444; color:white; border:none; padding:8px 16px; border-radius:10px; cursor:pointer; font-weight:600;">Delete</button>
-                <button onclick="closeConfirm()" style="background:var(--pri); color:white; border:none; padding:8px 16px; border-radius:10px; cursor:pointer; font-weight:600;">Cancel</button>
+            
+            <div style="display:flex; gap:12px; justify-content:center; width: 100%; box-sizing: border-box;">
+                <button onclick="closeConfirm()" style="flex:1; background:rgba(0,0,0,0.05); color:var(--text); border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600; font-size:13.5px; transition: 0.2s;">Cancel</button>
+                <button onclick="confirmDelete()" style="flex:1; background:#ef4444; color:white; border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600; font-size:13.5px; transition: 0.2s;">Delete</button>
             </div>
         </div>
     </div>
-
 
 
 
