@@ -951,13 +951,21 @@ transparent
 }
 
 .menuContent {
-    padding: 20px 20px 100px 20px; /* নিচে ১০০ পিক্সেল গ্যাপ রাখা হয়েছে যাতে ফিচার অ্যাকাউন্ট বক্সের পেছনে না লুকায় */
+    padding: 20px 16px 220px 16px;
+
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* ফিচার বেশি হলে ভেতরেই স্ক্রল হবে, অ্যাকাউন্ট বক্স নড়বে না */
-    scrollbar-width: none; /* ফায়ারফক্স স্ক্রলবার হাইড */
+
+    overflow-y: auto;
+    overflow-x: visible;
+
+    scrollbar-width: none;
     -ms-overflow-style: none;
+
+    box-sizing: border-box;
+
+    position: relative;
 }
 
 .menuContent::-webkit-scrollbar {
@@ -977,17 +985,15 @@ transparent
    THEME SYSTEM
 ========================= */
 
-.themeRow{
-
-    margin-top:22px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    padding-top:18px;
+.themeRow {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap; /* 👈 এটি দেওয়ার কারণে ড্রপডাউনটি জায়গা পেয়ে নিচে নেমে যাবে */
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 18px;
+    width: 100%;
+    position: relative;
 }
 
 .themeToggleBtn{
@@ -1052,59 +1058,101 @@ transparent
     translateY(-1px);
 }
 
-.themeDropdown{
+/* 🔥 FORNSIC LAYOUT ENGINE FIXED: DROPDOWN CLIPPING ELIMINATED */
+.themeDropdown {
+    display: grid;
+    
 
-    margin-top:14px;
+    grid-template-rows: 0fr;
 
-    width:50%;
+    opacity: 0;
+    visibility: hidden;
 
-    margin-left:auto;
+    overflow: hidden;
 
-    background:#353535;
+    width: 140px;
 
-    border-radius:18px;
+margin-left: auto;
 
-    overflow-y:auto;
-
-    overflow-x:hidden;
-
-    max-height:0;
-
-    opacity:0;
+    margin-top: 0;
 
     transition:
-    max-height .35s ease,
-    opacity .25s ease;
+    grid-template-rows .35s ease,
+    opacity .25s ease,
+    margin-top .25s ease;
 
-    pointer-events:none;
+    border-radius: 14px;
 
-    scrollbar-width:none;
+    background:#081527;
 
-    -ms-overflow-style:none;
+    position: relative;
+
+    z-index: 99999;
+    border:1px solid rgba(0,131,255,.18);
 }
 
-.themeDropdown::-webkit-scrollbar{
+/* 🔥 ACTIVE STATE ENGINE: FORCES BROWSER TO COMPUTE FULL HEIGHT AND REFLEXIVE FLOW */
+.themeDropdown.show {
+    grid-template-rows: 1fr;
 
-    display:none;
+    opacity: 1;
+    visibility: visible;
+
+    overflow: visible;
+
+    margin-top: 12px;
+
+    padding: 4px 0;
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    box-shadow:
+0 14px 40px rgba(0,0,0,.38),
+0 0 0 1px rgba(255,255,255,.02) inset,
+0 0 18px rgba(0,131,255,.08);
 }
 
-.themeDropdown.show{
-
-    height:auto;
-
-    max-height:260px;
-
-    opacity:1;
-
-    pointer-events:auto;
-
-    overflow-y:auto;
-
-    -webkit-overflow-scrolling:touch;
+/* ডার্ক মোডে সেটিংস স্লাইডারের সাথে ব্যাকগ্রাউন্ড ব্লেন্ডিং */
+body.dark .themeDropdown{
+    background:#081527;
 }
-.rotateArrow{
+body.dark .themeDropdown.show {
+    background: #0f172a !important;
+    border: 1px solid rgba(0, 131, 255, 0.35) !important;
+}
 
-    transform:rotate(180deg);
+/* চাইল্ড আইটেমগুলোর জন্য ব্রাউজার রিফ্লো ও স্পেসিফিসিটি ফিক্স */
+.themeItem,
+.languageItem,
+.fontSizeItem {
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 10px 14px !important; /* ভেতরকার আইটেমের রেসপনসিভ টাচ টার্গেট এবং হাইট ব্যালেন্স */
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: background 0.2s ease !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+.languageItem span{
+    display:block !important;
+}
+.themeDropdown > * {
+    min-height: 0;
+}
+
+.themeItem:hover, .languageItem:hover, .fontSizeItem:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.themeItem.activeTheme, .languageItem.activeLanguage, .fontSizeItem.activeFontSize {
+    background: rgba(255, 255, 255, 0.12) !important; /* একটিভ স্টেট হাইলাইট গ্লো */
+}
+
+.rotateArrow {
+    transform: rotate(180deg) !important;
 }
 
 .themeItem{
@@ -1425,8 +1473,11 @@ body.dark .fontSelect{
 
 /* 🔥 ACCOUNT BOX: BOTTOM FIXED WITH PERFECT BALANCE */
 .accountBox {
-    position: absolute; 
-    bottom: 20px;
+    position: sticky;
+    bottom: 0;
+    background:#0f172a;
+    backdrop-filter:none;
+-webkit-backdrop-filter:none;
     left: 20px;
     right: 20px;
     padding: 12px 14px;
@@ -1757,6 +1808,146 @@ transparent
             </div>
             <textarea id="reportInput" class="reportTextarea" placeholder="আপনার সমস্যা বা মতামতটি বিস্তারিত বাংলায় লিখুন..."></textarea>
             <button id="reportSubmitBtn" class="reportSubmitBtn">Submit Report</button>
+        </div>
+    </div>
+
+    <div id="socialOverlay" class="reportOverlay">
+        <div class="reportPopup" style="max-width: 360px; text-align: center;">
+            <div class="reportHeader">
+                <div class="reportTitle" id="socialModalTitle">Our Community</div>
+                <button id="socialCloseBtn" class="reportCloseBtn">✕</button>
+            </div>
+            <p style="font-size: 13px; opacity: 0.8; margin-bottom: 20px; text-align: center; line-height: 1.5;" id="socialModalDesc">আমাদের অফিশিয়াল সোশ্যাল মিডিয়া প্ল্যাটফর্মে যুক্ত হয়ে PEKO AI এর সাথে কানেক্টেড থাকুন।</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                <a href="https://youtube.com/@YOUR_CHANNEL_LINK" target="_blank" onclick="playSound('click')" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; background: #ef4444; color: white; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); transition: transform 0.2s;">
+                    <span>📺</span> YouTube Channel
+                </a>
+                
+                <a href="https://facebook.com/YOUR_PAGE_LINK" target="_blank" onclick="playSound('click')" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; background: #1877f2; color: white; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(24, 119, 242, 0.2); transition: transform 0.2s;">
+                    <span>📘</span> Facebook Page
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="proOverlay" class="reportOverlay" style="overflow-y: auto; padding: 20px 0;">
+        <div class="reportPopup" id="planBoxSection" style="max-width: 850px; width: 95%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s;">
+            <div class="reportHeader">
+                <div class="reportTitle" style="color: #ff6a00; font-size: 20px; font-weight: 700;">⭐ PEKO PRO Premium Plans</div>
+                <button id="proCloseBtn" class="reportCloseBtn">✕</button>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin: 20px 0;">
+                <div style="border: 2px solid var(--border); padding: 20px; border-radius: 18px; text-align: center; background: rgba(0,0,0,0.02);">
+                    <h3 style="font-size: 16px;">1 Week Starter</h3>
+                    <h2 style="font-size: 26px; margin: 10px 0; color: var(--pri);">২০ ৳</h2>
+                    <p style="font-size: 12px; color: var(--muted);">সীমিত চ্যাট অ্যাক্সেস ও বেসিক থিম</p>
+                    <button class="reportSubmitBtn" onclick="selectPlan('1 Week - 20 Taka')" style="margin-top: 15px; background: var(--pri);">Choose Plan</button>
+                </div>
+                <div style="border: 2px solid var(--border); padding: 20px; border-radius: 18px; text-align: center; background: rgba(0,0,0,0.02);">
+                    <h3 style="font-size: 16px;">2 Weeks Boost</h3>
+                    <h2 style="font-size: 26px; margin: 10px 0; color: var(--pri);">৩০ ৳</h2>
+                    <p style="font-size: 12px; color: var(--muted);">সবগুলো কালার থিম ও আনলক ফিচার</p>
+                    <button class="reportSubmitBtn" onclick="selectPlan('2 Weeks - 30 Taka')" style="margin-top: 15px; background: var(--pri);">Choose Plan</button>
+                </div>
+                <div style="border: 2px solid #ff6a00; padding: 20px; border-radius: 18px; text-align: center; background: rgba(255,106,0,0.05); position: relative;">
+                    <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #ff6a00; color: white; padding: 2px 10px; border-radius: 10px; font-size: 10px; font-weight: 700;">BEST VALUE</span>
+                    <h3 style="font-size: 16px;">1 Month Ultimate</h3>
+                    <h2 style="font-size: 26px; margin: 10px 0; color: #ff6a00;">৫০ ৳</h2>
+                    <p style="font-size: 12px; color: var(--muted);">সাউন্ড অন/অফ এবং সমস্ত প্রো ফিচার আনলক</p>
+                    <button class="reportSubmitBtn" onclick="selectPlan('1 Month - 50 Taka')" style="margin-top: 15px; background: linear-gradient(135deg, #ffaa00, #ff6a00);">Choose Plan</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="reportPopup" id="paymentFormSection" style="max-width: 420px; width: 90%; display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="reportHeader">
+                <div class="reportTitle" id="selectedPlanTitle" style="font-size: 15px; color: var(--pri); font-weight: 700;">Payment Info</div>
+                <button onclick="backToPlans()" class="reportCloseBtn">←</button>
+            </div>
+            
+            <div style="margin: 12px 0; text-align: center;">
+                <p style="font-weight: 600; font-size: 12px; margin-bottom: 8px; text-align: left; color: var(--text);">📱 সরাসরি অ্যাপে ওপেন করুন:</p>
+                <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 12px;">
+                    <a href="bkash://intl" target="_blank" onclick="playSound('click')" style="flex: 1; text-decoration: none; background: #e2136e; color: white; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; display: inline-block;">bKash App</a>
+                    <a href="nagad://intl" target="_blank" onclick="playSound('click')" style="flex: 1; text-decoration: none; background: #ff4500; color: white; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; display: inline-block;">Nagad App</a>
+                </div>
+                <div style="background: rgba(0,0,0,0.04); padding: 8px; border-radius: 10px; font-size: 13px; font-weight: 700; margin-bottom: 15px; border: 1px dashed var(--border);">
+                    📞 আমাদের পার্সোনাল নাম্বার: 017XXXXXXXX
+                </div>
+            </div>
+            
+            <input id="proName" class="reportTextarea" style="min-height:40px!important; height:40px!important; margin-bottom:10px; display: block; width: 100%;" placeholder="আপনার নাম">
+            <input id="proPhone" class="reportTextarea" style="min-height:40px!important; height:40px!important; margin-bottom:10px; display: block; width: 100%;" placeholder="আপনার মোবাইল নাম্বার">
+            
+            <div style="text-align: left; margin-bottom: 15px;">
+                <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px; color: var(--text);">📸 পেমেন্টের স্ক্রিনশট আপলোড করুন:</label>
+                <input type="file" id="proScreenshot" accept="image/*" style="width: 100%; font-size: 12px;">
+            </div>
+            
+            <button id="proSubmitBtn" class="reportSubmitBtn" onclick="submitProRequest()" style="background: linear-gradient(135deg, #0083ff, #005fbc); width: 100%;">Submit Premium Request</button>
+        </div>
+    </div>
+
+    <div id="privacyOverlay" class="reportOverlay">
+        <div class="reportPopup" style="max-width: 450px; width: 92%;">
+            <div class="reportHeader">
+                <div class="reportTitle" style="font-weight: 700;">🔒 Privacy Policy</div>
+                <button id="privacyCloseBtn" class="reportCloseBtn">✕</button>
+            </div>
+            <div style="max-height: 350px; overflow-y: auto; text-align: left; font-size: 13px; line-height: 1.6; padding-right: 5px; color: var(--text);">
+                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">১. ডাটা নিরাপত্তা ও গোপনীয়তা</p>
+                <p style="margin-bottom: 12px; opacity: 0.85;">PEKO AI-তে আপনার প্রদান করা সমস্ত তথ্য এবং চ্যাট হিস্ট্রি সম্পূর্ণ নিরাপদ। আমরা আপনার কোনো ব্যক্তিগত তথ্য বা চ্যাট হিস্ট্রি থার্ড-পার্টি বা অন্য কোনো পাবলিক ডোমেইনে শেয়ার করি না।</p>
+                
+                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">২. লোকাল মেমোরি ডেটা</p>
+                <p style="margin-bottom: 12px; opacity: 0.85;">আপনার থিম সেটিংস, সাউন্ড অপশন ও নোটিফিকেশন স্ট্যাটাসসমূহ আপনার ডিভাইসের LocalStorage-এ সুরক্ষিতভাবে সেভ থাকে।</p>
+                
+                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">৩. পেমেন্ট ডাটা সুরক্ষা</p>
+                <p style="margin-bottom: 6px; opacity: 0.85;">প্রো অ্যাকাউন্টের জন্য পাঠানো আপনার নাম, ফোন নাম্বার এবং পেমেন্ট স্ক্রিনশট শুধুমাত্র ভেরিফিকেশনের জন্য আমাদের ব্যাকএন্ড সার্ভারে অত্যন্ত সুরক্ষিতভাবে সংরক্ষিত হয়।</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="termsOverlay" class="reportOverlay">
+        <div class="reportPopup" style="max-width: 450px; width: 92%;">
+            <div class="reportHeader">
+                <div class="reportTitle" style="font-weight: 700;">📄 Terms of Use</div>
+                <button id="termsCloseBtn" class="reportCloseBtn">✕</button>
+            </div>
+            <div style="max-height: 350px; overflow-y: auto; text-align: left; font-size: 13px; line-height: 1.6; padding-right: 5px; color: var(--text);">
+                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">১. ব্যবহারের নিয়মাবলী</p>
+                <p style="margin-bottom: 12px; opacity: 0.85;">PEKO AI একটি কৃত্রিম বুদ্ধিমত্তা সম্পন্ন চ্যাটবক্স। এটি ব্যবহারের সময় কোনো প্রকার বেআইনি, ক্ষতিকর, আপত্তিকর বা স্প্যামিং মূলক টেক্সট পাঠানো সম্পূর্ণ নিষিদ্ধ।</p>
+                
+                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">২. প্রো সাবস্ক্রিপশন ও রিফান্ড নীতি</p>
+                <p style="margin-bottom: 12px; opacity: 0.85;">ম্যানুয়াল পেমেন্ট করার পর তথ্য যাচাই করতে ১২ থেকে ২৪ ঘণ্টা সময় লাগতে পারে। একবার সাবস্ক্রিপশন সফলভাবে সক্রিয় হয়ে গেলে তা অফেরতযোগ্য বা নন-রিফান্ডেবল হিসেবে গণ্য হবে।</p>
+                
+                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">৩. মেয়াদের সীমাবদ্ধতা</p>
+                <p style="margin-bottom: 6px; opacity: 0.85;">আপনার কেনা প্ল্যানটির মেয়াদ (১ সপ্তাহ, ২ সপ্তাহ বা ১ মাস) শেষ হওয়ার সাথে সাথে আপনার প্রো ফিচারসমূহ স্বয়ংক্রিয়ভাবে লক হয়ে যাবে। পুনরায় ব্যবহার করতে নতুন করে প্ল্যান সাবমিট করতে হবে।</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpCenterScreen" style="display: none; position: fixed; inset: 0; background: var(--bg2); z-index: 20000; flex-direction: column; height: 100dvh;">
+        <div class="header" style="background: linear-gradient(135deg, #1e293b, #0f172a); border-bottom: 1px solid var(--border);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 22px;">🛠️</span>
+                <span style="font-size: 18px; font-weight: 700; color: #fff;">PEKO Help Desk</span>
+            </div>
+            <button id="helpCloseBtn" style="border: none; background: rgba(255,255,255,0.15); color: white; width: 36px; height: 36px; border-radius: 50%; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
+        </div>
+        
+        <div id="helpChatBody" class="chat" style="display: block; padding: 20px; flex: 1; overflow-y: auto; background: var(--bg1);">
+            <div class="msg ai" style="background: #ffffff; color: #000; max-width: 85%;">🤖 <b>PEKO সাপোর্ট বক্সে স্বাগতম!</b><br>আপনার সমস্যাটি নিচে থাকা কাস্টম অপশনগুলো থেকে সিলেক্ট করুন, আমি সমাধান দিচ্ছি।</div>
+        </div>
+        
+        <div style="background: var(--bg2); padding: 15px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; flex-shrink: 0;">
+            <p style="font-size: 11px; font-weight: 600; color: var(--muted); text-align: left; margin: 0;">নিচের যেকোনো একটি প্রশ্নে ক্লিক করুন:</p>
+            <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; -ms-overflow-style: none;">
+                <button onclick="askHelpBot('টাকা পাঠিয়েছি কিন্তু প্রো এখনো অ্যাক্টিভ হয়নি কেন?')" style="background: rgba(0,131,255,0.08); border: 1px solid var(--pri); color: var(--pri); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">💸 প্রো অ্যাক্টিভ হচ্ছে না কেন?</button>
+                <button onclick="askHelpBot('আমার প্রো অ্যাকাউন্টটি ভুলবশত অফ বা লক হয়ে গেছে!')" style="background: rgba(0,131,255,0.08); border: 1px solid var(--pri); color: var(--pri); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">🔒 প্রো লক হয়ে গেছে</button>
+                <button onclick="askHelpBot('PEKO PRO অ্যাপটি ব্যবহারের সঠিক নিয়ম ও গাইডলাইন কী?')" style="background: rgba(0,131,255,0.08); border: 1px solid var(--pri); color: var(--pri); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">📖 ব্যবহারের সঠিক নিয়ম</button>
+            </div>
         </div>
     </div>
 <div id="sideMenu" class="sideMenu">
@@ -2577,6 +2768,75 @@ stroke-linejoin="round"/>
     </button>
 </div>
 
+<div class="themeRow" style="margin-top: 22px; padding-top: 18px;">
+    <span id="notificationTextLabel">Notifications</span>
+    <div id="notificationToggle" class="darkToggle">
+        <div class="darkBall"></div>
+    </div>
+</div>
+
+<div class="themeRow" style="margin-top: 22px; padding-top: 18px;">
+    <button id="clearChatBtn" class="reportMenuBtn">
+        <div class="themeSelected" style="justify-content: space-between; width: 100%;">
+            <span id="deleteChatTextLabel" style="color: #ef4444; font-weight: 600;">Delete Chat</span>
+            <span class="themeArrow" style="color: #ef4444;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+        </div>
+    </button>
+</div>
+
+<div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
+    <button id="socialToggleBtn" class="reportMenuBtn">
+        <div class="themeSelected" style="justify-content: space-between; width: 100%;">
+            <span id="socialTextLabel" style="color: var(--pri); font-weight: 600;">Our Community</span>
+            <span class="themeArrow" style="color: var(--pri);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zm14 10v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </span>
+        </div>
+    </button>
+</div>
+
+<div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
+    <button id="upgradeProBtn" class="reportMenuBtn" style="background: linear-gradient(135deg, #ffaa00, #ff6a00); padding: 12px; border-radius: 14px; box-shadow: 0 4px 15px rgba(255,106,0,0.35); width: 100%; border: none; cursor: pointer;">
+        <div class="themeSelected" style="justify-content: space-between; width: 100%; color: white; display: flex; align-items: center;">
+            <span id="upgradeProTextLabel" style="font-weight: 700; letter-spacing: 0.5px;">⭐ Upgrade to Pro</span>
+            <span class="themeArrow" style="color: white;">➔</span>
+        </div>
+    </button>
+</div>
+
+<div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
+    <button id="helpCenterBtn" class="reportMenuBtn">
+        <div class="themeSelected" style="justify-content: space-between; width: 100%;">
+            <span id="helpCenterTextLabel" style="color: var(--text); font-weight: 600;">🛠️ Help Center</span>
+            <span class="themeArrow">➔</span>
+        </div>
+    </button>
+</div>
+
+<div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
+    <button id="privacyPolicyBtn" class="reportMenuBtn">
+        <div class="themeSelected" style="justify-content: space-between; width: 100%;">
+            <span id="privacyPolicyTextLabel" style="color: var(--text); font-weight: 600;">🔒 Privacy Policy</span>
+            <span class="themeArrow">➔</span>
+        </div>
+    </button>
+</div>
+
+<div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
+    <button id="termsOfUseBtn" class="reportMenuBtn">
+        <div class="themeSelected" style="justify-content: space-between; width: 100%;">
+            <span id="termsOfUseTextLabel" style="color: var(--text); font-weight: 600;">📄 Terms of Use</span>
+            <span class="themeArrow">➔</span>
+        </div>
+    </button>
+</div>
+
     </div> <div class="accountBox">
         <img id="accountPhoto" class="accountPhoto" alt="User Image" crossorigin="anonymous" referrerpolicy="no-referrer">
         
@@ -2660,30 +2920,51 @@ stroke-linejoin="round"/>
             if (loader) loader.classList.add("hidden");
         }
 
-        // ===== AUTH =====
+       // ===== AUTH WITH REAL-TIME PRO MEMBERSHIP LOCK ENGINE =====
+        window.IS_PRO_MEMBER = false; // গ্লোবাল প্রো ডিটেক্টর স্টেট
+
         AUTH.onAuthStateChanged(user => {
             if (user) {
                 USER = user;
-                //$("userInfo").textContent = user.displayName || user.email || "";
                 showApp();
 
-                $("accountName").textContent =
-user.displayName || "User";
+                document.getElementById("accountName").textContent = user.displayName || "User";
+                document.getElementById("accountEmail").textContent = user.email || "";
+                document.getElementById("accountPhoto").src = user.photoURL || "";
+                document.getElementById("sideUserName").textContent = "Settings";
 
-$("accountEmail").textContent =
-user.email || "";
+                // 🔥 ফায়ারবেস 'users' নোড থেকে রিয়েলটাইম প্রো স্ট্যাটাস চেক করা হচ্ছে
+                DB.ref(`users/${user.uid}`).on("value", (snapshot) => {
+                    if (snapshot.exists() && snapshot.val().isPro === true) {
+                        window.IS_PRO_MEMBER = true;
+                        document.getElementById("upgradeProTextLabel").innerHTML = "⭐ PEKO PRO Active 👑";
+                        document.getElementById("upgradeProBtn").style.background = "linear-gradient(135deg, #10b981, #059669)"; // সবুজ প্রো সাকসেস কালার
+                    } else {
+                        window.IS_PRO_MEMBER = false;
+                        document.getElementById("upgradeProTextLabel").innerHTML = "⭐ Upgrade to Pro";
+                        document.getElementById("upgradeProBtn").style.background = "linear-gradient(135deg, #ffaa00, #ff6a00)";
+                        
+                        // প্রো মেম্বার না হলে সাউন্ড ইফেক্ট জোরপূর্বক অফ করে দেওয়া (সাউন্ড লক)
+                        SOUND_ENABLED = false;
+                        document.getElementById("soundToggle").classList.remove("active");
+                        localStorage.setItem("peko_sound", "off");
+                        
+                        // থিম কালার ডিফল্ট ব্লু-তে লক করে দেওয়া (থিম লক)
+                        applyTheme("#0083ff");
+                        localStorage.setItem("peko_theme", "#0083ff");
+                        localStorage.setItem("peko_theme_name", "Blue");
+                    }
+                });
 
-$("accountPhoto").src =
-user.photoURL || "";
-
-$("sideUserName").textContent =
-"Settings";
-                if(sessionStorage.getItem("peko_welcomed")!=="yes"){sessionStorage.setItem("peko_welcomed","yes");
-                setTimeout(()=>{add(`${user.displayName || "বন্ধু"} \n😊 আজকের দিনটা ভালো কাটুক_মনে যা আছে বলুন, আমি শুনছি।`,"ai");},1200);}
+                if (sessionStorage.getItem("peko_welcomed") !== "yes") {
+                    sessionStorage.setItem("peko_welcomed", "yes");
+                    setTimeout(() => {
+                        add(`${user.displayName || "বন্ধু"} \n😊 আজকের দিনটা ভালো কাটুক_মনে যা আছে বলুন, আমি শুনছি।`, "ai");
+                    }, 1200);
+                }
             } else {
                 USER = null;
                 showLogin();
-                
             }
         });
 
@@ -2751,97 +3032,113 @@ closeMenu.onclick = ()=>{
 };
 
 menuOverlay.onclick = closeSideMenu;
-document.addEventListener("pointerdown", (e) => {
+// 🔥 MASTER DROPDOWN LAYER CONTROL (100% CONFIRMED FIX BY MASTER DEVELOPER)
+document.addEventListener("click", (e) => {
+    const themeBtn = document.getElementById("themeToggleBtn");
+    const themeDropdown = document.getElementById("themeDropdown");
+    const langBtn = document.getElementById("languageToggleBtn");
+    const languageDropdown = document.getElementById("languageDropdown");
+    const fontBtn = document.getElementById("fontSizeToggleBtn");
+    const fontSizeDropdown = document.getElementById("fontSizeDropdown");
 
-    const clickedInsideMenu = sideMenu.contains(e.target);
-    const clickedMenuButton = menuBtn.contains(e.target);
-    const clickedThemeDropdown = themeDropdown.contains(e.target);
-    const clickedLanguageDropdown = languageDropdown.contains(e.target);
-
-    // 🔥 MASTER FIX: ভেরিয়েবলের সঠিক নাম (Case-Sensitivity Fix)
-    const clickedLanguageButton = languageBtn ? languageBtn.contains(e.target) : false;
-    const clickedThemeButton = themeBtn ? themeBtn.contains(e.target) : false;
-// LANGUAGE CLOSE (🔥 FIXED BY MASTER DEVELOPER)
-const langBtnEl = $("languageToggleBtn");
-if(
-    languageDropdown.classList.contains("show")
-    &&
-    !clickedLanguageDropdown
-    &&
-    (langBtnEl ? !langBtnEl.contains(e.target) : true)
-){
-
-    languageDropdown.classList.remove(
-        "show"
-    );
-
-    document.querySelector(
-        ".languageArrow"
-    ).classList.remove(
-        "rotateArrow"
-    );
-}
-
-// FONT SIZE CLOSE (🔥 FIXED BY MASTER DEVELOPER)
-const fontBtnEl = $("fontSizeToggleBtn");
-const fontArrowEl = document.querySelector(".fontSizeArrow");
-
-if(
-    fontSizeDropdown.classList.contains("show")
-    &&
-    !fontSizeDropdown.contains(e.target)
-    &&
-    (fontBtnEl ? !fontBtnEl.contains(e.target) : true)
-){
-    fontSizeDropdown.classList.remove("show");
-    if(fontArrowEl) fontArrowEl.classList.remove("rotateArrow");
-}
-    // SIDE MENU CLOSE
-
-    if(
-
-        sideMenu.classList.contains("show")
-
-        &&
-
-        !clickedInsideMenu
-
-        &&
-
-        !clickedMenuButton
-
-    ){
-
-        closeSideMenu();
-    }
-
-    // THEME DROPDOWN CLOSE
-
-    if(
-
-        themeDropdown.classList.contains("show")
-
-        &&
-
-        !clickedThemeDropdown
-
-        &&
-
-        !clickedThemeButton
-
-    ){
-
+    // যেকোনো ফাঁকা জায়গায় ক্লিক করলে খোলা ড্রপডাউনগুলো স্মুথলি বন্ধ করার লজিক
+    if (themeDropdown && !themeDropdown.contains(e.target) && themeBtn && !themeBtn.contains(e.target)) {
         themeDropdown.classList.remove("show");
-
-        document.querySelector(
-            ".themeArrow"
-        ).classList.remove(
-            "rotateArrow"
-        );
+        const arrow = document.querySelector(".themeArrow");
+        if(arrow) arrow.classList.remove("rotateArrow");
     }
-
+    if (languageDropdown && !languageDropdown.contains(e.target) && langBtn && !langBtn.contains(e.target)) {
+        languageDropdown.classList.remove("show");
+        const arrow = document.querySelector(".languageArrow");
+        if(arrow) arrow.classList.remove("rotateArrow");
+    }
+    if (fontSizeDropdown && !fontSizeDropdown.contains(e.target) && fontBtn && !fontBtn.contains(e.target)) {
+        fontSizeDropdown.classList.remove("show");
+        const arrow = document.querySelector(".fontSizeArrow");
+        if(arrow) arrow.classList.remove("rotateArrow");
+    }
 });
 
+// 🔥 MUTUALLY EXCLUSIVE DRAG & DROP ENGINE (একটি খুললে বাকি সব অটো ক্লোজ হবে)
+setTimeout(() => {
+    const themeBtn = document.getElementById("themeToggleBtn");
+    const themeDropdown = document.getElementById("themeDropdown");
+    const languageBtn = document.getElementById("languageToggleBtn");
+    const languageDropdown = document.getElementById("languageDropdown");
+    const fontSizeBtn = document.getElementById("fontSizeToggleBtn");
+    const fontSizeDropdown = document.getElementById("fontSizeDropdown");
+
+    if (themeBtn) {
+        themeBtn.onclick = (e) => {
+            e.stopPropagation();
+            playSound("click");
+            
+            if (window.IS_PRO_MEMBER !== true) {
+                toast("⭐ এই ফিচারটি শুধুমাত্র PRO মেম্বারদের জন্য!");
+                playSound("popup");
+                return;
+            }
+
+            // বাকি ২টা ড্রপডাউন বন্ধ করা হচ্ছে
+            if(languageDropdown) languageDropdown.classList.remove("show");
+            if(fontSizeDropdown) fontSizeDropdown.classList.remove("show");
+            const langArrow = document.querySelector(".languageArrow");
+            const fontArrow = document.querySelector(".fontSizeArrow");
+            if(langArrow) langArrow.classList.remove("rotateArrow");
+            if(fontArrow) fontArrow.classList.remove("rotateArrow");
+
+            // কারেন্ট থিম টগল
+            if(themeDropdown) {
+                themeDropdown.classList.toggle("show");
+                const arrow = document.querySelector(".themeArrow");
+                if(arrow) arrow.classList.toggle("rotateArrow");
+            }
+        };
+    }
+
+    if (languageBtn) {
+        languageBtn.onclick = (e) => {
+            e.stopPropagation();
+            playSound("click");
+
+            // বাকি ২টা ড্রপডাউন বন্ধ করা হচ্ছে
+            if(themeDropdown) themeDropdown.classList.remove("show");
+            if(fontSizeDropdown) fontSizeDropdown.classList.remove("show");
+            const themeArrow = document.querySelector(".themeArrow");
+            const fontArrow = document.querySelector(".fontSizeArrow");
+            if(themeArrow) themeArrow.classList.remove("rotateArrow");
+            if(fontArrow) fontArrow.classList.remove("rotateArrow");
+
+            // কারেন্ট ল্যাঙ্গুয়েজ টগল
+            if(languageDropdown) {
+                languageDropdown.classList.toggle("show");
+                const arrow = document.querySelector(".languageArrow");
+                if(arrow) arrow.classList.toggle("rotateArrow");
+            }
+        };
+    }
+
+    if (fontSizeBtn) {
+        fontSizeBtn.onclick = (e) => {
+            e.stopPropagation();
+            playSound("click");
+
+            // বাকি ২টা ড্রপডাউন বন্ধ করা হচ্ছে
+            if(themeDropdown) themeDropdown.classList.remove("show");
+            if(languageDropdown) languageDropdown.classList.remove("show");
+            const themeArrow = document.querySelector(".themeArrow");
+            const langArrow = document.querySelector(".languageArrow");
+            if(themeArrow) themeArrow.classList.remove("rotateArrow");
+            if(langArrow) langArrow.classList.remove("rotateArrow");
+
+            // কারেন্ট ফন্ট সাইজ টগল এবং অ্যারো অ্যানিমেশন সিঙ্ক ফিক্স
+            if(fontSizeDropdown) {
+                fontSizeDropdown.classList.toggle("show");
+                if(fontSizeArrow) fontSizeArrow.classList.toggle("rotateArrow");
+            }
+        };
+    }
+}, 200);
 
 // LOGOUT
 
@@ -2880,9 +3177,7 @@ function initAudioContext() {
     }
 }
 
-// মাস্টার সাউন্ড প্লে লজিক (যা কখনো নেটওয়ার্কের কারণে ফেইল হবে না)
-// মাস্টার সাউন্ড প্লে লজিক (🔥 HIGH-VOLUME OPTIMIZED BY MASTER DEVELOPER)
-// মাস্টার সাউন্ড প্লে লজিক (🔥 2X ULTRA VOL BOOSTED BY MASTER DEVELOPER)
+// মাস্টার সাউন্ড প্লে লজিক (🔥 HIGH-VOLUME OPTIMIZED WITH SECURE MODES)
 function playSound(type) {
     if (!SOUND_ENABLED) return;
     
@@ -2897,36 +3192,31 @@ function playSound(type) {
         
         const now = audioCtx.currentTime;
         
-        // প্রত্যেকটা সাউন্ডের ভলিউম আগের চেয়ে ঠিক দ্বিগুণ (২ গুণ) করা হলো
         if (type === "click" || type === "type") {
-            // কিবোর্ড/বাটন ক্লিক সাউন্ড (দ্বিগুণ বাড়িয়ে ৮০% করা হলো)
             osc.type = "sine";
             osc.frequency.setValueAtTime(600, now); 
-            gainNode.gain.setValueAtTime(0.80, now); // 🔥 2X Boost (80% Vol)
+            gainNode.gain.setValueAtTime(0.80, now); 
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.05);
             osc.start(now);
             osc.stop(now + 0.05);
         } 
         else if (type === "send") {
-            // মেসেজ সেন্ডিং স্যুইশ সাউন্ড (সর্বোচ্চ ১০০% বা ফুল ১.০ ভলিউম)
             osc.type = "triangle";
             osc.frequency.setValueAtTime(400, now);
             osc.frequency.exponentialRampToValueAtTime(1200, now + 0.15);
-            gainNode.gain.setValueAtTime(1.0, now); // 🔥 MAXIMUM BOOST (100% Vol)
+            gainNode.gain.setValueAtTime(1.0, now); 
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.15);
             osc.start(now);
             osc.stop(now + 0.15);
         } 
         else if (type === "notification") {
-            // এআই এর মেসেজ আসার নোটিফিকেশন সাউন্ড (দ্বিগুণ বাড়িয়ে ৯০% করা হলো)
             osc.type = "sine";
             osc.frequency.setValueAtTime(880, now);
-            gainNode.gain.setValueAtTime(0.90, now); // 🔥 2X Boost (90% Vol)
+            gainNode.gain.setValueAtTime(0.90, now); 
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.1);
             osc.start(now);
             osc.stop(now + 0.1);
             
-            // সেকেন্ড বিইপ
             setTimeout(() => {
                 if (!SOUND_ENABLED) return;
                 const osc2 = audioCtx.createOscillator();
@@ -2935,39 +3225,36 @@ function playSound(type) {
                 gain2.connect(audioCtx.destination);
                 osc2.type = "sine";
                 osc2.frequency.setValueAtTime(1200, audioCtx.currentTime);
-                gain2.gain.setValueAtTime(0.90, audioCtx.currentTime); // 🔥 2X Boost (90% Vol)
+                gain2.gain.setValueAtTime(0.90, audioCtx.currentTime); 
                 gain2.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.12);
                 osc2.start(audioCtx.currentTime);
                 osc2.stop(audioCtx.currentTime + 0.12);
             }, 80);
         } 
         else if (type === "login" || type === "toggleOn") {
-            // সাকসেস বা অন করার প্রিমিয়াম সাউন্ড (সর্বোচ্চ ১০০% বা ফুল ১.০ ভলিউম)
             osc.type = "sine";
             osc.frequency.setValueAtTime(523.25, now); 
             osc.frequency.setValueAtTime(659.25, now + 0.08); 
             osc.frequency.setValueAtTime(783.99, now + 0.16); 
-            gainNode.gain.setValueAtTime(1.0, now); // 🔥 MAXIMUM BOOST (100% Vol)
+            gainNode.gain.setValueAtTime(1.0, now); 
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.3);
             osc.start(now);
             osc.stop(now + 0.3);
         } 
         else if (type === "logout" || type === "toggleOff") {
-            // অফ বা লগআউট ডাউন সাউন্ড (সর্বোচ্চ ১০০% বা ফুল ১.০ ভলিউম)
             osc.type = "sine";
             osc.frequency.setValueAtTime(783.99, now); 
             osc.frequency.setValueAtTime(659.25, now + 0.08); 
             osc.frequency.setValueAtTime(523.25, now + 0.16); 
-            gainNode.gain.setValueAtTime(1.0, now); // 🔥 MAXIMUM BOOST (100% Vol)
+            gainNode.gain.setValueAtTime(1.0, now); 
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.3);
             osc.start(now);
             osc.stop(now + 0.3);
         }
         else if (type === "popup") {
-            // ওয়ার্নিং বা লিমিট পপআপ সাউন্ড (সর্বোচ্চ ১০০% বা ফুল ১.০ ভলিউম)
             osc.type = "sawtooth";
             osc.frequency.setValueAtTime(150, now);
-            gainNode.gain.setValueAtTime(1.0, now); // 🔥 MAXIMUM BOOST (100% Vol)
+            gainNode.gain.setValueAtTime(1.0, now); 
             gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.2);
             osc.start(now);
             osc.stop(now + 0.2);
@@ -2977,8 +3264,15 @@ function playSound(type) {
     }
 }
 
-// সাউন্ড অন/অফ টগল বাটন অ্যাকশন
+// 🔥 SOUND EFFECTS ON/OFF ACTION WITH PREMIUM PRO VERIFIED LOCK
 soundToggle.onclick = () => {
+    // প্রো ভেরিফিকেশন চেক (ইউজার প্রো মেম্বার না হলে সাউন্ড অন করতে দেবে না)
+    if (window.IS_PRO_MEMBER !== true) {
+        toast("⭐ সাউন্ড সচল করতে আগে PRO অ্যাকাউন্ট একটিভ করুন!");
+        playSound("popup");
+        return;
+    }
+
     try {
         SOUND_ENABLED = !SOUND_ENABLED;
         soundToggle.classList.toggle("active");
@@ -2988,12 +3282,191 @@ soundToggle.onclick = () => {
         if (SOUND_ENABLED) {
             playSound("toggleOn");
         } else {
-            SOUND_ENABLED = true; // সাময়িক অন করে অফ সাউন্ড শোনানো
+            let currentSoundState = SOUND_ENABLED;
+            SOUND_ENABLED = true;
             playSound("toggleOff");
-            SOUND_ENABLED = false;
+            SOUND_ENABLED = currentSoundState;
         }
     } catch (error) {}
 };
+
+// 🔥 NOTIFICATION TOGGLE ENGINE (BY MASTER DEVELOPER)
+const notifToggle = document.getElementById("notificationToggle");
+let NOTIFICATION_ENABLED = localStorage.getItem("peko_notif") !== "off";
+
+// মেমোরি থেকে আগের অবস্থা চেক করে বাটন এক্টিভ করা
+if (NOTIFICATION_ENABLED && notifToggle) {
+    notifToggle.classList.add("active");
+}
+
+if (notifToggle) {
+    notifToggle.onclick = () => {
+        try {
+            NOTIFICATION_ENABLED = !NOTIFICATION_ENABLED;
+            notifToggle.classList.toggle("active");
+            localStorage.setItem("peko_notif", NOTIFICATION_ENABLED ? "on" : "off");
+            
+            // বাটন টগলের সময় প্রিমিয়াম সাউন্ড ইফেক্ট সিঙ্ক
+            if (NOTIFICATION_ENABLED) {
+                playSound("toggleOn");
+                toast("Notifications Enabled 🔔");
+            } else {
+                // অফ করার সময় সাময়িক সাউন্ড অন করে অফ সাউন্ড বাজানো
+                let currentSoundState = SOUND_ENABLED;
+                SOUND_ENABLED = true;
+                playSound("toggleOff");
+                SOUND_ENABLED = currentSoundState;
+                toast("Notifications Disabled 🔕");
+            }
+        } catch (error) {}
+    };
+}
+
+// 🔥 LOCAL CHAT CLEAR ENGINE (WITHOUT AFFECTING FIREBASE/ADMIN - BY MASTER DEVELOPER)
+const clearChatBtn = document.getElementById("clearChatBtn");
+
+if (clearChatBtn) {
+    clearChatBtn.onclick = () => {
+        try {
+            playSound("logout"); // প্রিমিয়াম ডাউন-টোন অ্যাকশন সাউন্ড
+            closeSideMenu(); // অ্যাকশন শুরুর সাথে সাথে স্লাইডারটি বন্ধ হয়ে যাবে
+            
+            const chatBox = document.getElementById("chat");
+            if (chatBox) {
+                chatBox.innerHTML = ""; // কারেন্ট স্ক্রিনের সব চ্যাট ভ্যানিশ করা হলো
+                
+                // স্ক্রিন যেন একদম ফাঁকা বা কুৎসিত না লাগে, তাই ইউজারকে আবার মিষ্টি করে স্বাগত জানানো
+                setTimeout(() => {
+                    const welcomeName = (USER && USER.displayName) ? USER.displayName : "বন্ধু";
+                    add(`${welcomeName} \n😊 চ্যাট ক্লিয়ার করা হয়েছে। নতুন করে মনে যা আছে বলুন, আমি শুনছি।`, "ai");
+                    playSound("notification"); // রিসিভ নোটিফিকেশন সাউন্ড
+                }, 400);
+            }
+            toast("Chat Cleared Successfully ✨");
+        } catch (error) {
+            console.error("Clear Chat Error:", error);
+        }
+    };
+}
+
+// 🔥 SOCIAL COMMUNITY POPUP LOGIC (BY MASTER DEVELOPER)
+const socialToggleBtn = $("socialToggleBtn");
+const socialOverlay = $("socialOverlay");
+const socialCloseBtn = $("socialCloseBtn");
+
+// স্লাইডার থেকে পপআপ ওপেন লজিক
+if (socialToggleBtn && socialOverlay) {
+    socialToggleBtn.onclick = () => {
+        playSound("click");
+        closeSideMenu(); // ক্লিক করার সাথে সাথে পেছনের সাইডবার স্লাইডারটি বন্ধ হয়ে যাবে
+        socialOverlay.classList.add("show");
+    };
+}
+
+// পপআপ ক্লোজ লজিক
+if (socialCloseBtn && socialOverlay) {
+    socialCloseBtn.onclick = () => {
+        playSound("click");
+        socialOverlay.classList.remove("show");
+    };
+}
+
+// পপআপের বাইরের ব্লার এরিয়াতে ক্লিক করলে বন্ধ হওয়া
+if (socialOverlay) {
+    socialOverlay.addEventListener("click", (e) => {
+        if (e.target === socialOverlay) {
+            playSound("click");
+            socialOverlay.classList.remove("show");
+        }
+    });
+}
+
+// =======================================
+// 🔥 HELP CENTER, PRIVACY & TERMS ENGINE (BY MASTER DEVELOPER)
+// =======================================
+const privacyOverlay = document.getElementById("privacyOverlay");
+const termsOverlay = document.getElementById("termsOverlay");
+const helpCenterScreen = document.getElementById("helpCenterScreen");
+
+const privacyPolicyBtn = document.getElementById("privacyPolicyBtn");
+const termsOfUseBtn = document.getElementById("termsOfUseBtn");
+const helpCenterBtn = document.getElementById("helpCenterBtn");
+
+const privacyCloseBtn = document.getElementById("privacyCloseBtn");
+const termsCloseBtn = document.getElementById("termsCloseBtn");
+const helpCloseBtn = document.getElementById("helpCloseBtn");
+const helpChatBody = document.getElementById("helpChatBody");
+
+// ১. ওপেনিং লজিকসমূহ
+if (privacyPolicyBtn && privacyOverlay) {
+    privacyPolicyBtn.onclick = () => { playSound("click"); closeSideMenu(); privacyOverlay.classList.add("show"); };
+}
+if (termsOfUseBtn && termsOverlay) {
+    termsOfUseBtn.onclick = () => { playSound("click"); closeSideMenu(); termsOverlay.classList.add("show"); };
+}
+if (helpCenterBtn && helpCenterScreen) {
+    helpCenterBtn.onclick = () => { 
+        playSound("click"); 
+        closeSideMenu(); 
+        helpCenterScreen.style.display = "flex"; 
+        // চ্যাট বক্স প্রথমবার ফ্রেশ রাখা
+        helpChatBody.innerHTML = `<div class="msg ai" style="background: #ffffff; color: #000; max-width: 85%;">🤖 <b>PEKO সাপোর্ট বক্সে স্বাগতম!</b><br>আপনার সমস্যাটি নিচে থাকা কাস্টম অপশনগুলো থেকে সিলেক্ট করুন, আমি সমাধান দিচ্ছি।</div>`;
+    };
+}
+
+// ২. ক্লোজিং লজিকসমূহ
+if (privacyCloseBtn && privacyOverlay) {
+    privacyCloseBtn.onclick = () => { playSound("click"); privacyOverlay.classList.remove("show"); };
+}
+if (termsCloseBtn && termsOverlay) {
+    termsCloseBtn.onclick = () => { playSound("click"); termsOverlay.classList.remove("show"); };
+}
+if (helpCloseBtn && helpCenterScreen) {
+    helpCloseBtn.onclick = () => { playSound("click"); helpCenterScreen.style.display = "none"; };
+}
+
+// ওভারলে বাইরে ক্লিক করলে মডাল ক্লোজ
+if (privacyOverlay) privacyOverlay.addEventListener("click", (e) => { if(e.target === privacyOverlay){ playSound("click"); privacyOverlay.classList.remove("show"); } });
+if (termsOverlay) termsOverlay.addEventListener("click", (e) => { if(e.target === termsOverlay){ playSound("click"); termsOverlay.classList.remove("show"); } });
+
+// ৩. হেল্প সেন্টার অটো-বট ইন্টেলিজেন্ট ইঞ্জিন
+function askHelpBot(userQuestion) {
+    playSound("send");
+    
+    // ইউজারের প্রশ্ন স্ক্রিনে যোগ করা
+    const uMsg = document.createElement("div");
+    uMsg.className = "msg user";
+    uMsg.textContent = userQuestion;
+    helpChatBody.appendChild(uMsg);
+    
+    // স্ক্রল স্মুথলি নিচে নামানো
+    helpChatBody.scrollTop = helpChatBody.scrollHeight;
+    
+    // বটের ভাবার অ্যানিমেশন ও টাইপিং সাউন্ড সিঙ্ক
+    setTimeout(() => {
+        playSound("type");
+        let botReply = "";
+        
+        // কন্ডিশনাল প্রশ্ন অ্যানালাইসিস লজিক
+        if (userQuestion.includes("টাকা পাঠিয়েছি")) {
+            botReply = "💸 <b>পেমেন্ট স্ট্যাটাস চেক গাইড:</b><br><br>আপনি ফর্ম সাবমিট করে থাকলে চিন্তার কোনো কারণ নেই ভাই! আমরা প্রতিটি ট্রানজেকশন ম্যানুয়ালি ভেরিফাই করি। সাধারণত ১২ থেকে ২৪ ঘণ্টার মধ্যে আপনার প্রো অ্যাকাউন্টটি অ্যাক্টিভ করে দেওয়া হবে। অনুগ্রহ করে একটু ধৈর্য ধরে অপেক্ষা করুন, পেমেন্ট সঠিক থাকলে অ্যাক্সেস নিশ্চিত পাবেন ইনশাল্লাহ।";
+        } else if (userQuestion.includes("ভুলবশত অফ বা লক")) {
+            botReply = "🔒 <b>অ্যাকাউন্ট লক রিকভারি:</b><br><br>আপনার প্রো অ্যাকাউন্টের মেয়াদ শেষ হয়ে গেলে এটি স্বয়ংক্রিয়ভাবে লক হতে পারে। অথবা আপনি নতুন ডিভাইস পরিবর্তন করলে ব্যাকএন্ড সিকিউরিটির জন্য এটি ঘটতে পারে। আপনি আপনার নাম ও পেমেন্ট হিস্ট্রি সহ মেইন অ্যাপের 'Report Issue' সেকশনে বিস্তারিত লিখে পাঠান, অ্যাডমিন প্যানেল চেক করে আপনার সমস্যাটি দ্রুত ফিক্স করে দেবে।";
+        } else {
+            botReply = "📖 <b>PEKO AI ব্যবহার বিধি:</b><br><br>১. মেইন চ্যাট বক্সে স্বাভাবিকভাবে প্রশ্ন লিখে নীল বোতামে চাপুন।<br>২. প্রো ফিচার চালু থাকলে আপনি সাউন্ড অন/অফ করতে পারবেন এবং প্রিমিয়াম থিম ব্যবহার করতে পারবেন।<br>৩. কোনো সমস্যা হলে 'Report Issue' এর মাধ্যমে সরাসরি অ্যাডমিনকে জানাতে পারবেন।";
+        }
+        
+        // বটের উত্তর স্ক্রিনে রেন্ডার করা
+        const bMsg = document.createElement("div");
+        bMsg.className = "msg ai";
+        bMsg.style.cssText = "background: #ffffff; color: #000; max-width: 85%; line-height: 1.6;";
+        bMsg.innerHTML = "🤖 " + botReply;
+        helpChatBody.appendChild(bMsg);
+        
+        playSound("notification");
+        helpChatBody.scrollTop = helpChatBody.scrollHeight;
+    }, 800);
+}
 
 
 // DARK MODE
@@ -3048,47 +3521,10 @@ darkToggle.onclick = () => {
 
 
 // ======================
-// THEME SYSTEM
+// THEME SYSTEM (🔥 CONFIG FIXED)
 // ======================
-
-const themeBtn =
-document.getElementById(
-    "themeToggleBtn"
-);
-
-const themeDropdown =
-document.getElementById(
-    "themeDropdown"
-);
-
-const themeItems =
-document.querySelectorAll(
-    ".themeItem"
-);
-
-const selectedThemeText =
-document.getElementById(
-    "selectedThemeText"
-);
-
-
-// TOGGLE DROPDOWN
-
-themeBtn.onclick = ()=>{
-    playSound("click");
-
-    themeDropdown.classList.toggle(
-        "show"
-    );
-
-    document.querySelector(
-        ".themeArrow"
-    ).classList.toggle(
-        "rotateArrow"
-    );
-};
-
-
+const themeItems = document.querySelectorAll(".themeItem");
+const selectedThemeText = document.getElementById("selectedThemeText");
 // APPLY THEME
 
 function applyTheme(color){
@@ -3270,7 +3706,11 @@ const LANG = {
 
         Purple: "Purple",
 
-        Gray: "Gray"
+        Gray: "Gray",
+        
+        notifLabel: "Notifications",
+        
+        deleteChatLabel: "Delete Chat"
     },
 
     bn: {
@@ -3297,7 +3737,11 @@ const LANG = {
 
         Purple: "বেগুনি",
 
-        Gray: "ধূসর"
+        Gray: "ধূসর",
+        
+        notifLabel: "নোটিফিকেশন",
+        
+        deleteChatLabel: "চ্যাট মুছুন"
     },
 
     jp: {
@@ -3414,6 +3858,7 @@ ar: {
 // APPLY LANGUAGE
 
 function applyLanguage(lang){
+    
 
     const t = LANG[lang];
 
@@ -3447,6 +3892,10 @@ function applyLanguage(lang){
         .textContent =
         t[name];
     });
+
+    // 🔥 MASTER LANGUAGE RE-SYNC (ফাংশনের ভেতরে সুরক্ষিতভাবে যুক্ত করা হলো)
+    if($("notificationTextLabel")) $("notificationTextLabel").textContent = t.notifLabel || "Notifications";
+    if($("deleteChatTextLabel")) $("deleteChatTextLabel").textContent = t.deleteChatLabel || "Delete Chat";
 
     if(lang === "bn"){
 
@@ -4464,6 +4913,115 @@ setTimeout(() => {
     playSound("click");
 
 });
+// =======================================
+// 🔥 PREMIUM PRO GATEWAY ENGINE WITH TIMEOUT TOAST (BY MASTER DEVELOPER)
+// =======================================
+const proOverlay = document.getElementById("proOverlay");
+const upgradeProBtn = document.getElementById("upgradeProBtn");
+const proCloseBtn = document.getElementById("proCloseBtn");
+const planBoxSection = document.getElementById("planBoxSection");
+const paymentFormSection = document.getElementById("paymentFormSection");
+
+let SELECTED_PLAN_NAME = "";
+
+if (upgradeProBtn && proOverlay) {
+    upgradeProBtn.onclick = () => {
+        playSound("click");
+        closeSideMenu();
+        proOverlay.classList.add("show");
+        planBoxSection.style.display = "block";
+        paymentFormSection.style.display = "none";
+    };
+}
+
+if (proCloseBtn && proOverlay) {
+    proCloseBtn.onclick = () => {
+        playSound("click");
+        proOverlay.classList.remove("show");
+    };
+}
+
+function selectPlan(planName) {
+    playSound("click");
+    SELECTED_PLAN_NAME = planName;
+    document.getElementById("selectedPlanTitle").innerText = "Plan: " + planName;
+    planBoxSection.style.display = "none";
+    paymentFormSection.style.display = "block";
+}
+
+function backToPlans() {
+    playSound("click");
+    planBoxSection.style.display = "block";
+    paymentFormSection.style.display = "none";
+}
+
+function submitProRequest() {
+    const name = (document.getElementById("proName").value || "").trim();
+    const phone = (document.getElementById("proPhone").value || "").trim();
+    const fileInput = document.getElementById("proScreenshot");
+
+    if (!name || !phone || !fileInput || fileInput.files.length === 0) {
+        toast("সবগুলো তথ্য এবং স্ক্রিনশট সঠিকভাবে দিন!");
+        playSound("popup");
+        return;
+    }
+
+    if (!USER) {
+        toast("দয়া করে আগে লগইন করুন");
+        return;
+    }
+
+    const file = fileInput.files[0];
+    const submitBtn = document.getElementById("proSubmitBtn");
+    
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Uploading Request...";
+    playSound("send");
+
+    // ফাইলটি ডাটাবেজে ট্র্যাক করার জন্য ট্রানজেকশন রেফারেন্সে ফাইল রিডার কনভার্ট করা হচ্ছে (Base64 বা ডিরেক্ট স্ট্রিং মেথড)
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const screenshotData = e.target.result; // স্ক্রিনশটের ইমেজ ডাটা স্ট্রিং
+
+        const proPayload = {
+            uid: USER.uid,
+            name: name,
+            email: USER.email.toLowerCase(),
+            phone: phone,
+            screenshot: screenshotData, // এই ডাটা সরাসরি এডমিন প্যানেলে ছবি হিসেবে ভেসে উঠবে!
+            requestedPlan: SELECTED_PLAN_NAME,
+            status: "pending",
+            time: Date.now()
+        };
+
+        // ফায়ারবেসের 'pro_requests' নোডে পুশ করা হচ্ছে
+        DB.ref("pro_requests").push(proPayload)
+            .then(() => {
+                // 🔥 ৫ সেকেন্ডের জন্য সাকসেস মেসেজ টোস্ট এক্টিভেশন
+                let toastEl = document.getElementById("toast");
+                if (toastEl) {
+                    toastEl.innerText = "অনুরোধ সফল হয়েছে! ১২ থেকে ২৪ ঘণ্টার মধ্যে প্রো অ্যাক্টিভ হবে ইনশাল্লাহ।";
+                    toastEl.classList.add("show");
+                    playSound("login"); // সাকসেস টিউন
+                    
+                    // এক্সাক্ট ৫ সেকেন্ড (৫০০০ মিলিসেকেন্ড) পর নোটিফিকেশন গায়েব হবে
+                    setTimeout(() => {
+                        toastEl.classList.remove("show");
+                    }, 5000);
+                }
+                proOverlay.classList.remove("show");
+            })
+            .catch((err) => {
+                console.error(err);
+                toast("ত্রুটি! আবার চেষ্টা করুন।");
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Submit Premium Request";
+            });
+    };
+    reader.readAsDataURL(file);
+}
 
 
         // RIGHT CLICK BLOCK
