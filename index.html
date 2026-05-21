@@ -951,7 +951,7 @@ transparent
 }
 
 .menuContent {
-    padding: 20px 16px 220px 16px;
+    padding:20px 16px 18px 16px;
 
     flex: 1;
     display: flex;
@@ -1925,31 +1925,68 @@ transparent
                 <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">৩. মেয়াদের সীমাবদ্ধতা</p>
                 <p style="margin-bottom: 6px; opacity: 0.85;">আপনার কেনা প্ল্যানটির মেয়াদ (১ সপ্তাহ, ২ সপ্তাহ বা ১ মাস) শেষ হওয়ার সাথে সাথে আপনার প্রো ফিচারসমূহ স্বয়ংক্রিয়ভাবে লক হয়ে যাবে। পুনরায় ব্যবহার করতে নতুন করে প্ল্যান সাবমিট করতে হবে।</p>
             </div>
+       </div>
+    </div>
+
+    <div id="comingSoonOverlay" class="reportOverlay">
+        <div class="reportPopup" style="max-width: 420px; width: 92%; border-radius: 24px;">
+            <div class="reportHeader">
+                <div class="reportTitle" style="color: #ff6a00; font-size: 20px; font-weight: 700;">🚀 Upcoming Features</div>
+                <button id="comingSoonCloseBtn" class="reportCloseBtn">✕</button>
+            </div>
+            
+            <p style="font-size: 13px; opacity: 0.8; margin-bottom: 18px; line-height: 1.5;">
+                PEKO AI কে আরও শক্তিশালী ও আকর্ষণীয় করতে খুব শীঘ্রই আমাদের প্ল্যাটফর্মে নিচের দুর্দান্ত ফিচারগুলো যুক্ত হতে যাচ্ছে:
+            </p>
+            
+            <div style="max-height: 280px; overflow-y: auto; text-align: left; font-size: 13px; line-height: 1.6; padding-right: 5px; color: var(--text);">
+                <div style="background: rgba(255,106,0,0.06); padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid #ff6a00;">
+                    <p style="font-weight: 700; margin: 0; color: #ff6a00;">🎙️ Voice Interactive Assistant</p>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.8;">টাইপ না করেই সরাসরি মুখের কথায় PEKO এর সাথে রিয়েল-টাইম ভয়েস চ্যাট করার সুবিধা।</p>
+                </div>
+                
+                <div style="background: rgba(0,131,255,0.06); padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid var(--pri);">
+                    <p style="font-weight: 700; margin: 0; color: var(--pri);">🎨 AI Image Generator Engine</p>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.8;">আপনার মনের কল্পনা টেক্সট আকারে লিখে দিলেই মুহূর্তের মধ্যে হাই-কোয়ালিটি ইমেজ বা লোগো তৈরি।</p>
+                </div>
+                
+                <div style="background: rgba(16,185,129,0.06); padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid #10b981;">
+                    <p style="font-weight: 700; margin: 0; color: #10b981;">📁 File & Document Analyzer</p>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.8;">যেকোনো PDF, Text বা কোডিং ফাইল আপলোড করে এক ক্লিকে সম্পূর্ণ সামারি এবং সমাধান বের করা।</p>
+                </div>
+
+                <div style="background: rgba(195,162,246,0.08); padding: 10px 14px; border-radius: 12px; border-left: 4px solid #c3a2f6;">
+                    <p style="font-weight: 700; margin: 0; color: #b084f4;">👥 Premium Group Chat Mod</p>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.8;">একাধিক কাস্টম এআই ক্যারেক্টারকে একসাথে এক স্ক্রিনে এনে গ্রুপ ডিস্কাশন করার মেগা প্যানেল।</p>
+                </div>
+            </div>
+            
+            <button id="comingSoonOkBtn" class="reportSubmitBtn" style="background: linear-gradient(135deg, #ffaa00, #ff6a00); width: 100%; margin-top: 18px; border-radius: 14px;">Awesome, Can't Wait! ✨</button>
         </div>
     </div>
 
-    <div id="helpCenterScreen" style="display: none; position: fixed; inset: 0; background: var(--bg2); z-index: 20000; flex-direction: column; height: 100dvh;">
-        <div class="header" style="background: linear-gradient(135deg, #1e293b, #0f172a); border-bottom: 1px solid var(--border);">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 22px;">🛠️</span>
-                <span style="font-size: 18px; font-weight: 700; color: #fff;">PEKO Help Desk</span>
+<div id="proInfoOverlay" class="reportOverlay">
+        <div class="reportPopup" style="max-width: 380px; width: 90%; border-radius: 22px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+            <div class="reportHeader">
+                <div class="reportTitle" style="color: #10b981; font-size: 18px; font-weight: 700;">👑 Premium Membership Info</div>
+                <button id="proInfoCloseBtn" class="reportCloseBtn">✕</button>
             </div>
-            <button id="helpCloseBtn" style="border: none; background: rgba(255,255,255,0.15); color: white; width: 36px; height: 36px; border-radius: 50%; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;">✕</button>
-        </div>
-        
-        <div id="helpChatBody" class="chat" style="display: block; padding: 20px; flex: 1; overflow-y: auto; background: var(--bg1);">
-            <div class="msg ai" style="background: #ffffff; color: #000; max-width: 85%;">🤖 <b>PEKO সাপোর্ট বক্সে স্বাগতম!</b><br>আপনার সমস্যাটি নিচে থাকা কাস্টম অপশনগুলো থেকে সিলেক্ট করুন, আমি সমাধান দিচ্ছি।</div>
-        </div>
-        
-        <div style="background: var(--bg2); padding: 15px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; flex-shrink: 0;">
-            <p style="font-size: 11px; font-weight: 600; color: var(--muted); text-align: left; margin: 0;">নিচের যেকোনো একটি প্রশ্নে ক্লিক করুন:</p>
-            <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; -ms-overflow-style: none;">
-                <button onclick="askHelpBot('টাকা পাঠিয়েছি কিন্তু প্রো এখনো অ্যাক্টিভ হয়নি কেন?')" style="background: rgba(0,131,255,0.08); border: 1px solid var(--pri); color: var(--pri); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">💸 প্রো অ্যাক্টিভ হচ্ছে না কেন?</button>
-                <button onclick="askHelpBot('আমার প্রো অ্যাকাউন্টটি ভুলবশত অফ বা লক হয়ে গেছে!')" style="background: rgba(0,131,255,0.08); border: 1px solid var(--pri); color: var(--pri); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">🔒 প্রো লক হয়ে গেছে</button>
-                <button onclick="askHelpBot('PEKO PRO অ্যাপটি ব্যবহারের সঠিক নিয়ম ও গাইডলাইন কী?')" style="background: rgba(0,131,255,0.08); border: 1px solid var(--pri); color: var(--pri); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">📖 ব্যবহারের সঠিক নিয়ম</button>
+            
+            <div style="margin: 20px 0; font-size: 14px; line-height: 1.6; color: var(--text);">
+                <div style="background: rgba(16, 185, 129, 0.06); padding: 12px; border-radius: 14px; margin-bottom: 18px; font-weight: 600; color: #10b981; text-align: center;">
+                    🎉 আপনার প্রো অ্যাকাউন্টটি বর্তমানে সক্রিয় আছে!
+                </div>
+                <p style="margin: 8px 0; opacity: 0.9; text-align: left; font-size: 13px;">📅 <b style="color: var(--text);">শুরুর সময়:</b> <span id="proActivationDateText" style="font-weight: 600; color: #10b981;">--/--/----</span></p>
+                <p style="margin: 8px 0; opacity: 0.9; text-align: left; font-size: 13px;">⌛ <b style="color: var(--text);">শেষের সময়:</b> <span id="proExpirationDateText" style="font-weight: 600; color: #ef4444;">--/--/----</span></p>
+                <p style="margin: 14px 0 0 0; font-size: 12px; color: var(--muted); text-align: left; border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 10px; line-height: 1.4;">
+                    💡 নির্ধারিত মেয়াদ শেষ হওয়ার পর প্রো ফিচারসমূহ স্বয়ংক্রিয়ভাবে লক হয়ে যাবে। যেকোনো প্রয়োজনে হেল্প সেন্টারে যোগাযোগ করুন।
+                </p>
             </div>
+            
+            <button id="proInfoOkBtn" class="reportSubmitBtn" style="background: linear-gradient(135deg, #10b981, #059669); width: 100%; border-radius: 12px; font-weight: 600;">ঠিক আছে</button>
         </div>
     </div>
+
 <div id="sideMenu" class="sideMenu">
 
     <div class="sideTop">
@@ -2810,6 +2847,18 @@ stroke-linejoin="round"/>
     </button>
 </div>
 
+<div id="proTimerRow" class="themeRow" style="margin-top: 14px; padding: 0; width: 100%; display: none; box-sizing: border-box;">
+    <button id="proTimerBtn" class="reportMenuBtn" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.02)); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 14px; padding: 12px 14px; width: 100%; cursor: pointer; transition: all 0.2s;">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; color: #10b981;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600;">
+                <span>⏳</span>
+                <span id="proLiveTimerText">হিসাব করা হচ্ছে...</span>
+            </div>
+            <span style="font-size: 13px; opacity: 0.7;">➔</span>
+        </div>
+    </button>
+</div>
+
 <div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
     <button id="helpCenterBtn" class="reportMenuBtn">
         <div class="themeSelected" style="justify-content: space-between; width: 100%;">
@@ -2837,7 +2886,31 @@ stroke-linejoin="round"/>
     </button>
 </div>
 
-    </div> <div class="accountBox">
+
+
+
+
+<div class="themeRow" style="margin-top: 22px; padding: 0; width: 100%; box-sizing: border-box; display: block;">
+    <button id="comingSoonBtn" class="reportMenuBtn" style="background: linear-gradient(135deg, rgba(0, 131, 255, 0.08), rgba(0, 131, 255, 0.02)); border: 1px solid rgba(0, 131, 255, 0.22); border-radius: 16px !important; width: 100%; aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: all 0.25s ease; box-shadow: 0 4px 15px rgba(0, 131, 255, 0.04); padding: 20px; box-sizing: border-box; margin: 0; cursor: pointer;">
+        <span id="comingSoonTextLabel" style="color: var(--pri); font-weight: 700; font-size: 17px; text-align: center; line-height: 1.4; white-space: normal; display: block; width: 100%; letter-spacing: 0.5px;">Coming Soon</span>
+        
+        <div class="themeArrow" style="color: var(--pri); display: flex; align-items: center; justify-content: center; background: rgba(0, 131, 255, 0.1); width: 42px; height: 42px; border-radius: 50%; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0, 131, 255, 0.15);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </button>
+</div>
+
+
+
+    </div>
+    
+    
+    
+    
+    <div class="accountBox">
+        
         <img id="accountPhoto" class="accountPhoto" alt="User Image" crossorigin="anonymous" referrerpolicy="no-referrer">
         
         <div class="accountInfo">
@@ -2933,28 +3006,113 @@ stroke-linejoin="round"/>
                 document.getElementById("accountPhoto").src = user.photoURL || "";
                 document.getElementById("sideUserName").textContent = "Settings";
 
-                // 🔥 ফায়ারবেস 'users' নোড থেকে রিয়েলটাইম প্রো স্ট্যাটাস চেক করা হচ্ছে
+                // 🔥 ফায়ারবেস 'users' নোড থেকে রিয়েলটাইম প্রো স্ট্যাটাস চেক করা হচ্ছে (নিখুঁত কাউন্টডাউন ফিক্সড)
+                let proClockInterval = null;
+                let globalProActivationTime = 0;
+                let globalProExpirationTime = 0;
+
                 DB.ref(`users/${user.uid}`).on("value", (snapshot) => {
+                    if (proClockInterval) clearInterval(proClockInterval);
+                    
                     if (snapshot.exists() && snapshot.val().isPro === true) {
                         window.IS_PRO_MEMBER = true;
                         document.getElementById("upgradeProTextLabel").innerHTML = "⭐ PEKO PRO Active 👑";
-                        document.getElementById("upgradeProBtn").style.background = "linear-gradient(135deg, #10b981, #059669)"; // সবুজ প্রো সাকসেস কালার
+                        document.getElementById("upgradeProBtn").style.background = "linear-gradient(135deg, #10b981, #059669)"; 
+                        
+                        const uData = snapshot.val();
+                        globalProActivationTime = uData.proStartDate || 0;
+                        globalProExpirationTime = uData.proEndDate || 0;
+
+                        // কোনো ভুলভাল অটো-টাইম জেনারেট হবে না। এডমিন যা সেট করবে সেটাই দেখাবে।
+                        if (globalProExpirationTime > 0) {
+                            document.getElementById("proTimerRow").style.display = "block";
+                            
+                            function updateProClock() {
+                                const now = Date.now();
+                                const timeLeft = globalProExpirationTime - now;
+
+                                if (timeLeft <= 0) {
+                                    document.getElementById("proLiveTimerText").innerHTML = "মেয়াদ শেষ হয়েছে ❌";
+                                    clearInterval(proClockInterval);
+                                    
+                                    // মেয়াদ শেষ, তাই ডাটাবেজে প্রো অফ করে দেওয়া হচ্ছে
+                                    DB.ref(`users/${user.uid}`).update({ 
+                                        isPro: false,
+                                        proStartDate: 0,
+                                        proEndDate: 0
+                                    });
+                                    return;
+                                }
+
+                                // নিখুঁত দিন, ঘণ্টা, মিনিট ও সেকেন্ডের হিসাব
+                                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                                const banglaNums = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+                                function toBangla(num) {
+                                    return String(num).padStart(2, '0').split('').map(digit => banglaNums[digit] || digit).join('');
+                                }
+
+                                document.getElementById("proLiveTimerText").innerHTML = `বাকি: ${toBangla(days)}দিন ${toBangla(hours)}ঘণ্টা ${toBangla(minutes)}মিনিট ${toBangla(seconds)}সেকেন্ড`;
+                            }
+
+                            updateProClock();
+                            proClockInterval = setInterval(updateProClock, 1000);
+                        } else {
+                            document.getElementById("proTimerRow").style.display = "none";
+                        }
+
                     } else {
                         window.IS_PRO_MEMBER = false;
                         document.getElementById("upgradeProTextLabel").innerHTML = "⭐ Upgrade to Pro";
                         document.getElementById("upgradeProBtn").style.background = "linear-gradient(135deg, #ffaa00, #ff6a00)";
+                        document.getElementById("proTimerRow").style.display = "none";
+                        if (proClockInterval) clearInterval(proClockInterval);
                         
-                        // প্রো মেম্বার না হলে সাউন্ড ইফেক্ট জোরপূর্বক অফ করে দেওয়া (সাউন্ড লক)
                         SOUND_ENABLED = false;
                         document.getElementById("soundToggle").classList.remove("active");
                         localStorage.setItem("peko_sound", "off");
                         
-                        // থিম কালার ডিফল্ট ব্লু-তে লক করে দেওয়া (থিম লক)
                         applyTheme("#0083ff");
                         localStorage.setItem("peko_theme", "#0083ff");
                         localStorage.setItem("peko_theme_name", "Blue");
                     }
                 });
+
+                const proTimerBtn = document.getElementById("proTimerBtn");
+                const proInfoOverlay = document.getElementById("proInfoOverlay");
+                const proInfoCloseBtn = document.getElementById("proInfoCloseBtn");
+                const proInfoOkBtn = document.getElementById("proInfoOkBtn");
+
+                function formatBanglaDate(timestamp) {
+                    if (!timestamp) return "N/A";
+                    const d = new Date(timestamp);
+                    return d.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long', year: 'numeric' }) + " " + d.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+                }
+
+                if (proTimerBtn && proInfoOverlay) {
+                    proTimerBtn.onclick = () => {
+                        playSound("click");
+                        closeSideMenu();
+                        document.getElementById("proActivationDateText").innerText = formatBanglaDate(globalProActivationTime);
+                        document.getElementById("proExpirationDateText").innerText = formatBanglaDate(globalProExpirationTime);
+                        proInfoOverlay.classList.add("show");
+                    };
+                }
+
+                if (proInfoCloseBtn && proInfoOverlay) {
+                    proInfoCloseBtn.onclick = () => { playSound("click"); proInfoOverlay.classList.remove("show"); };
+                }
+                if (proInfoOkBtn && proInfoOverlay) {
+                    proInfoOkBtn.onclick = () => { playSound("click"); proInfoOverlay.classList.remove("show"); };
+                }
+                if (proInfoOverlay) {
+                    proInfoOverlay.addEventListener("click", (e) => {
+                        if (e.target === proInfoOverlay) { playSound("click"); proInfoOverlay.classList.remove("show"); }
+                    });
+                }
 
                 if (sessionStorage.getItem("peko_welcomed") !== "yes") {
                     sessionStorage.setItem("peko_welcomed", "yes");
@@ -3398,12 +3556,41 @@ const helpCloseBtn = document.getElementById("helpCloseBtn");
 const helpChatBody = document.getElementById("helpChatBody");
 
 // ১. ওপেনিং লজিকসমূহ
+const comingSoonBtn = document.getElementById("comingSoonBtn");
+const comingSoonOverlay = document.getElementById("comingSoonOverlay");
+const comingSoonCloseBtn = document.getElementById("comingSoonCloseBtn");
+const comingSoonOkBtn = document.getElementById("comingSoonOkBtn");
+
+if (comingSoonBtn && comingSoonOverlay) {
+    comingSoonBtn.onclick = () => { 
+        playSound("click"); 
+        closeSideMenu(); // পেছনের স্লাইডার মেনুটি স্বয়ংক্রিয়ভাবে বন্ধ হয়ে যাবে
+        comingSoonOverlay.classList.add("show"); // মাঝখানে পপআপ ভেসে উঠবে এবং পুরো স্ক্রিন ব্লার হবে
+    };
+}
+
+if (comingSoonCloseBtn && comingSoonOverlay) {
+    comingSoonCloseBtn.onclick = () => { playSound("click"); comingSoonOverlay.classList.remove("show"); };
+}
+
+if (comingSoonOkBtn && comingSoonOverlay) {
+    comingSoonOkBtn.onclick = () => { playSound("click"); comingSoonOverlay.classList.remove("show"); };
+}
+
+if (comingSoonOverlay) {
+    comingSoonOverlay.addEventListener("click", (e) => { 
+        if(e.target === comingSoonOverlay){ playSound("click"); comingSoonOverlay.classList.remove("show"); } 
+    });
+}
+
 if (privacyPolicyBtn && privacyOverlay) {
     privacyPolicyBtn.onclick = () => { playSound("click"); closeSideMenu(); privacyOverlay.classList.add("show"); };
 }
+
 if (termsOfUseBtn && termsOverlay) {
     termsOfUseBtn.onclick = () => { playSound("click"); closeSideMenu(); termsOverlay.classList.add("show"); };
 }
+
 if (helpCenterBtn && helpCenterScreen) {
     helpCenterBtn.onclick = () => { 
         playSound("click"); 
@@ -3739,9 +3926,11 @@ const LANG = {
 
         Gray: "ধূসর",
         
-        notifLabel: "নোটিফিকেশন",
+       notifLabel: "নোটিফিকেশন",
         
-        deleteChatLabel: "চ্যাট মুছুন"
+        deleteChatLabel: "চ্যাট মুছুন",
+        
+        comingSoonLabel: "কামিং সুন"
     },
 
     jp: {
