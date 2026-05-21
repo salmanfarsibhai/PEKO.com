@@ -883,6 +883,7 @@ margin-left:10px;
    <div class="admin-tabs-bar" style="display: flex; gap: 12px; margin: 20px auto; max-width: 1100px; padding: 0 20px;">
         <button id="btn-space-chats" onclick="toggleAdminSpace('chats')" style="padding: 10px 20px; border: none; border-radius: 12px; background: var(--pri); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);">User Chats</button>
         <button id="btn-space-reports" onclick="toggleAdminSpace('reports')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">User Reports</button>
+        <button id="btn-space-pro" onclick="toggleAdminSpace('pro-members')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Pro Members</button>
     </div>
 
     <div id="chats-space-wrapper" style="display: block;">
@@ -910,30 +911,179 @@ margin-left:10px;
         </div>
     </div>
 
+<div id="pro-space-wrapper" style="display: none; padding: 0 20px;">
+        <div class="card" style="margin-bottom: 30px; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <span style="font-size: 20px;">👑</span>
+                <h2 style="font-size: 18px; font-weight: 700; margin: 0; color: var(--pri);">Premium Subscription Requests</h2>
+            </div>
+            <div style="overflow-x: auto; width: 100%;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border); color: var(--muted); background: rgba(0,0,0,0.02);">
+                            <th style="padding: 12px 8px;">ইউজার ডিটেইলস</th>
+                            <th style="padding: 12px 8px;">প্ল্যান ও সময়</th>
+                            <th style="padding: 12px 8px; text-align: center;">পেমেন্ট স্ক্রিনশট</th>
+                            <th style="padding: 12px 8px; text-align: center;">অ্যাক্টিভেশন স্ট্যাটাস</th>
+                        </tr>
+                    </thead>
+                    <tbody id="proMembersListContainer">
+                        <tr>
+                            <td colspan="4" style="padding: 20px; text-align: center; color: var(--muted);">Pro মেম্বার ডাটা লোড হচ্ছে...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="imagePreviewModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 99999; padding: 20px;">
+        <div style="position: relative; max-width: 90%; max-height: 90%;">
+            <button onclick="closeImageModal()" style="position: absolute; top: -45px; right: 0; background: #ef4444; color: white; border: none; width: 35px; height: 35px; border-radius: 50%; font-weight: bold; cursor: pointer; font-size: 16px;">✕</button>
+            <img id="modalTargetImg" src="" alt="Screenshot Preview" style="max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain;">
+        </div>
+    </div>
+
     <script>
     // মাউন্テッド ট্যাব স্পেস ইঞ্জিন (🔥 ACTIVE TABS SYNC FIXED BY MASTER DEVELOPER)
+    // মাউন্テッド ৩-ট্যাব স্পেস ইঞ্জিন (🔥 PRO MEMBERS ACTIVE LAYERS INTEGRATED)
     function toggleAdminSpace(spaceType) {
         const chatsWrapper = document.getElementById("chats-space-wrapper");
         const reportsWrapper = document.getElementById("reports-space-wrapper");
+        const proWrapper = document.getElementById("pro-space-wrapper");
+        
         const btnChats = document.getElementById("btn-space-chats");
         const btnReports = document.getElementById("btn-space-reports");
+        const btnPro = document.getElementById("btn-space-pro");
 
-        window.ACTIVE_SPACE = spaceType; // উইন্ডো অবজেক্টে রিয়েল-টাইম পুশ করা হলো যাতে অল ডিলিট বাটন ট্র্যাক করতে পারে
+        window.ACTIVE_SPACE = spaceType;
+
+        // সব কন্টেইনার ডিফল্ট হাইড করা
+        if (chatsWrapper) chatsWrapper.style.display = "none";
+        if (reportsWrapper) reportsWrapper.style.display = "none";
+        if (proWrapper) proWrapper.style.display = "none";
+
+        // সব বোতাম ডিফল্ট নরমাল স্টাইল করা
+        const normalStyle = "padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;";
+        if (btnChats) btnChats.style.cssText = normalStyle;
+        if (btnReports) btnReports.style.cssText = normalStyle;
+        if (btnPro) btnPro.style.cssText = normalStyle;
+
+        // একটিভ ট্যাব অনুযায়ী স্টাইল এবং কন্টেইনার শো করা
+        const activeStyle = "padding: 10px 20px; border: none; border-radius: 12px; background: var(--pri); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);";
 
         if (spaceType === "chats") {
             if (chatsWrapper) chatsWrapper.style.display = "block";
-            if (reportsWrapper) reportsWrapper.style.display = "none";
-
-            btnChats.style.cssText = "padding: 10px 20px; border: none; border-radius: 12px; background: var(--pri); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);";
-            btnReports.style.cssText = "padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;";
+            if (btnChats) btnChats.style.cssText = activeStyle;
+            render();
         } else if (spaceType === "reports") {
-            if (chatsWrapper) chatsWrapper.style.display = "none";
             if (reportsWrapper) reportsWrapper.style.display = "block";
-
-            btnReports.style.cssText = "padding: 10px 20px; border: none; border-radius: 12px; background: var(--pri); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);";
-            btnChats.style.cssText = "padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;";
+            if (btnReports) btnReports.style.cssText = activeStyle;
+        } else if (spaceType === "pro-members") {
+            if (proWrapper) proWrapper.style.display = "block";
+            if (btnPro) btnPro.style.cssText = activeStyle;
+            loadProRequests(); // প্রো মেম্বার ডাটা রেন্ডারার কল
         }
     }
+
+    // 🔥 REALTIME SUBSCRIPTION REQUESTS LOADER (FIREBASE ENGINE)
+    function loadProRequests() {
+        const container = document.getElementById("proMembersListContainer");
+        if (!container) return;
+
+        // ফায়ারবেসের 'pro_requests' নোড থেকে ডাটা রিয়েলটাইম রিড করা হচ্ছে
+        DB.ref("pro_requests").on("value", (snapshot) => {
+            if (!snapshot.exists()) {
+                container.innerHTML = `<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--muted); font-weight: 500;">কোনো প্রিমিয়াম অনুরোধ পাওয়া যায়নি।</td></tr>`;
+                return;
+            }
+
+            let html = "";
+            snapshot.forEach((childSnapshot) => {
+                const reqId = childSnapshot.key;
+                const data = childSnapshot.val();
+                const dateStr = data.time ? new Date(data.time).toLocaleString('bn-BD') : "N/A";
+                
+                const isChecked = data.status === "active" ? "checked" : "";
+                const statusLabel = data.status === "active" ? 
+                    `<span style="color: #10b981; font-weight: 700; font-size: 12px;">🟢 Active</span>` : 
+                    `<span style="color: #f59e0b; font-weight: 700; font-size: 12px;">🟡 Pending</span>`;
+
+                html += `
+                <tr style="border-bottom: 1px solid var(--border); transition: background 0.2s;">
+                    <td style="padding: 12px 8px; line-height: 1.5;">
+                        <div style="font-weight: 600; color: var(--text); font-size: 14px;">${data.name || 'Unknown'}</div>
+                        <div style="font-size: 11px; color: var(--muted);">${data.email || 'No Email'}</div>
+                        <div style="font-size: 12px; font-weight: 700; margin-top: 4px;">
+                            <a href="tel:${data.phone}" style="color: var(--pri); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📞 ${data.phone || 'No Number'}</a>
+                        </div>
+                    </td>
+                    <td style="padding: 12px 8px; color: var(--text); vertical-align: middle;">
+                        <span style="background: rgba(79, 70, 229, 0.1); color: var(--pri); padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold; display: inline-block;">
+                            ${data.requestedPlan || 'Starter'}
+                        </span>
+                        <div style="font-size: 10px; color: var(--muted); margin-top: 6px;">📅 ${dateStr}</div>
+                    </td>
+                    <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
+                        ${data.screenshot ? 
+                            `<img src="${data.screenshot}" onclick="previewImage('${data.screenshot}')" style="width: 48px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">` : 
+                            `<span style="color: var(--muted); font-size: 11px;">No Screenshot</span>`
+                        }
+                    </td>
+                    <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
+                        <div style="margin-bottom: 6px;">${statusLabel}</div>
+                        <label style="position: relative; display: inline-block; width: 42px; height: 22px; cursor: pointer; vertical-align: middle;">
+                            <input type="checkbox" ${isChecked} onchange="toggleUserPremium('${reqId}', '${data.uid}', this)" style="opacity: 0; width: 0; height: 0;">
+                            <span style="position: absolute; inset: 0; background-color: ${data.status === 'active' ? '#10b981' : '#cbd5e1'}; border-radius: 22px; transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                                <span style="position: absolute; content: ''; height: 16px; width: 16px; left: ${data.status === 'active' ? '23px' : '3px'}; bottom: 3px; background-color: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></span>
+                            </span>
+                        </label>
+                    </td>
+                </tr>`;
+            });
+            container.innerHTML = html;
+        }, (error) => {
+            console.error("Firebase Fetch Error:", error);
+            container.innerHTML = `<tr><td colspan="4" style="color: #ef4444; text-align: center; padding: 10px;">ডাটা রিড করতে ব্যর্থ!</td></tr>`;
+        });
+    }
+
+    // 🔥 MANUAL ACCESS ACTIVATOR & DEACTIVATOR TOGGLE
+    function toggleUserPremium(requestId, userUid, toggleElement) {
+        const isActivating = toggleElement.checked;
+        const nextStatus = isActivating ? "active" : "pending";
+        const nextProState = isActivating ? true : false;
+
+        // ১. রিকোয়েস্ট ট্র্যাকিং আপডেট
+        DB.ref(`pro_requests/${requestId}`).update({ status: nextStatus })
+        .then(() => {
+            // ২. কারেন্ট ইউজার মেমোরির লাইসেন্স লক/আনলক করা (উইন্ডো অবজেক্ট সেফ মেথড)
+            return DB.ref(`users/${userUid}`).update({ isPro: nextProState });
+        })
+        .then(() => {
+            toast(isActivating ? "Pro Activated Successfully 👑" : "Pro Deactivated 🔒");
+        })
+        .catch((error) => {
+            console.error("Firebase Update Error:", error);
+            toggleElement.checked = !isActivating; // ফেইল হলে টগল ব্যাক হবে
+            toast("Database Update Failed");
+        });
+    }
+
+    // 🖼️ SCREENSHOT PREVIEW CORES
+    function previewImage(src) {
+        const modal = document.getElementById("imagePreviewModal");
+        const modalImg = document.getElementById("modalTargetImg");
+        if(modal && modalImg) {
+            modalImg.src = src;
+            modal.style.display = "flex";
+        }
+    }
+    function closeImageModal() {
+        const modal = document.getElementById("imagePreviewModal");
+        if(modal) modal.style.display = "none";
+    }
+    
     </script>
 
     <div id="toast" class="toast"></div>
