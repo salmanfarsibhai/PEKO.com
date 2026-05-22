@@ -644,6 +644,8 @@ div {
     transform: translate(-50%, -45%) scale(0.9);
     width: 90%;
     max-width: 400px;
+    max-height: 85vh; /* 🔥 পপআপটি স্ক্রিনের ৮৫% এর বেশি বড় হবে না */
+    overflow-y: auto; /* 🔥 কন্টেন্ট বড় হলে অটোমেটিক স্ক্রল চালু হবে */
     background: #ffffff;
     border-radius: 24px;
     padding: 24px;
@@ -652,6 +654,12 @@ div {
     opacity: 0;
     pointer-events: none;
     z-index: 100003;
+    scrollbar-width: none; /* 🔥 ফায়ারফক্সের জন্য স্ক্রলবার হাইড (প্রিমিয়াম লুক) */
+}
+
+/* 🔥 ক্রোম ও সাফারির জন্য স্ক্রলবার হাইড (প্রিমিয়াম লুক) */
+.reportPopup::-webkit-scrollbar {
+    display: none; 
 }
 
 body.dark .reportPopup {
@@ -1959,6 +1967,35 @@ transparent
         </div>
     </div>
 
+    <div id="helpCenterScreen" class="reportOverlay">
+        <div class="reportPopup" style="max-width: 420px; width: 95%; height: 80vh; display: flex; flex-direction: column; padding: 0; border-radius: 24px; overflow: hidden; background: #f8fafc;">
+            
+            <div class="reportHeader" style="padding: 16px 20px; background: linear-gradient(135deg, var(--pri), var(--pri2)); margin: 0; flex-shrink: 0; display: flex; justify-content: space-between; align-items: center;">
+                <div class="reportTitle" style="color: white; display: flex; align-items: center; gap: 10px; font-size: 16px;">
+                    <span style="background: white; padding: 4px; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; font-size: 20px;">🤖</span> 
+                    PEKO Agent Support
+                </div>
+                <button id="helpCloseBtn" style="background: rgba(255,255,255,0.2); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: bold;">✕</button>
+            </div>
+
+            <div id="helpChatBody" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: rgba(0,0,0,0.02);">
+                </div>
+
+            <div style="padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; white-space: nowrap; border-top: 1px solid rgba(0,0,0,0.05); background: white; scrollbar-width: none;" id="helpSuggestions">
+                <button onclick="askPekoAgent('কীভাবে প্রো প্ল্যান কিনবো?')" style="background: rgba(0, 131, 255, 0.1); color: var(--pri); border: 1px solid rgba(0, 131, 255, 0.2); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; flex-shrink: 0; transition: 0.2s;">💎 প্রো প্ল্যান কেনা</button>
+                <button onclick="askPekoAgent('অ্যাকাউন্ট লক দেখাচ্ছে কেন?')" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; flex-shrink: 0; transition: 0.2s;">🔒 অ্যাকাউন্ট লক</button>
+                <button onclick="askPekoAgent('অ্যাডমিনের সাথে কথা বলতে চাই')" style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; flex-shrink: 0; transition: 0.2s;">👨‍💻 অ্যাডমিন সাপোর্ট</button>
+            </div>
+
+            <div style="padding: 12px 16px; display: flex; gap: 10px; background: white; border-top: 1px solid rgba(0,0,0,0.05); align-items: center;">
+                <input id="helpInputText" type="text" placeholder="PEKO Agent কে মেসেজ করুন..." style="flex: 1; padding: 12px 16px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.03); color: #000; outline: none; font-size: 14px;">
+                <button onclick="sendCustomHelpMsg()" style="background: var(--pri); color: white; border: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <div id="privacyOverlay" class="reportOverlay">
         <div class="reportPopup" style="max-width: 450px; width: 92%;">
@@ -1996,6 +2033,48 @@ transparent
                 <p style="margin-bottom: 6px; opacity: 0.85;">আপনার কেনা প্ল্যানটির মেয়াদ (১ সপ্তাহ, ২ সপ্তাহ বা ১ মাস) শেষ হওয়ার সাথে সাথে আপনার প্রো ফিচারসমূহ স্বয়ংক্রিয়ভাবে লক হয়ে যাবে। পুনরায় ব্যবহার করতে নতুন করে প্ল্যান সাবমিট করতে হবে।</p>
             </div>
        </div>
+    </div>
+
+    <div id="versionOverlay" class="reportOverlay">
+        <div class="reportPopup" style="max-width: 380px; width: 90%; border-radius: 24px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative; padding: 24px;">
+            
+            <button id="versionCloseBtn" class="reportCloseBtn" style="position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.04); border: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); font-weight: bold; font-size: 11px; z-index: 10;">✕</button>
+            
+            <div class="reportHeader" style="justify-content: center; margin-bottom: 20px; border: none; padding: 0;">
+                <div class="reportTitle" style="color: var(--pri); font-size: 19px; font-weight: 700; width: 100%; text-align: center; letter-spacing: -0.3px;">App Version</div>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; text-align: left;">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0, 131, 255, 0.08); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0, 131, 255, 0.15);">
+                    <span style="font-weight: 700; color: var(--pri); font-size: 14.5px; letter-spacing: 0.3px;">PEKO v1.0 — Genesis</span>
+                    <span style="font-size: 11px; background: var(--pri); color: white; padding: 3px 10px; border-radius: 20px; font-weight: 700; letter-spacing: 0.2px;">Active</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.55;">
+                    <span style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
+                    <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Coming Soon</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.55;">
+                    <span style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
+                    <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Coming Soon</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.55;">
+                    <span style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
+                    <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Coming Soon</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.55;">
+                    <span style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
+                    <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Coming Soon</span>
+                </div>
+                
+            </div>
+            
+            <button id="versionOkBtn" class="reportSubmitBtn" style="background: linear-gradient(135deg, var(--pri), var(--pri2)); width: 100%; border-radius: 12px; font-weight: 600; box-shadow: 0 4px 12px rgba(0, 131, 255, 0.2); padding: 12px; border: none; color: white; cursor: pointer; font-size: 14px; min-height: 44px; display: flex; align-items: center; justify-content: center;">OK</button>
+        </div>
     </div>
 
     <div id="comingSoonOverlay" class="reportOverlay">
@@ -2958,6 +3037,18 @@ stroke-linejoin="round"/>
 
 
 
+<div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
+    <button id="appVersionBtn" class="reportMenuBtn">
+        <div class="themeSelected" style="justify-content: space-between; width: 100%;">
+            <span id="appVersionTextLabel" style="color: var(--text); font-weight: 600;">⚙️ App Version</span>
+            <span class="themeArrow">➔</span>
+        </div>
+    </button>
+</div>
+
+
+
+
 
 
 <div class="themeRow" style="margin-top: 22px; padding: 0; width: 100%; box-sizing: border-box; display: block;">
@@ -3638,6 +3729,70 @@ if (comingSoonBtn && comingSoonOverlay) {
         comingSoonOverlay.classList.add("show"); // মাঝখানে পপআপ ভেসে উঠবে এবং পুরো স্ক্রিন ব্লার হবে
     };
 }
+// =======================================
+// 🔥 APP VERSION POPUP ENGINE
+// =======================================
+const appVersionBtn = document.getElementById("appVersionBtn");
+const versionOverlay = document.getElementById("versionOverlay");
+const versionCloseBtn = document.getElementById("versionCloseBtn");
+const versionOkBtn = document.getElementById("versionOkBtn");
+
+// মেনু থেকে ক্লিক করলে ওপেন হবে
+if (appVersionBtn && versionOverlay) {
+    appVersionBtn.onclick = () => { 
+        playSound("click"); 
+        closeSideMenu(); 
+        versionOverlay.classList.add("show"); 
+    };
+}
+
+// ক্রস (✕) বাটনে ক্লিক করলে বন্ধ হবে
+if (versionCloseBtn && versionOverlay) {
+    versionCloseBtn.onclick = () => { 
+        playSound("click"); 
+        versionOverlay.classList.remove("show"); 
+    };
+}
+
+// "OK" বাটনে ক্লিক করলে স্মুথলি বন্ধ হবে (কোনো অতিরিক্ত নোটিফিকেশন আসবে না)
+if (versionOkBtn && versionOverlay) {
+    versionOkBtn.onclick = () => { 
+        playSound("click"); 
+        versionOverlay.classList.remove("show"); 
+    };
+}
+
+// পপআপের বাইরের ফাঁকা জায়গায় (ব্লার অংশে) ক্লিক করলে বন্ধ হবে
+if (versionOverlay) {
+    versionOverlay.addEventListener("click", (e) => { 
+        if(e.target === versionOverlay) { 
+            playSound("click"); 
+            versionOverlay.classList.remove("show"); 
+        } 
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if (comingSoonCloseBtn && comingSoonOverlay) {
     comingSoonCloseBtn.onclick = () => { playSound("click"); comingSoonOverlay.classList.remove("show"); };
@@ -5557,6 +5712,116 @@ setInterval(() => {
                 setTimeout(setAppHeight, 100); // কিবোর্ড নামার সময় ফিক্স
             });
         }
+
+        // 🔥 PEKO AGENT LOGIC ENGINE (SMART SESSION GROUPING)
+const helpCenterScreenPanel = document.getElementById("helpCenterScreen");
+const helpChatBodyPanel = document.getElementById("helpChatBody");
+const helpInputText = document.getElementById("helpInputText");
+
+let currentHelpSession = []; // 🧠 পুরো সেশনের চ্যাট একসাথে সেভ রাখার মেমোরি
+
+// হেল্প সেন্টার ওপেন করা
+document.getElementById("helpCenterBtn").onclick = () => {
+    playSound("click");
+    closeSideMenu();
+    helpCenterScreenPanel.classList.add("show");
+    
+    currentHelpSession = []; // নতুন সেশন শুরু হলে মেমোরি ক্লিয়ার
+
+    if (helpChatBodyPanel.children.length === 0) {
+        appendHelpMsg("🤖 <b>স্বাগতম! আমি PEKO Agent.</b><br>আপনার অ্যাপ ব্যবহারে কোনো সমস্যা হচ্ছে? নিচের বাটনগুলো থেকে সিলেক্ট করুন অথবা লিখে জানান। আমি সাহায্য করার চেষ্টা করছি!", "ai");
+    }
+};
+
+// 💾 ডাটাবেজে পুরো চ্যাট হিস্ট্রি একসাথে সেভ করার ইঞ্জিন
+function saveHelpSessionToDB() {
+    if (currentHelpSession.length > 0 && USER) {
+        DB.ref("help_logs").push({
+            uid: USER.uid,
+            name: USER.displayName || "User",
+            email: USER.email || "No Email",
+            session_data: currentHelpSession, // পুরো চ্যাটের লিস্ট একসাথে পাঠানো হলো
+            time: Date.now()
+        });
+        currentHelpSession = []; // সেভ করার পর মেমোরি ক্লিয়ার
+    }
+}
+
+// উইন্ডো কেটে দেওয়ার সময় চ্যাট সেভ হবে
+document.getElementById("helpCloseBtn").onclick = () => {
+    playSound("click");
+    helpCenterScreenPanel.classList.remove("show");
+    saveHelpSessionToDB(); // 🟢 পপআপ কাটার সাথে সাথে অ্যাডমিনের কাছে ডাটা চলে যাবে
+};
+
+function appendHelpMsg(text, sender) {
+    const msgDiv = document.createElement("div");
+    msgDiv.style.cssText = `max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 14px; line-height: 1.5; margin-bottom: 8px; width: fit-content; word-break: break-word;`;
+    
+    if (sender === "user") {
+        msgDiv.style.background = "var(--pri)";
+        msgDiv.style.color = "white";
+        msgDiv.style.marginLeft = "auto";
+        msgDiv.style.borderBottomRightRadius = "4px";
+    } else {
+        msgDiv.style.background = "white";
+        msgDiv.style.color = "#000";
+        msgDiv.style.marginRight = "auto";
+        msgDiv.style.borderBottomLeftRadius = "4px";
+        msgDiv.style.boxShadow = "0 2px 10px rgba(0,0,0,0.05)";
+    }
+    
+    msgDiv.innerHTML = text;
+    helpChatBodyPanel.appendChild(msgDiv);
+    helpChatBodyPanel.scrollTop = helpChatBodyPanel.scrollHeight;
+}
+
+function sendCustomHelpMsg() {
+    const text = (helpInputText.value || "").trim();
+    if (!text) return;
+    helpInputText.value = "";
+    askPekoAgent(text);
+}
+
+if(helpInputText){
+    helpInputText.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); sendCustomHelpMsg(); }
+    });
+}
+
+function askPekoAgent(userQuestion) {
+    if (!USER) {
+        toast("দয়া করে আগে লগইন করুন!");
+        return;
+    }
+
+    playSound("send");
+    appendHelpMsg(userQuestion, "user");
+    
+    setTimeout(() => {
+        playSound("notification");
+        let botReply = "";
+        
+        if (userQuestion.includes("প্রো প্ল্যান") || userQuestion.includes("কিনবো")) {
+            botReply = "<b>💎 প্রো প্ল্যান কেনার নিয়ম:</b><br>মেনু থেকে 'Upgrade to Pro' বাটনে ক্লিক করুন। সেখানে আপনি বিকাশ ও নগদ নম্বর পাবেন। পেমেন্ট করে স্ক্রিনশট সাবমিট করুন। ১২-২৪ ঘণ্টার মধ্যে অ্যাক্টিভ হয়ে যাবে ইনশাল্লাহ।";
+        } else if (userQuestion.includes("লক") || userQuestion.includes("অ্যাকাউন্ট")) {
+            botReply = "<b>🔒 অ্যাকাউন্ট লক ইনফো:</b><br>প্রো মেম্বারশিপের মেয়াদ শেষ হয়ে গেলে অ্যাকাউন্টটি সাময়িক লক দেখায়। আপনি যদি মনে করেন এটি ভুলবশত হয়েছে, তবে আমি আপনার এই মেসেজটি অ্যাডমিনের কাছে পাঠিয়ে দিচ্ছি। দ্রুত চেক করা হবে।";
+        } else if (userQuestion.includes("অ্যাডমিন") || userQuestion.includes("কথা")) {
+            botReply = "<b>👨‍💻 অ্যাডমিন সাপোর্ট:</b><br>আমি আপনার মেসেজটি নোট করেছি এবং সরাসরি অ্যাডমিন প্যানেলে পাঠিয়ে দিয়েছি। অ্যাডমিন ফ্রি হলে খুব শীঘ্রই আপনার ইমেইলে অথবা এখানে যোগাযোগ করবে।";
+        } else {
+            botReply = "আপনার মেসেজটি আমি নোট করেছি এবং অ্যাডমিন প্যানেলে পাঠিয়ে দিয়েছি। আপনার আর কোনো জিজ্ঞাসা থাকলে লিখে জানাতে পারেন। 🤖";
+        }
+        
+        appendHelpMsg("🤖 " + botReply, "ai");
+        
+        // 💾 ফায়ারবেসে না পাঠিয়ে শুধু সেশন মেমোরিতে সেভ রাখা হচ্ছে
+        currentHelpSession.push({
+            user_msg: userQuestion,
+            bot_reply: botReply
+        });
+        
+    }, 1000); 
+}
     </script>
 </body>
 
