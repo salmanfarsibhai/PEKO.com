@@ -1068,6 +1068,7 @@ stroke-linejoin="round">
         <button id="btn-space-chats" onclick="toggleAdminSpace('chats')" style="padding: 10px 20px; border: none; border-radius: 12px; background: var(--pri); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);">User Chats</button>
         <button id="btn-space-reports" onclick="toggleAdminSpace('reports')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">User Reports</button>
         <button id="btn-space-pro" onclick="toggleAdminSpace('pro-members')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Pro Members</button>
+        <button id="btn-space-help" onclick="toggleAdminSpace('help-center')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">🛠️ Help Logs</button>
     </div>
 
     <div id="chats-space-wrapper" style="display: block;">
@@ -1094,6 +1095,20 @@ stroke-linejoin="round">
             </div>
         </div>
     </div>
+
+
+    <div id="help-space-wrapper" style="display: none; padding: 0 20px;">
+        <div class="card" style="margin-bottom: 30px; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <span style="font-size: 20px;">🛠️</span>
+                <h2 style="font-size: 18px; font-weight: 700; margin: 0;">PEKO Agent • Help Logs</h2>
+            </div>
+            <div id="helpLogsContainer" class="reportsContainer">
+                <div style="color: var(--muted); font-size: 14px; padding: 10px;">লগ লোড হচ্ছে...</div>
+            </div>
+        </div>
+    </div>
+
 
 <div id="pro-space-wrapper" style="display: none; padding: 0 20px;">
         <div class="card" style="margin-bottom: 30px; width: 100%;">
@@ -2186,6 +2201,7 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
         };
 
         // ডিলিট অল কন্ট্রোলার (চ্যাট ও রিপোর্ট আলাদা ডিলিট)
+        // ডিলিট অল কন্ট্রোলার (চ্যাট, রিপোর্ট ও হেল্প লগস আলাদা ডিলিট)
         function delAll() {
             resetConfirmBoxUI();
             if (window.ACTIVE_SPACE === "chats") {
@@ -2194,6 +2210,10 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
             } else if (window.ACTIVE_SPACE === "reports") {
                 DELETE_ID = "ALL_REPORTS";
                 document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবেই সব ইউজার রিপোর্ট ডিলিট করতে চান?";
+            } else if (window.ACTIVE_SPACE === "help-center") {
+                // 🔥 হেল্প লগসের ডিলিট অল কমান্ড যোগ করা হলো
+                DELETE_ID = "ALL_HELP_LOGS";
+                document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবেই সব ইউজারের হেল্প সেশন ডিলিট করতে চান?";
             }
             document.getElementById("confirmBox").style.display = "flex";
         }
@@ -2207,6 +2227,15 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
             }
             else if (DELETE_ID === "ALL_REPORTS") {
                 DB.ref("all_reports").remove().then(() => { toast("All Reports Deleted"); listenToReports(); });
+            }
+            else if (DELETE_ID === "ALL_HELP_LOGS") {
+                // 🔥 সব হেল্প সেশন ডাটাবেজ থেকে ক্লিন করা
+                DB.ref("help_logs").remove().then(() => { toast("All Help Logs Deleted"); listenToHelpLogs(); });
+            }
+            else if (DELETE_ID && DELETE_ID.startsWith("HELP_")) {
+                // 🔥 নির্দিষ্ট একটি ইউজারের হেল্প সেশন ডিলিট করা
+                const hKey = DELETE_ID.replace("HELP_", "");
+                DB.ref("help_logs/" + hKey).remove().then(() => toast("Help Session Deleted"));
             }
             else if (DELETE_ID && DELETE_ID.startsWith("REP_")) {
                 const reportKey = DELETE_ID.replace("REP_", "");
@@ -2719,5 +2748,145 @@ window.loadProRequests = function() {
     });
 };
 </script>
+
+<script>
+// 👑 MASTER OVERRIDE FOR ADMIN TABS & HELP LOGS
+const originalToggleAdminSpace = window.toggleAdminSpace;
+
+window.toggleAdminSpace = function(spaceType) {
+    window.ACTIVE_SPACE = spaceType;
+    
+    // সবগুলো র‍্যাপার এবং বাটন সিলেক্ট করা
+    const wrappers = {
+        "chats": document.getElementById("chats-space-wrapper"),
+        "reports": document.getElementById("reports-space-wrapper"),
+        "pro-members": document.getElementById("pro-space-wrapper"),
+        "help-center": document.getElementById("help-space-wrapper")
+    };
+    
+    const btns = {
+        "chats": document.getElementById("btn-space-chats"),
+        "reports": document.getElementById("btn-space-reports"),
+        "pro-members": document.getElementById("btn-space-pro"),
+        "help-center": document.getElementById("btn-space-help")
+    };
+
+    // ডিলিট অল বাটন লক মেকানিজম
+    const deleteAllBtn = document.querySelector(".header button[onclick='delAll()']");
+    if (deleteAllBtn) {
+        if (spaceType === "pro-members") { // 🔥 ম্যাজিক ফিক্স: এখন শুধু প্রো মেম্বারসে লক থাকবে, হেল্প লগসে বাটন জাগ্রত হবে!
+            deleteAllBtn.style.opacity = "0.35";
+            deleteAllBtn.style.cursor = "not-allowed";
+            deleteAllBtn.style.pointerEvents = "none";
+            deleteAllBtn.style.background = "rgba(239, 68, 68, 0.4)";
+        } else {
+            deleteAllBtn.style.opacity = "1";
+            deleteAllBtn.style.cursor = "pointer";
+            deleteAllBtn.style.pointerEvents = "auto";
+            deleteAllBtn.style.background = "#ef4444";
+        }
+    }
+
+    // Hide all
+    Object.values(wrappers).forEach(w => { if(w) w.style.display = "none"; });
+    const normalStyle = "padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;";
+    Object.values(btns).forEach(b => { if(b) b.style.cssText = normalStyle; });
+
+    // Active style
+    const activeStyle = "padding: 10px 20px; border: none; border-radius: 12px; background: var(--pri); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);";
+    
+    if (wrappers[spaceType]) wrappers[spaceType].style.display = "block";
+    if (btns[spaceType]) btns[spaceType].style.cssText = activeStyle;
+
+    // Load Data
+    if (spaceType === "chats") render();
+    else if (spaceType === "reports") listenToReports();
+    else if (spaceType === "pro-members") loadProRequests();
+    else if (spaceType === "help-center") listenToHelpLogs();
+};
+
+// 🔥 REALTIME HELP LOGS ENGINE (SESSION BASED CONVERSATION)
+window.listenToHelpLogs = function() {
+    const container = document.getElementById("helpLogsContainer");
+    if (!container) return;
+
+    DB.ref("help_logs").on("value", (snapshot) => {
+        if(window.ACTIVE_SPACE !== "help-center") return;
+        container.innerHTML = "";
+
+        if (!snapshot.exists()) {
+            container.innerHTML = `<div style="color: var(--muted); font-size: 14px; padding: 10px;">কোনো কনভারসেশন পাওয়া যায়নি।</div>`;
+            return;
+        }
+
+        let html = "";
+        let logArray = [];
+        snapshot.forEach(child => { logArray.push({ key: child.key, ...child.val() }); });
+        
+        // লেটেস্ট কনভারসেশন উপরে দেখানোর জন্য রিভার্স
+        logArray.reverse().forEach((data) => {
+            const dateStr = new Date(data.time).toLocaleString("bn-BD", { hour12: true });
+            const initial = (data.name || "U").charAt(0).toUpperCase();
+
+            // 👑 সেশন ডাটা থেকে পুরো চ্যাট লিস্ট তৈরি করা
+            let chatHistoryHtml = "";
+            if (data.session_data && Array.isArray(data.session_data)) {
+                data.session_data.forEach(msg => {
+                    chatHistoryHtml += `
+                        <div style="background: rgba(0,0,0,0.03); padding: 10px; border-radius: 10px; margin-top: 10px; font-size: 13px; color: var(--text);">
+                            <b>👤 User:</b> ${msg.user_msg || ""}
+                        </div>
+                        <div style="background: rgba(0, 131, 255, 0.08); padding: 10px; border-radius: 10px; margin-top: 6px; font-size: 13px; color: var(--text);">
+                            <b>🤖 Agent:</b> ${msg.bot_reply || ""}
+                        </div>
+                    `;
+                });
+            } else {
+                // পুরনো সিঙ্গেল ডাটা থাকলে সেটার সাপোর্ট
+                chatHistoryHtml = `
+                    <div style="background: rgba(0,0,0,0.03); padding: 10px; border-radius: 10px; margin-top: 10px; font-size: 13px; color: var(--text);">
+                        <b>👤 User:</b> ${data.user_msg || ""}
+                    </div>
+                    <div style="background: rgba(0, 131, 255, 0.08); padding: 10px; border-radius: 10px; margin-top: 6px; font-size: 13px; color: var(--text);">
+                        <b>🤖 Agent:</b> ${data.bot_reply || ""}
+                    </div>
+                `;
+            }
+
+            html += `
+                <div class="reportCard" style="background: var(--card); border-left: 4px solid var(--pri);">
+                    <div class="reportCardHeader">
+                        <div class="reportUserIcon">${initial}</div>
+                        <div class="reportMeta">
+                            <span class="reportUserName">${data.name || "User"}</span>
+                            <span class="reportUserEmail">${data.email || "No Email"}</span>
+                        </div>
+                    </div>
+                    
+                    <div style="max-height: 250px; overflow-y: auto; padding-right: 5px; scrollbar-width: thin;">
+                        ${chatHistoryHtml}
+                    </div>
+                    
+                    <div class="actions" style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 10px;">
+                        <button class="icon del" onclick="delHelpLog('${data.key}')">Delete Full Session</button>
+                    </div>
+                    <div class="reportFooterTime"><span>🕒</span> <span>${dateStr}</span></div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    });
+};
+
+
+// 🔥 নির্দিষ্ট একটি হেল্প সেশন ডিলিট করার ফাংশন
+window.delHelpLog = function(k) {
+    DELETE_ID = "HELP_" + k;
+    resetConfirmBoxUI();
+    document.getElementById("confirmMessage").innerText = "আপনি কি এই হেল্প সেশনটি ডিলিট করতে চান?";
+    document.getElementById("confirmBox").style.display = "flex";
+};
+</script>
+
 </body>
 </html>
