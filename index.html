@@ -1899,8 +1899,33 @@ transparent
             <div style="margin: 12px 0; text-align: center;">
                 <p style="font-weight: 600; font-size: 12px; margin-bottom: 8px; text-align: left; color: var(--text);">📱 সরাসরি অ্যাপে ওপেন করুন:</p>
                 <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 12px;">
-                    <a href="bkash://intl" target="_blank" onclick="playSound('click')" style="flex: 1; text-decoration: none; background: #e2136e; color: white; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; display: inline-block;">bKash App</a>
-                    <a href="nagad://intl" target="_blank" onclick="playSound('click')" style="flex: 1; text-decoration: none; background: #ff4500; color: white; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; display: inline-block;">Nagad App</a>
+                    <a href="javascript:void(0)" onclick="openPaymentApp('bkash://')" style="flex: 1; text-decoration: none; background: #e2136e; color: white; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; display: inline-block;">bKash App</a>
+<a href="javascript:void(0)" onclick="openPaymentApp('nagad://')" style="flex: 1; text-decoration: none; background: #ff4500; color: white; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; display: inline-block;">Nagad App</a>
+
+<script>
+// 🧠 স্মার্ট ডিটেকশন ইঞ্জিন
+function openPaymentApp(appUri) {
+    playSound("click");
+    
+    // প্লে-স্টোর লিঙ্কগুলো ঠিক করে দিন
+    const playStoreLinks = {
+        'bkash://': 'https://play.google.com/store/apps/details?id=com.bkash.customerapp',
+        'nagad://': 'https://play.google.com/store/apps/details?id=com.konasl.nagad'
+    };
+
+    const start = Date.now();
+    
+    // অ্যাপ ওপেন করার চেষ্টা
+    window.location.href = appUri;
+
+    // যদি ৫০০ মিলিসেকেন্ডের মধ্যে অ্যাপ ওপেন না হয়, তবে প্লে-স্টোরে পাঠাবে
+    setTimeout(() => {
+        if (Date.now() - start < 600) {
+            window.location.href = playStoreLinks[appUri];
+        }
+    }, 500);
+}
+</script>
                 </div>
                 <div style="background: rgba(0,0,0,0.04); padding: 8px; border-radius: 10px; font-size: 13px; font-weight: 700; margin-bottom: 15px; border: 1px dashed var(--border);">
                     📞 আমাদের পার্সোনাল নাম্বার: 017XXXXXXXX
