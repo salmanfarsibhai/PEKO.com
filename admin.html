@@ -14,6 +14,10 @@
 content="camera=(), microphone=(), geolocation=()">
     <title>PEKO AI • Admin Panel</title>
     <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -23,7 +27,7 @@ content="camera=(), microphone=(), geolocation=()">
             --muted: #64748b;
             --border: rgba(0, 0, 0, 0.08);
             --glass: blur(18px);
-            --pri: #4f46e5;
+            --pri: #0083ff;
         }
 
         .dark {
@@ -50,7 +54,10 @@ content="camera=(), microphone=(), geolocation=()">
         }
 
         body {
-            font-family: system-ui;
+    font-family:
+    "Hind Siliguri",
+    system-ui,
+    sans-serif;
             background: var(--bg);
             color: var(--text);
             transition: background 0.3s ease;
@@ -84,6 +91,35 @@ content="camera=(), microphone=(), geolocation=()">
             color: #fff;
             border: none;
         }
+        .deleteBtn{
+width:42px;
+height:42px;
+
+border:none;
+border-radius:14px;
+
+background:#ef4444;
+color:#fff;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+cursor:pointer;
+
+transition:0.25s ease;
+
+box-shadow:
+0 10px 24px rgba(239,68,68,0.28),
+inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+.deleteBtn:hover{
+transform:translateY(-2px);
+box-shadow:
+0 14px 30px rgba(239,68,68,0.35),
+inset 0 1px 0 rgba(255,255,255,0.2);
+}
 
         /* CONTAINER */
         .container {
@@ -171,6 +207,16 @@ content="camera=(), microphone=(), geolocation=()">
 
         .card:hover {
             transform: translateY(-3px);
+            will-change: transform; /* ব্রাউজারের কাঁপুনি বা ব্লারনেস ঠেকানোর ম্যাজিক লাইন */
+        }
+        
+        /* 🛠 ট্যাব বা বোতাম পরিবর্তনের সময় কোনো কম্পন বা রি-ফ্লো ক্র্যাশ হবে না */
+        .admin-tabs-bar button, .actions button {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            will-change: transform, background-color, box-shadow;
         }
 
         /* TEXT */
@@ -375,9 +421,15 @@ content="camera=(), microphone=(), geolocation=()">
 
         /* INPUT FOCUS */
         .inputBox:focus {
-            border: 1px solid #00eaff;
-            box-shadow: 0 0 0 2px rgba(0, 234, 255, 0.2);
-        }
+    border: none !important;
+    outline: none !important;
+
+    box-shadow:
+        0 8px 22px rgba(0, 131, 255, 0.18),
+        0 2px 6px rgba(0,0,0,0.05);
+
+    transform: translateY(-1px);
+}
 
         /* ERROR (shape change হবে না) */
         .inputBox.error {
@@ -459,7 +511,7 @@ content="camera=(), microphone=(), geolocation=()">
 
         /* LEFT */
         .leftPanel {
-            background: linear-gradient(135deg, #6d5dfc, #8f6eff);
+            background: linear-gradient(135deg, #0066ff, #00a2ff);
             color: white;
             text-align: center;
         }
@@ -471,20 +523,31 @@ content="camera=(), microphone=(), geolocation=()">
         }
 
         /* INPUT */
-        .inputBox {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-        }
+.inputBox {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 8px 0;
+
+    border-radius: 12px;
+
+    border: none !important;
+    outline: none !important;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,0.05),
+        0 2px 4px rgba(0,0,0,0.03);
+
+    transition: all 0.25s ease;
+}
 
         /* BUTTON */
         .btnVerify {
             padding: 12px;
             border-radius: 10px;
             border: none;
-            background: #6d5dfc;
+            background: #0066ff;
             color: white;
             cursor: pointer;
             margin-top: 10px;
@@ -575,7 +638,7 @@ content="camera=(), microphone=(), geolocation=()">
         }
 
         input:checked+.slider {
-            background: #4f46e5;
+            background: #0083ff;
         }
 
         input:checked+.slider::before {
@@ -880,6 +943,48 @@ content="camera=(), microphone=(), geolocation=()">
             white-space: nowrap !important;
             flex: 1 !important;
         }
+
+        /* 👑 ULTRA-PREMIUM INPUT & SELECT DROPDOWN CUSTOM UI */
+        #customPromptValueInput {
+            border: 1px solid var(--border) !important;
+            background: rgba(0, 0, 0, 0.02) !important;
+            color: var(--text) !important;
+            transition: all 0.2s ease !important;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
+        }
+        #customPromptValueInput:focus {
+            border-color: var(--pri) !important;
+            background: var(--bg) !important;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12) !important;
+        }
+        #customPromptUnitSelect {
+            -webkit-appearance: none !important; /* ব্রাউজারের কুৎসিত ডিফল্ট বাটন লুকানোর ম্যাজিক */
+            -moz-appearance: none !important;
+            appearance: none !important;
+            background: var(--bg) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>") no-repeat right 12px center !important;
+            background-size: 14px !important;
+            padding-right: 36px !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text) !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+        }
+        #customPromptUnitSelect:focus {
+            border-color: var(--pri) !important;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12) !important;
+        }
+        /* ড্রপডাউন মেনু ওপেন হলে অপশনগুলোর লাক্সারি ডার্ক/লাইট মোড ফিট */
+        #customPromptUnitSelect option {
+            background: var(--bg) !important;
+            color: var(--text) !important;
+            padding: 10px !important;
+            font-weight: 500 !important;
+        }
+        .dark #customPromptUnitSelect option {
+            background: #1e293b !important;
+            color: #e2e8f0 !important;
+        }
         
         /* মোবাইল স্ক্রিনের জন্য ফ্লেক্সবক্স অটো অ্যাডজাস্টমেন্ট */
         @media (max-width: 480px) {
@@ -930,18 +1035,27 @@ content="camera=(), microphone=(), geolocation=()">
     <!-- HEADER -->
     <div class="header">
         <div class="title">PEKO AI • admin panel</div>
-        <button onclick="delAll()" style="
-padding:8px 14px;
-border:none;
-border-radius:10px;
-background:#ef4444;
-color:white;
-cursor:pointer;
-font-size:12px;
-margin-left:10px;
-">
-            Delete All
-        </button>
+       <button onclick="delAll()" class="deleteBtn">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+width="20"
+height="20"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2.4"
+stroke-linecap="round"
+stroke-linejoin="round">
+
+<path d="M3 6h18"/>
+<path d="M8 6V4c0-.55.45-1 1-1h6c.55 0 1 .45 1 1v2"/>
+<path d="M19 6l-1 14c-.05.55-.45 1-.98 1H7.98c-.53 0-.93-.45-.98-1L6 6"/>
+<path d="M10 11v6"/>
+<path d="M14 11v6"/>
+
+</svg>
+
+</button>
         <label class="switch">
             <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
             <span class="slider"></span>
@@ -984,10 +1098,13 @@ margin-left:10px;
 <div id="pro-space-wrapper" style="display: none; padding: 0 20px;">
         <div class="card" style="margin-bottom: 30px; width: 100%;">
 
-           <div style="display: flex; gap: 10px; margin: 10px 0 20px 0; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
-                <button id="tabNewRequests" onclick="switchProTab('pending')" style="background: var(--pri); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px;">📥 New Requests</button>
-                <button id="tabAcceptedMembers" onclick="switchProTab('active')" style="background: transparent; color: var(--text); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px;">✅ Accepted Members</button>
-            </div>
+           <div style="display: flex; gap: 10px; margin: 10px 0 20px 0; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap;">
+    <button id="tabNewRequests" onclick="switchProTab('pending')" style="background: var(--pri); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px;">📥 New Requests</button>
+    
+    <button id="tabAcceptedMembers" onclick="switchProTab('active')" style="background: transparent; color: var(--text); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px;">✅ Active Members</button>
+    
+    <button id="tabExpiredMembers" onclick="switchProTab('expired')" style="background: transparent; color: var(--text); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px;">🔴 Expired Members</button>
+</div>
 
             <div style="overflow-x: auto; width: 100%;">
                 <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
@@ -1030,6 +1147,25 @@ margin-left:10px;
 
         window.ACTIVE_SPACE = spaceType;
 
+        // 👑 ডিলিট অল বোতাম স্মার্ট স্টেট চেঞ্জার লাক্সারি মেকানিজম
+        // আপনার টপবারের ডিলিট অল বোতামটি (যা ২ নম্বর বাটনে আছে) সিলেক্ট করা হচ্ছে
+        const deleteAllBtn = document.querySelector(".header button[onclick='delAll()']");
+        if (deleteAllBtn) {
+            if (spaceType === "pro-members") {
+                // প্রো মেম্বার ট্যাবে থাকলে বাটন ফ্যাকাশে, অপাসিটি কম এবং মাউস ক্লিক লকড হয়ে যাবে
+                deleteAllBtn.style.opacity = "0.35";
+                deleteAllBtn.style.cursor = "not-allowed";
+                deleteAllBtn.style.pointerEvents = "none";
+                deleteAllBtn.style.background = "rgba(239, 68, 68, 0.4)";
+            } else {
+                // চ্যাট বা রিপোর্ট ট্যাবে আসলে বাটন আবার তার নিজস্ব চকচকে লাল প্রিমিয়াম কালারে ফিরে আসবে
+                deleteAllBtn.style.opacity = "1";
+                deleteAllBtn.style.cursor = "pointer";
+                deleteAllBtn.style.pointerEvents = "auto";
+                deleteAllBtn.style.background = "#ef4444";
+            }
+        }
+
         // সব কন্টেইনার ডিফল্ট হাইড করা
         if (chatsWrapper) chatsWrapper.style.display = "none";
         if (reportsWrapper) reportsWrapper.style.display = "none";
@@ -1066,6 +1202,15 @@ margin-left:10px;
         window.currentProTab = tabName;
         const btnNew = document.getElementById("tabNewRequests");
         const btnAccepted = document.getElementById("tabAcceptedMembers");
+
+        // 👑 অতিরিক্ত সেফটি লেয়ার: প্রো সাব-ট্যাবে ক্লিক করলেও ডিলিট অল বাটন কঠোরভাবে ফ্যাকাশে থাকবে
+        const deleteAllBtn = document.querySelector(".header button[onclick='delAll()']");
+        if (deleteAllBtn) {
+            deleteAllBtn.style.opacity = "0.35";
+            deleteAllBtn.style.cursor = "not-allowed";
+            deleteAllBtn.style.pointerEvents = "none";
+            deleteAllBtn.style.background = "rgba(239, 68, 68, 0.4)";
+        }
         
         if (tabName === "pending") {
             if(btnNew) { btnNew.style.background = "var(--pri)"; btnNew.style.color = "white"; btnNew.style.border = "none"; }
@@ -1220,33 +1365,81 @@ function showCustomDaysPrompt(onSuccessCallback, onCancelCallback) {
         document.body.appendChild(promptModal);
     }
 
-    // ১০০% কাস্টম ল্যান্ডস্কেপ উইন্ডো ইনজেকশন উইথ টাইম ইউনিট ড্রপডাউন
+    // 👑 ১০০% কাস্টম ড্রপডাউন মুক্ত লাক্সারি রেডিও ব্যাজ ইন্টারফেস ইনজেকশন
     promptModal.innerHTML = `
-        <div style="background:var(--card); padding:24px; border-radius:24px; width:100%; max-width:420px; text-align:center; border:1px solid var(--border); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; animation: scaleIn 0.25s ease;">
-            <div style="font-weight:700; color:var(--text); font-size:17px; letter-spacing: -0.3px;">👑 মেম্বারশিপ মেয়াদ নির্ধারণ করুন</div>
-            <div style="font-size:12px; color:var(--muted); line-height:1.4;">এই ইউজারকে কত সময়ের জন্য PRO মেম্বারশিপ দিতে চান? সংখ্যা এবং ইউনিট সিলেক্ট করুন।</div>
+        <div style="background:#ffffff; padding:28px 24px; border-radius:24px; width:100%; max-width:400px; text-align:center; border:1px solid var(--border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; animation: scaleIn 0.25s ease;" class="custom-white-prompt-card">
             
-            <div style="display:flex; gap:10px; margin: 4px 0; width:100%; box-sizing:border-box;">
-                <input type="number" id="customPromptValueInput" value="7" min="1" style="flex:1; padding:11px; border-radius:12px; border:1px solid var(--border); background:rgba(0,0,0,0.02); color:var(--text); font-weight:600; text-align:center; font-size:15px; outline:none; box-sizing:border-box; width:50%;">
-                <select id="customPromptUnitSelect" style="flex:1; padding:11px; border-radius:12px; border:1px solid var(--border); background: var(--bg); color:var(--text); font-weight:600; font-size:14px; outline:none; cursor:pointer; box-sizing:border-box; width:50%;">
-                    <option value="minutes">মিনিট (Minutes)</option>
-                    <option value="hours">ঘণ্টা (Hours)</option>
-                    <option value="days" selected>দিন (Days)</option>
-                    <option value="months">মাস (Months)</option>
-                </select>
+            <div style="font-weight:700; color:var(--text); font-size:17px; letter-spacing: -0.3px;">👑 মেম্বারশিপ মেয়াদ নির্ধারণ করুন</div>
+            <div style="font-size:12px; color:var(--muted); line-height:1.4;">এই ইউজারকে কত সময়ের জন্য PRO মেম্বারশিপ দিতে চান? সংখ্যা লিখুন এবং নিচে থেকে সময় ইউনিট সিলেক্ট করুন।</div>
+            
+            <div style="width:100%; box-sizing:border-box;">
+                <input type="number" id="customPromptValueInput" value="7" min="1" style="width:100%; padding:12px; border-radius:12px; border:1px solid var(--border); background:rgba(0,0,0,0.03); color:var(--text); font-weight:700; text-align:center; font-size:18px; outline:none; transition:all 0.2s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
             </div>
 
-            <div style="display:flex; gap:12px; justify-content:center; width:100%; box-sizing:border-box; margin-top:5px;">
-                <button id="promptCancelBtn" style="flex:1; background:rgba(0,0,0,0.05); color:var(--text); border:none; padding:10px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px; display:flex; align-items:center; justify-content:center;">বাতিল</button>
-                <button id="promptSubmitBtn" style="flex:1; background:var(--pri); color:white; border:none; padding:10px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px; display:flex; align-items:center; justify-content:center;">অ্যাক্টিভ করুন</button>
+            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width:100%; box-sizing:border-box;">
+                
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid var(--border); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:var(--text); transition:all 0.2s;" id="lbl-min">
+                    <input type="radio" name="timeUnit" value="minutes" style="display:none;" onchange="updateCustomUnitStyle('minutes')"> ⏱ মিনিট
+                </label>
+                
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid var(--border); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:var(--text); transition:all 0.2s;" id="lbl-hr">
+                    <input type="radio" name="timeUnit" value="hours" style="display:none;" onchange="updateCustomUnitStyle('hours')"> ⏰ ঘণ্টা
+                </label>
+                
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:none; border-radius:12px; font-size:12.5px; font-weight:700; background:var(--pri); color:white; transition:all 0.2s; box-shadow:0 4px 10px rgba(79, 70, 229, 0.2);" id="lbl-day">
+                    <input type="radio" name="timeUnit" value="days" checked style="display:none;" onchange="updateCustomUnitStyle('days')"> 📅 দিন
+                </label>
+                
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid var(--border); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:var(--text); transition:all 0.2s;" id="lbl-mon">
+                    <input type="radio" name="timeUnit" value="months" style="display:none;" onchange="updateCustomUnitStyle('months')"> 🚀 মাস
+                </label>
+                
+            </div>
+
+            <div style="display:flex; gap:12px; justify-content:center; width:100%; box-sizing:border-box; margin-top:4px;">
+                <button id="promptCancelBtn" style="flex:1; background:rgba(0,0,0,0.05); color:var(--text); border:none; padding:11px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px; display:flex; align-items:center; justify-content:center; transition:0.2s;">cancel</button>
+                <button id="promptSubmitBtn" style="flex:1; background:var(--pri); color:white; border:none; padding:11px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px; display:flex; align-items:center; justify-content:center; transition:0.2s; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);">অ্যাক্টিভ করুন</button>
             </div>
         </div>
     `;
 
+    // 🌟 লাইভ বাটন স্টাইল হাইলাইটার ইঞ্জিন
+    window.updateCustomUnitStyle = function(selectedUnit) {
+        const units = {
+            minutes: document.getElementById("lbl-min"),
+            hours: document.getElementById("lbl-hr"),
+            days: document.getElementById("lbl-day"),
+            months: document.getElementById("lbl-mon")
+        };
+        
+        Object.keys(units).forEach(key => {
+            if (!units[key]) return;
+            if (key === selectedUnit) {
+                units[key].style.background = "var(--pri)";
+                units[key].style.color = "white";
+                units[key].style.border = "none";
+                units[key].style.fontWeight = "700";
+                units[key].style.boxShadow = "0 4px 10px rgba(79, 70, 229, 0.2)";
+            } else {
+                units[key].style.background = "rgba(0, 0, 0, 0.02)";
+                units[key].style.color = "var(--text)";
+                units[key].style.border = "1px solid var(--border)";
+                units[key].style.fontWeight = "600";
+                units[key].style.boxShadow = "none";
+            }
+        });
+    };
+
     const valueField = document.getElementById("customPromptValueInput");
-    const unitField = document.getElementById("customPromptUnitSelect");
-    promptModal.style.display = "flex";
-    valueField.focus();
+    if (valueField) {
+        valueField.focus();
+        valueField.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                document.getElementById("promptSubmitBtn").click();
+            }
+        });
+    }
 
     document.getElementById("promptCancelBtn").onclick = function() {
         promptModal.style.display = "none";
@@ -1256,14 +1449,16 @@ function showCustomDaysPrompt(onSuccessCallback, onCancelCallback) {
     document.getElementById("promptSubmitBtn").onclick = function() {
         const rawValue = valueField.value.trim();
         const amount = parseInt(rawValue);
-        const unit = unitField.value;
+        
+        // সিলেক্টেড রেডিও বাটন থেকে ভ্যালু বের করা
+        const selectedRadio = document.querySelector('input[name="timeUnit"]:checked');
+        const unit = selectedRadio ? selectedRadio.value : "days";
 
         if (isNaN(amount) || amount <= 0) {
             toast("❌ দয়া করে সঠিক সংখ্যা ইনপুট দিন!");
             return;
         }
 
-        // কাস্টম টাইম ইউনিট কনভার্সন মেকানিজম (মিনিট, ঘণ্টা, দিন, মাস)
         let durationMiliseconds = 0;
         if (unit === "minutes") {
             durationMiliseconds = amount * 60 * 1000;
@@ -1272,7 +1467,6 @@ function showCustomDaysPrompt(onSuccessCallback, onCancelCallback) {
         } else if (unit === "days") {
             durationMiliseconds = amount * 24 * 60 * 60 * 1000;
         } else if (unit === "months") {
-            // সর্বোচ্চ ১ মাস লিমিট সেফটি প্রোটেকশন
             if (amount > 1) {
                 toast("⚠ সর্বোচ্চ ১ মাস মেম্বারশিপ দেওয়া যাবে!");
                 valueField.value = "1";
@@ -1285,6 +1479,20 @@ function showCustomDaysPrompt(onSuccessCallback, onCancelCallback) {
         if (typeof onSuccessCallback === "function") onSuccessCallback(durationMiliseconds, amount, unit);
     };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 window.switchProTab = function(tabName) {
     window.currentProTab = tabName;
@@ -1301,14 +1509,15 @@ window.switchProTab = function(tabName) {
     loadProRequests();
 };
 
-// 🔥 REALTIME SUBSCRIPTION REQUESTS LOADER & SMART FILTER ENGINE
+// 🔥 REALTIME SUBSCRIPTION REQUESTS LOADER & SMART FILTER ENGINE (ULTIMATE FIXED VERSION)
 function loadProRequests() {
     const container = document.getElementById("proMembersListContainer");
     if (!container) return;
 
-    clearAdminTimers(); // ফ্রেশ লোডের আগে পুরানো টাইমার ক্লিয়ার
+    clearAdminTimers(); // পূর্বের চলমান সকল টাইমার মেমোরি থেকে সম্পূর্ণ ক্লিয়ার
 
-    DB.ref("pro_requests").on("value", (snapshot) => {
+    // ডাটাবেজ থেকে রিকোয়েস্ট ওয়ান-টাইম রিড
+    DB.ref("pro_requests").once("value").then((snapshot) => {
         container.innerHTML = "";
         clearAdminTimers();
 
@@ -1325,11 +1534,14 @@ function loadProRequests() {
             const reqId = childSnapshot.key;
             const data = childSnapshot.val();
 
-            // ফিল্টারিং ট্রিক: 'active' এবং 'expired' উভয় ডাটাই চিরদিনের জন্য Accepted Members ট্যাবে থাকবে!
+            // ফিল্টারিং ট্রিক: 'active' এবং 'expired' উভয় ডাটাই চিরদিনের জন্য Accepted Members ট্যাবে থাকবে
             let targetTab = data.status;
-            if (data.status === "expired") {
-                targetTab = "active";
-            }
+            if(
+   data.status === "active" ||
+   data.status === "expired"
+){
+   targetTab = "active";
+}
 
             if (targetTab !== window.currentProTab) return;
             itemsCount++;
@@ -1388,7 +1600,8 @@ function loadProRequests() {
                 </td>
             </tr>`;
 
-            if (data.uid) {
+            // শুধুমাত্র রিকোয়েস্টের স্ট্যাটাস যখন 'active' থাকবে, তখনই টাইমার ক্যালকুলেশনে নেওয়া হবে
+            if (data.uid && data.status === "active") {
                 activeRequests.push({ reqId: reqId, userUid: data.uid });
             }
         });
@@ -1398,15 +1611,14 @@ function loadProRequests() {
         } else {
             container.innerHTML = html;
             
-            // ⏳ রিয়েল-টাইম অফলাইন-সেফ কাউন্টডাউন ক্লক ইন্টিগ্রেশন
+            // ⏳ কাউন্টডাউন টাইমার মাউন্ট লজিক (নিরাপদ .once() মেথড)
             activeRequests.forEach(item => {
-                DB.ref(`users/${item.userUid}`).on("value", (userSnap) => {
+                DB.ref(`users/${item.userUid}`).once("value").then((userSnap) => {
                     const uData = userSnap.val();
                     const timerBox = document.getElementById(`admin_timer_${item.reqId}`);
                     
                     if (uData && uData.isPro === true && uData.proEndDate) {
                         if (timerBox) timerBox.style.display = "block";
-                        
                         localStorage.setItem(`offline_pro_end_${item.userUid}`, uData.proEndDate);
 
                         const intId = setInterval(() => {
@@ -1418,8 +1630,11 @@ function loadProRequests() {
                                 if (liveTimerBox) liveTimerBox.innerHTML = "❌ মেয়াদ শেষ";
                                 clearInterval(intId);
                                 
+                                // মেয়াদ শেষ হলে ডাটাবেজ অটো-আপডেট
                                 DB.ref(`users/${item.userUid}`).update({ isPro: false, proStartDate: 0, proEndDate: 0 });
-                                DB.ref(`pro_requests/${item.reqId}`).update({ status: "expired" });
+                                DB.ref(`pro_requests/${item.reqId}`).update({ status: "pending" }).then(() => {
+                                    loadProRequests();
+                                });
                                 localStorage.removeItem(`offline_pro_end_${item.userUid}`);
                                 return;
                             }
@@ -1435,8 +1650,6 @@ function loadProRequests() {
                         }, 1000);
                         
                         window.adminTimerIntervals.push(intId);
-                    } else {
-                        if (timerBox) timerBox.style.display = "none";
                     }
                 });
             });
@@ -1444,61 +1657,59 @@ function loadProRequests() {
     });
 }
 
+// প্রিমিয়াম লাইসেন্স টগল কন্ট্রোলার (অন/অফ ফিক্সড)
+       // 👑 প্রিমিয়াম লাইসেন্স টগল কন্ট্রোলার (মাস্টার ফিক্সড ভার্সন)
 function toggleUserPremium(requestId, userUid, toggleElement) {
     const isActivating = toggleElement.checked;
 
-    if (isActivating === true) {
+    if (isActivating) {
+        // 🟢 অন (Active) করার সময় পপআপ আসবে
         showCustomDaysPrompt((durationMiliseconds, amount, unit) => {
             const now = Date.now();
             const expireTime = now + durationMiliseconds;
-
             let unitText = unit === "minutes" ? "মিনিট" : unit === "hours" ? "ঘণ্টা" : unit === "months" ? "মাস" : "দিন";
 
+            // ডাটাবেজে স্ট্যাটাস 'active' করা হচ্ছে
             DB.ref(`pro_requests/${requestId}`).update({ status: "active" })
             .then(() => {
                 return DB.ref(`users/${userUid}`).update({ 
-                    isPro: true,
-                    proStartDate: now,
-                    proEndDate: expireTime
+                    isPro: true, proStartDate: now, proEndDate: expireTime
                 });
             })
             .then(() => {
                 localStorage.setItem(`offline_pro_end_${userUid}`, expireTime);
-                toast(`ইউজারকে সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
-                window.switchProTab('active');
+                toast(`সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
+                loadProRequests(); // সাথে সাথে পেজ রিফ্রেশ হয়ে Accepted Members-এ চলে যাবে
             })
-            .catch((error) => {
+            .catch(() => {
                 toggleElement.checked = false;
                 toast("ডাটাবেজ আপডেট ব্যর্থ হয়েছে");
             });
         }, () => {
+            // পপআপ ক্যানসেল করলে টগল আবার অফ অবস্থায় ফিরে যাবে
             toggleElement.checked = false;
         });
-
     } else {
-        DB.ref(`pro_requests/${requestId}`).update({ status: "expired" })
+        // 🔴 অফ (Expired) করার কোড - এখানে reqId এর পরিবর্তে ঠিক করে requestId দেওয়া হয়েছে
+        DB.ref(`pro_requests/${requestId}`).update({
+            status: "expired" // স্ট্যাটাস expired হলে আপনার লজিক অনুযায়ী এটি Accepted Members ট্যাবেই থাকবে
+        })
         .then(() => {
             return DB.ref(`users/${userUid}`).update({
-                isPro: false,
-                proStartDate: 0,
-                proEndDate: 0
+                isPro: false, proStartDate: 0, proEndDate: 0
             });
         })
         .then(() => {
             localStorage.removeItem(`offline_pro_end_${userUid}`);
-            toast("ইউজারের PRO স্ট্যাটাস সফলভাবে বন্ধ করা হয়েছে। 🔒");
-            window.switchProTab('active');
+            toast("ইউজারের PRO স্ট্যাটাস বন্ধ করা হয়েছে। 🔒");
+            loadProRequests(); // সাথে সাথে লাল স্ট্যাটাস দেখাবে এবং ঐ ট্যাবেই থাকবে
         })
-        .catch((error) => {
+        .catch(() => {
             toggleElement.checked = true;
             toast("ডাটাবেজ আপডেট ব্যর্থ হয়েছে");
         });
     }
 }
-
-
-
-
 
 
 
@@ -1555,15 +1766,21 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
-
+        // থিম সিঙ্ক মেকানিজম
         if (localStorage.getItem("theme") === "dark") {
             document.documentElement.classList.add("dark");
             setTimeout(() => {
-                document.getElementById("themeToggle").checked = true;
+                const toggle = document.getElementById("themeToggle");
+                if(toggle) toggle.checked = true;
             }, 100);
         }
 
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle("dark");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+        }
 
+        // ফায়ারবেস কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
             authDomain: "peko-ai.firebaseapp.com",
@@ -1576,593 +1793,931 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
         const auth = firebase.auth();
         const ADMIN_EMAIL = "salmanfarsi172007@gmail.com";
 
-        // 🔥 MASTER RE-SYNC LAYER: লোকাল এবং লাইভ সেশন ডাইরেক্ট রেন্ডার লজিক
-        // এটি ব্রাউজারের মেইন উইন্ডো লোড হওয়ার সাথে সাথেই ডাটাবেস কানেক্ট করে দেবে
-        DB.ref("all_logs").on("value", snap => {
-            RAW = snap.val() || {};
-            render();
-        }, error => { console.log(error); });
+        // গ্লোবাল স্টেট ট্র্যাকারসমূহ
+        window.ACTIVE_SPACE = "chats";
+        window.currentProTab = "pending";
+        window.adminTimerIntervals = [];
+        let RAW = {};
+        let DELETE_ID = null;
+        let showingPassword = false;
+        const PASSWORD_ENABLED = "ON";
 
-        // রিপোর্ট সিস্টেম ডাইরেক্ট ওপেন
-        if(typeof listenToReports === "function") {
-            listenToReports();
-        }
-
-        /* EMAIL OTP LOGIN */
-        function sendLink() {
-
-            const input = document.getElementById("emailInput");
-            const pass = document.getElementById("passwordInput");
-            const error = document.getElementById("errorText");
-
-            const email = input.value.trim();
-            const password = pass ? pass.value.trim() : "";
-
-            const ADMIN_PASS = "123456"; // 👉 নিজের password
-
-            // EMAIL CHECK
-            if (email !== ADMIN_EMAIL) {
-                input.classList.add("error");
-                error.style.display = "block";
-                return;
-            }
-
-            // PASSWORD CHECK
-            if (password !== ADMIN_PASS) {
-                if (pass) pass.classList.add("error");
-                error.style.display = "block";
-                return;
-            }
-
-            input.classList.remove("error");
-            if (pass) pass.classList.remove("error");
-            error.style.display = "none";
-
-            // SUCCESS LOGIN
-            document.getElementById("authBox").style.display = "none";
-            toast("Login Success");
-        }
-
-        if (auth.isSignInWithEmailLink(window.location.href)) {
-
-            let email = localStorage.getItem("emailForSignIn");
-
-            if (!email) {
-                email = prompt("Enter your email again");
-            }
-
-            auth.signInWithEmailLink(email, window.location.href)
-                .then(res => {
-                    if (res.user.email === ADMIN_EMAIL) {
-                        document.getElementById("authBox").style.display = "none";
-                        toast("Login Success (Email Link)");
-                    } else {
-                        alert("Denied");
-                    }
-                })
-                .catch(() => {
-                    alert("Login Failed");
-                });
-        }
-
-        /* THEME */
-        function toggleTheme() {
-            const isDark = document.documentElement.classList.toggle("dark");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-        }
-
-        /* TOAST */
+        // টোস্ট নোটিফিকেশন সিস্টেম
         function toast(t) {
             let el = document.getElementById("toast");
-            el.innerText = t;
-            el.classList.add("show");
-            setTimeout(() => el.classList.remove("show"), 1500);
+            if(el) {
+                el.innerText = t;
+                el.classList.add("show");
+                setTimeout(() => el.classList.remove("show"), 1500);
+            }
         }
 
-       /* RENDER DATA */
-        let RAW = {};
+        // মাউন্টেড ট্যাব স্পেস ইঞ্জিন (ডিলিট অল বাটন লকসহ)
+        function toggleAdminSpace(spaceType) {
+            window.ACTIVE_SPACE = spaceType;
+            
+            const chatsWrapper = document.getElementById("chats-space-wrapper");
+            const reportsWrapper = document.getElementById("reports-space-wrapper");
+            const proWrapper = document.getElementById("pro-space-wrapper");
+            
+            const btnChats = document.getElementById("btn-space-chats");
+            const btnReports = document.getElementById("btn-space-reports");
+            const btnPro = document.getElementById("btn-space-pro");
+            const deleteAllBtn = document.querySelector(".header button[onclick='delAll()']");
 
-        // 🔥 ম্যাজিক ফিক্স: অথেন্টিকেশন সফল হলেই কেবল ডেটাবেস কল হবে, নাহলে মোবাইলে ফায়ারবেস ডেটা ব্লক করে দেয়!
+            // ডিলিট অল বাটন লক মেকানিজম
+            if (deleteAllBtn) {
+                if (spaceType === "pro-members") {
+                    deleteAllBtn.style.opacity = "0.35";
+                    deleteAllBtn.style.cursor = "not-allowed";
+                    deleteAllBtn.style.pointerEvents = "none";
+                    deleteAllBtn.style.background = "rgba(239, 68, 68, 0.4)";
+                } else {
+                    deleteAllBtn.style.opacity = "1";
+                    deleteAllBtn.style.cursor = "pointer";
+                    deleteAllBtn.style.pointerEvents = "auto";
+                    deleteAllBtn.style.background = "#ef4444";
+                }
+            }
+
+            if (chatsWrapper) chatsWrapper.style.display = "none";
+            if (reportsWrapper) reportsWrapper.style.display = "none";
+            if (proWrapper) proWrapper.style.display = "none";
+
+            const normalStyle = "padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;";
+            if (btnChats) btnChats.style.cssText = normalStyle;
+            if (btnReports) btnReports.style.cssText = normalStyle;
+            if (btnPro) btnPro.style.cssText = normalStyle;
+
+            const activeStyle = "padding: 10px 20px; border: none; border-radius: 12px; background: var(--pri); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);";
+
+            if (spaceType === "chats") {
+                if (chatsWrapper) chatsWrapper.style.display = "block";
+                if (btnChats) btnChats.style.cssText = activeStyle;
+                render();
+            } else if (spaceType === "reports") {
+                if (reportsWrapper) reportsWrapper.style.display = "block";
+                if (btnReports) btnReports.style.cssText = activeStyle;
+                listenToReports();
+            } else if (spaceType === "pro-members") {
+                if (proWrapper) proWrapper.style.display = "block";
+                if (btnPro) btnPro.style.cssText = activeStyle;
+                loadProRequests();
+            }
+        }
+
+        // প্রো মেম্বার সাব-ট্যাব সুইচার
+        window.switchProTab = function(tabName) {
+            window.currentProTab = tabName;
+            const btnNew = document.getElementById("tabNewRequests");
+            const btnAccepted = document.getElementById("tabAcceptedMembers");
+            
+            if (tabName === "pending") {
+                if(btnNew) { btnNew.style.background = "var(--pri)"; btnNew.style.color = "white"; btnNew.style.border = "none"; }
+                if(btnAccepted) { btnAccepted.style.background = "transparent"; btnAccepted.style.color = "var(--text)"; btnAccepted.style.border = "1px solid var(--border)"; }
+            } else {
+                if(btnAccepted) { btnAccepted.style.background = "#10b981"; btnAccepted.style.color = "white"; btnAccepted.style.border = "none"; }
+                if(btnNew) { btnNew.style.background = "transparent"; btnNew.style.color = "var(--text)"; btnNew.style.border = "1px solid var(--border)"; }
+            }
+            loadProRequests();
+        };
+
+        // টাইমার ক্লিয়ারিং মেকানিজম
+        function clearAdminTimers() {
+            window.adminTimerIntervals.forEach(clearInterval);
+            window.adminTimerIntervals = [];
+        }
+
+        // =======================================
+        // 🔥 রিয়েল-টাইম ডাটা রেন্ডারার ও ফায়ারবেস লিসেনার্স
+        // =======================================
+
         auth.onAuthStateChanged(user => {
             if (user) {
+                // ১. চ্যাট লগ লিসেনার
                 DB.ref("all_logs").on("value", snap => {
                     RAW = snap.val() || {};
-                    render();
+                    if(window.ACTIVE_SPACE === "chats") render();
                 });
+                // ২. রিপোর্ট লিসেনার অটো-রান
+                listenToReports();
             }
         });
 
+        // চ্যাট লিস্ট রেন্ডারার
         function render() {
-
-            // 🔥 ম্যাজিক ফিক্স: পুরোনো ব্রাউজারের ক্র্যাশ এড়াতে ?. বাদ দিয়ে নিরাপদ কোড লেখা হলো
             const filterEl = document.getElementById("timeFilter");
             const filter = filterEl ? filterEl.value : "all";
             const now = new Date();
 
             let grid = document.getElementById("grid");
+            if(!grid) return;
             grid.innerHTML = "";
 
             Object.entries(RAW).reverse().forEach(([k, d]) => {
-
-                let div = document.createElement("div");
-                div.className = "card";
-
-                // ⏰ TIME তৈরি
                 let time = d.time ? new Date(d.time) : new Date();
-
                 let diff = now - time;
                 let show = true;
 
-                if (filter === "today") {
-                    show = time.toDateString() === now.toDateString();
-                }
-                else if (filter === "7d") {
-                    show = diff <= 7 * 86400000;
-                }
-                else if (filter === "1m") {
-                    show = diff <= 30 * 86400000;
-                }
-                else if (filter === "1y") {
-                    show = diff <= 365 * 86400000;
-                }
+                if (filter === "today") show = time.toDateString() === now.toDateString();
+                else if (filter === "7d") show = diff <= 7 * 86400000;
+                else if (filter === "1m") show = diff <= 30 * 86400000;
+                else if (filter === "1y") show = diff <= 365 * 86400000;
 
                 if (!show) return;
 
-                let fullTime;
-                try {
-                    // আধুনিক সব ব্রাউজার ও পিসির জন্য
-                    fullTime = time.toLocaleString("en-US", {
-                        timeZone: "Asia/Dhaka",
-                        year: "numeric", month: "long", day: "numeric",
-                        hour: "2-digit", minute: "2-digit", second: "2-digit"
-                    });
-                } catch(e) {
-                    // 🔥 ম্যাজিক ফিক্স: কোনো পুরোনো মোবাইলে টাইমজোন সাপোর্ট না করলে কোড ক্র্যাশ না করে লোকাল টাইম দেখাবে
-                    fullTime = time.toLocaleString(); 
-                }
+                let fullTime = time.toLocaleString("en-US", {
+                    timeZone: "Asia/Dhaka",
+                    year: "numeric", month: "long", day: "numeric",
+                    hour: "2-digit", minute: "2-digit", second: "2-digit"
+                });
+
+                let div = document.createElement("div");
+                div.className = "card";
                 div.innerHTML = `
-<div class="name">${d.name || "Unknown"}</div>
-
-<div class="email">${d.email || "No Email"}</div>
-
-<div class="meta">${fullTime}</div>
-
-<div class="q">${d.question || ""}</div>
-
-<div class="actions">
-<button class="icon copy" onclick="copy('${k}')">Copy</button>
-<button class="icon del" onclick="del('${k}')">Delete</button>
-</div>
-`;
-
+                    <div class="name">${d.name || "Unknown"}</div>
+                    <div class="email">${d.email || "No Email"}</div>
+                    <div class="meta">${fullTime}</div>
+                    <div class="q">${d.question || ""}</div>
+                    <div class="actions">
+                        <button class="icon copy" onclick="copy('${k}')">Copy</button>
+                        <button class="icon del" onclick="del('${k}')">Delete</button>
+                    </div>
+                `;
                 grid.appendChild(div);
             });
         }
-        /* ACTION */
-        function copy(k) {
-            navigator.clipboard.writeText(RAW[k].question || "");
-            toast("Copied");
-        }
 
-        let DELETE_ID = null;
+        // চ্যাট কপি ও ডিলিট ইনিশিয়েটর
+        function copy(k) {
+            if(RAW[k]) {
+                navigator.clipboard.writeText(RAW[k].question || "");
+                toast("Copied");
+            }
+        }
 
         function del(k) {
             DELETE_ID = k;
-            document.getElementById("confirmBox").style.display = "flex";
-        }
-        // 🔥 SMART DELETE ALL ENGINE (TAB DETECTING & WINDOW SYNC FIXED)
-        if (typeof window.ACTIVE_SPACE === 'undefined') {
-            window.ACTIVE_SPACE = "chats"; // গ্লোবাল উইন্ডো অবজেক্টে সেট করা হলো যাতে এনক্রিপশন এটাকে লক না করতে পারে
-        }
-
-        function delAll() {
-            const msgEl = document.getElementById("confirmMessage");
-            if (window.ACTIVE_SPACE === "chats") {
-                DELETE_ID = "ALL_CHATS";
-                if(msgEl) msgEl.innerText = "আপনি কি নিশ্চিতভাবেই সব চ্যাট ডিলিট করতে চান?";
-            } else {
-                DELETE_ID = "ALL_REPORTS";
-                if(msgEl) msgEl.innerText = "আপনি কি নিশ্চিতভাবেই সব ইউজার রিপোর্ট ডিলিট করতে চান?";
-            }
+            resetConfirmBoxUI();
+            document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবে এই চ্যাট লগটি মুছে ফেলতে চান?";
             document.getElementById("confirmBox").style.display = "flex";
         }
 
+        // রিপোর্ট রিয়েল-টাইম ইঞ্জিন
+        function listenToReports() {
+            const reportsListContainer = document.getElementById("reportsList");
+            if (!reportsListContainer) return;
 
+            DB.ref("all_reports").on("value", (snapshot) => {
+                if(window.ACTIVE_SPACE !== "reports") return;
+                reportsListContainer.innerHTML = "";
 
-
-        // 🔥 KEYBOARD ENTER DETECTION FOR INSTANT LOGIN (COMPUTERS & MOBILE KEYBOARDS)
-        document.addEventListener("DOMContentLoaded", () => {
-            const emailInp = document.getElementById("emailInput");
-            const passInp = document.getElementById("passwordInput");
-
-            const triggerLoginOnEnter = (e) => {
-                if (e.key === "Enter") {
-                    e.preventDefault();
-                    loginNow(); // কীবোর্ডের এন্টার প্রেস করলেই সরাসরি লগইন ফাংশন রান হবে
-                }
-            };
-
-            if (emailInp) emailInp.addEventListener("keydown", triggerLoginOnEnter);
-            if (passInp) passInp.addEventListener("keydown", triggerLoginOnEnter);
-        });
-
-        function loginNow() {
-
-            const email = document.getElementById("emailInput").value.trim();
-            const pass = document.getElementById("passwordInput").value.trim();
-            const error = document.getElementById("errorText");
-
-            const ADMIN_PASSWORD = "salman.com";
-
-            // 👉 PASSWORD MODE
-            if (showingPassword) {
-
-                // OFF থাকলে block
-                if (PASSWORD_ENABLED === "OFF") {
-                    error.style.display = "block";
-                    error.innerText = "Password login disabled";
+                if (!snapshot.exists()) {
+                    reportsListContainer.innerHTML = `<div style="color: var(--muted); font-size: 14px; padding: 10px;">কোনো রিপোর্ট পাওয়া যায়নি।</div>`;
                     return;
                 }
 
-                if (pass === ADMIN_PASSWORD) {
-                    error.style.display = "none";
-                    document.getElementById("authBox").style.display = "none";
-                    toast("Login Success (Password)");
-                } else {
-                    error.style.display = "block";
-                    error.innerText = "Wrong password";
-                }
-
-                return;
-            }
-
-            // 👉 EMAIL MODE
-            else {
-
-                if (email !== ADMIN_EMAIL) {
-                    error.style.display = "block";
-                    error.innerText = "Wrong email";
-                    return;
-                }
-
-                error.style.display = "none";
-
-                const actionCodeSettings = {
-                    url: window.location.href,
-                    handleCodeInApp: true
-                };
-
-                auth.sendSignInLinkToEmail(email, actionCodeSettings)
-                    .then(() => {
-                        localStorage.setItem("emailForSignIn", email);
-                        toast("Link sent to your email");
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        toast("Email send failed");
+                let reportsHtml = "";
+                snapshot.forEach((childSnapshot) => {
+                    const key = childSnapshot.key;
+                    const data = childSnapshot.val();
+                    const exactDate = new Date(data.time);
+                    const formattedTime = exactDate.toLocaleString("bn-BD", {
+                        year: "numeric", month: "long", day: "numeric",
+                        hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true
                     });
+                    const firstLetter = (data.name || "U").charAt(0).toUpperCase();
 
-                return;
-            }
+                    reportsHtml += `
+                        <div class="reportCard" id="card_rep_${key}">
+                            <div class="reportCardHeader">
+                                <div class="reportUserIcon">${firstLetter}</div>
+                                <div class="reportMeta">
+                                    <span class="reportUserName">${data.name || "Anonymous User"}</span>
+                                    <span class="reportUserEmail">${data.email || "No Email Provided"}</span>
+                                </div>
+                            </div>
+                            <div class="reportContent" id="text_rep_${key}">${data.report || ""}</div>
+                            <div class="actions" style="margin-top: 5px;">
+                                <button class="icon copy" onclick="copyReport('${key}')">Copy</button>
+                                <button class="icon del" onclick="delReport('${key}')">Delete</button>
+                            </div>
+                            <div class="reportFooterTime">
+                                <span>🕒</span> <span>${formattedTime}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                reportsListContainer.innerHTML = reportsHtml;
+            });
         }
 
-
-
-
-
-        function closeConfirm() {
-            const box = document.getElementById("confirmBox");
-
-            box.style.opacity = "0";
-
-            setTimeout(() => {
-                box.style.display = "none";
-                box.style.opacity = "1";
-            }, 200);
-
-            DELETE_ID = null;
-        }
-
-        // 🔥 MASTER CONFIRM DELETE LAYER (CHATS & REPORTS SECURE FIX)
-        function confirmDelete() {
-            if (DELETE_ID === "ALL_CHATS") {
-                DB.ref("all_logs").remove();
-                toast("All Chats Deleted");
-            }
-            else if (DELETE_ID === "ALL_REPORTS") {
-                DB.ref("all_reports").remove();
-                toast("All Reports Deleted");
-            }
-            else if (DELETE_ID && DELETE_ID.startsWith("REP_")) {
-                // একক রিপোর্ট ডিলিট লজিক
-                const reportKey = DELETE_ID.replace("REP_", "");
-                DB.ref("all_reports/" + reportKey).remove()
-                    .then(() => toast("Report Deleted"))
-                    .catch(() => toast("Delete Failed"));
-            }
-            else if (DELETE_ID) {
-                // একক চ্যাট লগ ডিলিট লজিক
-                DB.ref("all_logs/" + DELETE_ID).remove();
-                toast("Chat Log Deleted");
-            }
-
-            closeConfirm();
-        }
-
-        // 🔥 REPORT SINGLE COPY FUNCTION
         function copyReport(k) {
-            const reportTextEl = document.getElementById("text_rep_" + k);
-            if (reportTextEl) {
-                navigator.clipboard.writeText(reportTextEl.innerText);
+            const textEl = document.getElementById("text_rep_" + k);
+            if (textEl) {
+                navigator.clipboard.writeText(textEl.innerText);
                 toast("Report Copied");
             }
         }
 
-        // 🔥 REPORT SINGLE DELETE INITIALIZER
         function delReport(k) {
             DELETE_ID = "REP_" + k;
+            resetConfirmBoxUI();
             document.getElementById("confirmMessage").innerText = "আপনি কি এই নির্দিষ্ট রিপোর্টটি ডিলিট করতে চান?";
             document.getElementById("confirmBox").style.display = "flex";
         }
 
+        // প্রো মেম্বার রিয়েল-টাইম রেন্ডারার (টগল লুপ ফিক্সড)
+        function loadProRequests() {
+            const container = document.getElementById("proMembersListContainer");
+            if (!container) return;
+
+            clearAdminTimers();
+
+            // এখানে .once() ব্যবহার করা হয়েছে যাতে টগল করার সময় UI ক্র্যাশ না করে
+            DB.ref("pro_requests").once("value", (snapshot) => {
+                container.innerHTML = "";
+                if (!snapshot.exists()) {
+                    container.innerHTML = `<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--muted); font-weight: 500;">কোনো প্রিমিয়াম অনুরোধ পাওয়া যায়নি।</td></tr>`;
+                    return;
+                }
+
+                let html = "";
+                let itemsCount = 0;
+                let activeRequests = [];
+
+                snapshot.forEach((childSnapshot) => {
+                    const reqId = childSnapshot.key;
+                    const data = childSnapshot.val();
+
+                    let targetTab = data.status === "expired" ? "active" : data.status;
+                    if (targetTab !== window.currentProTab) return;
+                    itemsCount++;
+
+                    const dateStr = data.time ? new Date(data.time).toLocaleString('bn-BD') : "N/A";
+                    const isChecked = data.status === "active" ? "checked" : "";
+                    
+                    let statusLabel = "";
+                    let deleteButtonHtml = "";
+
+                    if (data.status === "active") {
+                        statusLabel = `<span style="color: #10b981; font-weight: 700; font-size: 12px;">🟢 Active Member</span>`;
+                        deleteButtonHtml = `<button onclick="deleteProUserRequest('${reqId}', '${data.uid}', 'active')" style="margin-left: 10px; background: rgba(239, 68, 68, 0.08); color: #ef4444; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 11px;">Delete</button>`;
+                    } else if (data.status === "expired") {
+                        statusLabel = `<span style="color: #ef4444; font-weight: 700; font-size: 12px;">🔴 Expired / Off</span>`;
+                        deleteButtonHtml = `<button onclick="deleteProUserRequest('${reqId}', '${data.uid}', 'expired')" style="margin-left: 10px; background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 11px;">Delete</button>`;
+                    } else {
+                        statusLabel = `<span style="color: #f59e0b; font-weight: 700; font-size: 12px;">🟡 Pending Request</span>`;
+                    }
+
+                    html += `
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 12px 8px; line-height: 1.5;">
+                            <div style="font-weight: 600; color: var(--text); font-size: 14px;">${data.name || 'Unknown'}</div>
+                            <div style="font-size: 11px; color: var(--muted);">${data.email || 'No Email'}</div>
+                            <div style="font-size: 12px; font-weight: 700; margin-top: 4px;">
+                                <a href="tel:${data.phone}" style="color: var(--pri); text-decoration: none;">📞 ${data.phone || 'No Number'}</a>
+                            </div>
+                        </td>
+                        <td style="padding: 12px 8px; color: var(--text); vertical-align: middle;">
+                            <span style="background: rgba(79, 70, 229, 0.1); color: var(--pri); padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold;">
+                                ${data.requestedPlan || 'Starter'}
+                            </span>
+                            <div style="font-size: 10px; color: var(--muted); margin-top: 6px;">📅 ${dateStr}</div>
+                            <div id="admin_timer_${reqId}" style="font-size: 11px; font-weight: 700; color: #10b981; margin-top: 6px; display: none; background: rgba(16, 185, 129, 0.08); padding: 2px 6px; border-radius: 4px; width: max-content;"></div>
+                        </td>
+                        <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
+                            ${data.screenshot ? `<img src="${data.screenshot}" onclick="previewImage('${data.screenshot}')" style="width: 48px; height: 48px; object-fit: cover; border-radius: 8px; cursor: pointer;">` : `<span style="color: var(--muted); font-size: 11px;">No Screenshot</span>`}
+                        </td>
+                        <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
+                            <div style="margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                                ${statusLabel} ${deleteButtonHtml}
+                            </div>
+                            <label style="position: relative; display: inline-block; width: 42px; height: 22px; cursor: pointer;">
+                                <input type="checkbox" id="chk_${reqId}" ${isChecked} onchange="toggleUserPremium('${reqId}', '${data.uid}', this)" style="opacity: 0; width: 0; height: 0;">
+                                <span style="position: absolute; inset: 0; background-color: ${data.status === 'active' ? '#10b981' : '#cbd5e1'}; border-radius: 22px; transition: 0.3s;">
+                                    <span style="position: absolute; height: 16px; width: 16px; left: ${data.status === 'active' ? '23px' : '3px'}; bottom: 3px; background-color: white; border-radius: 50%; transition: 0.3s;"></span>
+                                </span>
+                            </label>
+                        </td>
+                    </tr>`;
+
+                    if (data.uid && data.status === "active") {
+                        activeRequests.push({ reqId: reqId, userUid: data.uid });
+                    }
+                });
+
+                container.innerHTML = itemsCount === 0 ? `<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--muted);">এই সেকশনে বর্তমানে কোনো ডেটা নেই।</td></tr>` : html;
+                
+                // লাইভ কাউন্টডাউন টাইমার ইঞ্জিন রান করা
+                activeRequests.forEach(item => {
+                    DB.ref(`users/${item.userUid}`).once("value", (userSnap) => {
+                        const uData = userSnap.val();
+                        const timerBox = document.getElementById(`admin_timer_${item.reqId}`);
+                        
+                        if (uData && uData.isPro === true && uData.proEndDate) {
+                            if (timerBox) timerBox.style.display = "block";
+                            localStorage.setItem(`offline_pro_end_${item.userUid}`, uData.proEndDate);
+
+                            const intId = setInterval(() => {
+                                const savedEndTime = localStorage.getItem(`offline_pro_end_${item.userUid}`) || uData.proEndDate;
+                                const timeLeft = savedEndTime - Date.now();
+                                const liveTimerBox = document.getElementById(`admin_timer_${item.reqId}`);
+                                
+                                if (timeLeft <= 0) {
+                                    if (liveTimerBox) liveTimerBox.innerHTML = "❌ মেয়াদ শেষ";
+                                    clearInterval(intId);
+                                    DB.ref(`users/${item.userUid}`).update({ isPro: false, proStartDate: 0, proEndDate: 0 });
+                                    DB.ref(`pro_requests/${item.reqId}`).update({ status: "pending" });
+                                    localStorage.removeItem(`offline_pro_end_${item.userUid}`);
+                                    loadProRequests();
+                                    return;
+                                }
+
+                                const days = Math.floor(timeLeft / 86400000);
+                                const hours = Math.floor((timeLeft % 86400000) / 3600000);
+                                const minutes = Math.floor((timeLeft % 3600000) / 60000);
+                                const seconds = Math.floor((timeLeft % 60000) / 1000);
+
+                                if (liveTimerBox) liveTimerBox.innerHTML = `⏳ বাকি: ${days}দিন ${hours}ঘ ${minutes}মি ${seconds}সে`;
+                            }, 1000);
+                            window.adminTimerIntervals.push(intId);
+                        }
+                    });
+                });
+            });
+        }
 
 
+        // প্রো মেম্বার রিকোয়েস্ট ডিলিট সিস্টেম
+        window.deleteProUserRequest = function(requestId, userUid, currentStatus) {
+            if (currentStatus === 'active') {
+                showCustomAlert(`
+                    <div class="premium-popup-flex">
+                        <div class="popup-content-zone">
+                            <h3 style="color:#ef4444; font-size:16px; font-weight:700; margin:0;">ডিলিট করা সম্ভব নয়!</h3>
+                            <p style="color:var(--text); font-size:13px; line-height:1.5; margin:8px 0 0 0;">
+                                ইউজার মেম্বারশিপে একটিভ আছেন। দয়া করে প্রথমে তার ডানপাশের <b>টগল বাটনটি অফ করুন</b>, তারপর ডিলিট করুন।
+                            </p>
+                        </div>
+                    </div>
+                `);
+                return;
+            }
 
+            DB.ref(`pro_requests/${requestId}`).once("value").then((snap) => {
+                const uData = snap.val() || {};
+                showCustomConfirm(`
+                    <div class="premium-popup-flex">
+                        <div class="popup-content-zone">
+                            <h3 style="color:var(--text); font-size:16px; font-weight:700; margin:0;">অনুরোধটি ডিলিট করবেন?</h3>
+                            <p style="color:var(--muted); font-size:12px; margin:4px 0;">ইউজার: ${uData.name || 'Unknown'}</p>
+                            <p style="color:var(--text); font-size:13px; margin:0;">আপনি কি নিশ্চিতভাবে এই হিস্ট্রি ডাটাবেজ থেকে মুছে ফেলতে চান?</p>
+                        </div>
+                    </div>
+                `, () => {
+                    DB.ref(`pro_requests/${requestId}`).remove().then(() => {
+                        localStorage.removeItem(`offline_pro_end_${userUid}`);
+                        toast("সফলভাবে মুছে ফেলা হয়েছে! 🗑");
+                        loadProRequests();
+                    });
+                });
+            });
+        };
 
-        let showingPassword = false;
+        // ডিলিট অল কন্ট্রোলার (চ্যাট ও রিপোর্ট আলাদা ডিলিট)
+        function delAll() {
+            resetConfirmBoxUI();
+            if (window.ACTIVE_SPACE === "chats") {
+                DELETE_ID = "ALL_CHATS";
+                document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবেই সব চ্যাট হিস্ট্রি ডিলিট করতে চান?";
+            } else if (window.ACTIVE_SPACE === "reports") {
+                DELETE_ID = "ALL_REPORTS";
+                document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবেই সব ইউজার রিপোর্ট ডিলিট করতে চান?";
+            }
+            document.getElementById("confirmBox").style.display = "flex";
+        }
 
-        const PASSWORD_ENABLED = "ON";
-        // 👉 "ON" দিলে password কাজ করবে
-        // 👉 "OFF" দিলে password সবসময় ভুল দেখাবে
+        // =======================================
+        // 🛡️ মাস্টার কনফর্ম ডিলিট এক্সিকিউশন লেয়ার
+        // =======================================
+        function confirmDelete() {
+            if (DELETE_ID === "ALL_CHATS") {
+                DB.ref("all_logs").remove().then(() => { toast("All Chats Deleted"); RAW = {}; render(); });
+            }
+            else if (DELETE_ID === "ALL_REPORTS") {
+                DB.ref("all_reports").remove().then(() => { toast("All Reports Deleted"); listenToReports(); });
+            }
+            else if (DELETE_ID && DELETE_ID.startsWith("REP_")) {
+                const reportKey = DELETE_ID.replace("REP_", "");
+                DB.ref("all_reports/" + reportKey).remove().then(() => toast("Report Deleted"));
+            }
+            else if (DELETE_ID) {
+                DB.ref("all_logs/" + DELETE_ID).remove().then(() => toast("Chat Log Deleted"));
+            }
+            closeConfirm();
+        }
+
+        function closeConfirm() {
+            document.getElementById("confirmBox").style.display = "none";
+            DELETE_ID = null;
+        }
+
+        // কনফর্ম বক্স রিসেটার (HTML ইঞ্জেকশন ভাঙন রোধ করতে)
+        function resetConfirmBoxUI() {
+            const confirmBox = document.getElementById("confirmBox");
+            if (!confirmBox) return;
+            confirmBox.innerHTML = `
+                <div style="background:var(--card); padding: 24px; border-radius:24px; width: 100%; max-width: 420px; text-align:center; border:1px solid var(--border); backdrop-filter: var(--glass); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; gap: 14px;">
+                    <div id="confirmMessage" style="width: 100%;">Delete this item?</div>
+                    <div style="display:flex; gap:12px; justify-content:center; width: 100%;">
+                        <button onclick="closeConfirm()" style="flex:1; background:rgba(0,0,0,0.05); color:var(--text); border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600; font-size:13.5px;">Cancel</button>
+                        <button onclick="confirmDelete()" style="flex:1; background:#ef4444; color:white; border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600; font-size:13.5px;">Delete</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // কাস্টম অ্যালার্ট ও প্রোম্পট পপআপ উইন্ডো
+        function showCustomAlert(message) {
+            resetConfirmBoxUI();
+            const confirmBox = document.getElementById("confirmBox");
+            document.getElementById("confirmMessage").innerHTML = message;
+            const buttonGroup = confirmBox.querySelector("div[style*='display:flex']");
+            if (buttonGroup) {
+                buttonGroup.innerHTML = `<button onclick="closeConfirm()" style="background:var(--pri); color:white; border:none; padding:10px 24px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; width:100%; min-height:40px;">ঠিক আছে</button>`;
+            }
+            confirmBox.style.display = "flex";
+        }
+
+        function showCustomConfirm(message, onConfirmCallback) {
+            resetConfirmBoxUI();
+            const confirmBox = document.getElementById("confirmBox");
+            document.getElementById("confirmMessage").innerHTML = message;
+            const buttonGroup = confirmBox.querySelector("div[style*='display:flex']");
+            if (buttonGroup) {
+                buttonGroup.innerHTML = `
+                    <button id="customCancelBtn" style="flex:1; background:rgba(0,0,0,0.05); color:var(--text); border:none; padding:10px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px;">বাতিল</button>
+                    <button id="customConfirmBtn" style="flex:1; background:#ef4444; color:white; border:none; padding:10px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px;">হ্যাঁ, ডিলিট করুন</button>
+                `;
+                document.getElementById("customCancelBtn").onclick = closeConfirm;
+                document.getElementById("customConfirmBtn").onclick = function() {
+                    closeConfirm();
+                    if (typeof onConfirmCallback === "function") onConfirmCallback();
+                };
+            }
+            confirmBox.style.display = "flex";
+        }
+
+        function showCustomDaysPrompt(onSuccessCallback, onCancelCallback) {
+            let promptModal = document.getElementById("customPromptModal");
+            if (!promptModal) {
+                promptModal = document.createElement("div");
+                promptModal.id = "customPromptModal";
+                promptModal.style = "position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px); z-index:99999; padding:16px; box-sizing:border-box;";
+                document.body.appendChild(promptModal);
+            }
+
+            promptModal.innerHTML = `
+                <div style="background:#ffffff; padding:28px 24px; border-radius:24px; width:100%; max-width:400px; text-align:center; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);" class="custom-white-prompt-card">
+                    <div style="font-weight:700; color:#0f172a; font-size:17px;">👑 মেম্বারশিপ মেয়াদ নির্ধারণ করুন</div>
+                    <div style="font-size:12px; color:#64748b; line-height:1.4;">এই ইউজারকে কত সময়ের জন্য PRO মেম্বারশিপ দিতে চান? সংখ্যা লিখে ইউনিট সিলেক্ট করুন।</div>
+                    <input type="number" id="customPromptValueInput" value="7" min="1" style="width:100%; padding:12px; border-radius:12px; border:1px solid rgba(0,0,0,0.08); background:rgba(0,0,0,0.03); color:#000; font-weight:700; text-align:center; font-size:18px; outline:none;">
+                    <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width:100%;">
+                        <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid rgba(0,0,0,0.08); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:#0f172a;" id="lbl-min"><input type="radio" name="timeUnit" value="minutes" style="display:none;" onchange="updateCustomUnitStyle('minutes')"> ⏱ মিনিট</label>
+                        <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid rgba(0,0,0,0.08); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:#0f172a;" id="lbl-hr"><input type="radio" name="timeUnit" value="hours" style="display:none;" onchange="updateCustomUnitStyle('hours')"> ⏰ ঘণ্টা</label>
+                        <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:none; border-radius:12px; font-size:12.5px; font-weight:700; background:var(--pri); color:white; box-shadow:0 4px 10px rgba(79, 70, 229, 0.2);" id="lbl-day"><input type="radio" name="timeUnit" value="days" checked style="display:none;" onchange="updateCustomUnitStyle('days')"> 📅 দিন</label>
+                        <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid rgba(0,0,0,0.08); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:#0f172a;" id="lbl-mon"><input type="radio" name="timeUnit" value="months" style="display:none;" onchange="updateCustomUnitStyle('months')"> 🚀 মাস</label>
+                    </div>
+                    <div style="display:flex; gap:12px; justify-content:center; width:100%;">
+                        <button id="promptCancelBtn" style="flex:1; background:rgba(0,0,0,0.05); color:#0f172a; border:none; padding:11px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px;">Cancel</button>
+                        <button id="promptSubmitBtn" style="flex:1; background:var(--pri); color:white; border:none; padding:11px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);">অ্যাক্টিভ করুন</button>
+                    </div>
+                </div>
+            `;
+
+            window.updateCustomUnitStyle = function(selectedUnit) {
+                const units = { minutes: document.getElementById("lbl-min"), hours: document.getElementById("lbl-hr"), days: document.getElementById("lbl-day"), months: document.getElementById("lbl-mon") };
+                Object.keys(units).forEach(key => {
+                    if (!units[key]) return;
+                    if (key === selectedUnit) {
+                        units[key].style.background = "var(--pri)"; units[key].style.color = "white"; units[key].style.border = "none"; units[key].style.fontWeight = "700";
+                    } else {
+                        units[key].style.background = "rgba(0, 0, 0, 0.02)"; units[key].style.color = "#0f172a"; units[key].style.border = "1px solid rgba(0,0,0,0.08)"; units[key].style.fontWeight = "600";
+                    }
+                });
+            };
+
+            const valueField = document.getElementById("customPromptValueInput");
+            if (valueField) valueField.focus();
+
+            document.getElementById("promptCancelBtn").onclick = function() {
+                promptModal.style.display = "none";
+                if (typeof onCancelCallback === "function") onCancelCallback();
+            };
+
+            document.getElementById("promptSubmitBtn").onclick = function() {
+                const rawValue = valueField.value.trim();
+                const amount = parseInt(rawValue);
+                const selectedRadio = document.querySelector('input[name="timeUnit"]:checked');
+                const unit = selectedRadio ? selectedRadio.value : "days";
+
+                if (isNaN(amount) || amount <= 0) {
+                    toast("❌ দয়া করে সঠিক সংখ্যা দিন!");
+                    return;
+                }
+
+                let durationMiliseconds = amount * 24 * 60 * 60 * 1000; // Default Days
+                if (unit === "minutes") durationMiliseconds = amount * 60 * 1000;
+                else if (unit === "hours") durationMiliseconds = amount * 3600 * 1000;
+                else if (unit === "months") {
+                    if (amount > 1) { toast("⚠ সর্বোচ্চ ১ মাস মেম্বারশিপ দেওয়া যাবে!"); valueField.value = "1"; return; }
+                    durationMiliseconds = amount * 30 * 24 * 3600 * 1000;
+                }
+
+                promptModal.style.display = "none";
+                if (typeof onSuccessCallback === "function") onSuccessCallback(durationMiliseconds, amount, unit);
+            };
+        }
+
+        // স্ক্রিনশট প্রিভিউ কোড
+        function previewImage(src) {
+            const modal = document.getElementById("imagePreviewModal");
+            const modalImg = document.getElementById("modalTargetImg");
+            if(modal && modalImg) { modalImg.src = src; modal.style.display = "flex"; }
+        }
+        function closeImageModal() {
+            const modal = document.getElementById("imagePreviewModal");
+            if(modal) modal.style.display = "none";
+        }
+
+        // =======================================
+        // 🔒 সিকিউরিটি এবং অথেন্টিকেশন ইঞ্জিন
+        // =======================================
+        function loginNow() {
+            const email = document.getElementById("emailInput").value.trim();
+            const pass = document.getElementById("passwordInput").value.trim();
+            const error = document.getElementById("errorText");
+            const ADMIN_PASSWORD = "salman.com";
+
+            if (showingPassword) {
+                if (PASSWORD_ENABLED === "OFF") {
+                    error.style.display = "block"; error.innerText = "Password login disabled"; return;
+                }
+                if (pass === ADMIN_PASSWORD) {
+                    error.style.display = "none"; document.getElementById("authBox").style.display = "none"; toast("Login Success (Password)");
+                } else {
+                    error.style.display = "block"; error.innerText = "Wrong password";
+                }
+            } else {
+                if (email !== ADMIN_EMAIL) {
+                    error.style.display = "block"; error.innerText = "Wrong email"; return;
+                }
+                error.style.display = "none";
+                auth.sendSignInLinkToEmail(email, { url: window.location.href, handleCodeInApp: true })
+                .then(() => { localStorage.setItem("emailForSignIn", email); toast("Link sent to your email"); })
+                .catch(() => { toast("Email send failed"); });
+            }
+        }
 
         function switchInput() {
-
             const email = document.getElementById("emailInput");
             const pass = document.getElementById("passwordInput");
             const btn = document.getElementById("switchBtn");
             const title = document.getElementById("formTitle");
 
             showingPassword = !showingPassword;
-
             if (showingPassword) {
-
-                // 👉 PASSWORD MODE
-                email.style.display = "none";
-                pass.style.display = "block";
-
-                btn.innerText = "Email";
-                title.innerText = "Login (Password)";
-
+                email.style.display = "none"; pass.style.display = "block"; btn.innerText = "Email"; title.innerText = "Login (Password)";
             } else {
-
-                // 👉 EMAIL MODE
-                email.style.display = "block";
-                pass.style.display = "none";
-
-                btn.innerText = "Password";
-                title.innerText = "Login (Email)";
+                email.style.display = "block"; pass.style.display = "none"; btn.innerText = "Password"; title.innerText = "Login (Email)";
             }
         }
 
-
-
-
-        // ================================
-// PEKO MAX SECURITY LAYER
-// ================================
-
-// RIGHT CLICK BLOCK
-document.addEventListener("contextmenu", e => {
-    e.preventDefault();
-});
-
-// TEXT SELECT BLOCK
-document.addEventListener("selectstart", e => {
-    e.preventDefault();
-});
-
-// DRAG BLOCK
-document.addEventListener("dragstart", e => {
-    e.preventDefault();
-});
-
-// COPY BLOCK
-document.addEventListener("copy", e => {
-    e.preventDefault();
-});
-
-// DEVTOOLS SHORTCUT BLOCK
-document.addEventListener("keydown", e => {
-
-    // F12
-    if (e.key === "F12") {
-        e.preventDefault();
-        return false;
-    }
-
-    // CTRL+SHIFT+I
-    if (e.ctrlKey && e.shiftKey && e.key === "I") {
-        e.preventDefault();
-        return false;
-    }
-
-    // CTRL+SHIFT+J
-    if (e.ctrlKey && e.shiftKey && e.key === "J") {
-        e.preventDefault();
-        return false;
-    }
-
-    // CTRL+SHIFT+C
-    if (e.ctrlKey && e.shiftKey && e.key === "C") {
-        e.preventDefault();
-        return false;
-    }
-
-    // CTRL+U
-    if (e.ctrlKey && e.key.toLowerCase() === "u") {
-        e.preventDefault();
-        return false;
-    }
-
-    // CTRL+S
-    if (e.ctrlKey && e.key.toLowerCase() === "s") {
-        e.preventDefault();
-        return false;
-    }
-
-});
-
-// SAFE DEVTOOLS DETECTION
-setInterval(() => {
-
-    const widthGap =
-        window.outerWidth - window.innerWidth;
-
-    const heightGap =
-        window.outerHeight - window.innerHeight;
-
-    const devtoolsOpen =
-        widthGap > 300 ||
-        heightGap > 300;
-
-    if (devtoolsOpen) {
-
-        console.clear();
-
-    }
-
-}, 1500);
-
-// CONSOLE BLOCK
-setInterval(() => {
-
-    console.clear();
-
-}, 500);
-
-// ANTI DEBUG
-(function () {
-
-    setInterval(() => {
-
-        console.clear();
-
-    }, 2000);
-
-})();
-
-
-
-// =======================================
-// 🔥 REAL-TIME REPORT MANAGEMENT LOGIC (BY MASTER DEVELOPER)
-// =======================================
-function listenToReports() {
-    const reportsListContainer = document.getElementById("reportsList");
-
-    if (reportsListContainer) {
-        // ফায়ারবেসের 'all_reports' নোড থেকে রিয়েল-টাইম ডাটা লিসেন করা হচ্ছে
-        DB.ref("all_reports").on("value", (snapshot) => {
-            reportsListContainer.innerHTML = ""; // আগের ডাটা ক্লিয়ার করা হচ্ছে
-
-            if (!snapshot.exists()) {
-                reportsListContainer.innerHTML = `<div style="color: var(--muted); font-size: 14px; padding: 10px;">কোনো রিপোর্ট পাওয়া যায়নি।</div>`;
-                return;
-            }
-
-            let reportsHtml = "";
-            
-            // অবজেক্টটিকে লুপ ঘুরিয়ে প্রত্যেকটি রিপোর্ট আলাদা করা
-            snapshot.forEach((childSnapshot) => {
-                const data = childSnapshot.val();
-                
-                // এক্সাক্ট টাইমস্ট্যাম্পকে মানুষের পড়ার উপযোগী লোকাল টাইমে কনভার্ট করা (তারিখ, মাস, বছর এবং সেকেন্ডসহ সময়)
-                const exactDate = new Date(data.time);
-                const formattedTime = exactDate.toLocaleString("bn-BD", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    hour12: true
-                });
-
-                // ইউজারের নামের প্রথম অক্ষর আইকনের জন্য নেওয়া
-                const firstLetter = (data.name || "U").charAt(0).toUpperCase();
-
-                // রেসপন্সিভカード জেনারেট করা (🔥 COPY & SINGLE DELETE BUTTON ADDED)
-                reportsHtml += `
-                    <div class="reportCard" id="card_rep_${childSnapshot.key}">
-                        <div class="reportCardHeader">
-                            <div class="reportUserIcon">${firstLetter}</div>
-                            <div class="reportMeta">
-                                <span class="reportUserName">${data.name || "Anonymous User"}</span>
-                                <span class="reportUserEmail">${data.email || "No Email Provided"}</span>
-                            </div>
-                        </div>
-                        <div class="reportContent" id="text_rep_${childSnapshot.key}">${data.report || ""}</div>
-                        
-                        <div class="actions" style="margin-top: 5px;">
-                            <button class="icon copy" onclick="copyReport('${childSnapshot.key}')">Copy</button>
-                            <button class="icon del" onclick="delReport('${childSnapshot.key}')">Delete</button>
-                        </div>
-
-                        <div class="reportFooterTime">
-                            <span>🕒</span>
-                            <span>${formattedTime}</span>
-                        </div>
-                    </div>
-                `;
-            });
-
-            // কন্টেইনারে ইনজেক্ট করা হচ্ছে
-            reportsListContainer.innerHTML = reportsHtml;
-        }, (error) => {
-            console.error("Firebase Report Fetch Error:", error);
-            reportsListContainer.innerHTML = `<div style="color: #ef4444; font-size: 14px; padding: 10px;">ডাটা লোড করতে সমস্যা হয়েছে!</div>`;
+        // কীবোর্ড এন্টার কী লিসেনার
+        document.addEventListener("DOMContentLoaded", () => {
+            const emailInp = document.getElementById("emailInput");
+            const passInp = document.getElementById("passwordInput");
+            const trigger = (e) => { if (e.key === "Enter") { e.preventDefault(); loginNow(); } };
+            if (emailInp) emailInp.addEventListener("keydown", trigger);
+            if (passInp) passInp.addEventListener("keydown", trigger);
         });
-    }
-} // 🔥 এই ক্লোজিং ব্র্যাকেটটি দিয়ে ফাংশনটি নিখুঁতভাবে শেষ করা হলো (এররটি চলে যাবে)
 
-// TAB SWITCH DETECT
-document.addEventListener("visibilitychange", () => {
+        // ইমেল লিঙ্ক ভেরিফিকেশন চেক
+        if (auth.isSignInWithEmailLink(window.location.href)) {
+            let email = localStorage.getItem("emailForSignIn") || prompt("Enter your email again");
+            auth.signInWithEmailLink(email, window.location.href)
+            .then(res => {
+                if (res.user.email === ADMIN_EMAIL) {
+                    document.getElementById("authBox").style.display = "none"; toast("Login Success");
+                } else { alert("Denied"); }
+            }).catch(() => { alert("Login Failed"); });
+        }
 
-    if (document.hidden) {
-
-        console.clear();
-
-    }
-
-});
-
-// AUTO LOGOUT ON REFRESH ATTACK
-window.addEventListener("beforeunload", () => {
-
-    sessionStorage.clear();
-
-});
+        // প্রোটেকশন ও সিকিউরিটি মেজারস
+        document.addEventListener("contextmenu", e => e.preventDefault());
+        document.addEventListener("selectstart", e => e.preventDefault());
+        document.addEventListener("dragstart", e => e.preventDefault());
+        document.addEventListener("copy", e => e.preventDefault());
+        document.addEventListener("keydown", e => {
+            if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) || (e.ctrlKey && ['u','s'].includes(e.key.toLowerCase()))) {
+                e.preventDefault(); return false;
+            }
+        });
+        setInterval(() => { if (window.outerWidth - window.innerWidth > 300 || window.outerHeight - window.innerHeight > 300) console.clear(); }, 1500);
+        setInterval(() => console.clear(), 500);
+        document.addEventListener("visibilitychange", () => { if (document.hidden) console.clear(); });
+        window.addEventListener("beforeunload", () => sessionStorage.clear());
     </script>
 
-<div id="confirmBox" style="position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index:99999; padding: 16px; box-sizing: border-box;">
-        <div style="background:var(--card); padding: 24px; border-radius:24px; width: 100%; max-width: 420px; text-align:center; border:1px solid var(--border); backdrop-filter: var(--glass); -webkit-backdrop-filter: var(--glass); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); box-sizing: border-box; display: flex; flex-direction: column; gap: 14px;">
-            
-            <div id="confirmMessage" style="width: 100%; box-sizing: border-box;">
-                Delete this item?
-            </div>
-            
-            <div style="display:flex; gap:12px; justify-content:center; width: 100%; box-sizing: border-box;">
-                <button onclick="closeConfirm()" style="flex:1; background:rgba(0,0,0,0.05); color:var(--text); border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600; font-size:13.5px; transition: 0.2s;">Cancel</button>
-                <button onclick="confirmDelete()" style="flex:1; background:#ef4444; color:white; border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600; font-size:13.5px; transition: 0.2s;">Delete</button>
+    <div id="confirmBox" style="position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index:99999; padding: 16px; box-sizing: border-box;">
+        <div style="background:var(--card); padding: 24px; border-radius:24px; width: 100%; max-width: 420px; text-align:center; border:1px solid var(--border); backdrop-filter: var(--glass); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; gap: 14px;">
+            <div id="confirmMessage" style="width: 100%;">Delete this item?</div>
+            <div style="display:flex; gap:12px; justify-content:center; width: 100%;">
+                <button onclick="closeConfirm()" style="flex:1; background:rgba(0,0,0,0.05); color:var(--text); border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600; font-size:13.5px;">Cancel</button>
+                <button onclick="confirmDelete()" style="flex:1; background:#ef4444; color:white; border:none; padding:10px 16px; border-radius:12px; cursor:pointer; font-weight:600; font-size:13.5px;">Delete</button>
             </div>
         </div>
     </div>
+    <script>
+// 👑 মাস্টার ফিক্স: পপআপ দ্বিতীয়বার না আসার এবং টগল আটকে যাওয়ার ১০০% সমাধান
+
+function showCustomDaysPrompt(onSuccessCallback, onCancelCallback) {
+    let promptModal = document.getElementById("customPromptModal");
+    if (!promptModal) {
+        promptModal = document.createElement("div");
+        promptModal.id = "customPromptModal";
+        document.body.appendChild(promptModal);
+    }
+    
+    // 🔥 ম্যাজিক ফিক্স: বারবার যেন পপআপ ঠিকমতো ওপেন হয়
+    promptModal.style = "position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(15, 23, 42, 0.4); backdrop-filter: blur(10px); z-index:99999; padding:16px; box-sizing:border-box;";
+
+    promptModal.innerHTML = `
+        <div style="background:#ffffff; padding:28px 24px; border-radius:24px; width:100%; max-width:400px; text-align:center; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);" class="custom-white-prompt-card">
+            <div style="font-weight:700; color:#0f172a; font-size:17px;">👑 মেম্বারশিপ মেয়াদ নির্ধারণ করুন</div>
+            <div style="font-size:12px; color:#64748b; line-height:1.4;">এই ইউজারকে কত সময়ের জন্য PRO মেম্বারশিপ দিতে চান? সংখ্যা লিখে ইউনিট সিলেক্ট করুন।</div>
+            <input type="number" id="customPromptValueInput" value="7" min="1" style="width:100%; padding:12px; border-radius:12px; border:1px solid rgba(0,0,0,0.08); background:rgba(0,0,0,0.03); color:#000; font-weight:700; text-align:center; font-size:18px; outline:none;">
+            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width:100%;">
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid rgba(0,0,0,0.08); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:#0f172a;" id="lbl-min"><input type="radio" name="timeUnit" value="minutes" style="display:none;" onchange="updateCustomUnitStyle('minutes')"> ⏱ মিনিট</label>
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid rgba(0,0,0,0.08); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:#0f172a;" id="lbl-hr"><input type="radio" name="timeUnit" value="hours" style="display:none;" onchange="updateCustomUnitStyle('hours')"> ⏰ ঘণ্টা</label>
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:none; border-radius:12px; font-size:12.5px; font-weight:700; background:var(--pri); color:white; box-shadow:0 4px 10px rgba(79, 70, 229, 0.2);" id="lbl-day"><input type="radio" name="timeUnit" value="days" checked style="display:none;" onchange="updateCustomUnitStyle('days')"> 📅 দিন</label>
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid rgba(0,0,0,0.08); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:#0f172a;" id="lbl-mon"><input type="radio" name="timeUnit" value="months" style="display:none;" onchange="updateCustomUnitStyle('months')"> 🚀 মাস</label>
+            </div>
+            <div style="display:flex; gap:12px; justify-content:center; width:100%;">
+                <button id="promptCancelBtn" style="flex:1; background:rgba(0,0,0,0.05); color:#0f172a; border:none; padding:11px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px;">Cancel</button>
+                <button id="promptSubmitBtn" style="flex:1; background:var(--pri); color:white; border:none; padding:11px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);">অ্যাক্টিভ করুন</button>
+            </div>
+        </div>
+    `;
+
+    window.updateCustomUnitStyle = function(selectedUnit) {
+        const units = { minutes: document.getElementById("lbl-min"), hours: document.getElementById("lbl-hr"), days: document.getElementById("lbl-day"), months: document.getElementById("lbl-mon") };
+        Object.keys(units).forEach(key => {
+            if (!units[key]) return;
+            if (key === selectedUnit) {
+                units[key].style.background = "var(--pri)"; units[key].style.color = "white"; units[key].style.border = "none"; units[key].style.fontWeight = "700";
+            } else {
+                units[key].style.background = "rgba(0, 0, 0, 0.02)"; units[key].style.color = "#0f172a"; units[key].style.border = "1px solid rgba(0,0,0,0.08)"; units[key].style.fontWeight = "600";
+            }
+        });
+    };
+
+    const valueField = document.getElementById("customPromptValueInput");
+    if (valueField) valueField.focus();
+
+    document.getElementById("promptCancelBtn").onclick = function() {
+        promptModal.style.display = "none";
+        if (typeof onCancelCallback === "function") onCancelCallback();
+    };
+
+    document.getElementById("promptSubmitBtn").onclick = function() {
+        const rawValue = valueField.value.trim();
+        const amount = parseInt(rawValue);
+        const selectedRadio = document.querySelector('input[name="timeUnit"]:checked');
+        const unit = selectedRadio ? selectedRadio.value : "days";
+
+        if (isNaN(amount) || amount <= 0) {
+            toast("❌ দয়া করে সঠিক সংখ্যা দিন!");
+            return;
+        }
+
+        let durationMiliseconds = amount * 24 * 60 * 60 * 1000;
+        if (unit === "minutes") durationMiliseconds = amount * 60 * 1000;
+        else if (unit === "hours") durationMiliseconds = amount * 3600 * 1000;
+        else if (unit === "months") {
+            if (amount > 1) { toast("⚠ সর্বোচ্চ ১ মাস মেম্বারশিপ দেওয়া যাবে!"); valueField.value = "1"; return; }
+            durationMiliseconds = amount * 30 * 24 * 3600 * 1000;
+        }
+
+        promptModal.style.display = "none";
+        if (typeof onSuccessCallback === "function") onSuccessCallback(durationMiliseconds, amount, unit);
+    };
+}
+
+// 👑 প্রিমিয়াম লাইসেন্স টগল কন্ট্রোলার
+function toggleUserPremium(requestId, userUid, toggleElement) {
+    const isActivating = toggleElement.checked;
+
+    if (isActivating) {
+        showCustomDaysPrompt((durationMiliseconds, amount, unit) => {
+            const now = Date.now();
+            const expireTime = now + durationMiliseconds;
+            let unitText = unit === "minutes" ? "মিনিট" : unit === "hours" ? "ঘণ্টা" : unit === "months" ? "মাস" : "দিন";
+
+            DB.ref(`pro_requests/${requestId}`).update({ status: "active" })
+            .then(() => {
+                return DB.ref(`users/${userUid}`).update({ 
+                    isPro: true, proStartDate: now, proEndDate: expireTime
+                });
+            })
+            .then(() => {
+                localStorage.setItem(`offline_pro_end_${userUid}`, expireTime);
+                toast(`সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
+                loadProRequests(); 
+            })
+            .catch(() => {
+                toggleElement.checked = false;
+                toast("ডাটাবেজ আপডেট ব্যর্থ হয়েছে");
+            });
+        }, () => {
+            toggleElement.checked = false;
+        });
+    } else {
+        DB.ref(`pro_requests/${requestId}`).update({
+            status: "expired"
+        })
+        .then(() => {
+            return DB.ref(`users/${userUid}`).update({
+                isPro: false, proStartDate: 0, proEndDate: 0
+            });
+        })
+        .then(() => {
+            localStorage.removeItem(`offline_pro_end_${userUid}`);
+            toast("ইউজারের PRO স্ট্যাটাস বন্ধ করা হয়েছে। 🔒");
+            loadProRequests(); 
+        })
+        .catch(() => {
+            toggleElement.checked = true;
+            toast("ডাটাবেজ আপডেট ব্যর্থ হয়েছে");
+        });
+    }
+}
 
 
 
 
 
+// 👑 3-TAB SWITCHER LOGIC
+window.switchProTab = function(tabName) {
+    window.currentProTab = tabName;
+    const btnNew = document.getElementById("tabNewRequests");
+    const btnAccepted = document.getElementById("tabAcceptedMembers");
+    const btnExpired = document.getElementById("tabExpiredMembers");
 
+    // সব বাটনের ডিফল্ট কালার রিসেট করা
+    [btnNew, btnAccepted, btnExpired].forEach(btn => {
+        if(btn) { btn.style.background = "transparent"; btn.style.color = "var(--text)"; btn.style.border = "1px solid var(--border)"; }
+    });
 
+    // ক্লিক করা ট্যাব অনুযায়ী কালার দেওয়া
+    if (tabName === "pending" && btnNew) {
+        btnNew.style.background = "var(--pri)"; btnNew.style.color = "white"; btnNew.style.border = "none";
+    } else if (tabName === "active" && btnAccepted) {
+        btnAccepted.style.background = "#10b981"; btnAccepted.style.color = "white"; btnAccepted.style.border = "none";
+    } else if (tabName === "expired" && btnExpired) {
+        btnExpired.style.background = "#ef4444"; btnExpired.style.color = "white"; btnExpired.style.border = "none";
+    }
+    loadProRequests(); 
+};
+
+// 👑 MASTER DATA LOADER (NEW ROUTING & AUTO-EXPIRE FIX)
+window.loadProRequests = function() {
+    const container = document.getElementById("proMembersListContainer");
+    if (!container) return;
+
+    clearAdminTimers(); // আগের টাইমার ক্লিন
+
+    DB.ref("pro_requests").once("value").then((snapshot) => {
+        container.innerHTML = "";
+        clearAdminTimers();
+
+        if (!snapshot.exists()) {
+            container.innerHTML = '<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--muted); font-weight: 500;">কোনো ডেটা পাওয়া যায়নি।</td></tr>';
+            return;
+        }
+
+        let html = "";
+        let itemsCount = 0;
+        let activeRequests = [];
+
+        snapshot.forEach((childSnapshot) => {
+            const reqId = childSnapshot.key;
+            const data = childSnapshot.val();
+
+            // 🔥 ম্যাজিক ফিক্স: এখন আর ডাটা মিক্স হবে না। যার যে ট্যাব, সে সেখানে থাকবে!
+            let targetTab = data.status; 
+            if (targetTab !== window.currentProTab) return;
+            itemsCount++;
+
+            const dateStr = data.time ? new Date(data.time).toLocaleString('bn-BD') : "N/A";
+            const isChecked = data.status === "active" ? "checked" : "";
+            
+            let statusLabel = "";
+            let deleteButtonHtml = "";
+
+            if (data.status === "active") {
+                statusLabel = '<span style="color: #10b981; font-weight: 700; font-size: 12px;">🟢 Active Member</span>';
+                deleteButtonHtml = '<button onclick="deleteProUserRequest(\''+reqId+'\', \''+data.uid+'\', \'active\')" style="margin-left: 10px; background: rgba(239, 68, 68, 0.08); color: #ef4444; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 11px;">Delete</button>';
+            } else if (data.status === "expired") {
+                statusLabel = '<span style="color: #ef4444; font-weight: 700; font-size: 12px;">🔴 Expired / Off</span>';
+                deleteButtonHtml = '<button onclick="deleteProUserRequest(\''+reqId+'\', \''+data.uid+'\', \'expired\')" style="margin-left: 10px; background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 11px;">Delete</button>';
+            } else {
+                statusLabel = '<span style="color: #f59e0b; font-weight: 700; font-size: 12px;">🟡 Pending Request</span>';
+                deleteButtonHtml = ''; 
+            }
+
+            html += `
+            <tr style="border-bottom: 1px solid var(--border); transition: background 0.2s;">
+                <td style="padding: 12px 8px; line-height: 1.5;">
+                    <div style="font-weight: 600; color: var(--text); font-size: 14px;">${data.name || 'Unknown'}</div>
+                    <div style="font-size: 11px; color: var(--muted);">${data.email || 'No Email'}</div>
+                </td>
+                <td style="padding: 12px 8px; color: var(--text); vertical-align: middle;">
+                    <span style="background: rgba(79, 70, 229, 0.1); color: var(--pri); padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold;">
+                        ${data.requestedPlan || 'Starter'}
+                    </span>
+                    <div style="font-size: 10px; color: var(--muted); margin-top: 6px;">📅 ${dateStr}</div>
+                    <div id="admin_timer_${reqId}" style="font-size: 11px; font-weight: 700; color: #10b981; margin-top: 6px; display: none; background: rgba(16, 185, 129, 0.08); padding: 2px 6px; border-radius: 4px; width: max-content;"></div>
+                </td>
+                <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
+                    ${data.screenshot ? 
+                        '<img src="'+data.screenshot+'" onclick="previewImage(\''+data.screenshot+'\')" style="width: 48px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); cursor: pointer;">' : 
+                        '<span style="color: var(--muted); font-size: 11px;">No Screenshot</span>'
+                    }
+                </td>
+                <td style="padding: 12px 8px; text-align: center; vertical-align: middle;">
+                    <div style="margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                        ${statusLabel}
+                        ${deleteButtonHtml}
+                    </div>
+                    <label style="position: relative; display: inline-block; width: 42px; height: 22px; cursor: pointer;">
+                        <input type="checkbox" id="chk_${reqId}" ${isChecked} onchange="toggleUserPremium('${reqId}', '${data.uid}', this)" style="opacity: 0; width: 0; height: 0;">
+                        <span style="position: absolute; inset: 0; background-color: ${data.status === 'active' ? '#10b981' : '#cbd5e1'}; border-radius: 22px; transition: 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                            <span style="position: absolute; content: ''; height: 16px; width: 16px; left: ${data.status === 'active' ? '23px' : '3px'}; bottom: 3px; background-color: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></span>
+                        </span>
+                    </label>
+                </td>
+            </tr>`;
+
+            if (data.uid && data.status === "active") activeRequests.push({ reqId: reqId, userUid: data.uid });
+        });
+
+        if (itemsCount === 0) container.innerHTML = '<tr><td colspan="4" style="padding: 20px; text-align: center; color: var(--muted); font-weight: 500;">এই সেকশনে বর্তমানে কোনো ডেটা নেই।</td></tr>';
+        else container.innerHTML = html;
+        
+        // ⏳ কাউন্টডাউন টাইমার ও অটো-এক্সপায়ার মেকানিজম
+        activeRequests.forEach(item => {
+            DB.ref(`users/${item.userUid}`).once("value").then((userSnap) => {
+                const uData = userSnap.val();
+                const timerBox = document.getElementById(`admin_timer_${item.reqId}`);
+                
+                if (uData && uData.isPro === true && uData.proEndDate) {
+                    if (timerBox) timerBox.style.display = "block";
+                    localStorage.setItem(`offline_pro_end_${item.userUid}`, uData.proEndDate);
+
+                    const intId = setInterval(() => {
+                        const savedEndTime = localStorage.getItem(`offline_pro_end_${item.userUid}`) || uData.proEndDate;
+                        const timeLeft = savedEndTime - Date.now();
+                        const liveTimerBox = document.getElementById(`admin_timer_${item.reqId}`);
+                        
+                        if (timeLeft <= 0) {
+                            if (liveTimerBox) liveTimerBox.innerHTML = "❌ মেয়াদ শেষ";
+                            clearInterval(intId);
+                            
+                            // 🔥 ম্যাজিক ফিক্স ২: মেয়াদ শেষে 'pending' এর বদলে সরাসরি 'expired' করে দেওয়া হলো
+                            DB.ref(`users/${item.userUid}`).update({ isPro: false, proStartDate: 0, proEndDate: 0 });
+                            DB.ref(`pro_requests/${item.reqId}`).update({ status: "expired" }).then(() => {
+                                loadProRequests();
+                            });
+                            localStorage.removeItem(`offline_pro_end_${item.userUid}`);
+                            return;
+                        }
+
+                        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                        if (liveTimerBox) liveTimerBox.innerHTML = `⏳ বাকি: ${days}দিন ${hours}ঘ ${minutes}মি ${seconds}সে`;
+                    }, 1000);
+                    
+                    window.adminTimerIntervals.push(intId);
+                }
+            });
+        });
+    });
+};
+</script>
 </body>
-
 </html>
