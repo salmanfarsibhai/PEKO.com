@@ -8,7 +8,29 @@
     <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <title>PEKO</title>
+
+    <style>
+        body.dark {
+            --text: #ffffff !important;
+            --muted: #cbd5e1 !important;
+        }
+
+        body.dark button[onclick="cancelProWarning()"],
+        body.dark button[onclick="cancelFinalProWarning()"],
+        body.dark button[onclick="closeConfirm()"],
+        body.dark #customCancelBtn {
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+        }
+
+        body.dark #proWarningOverlay > div > div:nth-child(2) > div:first-child {
+            background: rgba(239, 68, 68, 0.15) !important;
+            border: 1px solid rgba(239, 68, 68, 0.3) !important;
+            color: #ff9999 !important; 
+        }
+    </style>
 
     <style>
         :root {
@@ -1888,6 +1910,55 @@ transparent
             <button id="proSubmitBtn" class="reportSubmitBtn" onclick="submitProRequest()" style="background: linear-gradient(135deg, #0083ff, #005fbc); width: 100%;">Submit Premium Request</button>
         </div>
     </div>
+
+
+    <div id="proWarningOverlay" class="reportOverlay" style="z-index: 100005;">
+        <div class="reportPopup" style="max-width: 380px; width: 90%; border-radius: 22px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+            <div class="reportHeader">
+                <div class="reportTitle" style="color: #ef4444; font-size: 18px; font-weight: 700;">⚠️ সতর্কতা</div>
+                <button onclick="cancelProWarning()" class="reportCloseBtn">✕</button>
+            </div>
+            
+            <div style="margin: 15px 0; font-size: 14px; line-height: 1.6; color: var(--text);">
+                <div style="background: rgba(239, 68, 68, 0.08); padding: 12px; border-radius: 14px; margin-bottom: 15px; font-weight: 600; color: #ef4444;">
+                    আপনি বর্তমানে পেইড (PRO) মেম্বারশিপে আছেন!
+                </div>
+                <p style="margin: 0; opacity: 0.9; text-align: left; font-size: 13px;">
+                    আপনার বর্তমান প্রো প্ল্যানের মেয়াদ এখনো শেষ হয়নি। আমরা পরামর্শ দিচ্ছি বর্তমান মেয়াদ শেষ হওয়ার পর নতুন প্ল্যান নেওয়ার জন্য। 
+                    <br><br>
+                    আপনি যদি এখনই নতুন প্ল্যান নেন, তবে আপনার <b style="color: var(--pri);">বর্তমান মেয়াদের অবশিষ্টাংশ বাতিল হয়ে যাবে</b>। আপনি কি নিশ্চিতভাবে নতুন প্ল্যান নিতে চান?
+                </p>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button onclick="cancelProWarning()" class="reportSubmitBtn" style="flex: 1; background: rgba(0,0,0,0.05); color: var(--text); box-shadow: none;">না, বাতিল</button>
+                <button onclick="confirmProWarning()" class="reportSubmitBtn" style="flex: 1; background: #ef4444; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">হ্যাঁ, প্ল্যান নিব</button>
+            </div>
+        </div>
+    </div>
+
+<div id="proFinalWarningOverlay" class="reportOverlay" style="z-index: 100006;">
+        <div class="reportPopup" style="max-width: 380px; width: 90%; border-radius: 22px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+            <div class="reportHeader">
+                <div class="reportTitle" style="color: #ef4444; font-size: 18px; font-weight: 700;">🚨 চূড়ান্ত সতর্কতা</div>
+                <button onclick="cancelFinalProWarning()" class="reportCloseBtn">✕</button>
+            </div>
+            
+            <div style="margin: 15px 0; font-size: 14px; line-height: 1.6; color: var(--text);">
+                <p style="margin: 0; opacity: 0.9; text-align: left; font-size: 13px;">
+                    আপনি "হ্যাঁ" তে ক্লিক করলে আপনার <b>বর্তমান সাবস্ক্রিপশনটি এখনই বাতিল হয়ে যাবে</b> এবং আপনি নতুন করে পেমেন্ট করার অপশন পাবেন। 
+                    <br><br>
+                    বাতিল হওয়া আগের প্ল্যানটি পরবর্তীতে আর ফেরত নাও পেতে পারেন। আপনি কি সত্যিই বর্তমান প্রো প্ল্যানটি ডিলিট করে নতুন প্ল্যান নিতে চান?
+                </p>
+            </div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button onclick="cancelFinalProWarning()" class="reportSubmitBtn" style="flex: 1; background: rgba(0,0,0,0.05); color: var(--text); box-shadow: none;">না, থাক</button>
+                <button onclick="executeFinalProWarning()" class="reportSubmitBtn" style="flex: 1; background: #ef4444; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">হ্যাঁ, আমি নিশ্চিত</button>
+            </div>
+        </div>
+    </div>
+
 
     <div id="privacyOverlay" class="reportOverlay">
         <div class="reportPopup" style="max-width: 450px; width: 92%;">
@@ -5129,13 +5200,92 @@ if (proCloseBtn && proOverlay) {
     };
 }
 
+// 🔥 ডাবল পারচেজ প্রোটেকশনসহ প্রো প্ল্যান সিলেকশন লজিক
 function selectPlan(planName) {
     playSound("click");
     SELECTED_PLAN_NAME = planName;
-    document.getElementById("selectedPlanTitle").innerText = "Plan: " + planName;
-    planBoxSection.style.display = "none";
-    paymentFormSection.style.display = "block";
+    
+    // চেক করা হচ্ছে ইউজার অলরেডি প্রো মেম্বার কিনা
+    if (window.IS_PRO_MEMBER === true) {
+        // প্রো মেম্বার হলে ওয়ার্নিং পপআপ দেখাবে
+        document.getElementById("proWarningOverlay").classList.add("show");
+    } else {
+        // সাধারণ ইউজার হলে সরাসরি পেমেন্ট ফর্ম ওপেন হবে
+        proceedToPayment();
+    }
 }
+
+
+// পেমেন্ট পেজ ওপেন করার মেইন ফাংশন
+function proceedToPayment() {
+    document.getElementById("selectedPlanTitle").innerText = "Plan: " + SELECTED_PLAN_NAME;
+    document.getElementById("planBoxSection").style.display = "none";
+    document.getElementById("paymentFormSection").style.display = "block";
+}
+
+// পপআপ ১: "না, বাতিল"
+window.cancelProWarning = function() {
+    playSound("click");
+    document.getElementById("proWarningOverlay").classList.remove("show");
+};
+
+// পপআপ ১: "হ্যাঁ, প্ল্যান নিব" -> এটি ২য় পপআপ ওপেন করবে
+window.confirmProWarning = function() {
+    playSound("click");
+    document.getElementById("proWarningOverlay").classList.remove("show");
+    
+    // ২য় ওয়ার্নিং পপআপ শো করানো (একটু স্মুথ ট্রানজিশনের জন্য setTimeout)
+    setTimeout(() => {
+        document.getElementById("proFinalWarningOverlay").classList.add("show");
+    }, 300); 
+};
+
+// পপআপ ২: "না, থাক"
+window.cancelFinalProWarning = function() {
+    playSound("click");
+    document.getElementById("proFinalWarningOverlay").classList.remove("show");
+};
+
+// 🔥 পপআপ ২: "হ্যাঁ, আমি নিশ্চিত" -> অটোমেটিক এক্সপায়ার ইঞ্জিন
+window.executeFinalProWarning = function() {
+    playSound("click");
+    document.getElementById("proFinalWarningOverlay").classList.remove("show");
+    
+    toast("আপনার বর্তমান সাবস্ক্রিপশন বাতিল করা হচ্ছে... ⏳");
+
+    // ফায়ারবেস মাল্টি-পাথ আপডেট: ইউজারের রানিং রিকোয়েস্ট খুঁজে 'expired' করা হবে
+    DB.ref("pro_requests").orderByChild("uid").equalTo(USER.uid).once("value").then(snapshot => {
+        let updates = {};
+        if(snapshot.exists()){
+            snapshot.forEach(child => {
+                if(child.val().status === "active") {
+                    updates[`pro_requests/${child.key}/status`] = "expired";
+                }
+            });
+        }
+        // একইসাথে ইউজারের মেইন প্রো স্ট্যাটাস অফ করা
+        updates[`users/${USER.uid}/isPro`] = false;
+        updates[`users/${USER.uid}/proStartDate`] = 0;
+        updates[`users/${USER.uid}/proEndDate`] = 0;
+
+        return DB.ref().update(updates);
+    }).then(() => {
+        // ডাটাবেজ আপডেট সফল হলে লোকাল স্টোরেজ ক্লিয়ার করা
+        localStorage.removeItem(`offline_pro_end_${USER.uid}`);
+        window.IS_PRO_MEMBER = false; 
+        
+        toast("পূর্বের সাবস্ক্রিপশন বাতিল হয়েছে! এখন নতুন প্ল্যান নিতে পারেন। ✅");
+        
+        // সব কাজ শেষে পেমেন্ট পেজ ওপেন হবে
+        setTimeout(() => {
+            proceedToPayment();
+        }, 800);
+    }).catch(err => {
+        toast("কোনো একটি সমস্যা হয়েছে, আবার চেষ্টা করুন। ❌");
+        console.error(err);
+    });
+};
+
 
 function backToPlans() {
     playSound("click");
