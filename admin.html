@@ -998,6 +998,104 @@ inset 0 1px 0 rgba(255,255,255,0.2);
             }
         }
 
+
+        /* ===== 🔔 ADMIN NOTIFICATION PANEL CSS ===== */
+        .notifFormGroup {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+        .notifLabel {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+        }
+        .notifTextarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: none !important;
+            outline: none !important;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 14px;
+            resize: vertical;
+            min-height: 100px;
+            font-family: "Hind Siliguri", system-ui, sans-serif;
+            color: #000000;
+            transition: box-shadow 0.25s ease;
+        }
+        .notifTextarea:focus {
+            box-shadow: 0 8px 22px rgba(0,131,255,0.18), 0 2px 6px rgba(0,0,0,0.05);
+            transform: translateY(-1px);
+        }
+        .notifTargetGroup {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .notifTargetBtn {
+            flex: 1;
+            min-width: 120px;
+            padding: 11px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(0,0,0,0.02);
+            color: var(--text);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .notifTargetBtn.notifSelected {
+            background: var(--pri);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,131,255,0.25);
+        }
+        .notifSendBtn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            background: var(--pri);
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.25s;
+            box-shadow: 0 6px 18px rgba(0,131,255,0.3);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform, box-shadow;
+        }
+        .notifSendBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0,131,255,0.4);
+        }
+        #notifScheduleInput {
+            color: var(--text);
+            background: #ffffff;
+        }
+        .notifHistoryCard {
+            background: rgba(0,0,0,0.02);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .dark .notifHistoryCard {
+            background: rgba(255,255,255,0.02);
+        }
+        .notifHistoryCard:hover {
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 
@@ -1069,6 +1167,9 @@ stroke-linejoin="round">
         <button id="btn-space-reports" onclick="toggleAdminSpace('reports')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">User Reports</button>
         <button id="btn-space-pro" onclick="toggleAdminSpace('pro-members')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Pro Members</button>
         <button id="btn-space-help" onclick="toggleAdminSpace('help-center')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">🛠️ Help Logs</button>
+        <button id="btn-space-notifications" onclick="toggleAdminSpace('notifications')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">🔔 Notifications</button>
+
+
     </div>
 
     <div id="chats-space-wrapper" style="display: block;">
@@ -1105,6 +1206,54 @@ stroke-linejoin="round">
             </div>
             <div id="helpLogsContainer" class="reportsContainer">
                 <div style="color: var(--muted); font-size: 14px; padding: 10px;">লগ লোড হচ্ছে...</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="notifications-space-wrapper" style="display: none; padding: 0 20px;">
+        <div class="card" style="margin-bottom: 30px; width: 100%; max-width: 640px; margin: 0 auto 30px auto;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                <span style="font-size: 22px;">🔔</span>
+                <h2 style="font-size: 18px; font-weight: 700; margin: 0;">Broadcast Notification</h2>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 18px;">
+
+                <div class="notifFormGroup">
+                    <label class="notifLabel">📝 Notification Title</label>
+                    <input id="notifTitleInput" class="inputBox" placeholder="e.g. নতুন আপডেট এসেছে!" autocomplete="off">
+                </div>
+
+                <div class="notifFormGroup">
+                    <label class="notifLabel">💬 Notification Message</label>
+                    <textarea id="notifMessageInput" class="notifTextarea" placeholder="ইউজারদের জন্য বিস্তারিত মেসেজ লিখুন..."></textarea>
+                </div>
+
+                <div class="notifFormGroup">
+                    <label class="notifLabel">🎯 Target Audience</label>
+                    <div class="notifTargetGroup">
+                        <button class="notifTargetBtn notifSelected" id="notifTargetAll" onclick="selectNotifTarget('all')">👥 All Users</button>
+                        <button class="notifTargetBtn" id="notifTargetPro" onclick="selectNotifTarget('pro')">👑 Pro Users Only</button>
+                    </div>
+                </div>
+
+                <div class="notifFormGroup">
+                    <label class="notifLabel">📅 Schedule (optional — খালি রাখলে সাথে সাথে যাবে)</label>
+                    <input id="notifScheduleInput" type="datetime-local" class="inputBox" id="notifScheduleInput">
+                </div>
+
+                <button class="notifSendBtn" onclick="sendAdminNotification()">
+                    🔔 Send Notification
+                </button>
+            </div>
+
+            <!-- Sent History -->
+            <div style="margin-top: 28px; border-top: 1px solid var(--border); padding-top: 20px;">
+                <div style="font-size: 14px; font-weight: 700; margin-bottom: 14px; color: var(--text);">📜 Sent Notifications History</div>
+                <div id="notifHistoryList" style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="color: var(--muted); font-size: 13px; padding: 10px;">লোড হচ্ছে...</div>
+                </div>
             </div>
         </div>
     </div>
@@ -2241,6 +2390,14 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
                 const reportKey = DELETE_ID.replace("REP_", "");
                 DB.ref("all_reports/" + reportKey).remove().then(() => toast("Report Deleted"));
             }
+            else if (DELETE_ID && DELETE_ID.startsWith("NOTIF_")) {
+                // 🔔 নির্দিষ্ট একটি notification ডিলিট করা
+                const nId = DELETE_ID.replace("NOTIF_", "");
+                DB.ref("notifications/" + nId).remove().then(() => {
+                    toast("Notification Deleted 🗑");
+                    loadNotifHistory();
+                });
+            }
             else if (DELETE_ID) {
                 DB.ref("all_logs/" + DELETE_ID).remove().then(() => toast("Chat Log Deleted"));
             }
@@ -2562,6 +2719,11 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
             })
             .then(() => {
                 localStorage.setItem(`offline_pro_end_${userUid}`, expireTime);
+                // 🔔 প্রো অ্যাপ্রুভাল অটো-নোটিফিকেশন
+                DB.ref(`users/${userUid}/pendingNotif`).set({
+                    title: "👑 PRO Membership Activated!",
+                    message: `আপনার ${amount} ${unitText} এর PRO মেম্বারশিপ এখন একটিভ হয়েছে। 🎉`
+                });
                 toast(`সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
                 loadProRequests(); 
             })
@@ -2761,20 +2923,22 @@ window.toggleAdminSpace = function(spaceType) {
         "chats": document.getElementById("chats-space-wrapper"),
         "reports": document.getElementById("reports-space-wrapper"),
         "pro-members": document.getElementById("pro-space-wrapper"),
-        "help-center": document.getElementById("help-space-wrapper")
+        "help-center": document.getElementById("help-space-wrapper"),
+        "notifications": document.getElementById("notifications-space-wrapper")
     };
     
     const btns = {
         "chats": document.getElementById("btn-space-chats"),
         "reports": document.getElementById("btn-space-reports"),
         "pro-members": document.getElementById("btn-space-pro"),
-        "help-center": document.getElementById("btn-space-help")
+        "help-center": document.getElementById("btn-space-help"),
+        "notifications": document.getElementById("btn-space-notifications")
     };
 
     // ডিলিট অল বাটন লক মেকানিজম
     const deleteAllBtn = document.querySelector(".header button[onclick='delAll()']");
     if (deleteAllBtn) {
-        if (spaceType === "pro-members") { // 🔥 ম্যাজিক ফিক্স: এখন শুধু প্রো মেম্বারসে লক থাকবে, হেল্প লগসে বাটন জাগ্রত হবে!
+        if (spaceType === "pro-members" || spaceType === "notifications") { // 🔥 প্রো মেম্বারস ও নোটিফিকেশন ট্যাবে ডিলিট অল লক
             deleteAllBtn.style.opacity = "0.35";
             deleteAllBtn.style.cursor = "not-allowed";
             deleteAllBtn.style.pointerEvents = "none";
@@ -2803,6 +2967,7 @@ window.toggleAdminSpace = function(spaceType) {
     else if (spaceType === "reports") listenToReports();
     else if (spaceType === "pro-members") loadProRequests();
     else if (spaceType === "help-center") listenToHelpLogs();
+    else if (spaceType === "notifications") initNotificationPanel();
 };
 
 // 🔥 REALTIME HELP LOGS ENGINE (SESSION BASED CONVERSATION)
@@ -2886,6 +3051,160 @@ window.delHelpLog = function(k) {
     document.getElementById("confirmMessage").innerText = "আপনি কি এই হেল্প সেশনটি ডিলিট করতে চান?";
     document.getElementById("confirmBox").style.display = "flex";
 };
+</script>
+
+
+<script>
+// ======================================================
+// 🔔 PEKO ADMIN NOTIFICATION ENGINE (PRODUCTION-SAFE)
+// Existing architecture follow করা হয়েছে।
+// DB, toast, resetConfirmBoxUI, confirmBox — সব existing system use করা হয়েছে।
+// ======================================================
+
+// গ্লোবাল স্টেট
+window.selectedNotifTarget = "all";
+
+// Target selector
+window.selectNotifTarget = function(target) {
+    window.selectedNotifTarget = target;
+    const btnAll = document.getElementById("notifTargetAll");
+    const btnPro = document.getElementById("notifTargetPro");
+    if (!btnAll || !btnPro) return;
+    if (target === "all") {
+        btnAll.classList.add("notifSelected");
+        btnPro.classList.remove("notifSelected");
+    } else {
+        btnPro.classList.add("notifSelected");
+        btnAll.classList.remove("notifSelected");
+    }
+};
+
+// Send notification to Firebase
+window.sendAdminNotification = function() {
+    const titleEl  = document.getElementById("notifTitleInput");
+    const msgEl    = document.getElementById("notifMessageInput");
+    const schedEl  = document.getElementById("notifScheduleInput");
+
+    // XSS protection: trim করা হচ্ছে, innerHTML নয়
+    const title   = titleEl  ? titleEl.value.trim()  : "";
+    const message = msgEl    ? msgEl.value.trim()    : "";
+    const target  = window.selectedNotifTarget || "all";
+    const schedRaw = schedEl ? schedEl.value : "";
+
+    if (!title)   { toast("❌ Notification Title লিখুন!"); return; }
+    if (!message) { toast("❌ Notification Message লিখুন!"); return; }
+
+    const now = Date.now();
+    const scheduledDate = schedRaw ? new Date(schedRaw).getTime() : 0;
+    const notifRef = DB.ref("notifications").push();
+    const notifId  = notifRef.key;
+
+    const payload = {
+        notificationId: notifId,
+        title:          title,
+        message:        message,
+        target:         target,
+        createdAt:      now,
+        scheduledDate:  scheduledDate
+    };
+
+    notifRef.set(payload)
+    .then(() => {
+        toast("✅ Notification পাঠানো হয়েছে! 🔔");
+        if (titleEl)  titleEl.value  = "";
+        if (msgEl)    msgEl.value    = "";
+        if (schedEl)  schedEl.value  = "";
+        loadNotifHistory();
+    })
+    .catch(err => toast("❌ Error: " + err.message));
+};
+
+// Delete a specific notification (uses existing confirmBox system)
+window.deleteNotification = function(notifId) {
+    DELETE_ID = "NOTIF_" + notifId;
+    resetConfirmBoxUI();
+    document.getElementById("confirmMessage").innerText = "আপনি কি এই Notification টি ডিলিট করতে চান?";
+    document.getElementById("confirmBox").style.display = "flex";
+};
+
+// Load notification history in the panel
+window.loadNotifHistory = function() {
+    const container = document.getElementById("notifHistoryList");
+    if (!container) return;
+
+    DB.ref("notifications").orderByChild("createdAt").limitToLast(30).once("value", (snapshot) => {
+        container.innerHTML = "";
+
+        if (!snapshot.exists()) {
+            container.innerHTML = '<div style="color: var(--muted); font-size: 13px; padding: 10px;">কোনো notification পাঠানো হয়নি।</div>';
+            return;
+        }
+
+        let items = [];
+        snapshot.forEach(child => items.push({ id: child.key, ...child.val() }));
+        items.reverse(); // সবচেয়ে নতুনটা উপরে
+
+        items.forEach(n => {
+            const dateStr  = new Date(n.createdAt).toLocaleString("bn-BD");
+            const schedStr = n.scheduledDate ? new Date(n.scheduledDate).toLocaleString("bn-BD") : "সাথে সাথে";
+            const targetLabel = n.target === "pro" ? "👑 Pro Only" : "👥 All Users";
+
+            const card = document.createElement("div");
+            card.className = "notifHistoryCard";
+
+            const titleDiv = document.createElement("div");
+            titleDiv.style.cssText = "font-weight: 700; font-size: 14px; color: var(--text);";
+            titleDiv.textContent = n.title || "";
+
+            const msgDiv = document.createElement("div");
+            msgDiv.style.cssText = "font-size: 13px; color: var(--muted); line-height: 1.5; white-space: pre-wrap; word-break: break-word;";
+            msgDiv.textContent = n.message || "";
+
+            const meta = document.createElement("div");
+            meta.style.cssText = "display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 6px; border-top: 1px solid var(--border); padding-top: 8px;";
+
+            const metaLeft = document.createElement("div");
+            metaLeft.style.cssText = "display: flex; gap: 8px; flex-wrap: wrap; align-items: center;";
+
+            const targetBadge = document.createElement("span");
+            targetBadge.style.cssText = "font-size: 11px; background: rgba(0,131,255,0.1); color: var(--pri); padding: 3px 8px; border-radius: 6px; font-weight: 600;";
+            targetBadge.textContent = targetLabel;
+
+            const dateBadge = document.createElement("span");
+            dateBadge.style.cssText = "font-size: 11px; color: var(--muted);";
+            dateBadge.textContent = "🕒 " + dateStr;
+
+            if (n.scheduledDate) {
+                const schedBadge = document.createElement("span");
+                schedBadge.style.cssText = "font-size: 11px; color: #f59e0b;";
+                schedBadge.textContent = "📅 " + schedStr;
+                metaLeft.appendChild(schedBadge);
+            }
+
+            metaLeft.appendChild(targetBadge);
+            metaLeft.appendChild(dateBadge);
+
+            const delBtn = document.createElement("button");
+            delBtn.style.cssText = "background: rgba(239,68,68,0.1); color: #ef4444; border: none; padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.2s;";
+            delBtn.textContent = "Delete";
+            delBtn.onclick = (function(nId) { return function() { window.deleteNotification(nId); }; })(n.id);
+
+            meta.appendChild(metaLeft);
+            meta.appendChild(delBtn);
+
+            card.appendChild(titleDiv);
+            card.appendChild(msgDiv);
+            card.appendChild(meta);
+            container.appendChild(card);
+        });
+    });
+};
+
+// Panel initialization: notifications tab click করলে call হয়
+window.initNotificationPanel = function() {
+    loadNotifHistory();
+};
+
 </script>
 
 </body>
