@@ -420,15 +420,18 @@ inset 0 1px 0 rgba(255,255,255,0.2);
         }
 
         /* INPUT FOCUS */
-        .inputBox:focus {
-    border: none !important;
-    outline: none !important;
+        .inputBox:focus{
+
+    outline:none !important;
+
+    border:2px solid #0083ff !important;
+
+    caret-color:#0083ff;
 
     box-shadow:
-        0 8px 22px rgba(0, 131, 255, 0.18),
-        0 2px 6px rgba(0,0,0,0.05);
+    0 0 0 4px rgba(0,131,255,.12),
+    0 8px 22px rgba(0,131,255,.15);
 
-    transform: translateY(-1px);
 }
 
         /* ERROR (shape change হবে না) */
@@ -1118,7 +1121,17 @@ inset 0 1px 0 rgba(255,255,255,0.2);
                 <h2 id="formTitle">Login</h2> <!-- RIGHT (এটা থাকবে) -->
 
                 <input id="emailInput" class="inputBox" placeholder="Email">
-                <input id="passwordInput" type="password" class="inputBox" placeholder="Password" style="display:none;">
+                <input
+id="passwordInput"
+type="password"
+class="inputBox"
+placeholder="Password"
+autocomplete="current-password"
+autocorrect="off"
+autocapitalize="off"
+spellcheck="false"
+style="display:none;"
+>
 
                 <button class="btnVerify" onclick="loginNow()">Login</button>
 
@@ -1168,6 +1181,8 @@ stroke-linejoin="round">
         <button id="btn-space-pro" onclick="toggleAdminSpace('pro-members')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Pro Members</button>
         <button id="btn-space-help" onclick="toggleAdminSpace('help-center')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">🛠️ Help Logs</button>
         <button id="btn-space-notifications" onclick="toggleAdminSpace('notifications')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">🔔 Notifications</button>
+        <button id="btn-space-sessions" onclick="toggleAdminSpace('sessions')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">👥 Online Sessions</button>
+        <button id="btn-space-live" onclick="toggleAdminSpace('live-active')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">⚡ Live Active</button>
 
 
     </div>
@@ -1235,7 +1250,14 @@ stroke-linejoin="round">
                     <div class="notifTargetGroup">
                         <button class="notifTargetBtn notifSelected" id="notifTargetAll" onclick="selectNotifTarget('all')">👥 All Users</button>
                         <button class="notifTargetBtn" id="notifTargetPro" onclick="selectNotifTarget('pro')">👑 Pro Users Only</button>
+                        <button class="notifTargetBtn" id="notifTargetCustom" onclick="selectNotifTarget('custom')">✉️ Custom Users</button>
                     </div>
+                </div>
+
+                <div class="notifFormGroup" id="notifCustomEmailGroup" style="display: none;">
+                    <label class="notifLabel">📧 Target Emails <span style="font-weight: 400; color: var(--muted); font-size: 12px;">(comma দিয়ে আলাদা করুন)</span></label>
+                    <textarea id="notifCustomEmailInput" class="notifTextarea" placeholder="user1@gmail.com, user2@gmail.com, user3@gmail.com" style="min-height: 80px; font-size: 13px;"></textarea>
+                    <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">⚠️ শুধুমাত্র এই email দিয়ে login করা users-রা notification পাবে।</div>
                 </div>
 
                 <div class="notifFormGroup">
@@ -1251,12 +1273,57 @@ stroke-linejoin="round">
             <!-- Sent History -->
             <div style="margin-top: 28px; border-top: 1px solid var(--border); padding-top: 20px;">
                 <div style="font-size: 14px; font-weight: 700; margin-bottom: 14px; color: var(--text);">📜 Sent Notifications History</div>
-                <div id="notifHistoryList" style="display: flex; flex-direction: column; gap: 10px;">
+                <div id="notifHistoryList" style="display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; scrollbar-color: rgba(0,131,255,0.3) transparent; -webkit-overflow-scrolling: touch;">
                     <div style="color: var(--muted); font-size: 13px; padding: 10px;">লোড হচ্ছে...</div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+<!-- ===== ONLINE SESSIONS WRAPPER ===== -->
+<div id="sessions-space-wrapper" style="display: none; padding: 0 20px;">
+    <div class="card" style="margin-bottom: 30px; width: 100%; max-width: 900px; margin: 0 auto 30px auto;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 22px;">👥</span>
+                <h2 style="font-size: 18px; font-weight: 700; margin: 0; color: var(--text);">Online Sessions</h2>
+                <span id="sessionsCountBadge" style="background: rgba(0,131,255,0.12); color: var(--pri); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px;">0 জন</span>
+            </div>
+            <button onclick="loadOnlineSessions()" style="display: flex; align-items: center; gap: 6px; background: rgba(0,131,255,0.1); color: var(--pri); border: none; padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='rgba(0,131,255,0.2)'" onmouseout="this.style.background='rgba(0,131,255,0.1)'">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                Refresh
+            </button>
+        </div>
+        <div id="sessionsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;">
+            <div style="color: var(--muted); font-size: 13px; padding: 10px;">লোড হচ্ছে...</div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== LIVE ACTIVE USERS WRAPPER ===== -->
+<div id="live-active-space-wrapper" style="display: none; padding: 0 20px;">
+    <div class="card" style="margin-bottom: 30px; width: 100%; max-width: 900px; margin: 0 auto 30px auto;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 22px;">⚡</span>
+                <h2 style="font-size: 18px; font-weight: 700; margin: 0; color: var(--text);">Live Active Users</h2>
+                <span id="liveActiveCountBadge" style="background: rgba(16,185,129,0.12); color: #10b981; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 20px;">0 জন</span>
+            </div>
+            <button onclick="loadLiveActiveUsers()" style="display: flex; align-items: center; gap: 6px; background: rgba(16,185,129,0.1); color: #10b981; border: none; padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='rgba(16,185,129,0.2)'" onmouseout="this.style.background='rgba(16,185,129,0.1)'">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                Refresh
+            </button>
+        </div>
+        <div style="font-size: 12px; color: var(--muted); margin-bottom: 14px; padding: 8px 12px; background: rgba(16,185,129,0.06); border-radius: 8px; border-left: 3px solid #10b981;">
+            ⚡ গত ১৫ মিনিটে activity করেছে এমন users দেখাচ্ছে।
+        </div>
+        <div id="liveActiveGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px;">
+            <div style="color: var(--muted); font-size: 13px; padding: 10px;">লোড হচ্ছে...</div>
+        </div>
+    </div>
+</div>
 
 
 <div id="pro-space-wrapper" style="display: none; padding: 0 20px;">
@@ -2574,19 +2641,56 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
             }
         }
 
-        function switchInput() {
-            const email = document.getElementById("emailInput");
-            const pass = document.getElementById("passwordInput");
-            const btn = document.getElementById("switchBtn");
-            const title = document.getElementById("formTitle");
+       function switchInput() {
 
-            showingPassword = !showingPassword;
-            if (showingPassword) {
-                email.style.display = "none"; pass.style.display = "block"; btn.innerText = "Email"; title.innerText = "Login (Password)";
-            } else {
-                email.style.display = "block"; pass.style.display = "none"; btn.innerText = "Password"; title.innerText = "Login (Email)";
-            }
-        }
+    const email =
+    document.getElementById("emailInput");
+
+    const pass =
+    document.getElementById("passwordInput");
+
+    const btn =
+    document.getElementById("switchBtn");
+
+    const title =
+    document.getElementById("formTitle");
+
+    showingPassword = !showingPassword;
+
+    if (showingPassword) {
+
+        email.style.display = "none";
+
+        pass.style.display = "block";
+
+        btn.innerText = "Email";
+
+        title.innerText = "Login (Password)";
+
+        setTimeout(()=>{
+
+            pass.focus();
+
+        },50);
+
+    } else {
+
+        email.style.display = "block";
+
+        pass.style.display = "none";
+
+        btn.innerText = "Password";
+
+        title.innerText = "Login (Email)";
+
+        setTimeout(()=>{
+
+            email.focus();
+
+        },50);
+
+    }
+}
 
         // কীবোর্ড এন্টার কী লিসেনার
         document.addEventListener("DOMContentLoaded", () => {
@@ -2935,7 +3039,9 @@ window.toggleAdminSpace = function(spaceType) {
         "reports": document.getElementById("reports-space-wrapper"),
         "pro-members": document.getElementById("pro-space-wrapper"),
         "help-center": document.getElementById("help-space-wrapper"),
-        "notifications": document.getElementById("notifications-space-wrapper")
+        "notifications": document.getElementById("notifications-space-wrapper"),
+        "sessions": document.getElementById("sessions-space-wrapper"),
+        "live-active": document.getElementById("live-active-space-wrapper")
     };
     
     const btns = {
@@ -2943,13 +3049,15 @@ window.toggleAdminSpace = function(spaceType) {
         "reports": document.getElementById("btn-space-reports"),
         "pro-members": document.getElementById("btn-space-pro"),
         "help-center": document.getElementById("btn-space-help"),
-        "notifications": document.getElementById("btn-space-notifications")
+        "notifications": document.getElementById("btn-space-notifications"),
+        "sessions": document.getElementById("btn-space-sessions"),
+        "live-active": document.getElementById("btn-space-live")
     };
 
     // ডিলিট অল বাটন লক মেকানিজম
     const deleteAllBtn = document.querySelector(".header button[onclick='delAll()']");
     if (deleteAllBtn) {
-        if (spaceType === "pro-members" || spaceType === "notifications") { // 🔥 প্রো মেম্বারস ও নোটিফিকেশন ট্যাবে ডিলিট অল লক
+        if (spaceType === "pro-members" || spaceType === "notifications" || spaceType === "sessions" || spaceType === "live-active") {
             deleteAllBtn.style.opacity = "0.35";
             deleteAllBtn.style.cursor = "not-allowed";
             deleteAllBtn.style.pointerEvents = "none";
@@ -2979,6 +3087,8 @@ window.toggleAdminSpace = function(spaceType) {
     else if (spaceType === "pro-members") loadProRequests();
     else if (spaceType === "help-center") listenToHelpLogs();
     else if (spaceType === "notifications") initNotificationPanel();
+    else if (spaceType === "sessions") loadOnlineSessions();
+    else if (spaceType === "live-active") loadLiveActiveUsers();
 };
 
 // 🔥 REALTIME HELP LOGS ENGINE (SESSION BASED CONVERSATION)
@@ -3078,23 +3188,35 @@ window.selectedNotifTarget = "all";
 // Target selector
 window.selectNotifTarget = function(target) {
     window.selectedNotifTarget = target;
-    const btnAll = document.getElementById("notifTargetAll");
-    const btnPro = document.getElementById("notifTargetPro");
-    if (!btnAll || !btnPro) return;
+    const btnAll    = document.getElementById("notifTargetAll");
+    const btnPro    = document.getElementById("notifTargetPro");
+    const btnCustom = document.getElementById("notifTargetCustom");
+    const emailGroup = document.getElementById("notifCustomEmailGroup");
+
+    if (btnAll)    btnAll.classList.remove("notifSelected");
+    if (btnPro)    btnPro.classList.remove("notifSelected");
+    if (btnCustom) btnCustom.classList.remove("notifSelected");
+
     if (target === "all") {
-        btnAll.classList.add("notifSelected");
-        btnPro.classList.remove("notifSelected");
-    } else {
-        btnPro.classList.add("notifSelected");
-        btnAll.classList.remove("notifSelected");
+        if (btnAll) btnAll.classList.add("notifSelected");
+    } else if (target === "pro") {
+        if (btnPro) btnPro.classList.add("notifSelected");
+    } else if (target === "custom") {
+        if (btnCustom) btnCustom.classList.add("notifSelected");
+    }
+
+    // Custom email textarea visibility
+    if (emailGroup) {
+        emailGroup.style.display = (target === "custom") ? "flex" : "none";
     }
 };
 
 // Send notification to Firebase
 window.sendAdminNotification = function() {
-    const titleEl  = document.getElementById("notifTitleInput");
-    const msgEl    = document.getElementById("notifMessageInput");
-    const schedEl  = document.getElementById("notifScheduleInput");
+    const titleEl       = document.getElementById("notifTitleInput");
+    const msgEl         = document.getElementById("notifMessageInput");
+    const schedEl       = document.getElementById("notifScheduleInput");
+    const customEmailEl = document.getElementById("notifCustomEmailInput");
 
     // XSS protection: trim করা হচ্ছে, innerHTML নয়
     const title   = titleEl  ? titleEl.value.trim()  : "";
@@ -3104,6 +3226,23 @@ window.sendAdminNotification = function() {
 
     if (!title)   { toast("❌ Notification Title লিখুন!"); return; }
     if (!message) { toast("❌ Notification Message লিখুন!"); return; }
+
+    // Custom target email validation
+    let targetEmails = [];
+    if (target === "custom") {
+        const rawEmails = customEmailEl ? customEmailEl.value : "";
+        // Email sanitize: split, trim, validate basic format
+        const emailRegex = /^[^\s@,]+@[^\s@,]+\.[^\s@,]+$/;
+        targetEmails = rawEmails
+            .split(",")
+            .map(e => e.trim().toLowerCase())
+            .filter(e => emailRegex.test(e));
+
+        if (targetEmails.length === 0) {
+            toast("❌ কমপক্ষে একটি valid email লিখুন!");
+            return;
+        }
+    }
 
     const now = Date.now();
     const scheduledDate = schedRaw ? new Date(schedRaw).getTime() : 0;
@@ -3119,12 +3258,18 @@ window.sendAdminNotification = function() {
         scheduledDate:  scheduledDate
     };
 
+    // Custom target হলে targetEmails array যোগ করা হবে
+    if (target === "custom" && targetEmails.length > 0) {
+        payload.targetEmails = targetEmails;
+    }
+
     notifRef.set(payload)
     .then(() => {
         toast("✅ Notification পাঠানো হয়েছে! 🔔");
-        if (titleEl)  titleEl.value  = "";
-        if (msgEl)    msgEl.value    = "";
-        if (schedEl)  schedEl.value  = "";
+        if (titleEl)        titleEl.value        = "";
+        if (msgEl)          msgEl.value          = "";
+        if (schedEl)        schedEl.value        = "";
+        if (customEmailEl)  customEmailEl.value  = "";
         loadNotifHistory();
     })
     .catch(err => toast("❌ Error: " + err.message));
@@ -3158,7 +3303,15 @@ window.loadNotifHistory = function() {
         items.forEach(n => {
             const dateStr  = new Date(n.createdAt).toLocaleString("bn-BD");
             const schedStr = n.scheduledDate ? new Date(n.scheduledDate).toLocaleString("bn-BD") : "সাথে সাথে";
-            const targetLabel = n.target === "pro" ? "👑 Pro Only" : "👥 All Users";
+            let targetLabel;
+            if (n.target === "pro") {
+                targetLabel = "👑 Pro Only";
+            } else if (n.target === "custom") {
+                const emailCount = (n.targetEmails && Array.isArray(n.targetEmails)) ? n.targetEmails.length : 0;
+                targetLabel = "✉️ Custom (" + emailCount + " users)";
+            } else {
+                targetLabel = "👥 All Users";
+            }
 
             const card = document.createElement("div");
             card.className = "notifHistoryCard";
@@ -3205,6 +3358,20 @@ window.loadNotifHistory = function() {
 
             card.appendChild(titleDiv);
             card.appendChild(msgDiv);
+
+            // Custom target হলে email list দেখানো
+            if (n.target === "custom" && n.targetEmails && Array.isArray(n.targetEmails) && n.targetEmails.length > 0) {
+                const emailListDiv = document.createElement("div");
+                emailListDiv.style.cssText = "font-size: 11px; color: var(--muted); background: rgba(0,131,255,0.06); border-radius: 8px; padding: 6px 10px; word-break: break-all; line-height: 1.6;";
+                const emailLabel = document.createElement("span");
+                emailLabel.style.cssText = "font-weight: 600; color: var(--pri); margin-right: 4px;";
+                emailLabel.textContent = "✉️ Targets:";
+                emailListDiv.appendChild(emailLabel);
+                // email গুলো textNode হিসেবে যোগ করা — XSS safe
+                emailListDiv.appendChild(document.createTextNode(" " + n.targetEmails.join(", ")));
+                card.appendChild(emailListDiv);
+            }
+
             card.appendChild(meta);
             container.appendChild(card);
         });
@@ -3217,6 +3384,316 @@ window.initNotificationPanel = function() {
 };
 
 </script>
+
+<script>
+// ======================================================
+// 👥 ONLINE SESSIONS ENGINE (PRODUCTION-SAFE)
+// Firebase users/ node থেকে currently logged-in users লোড করে।
+// isOnline: true হলেই শুধু দেখাবে।
+// Existing Firebase architecture intact রেখে safe extension।
+// ======================================================
+
+window.loadOnlineSessions = function() {
+    const grid = document.getElementById("sessionsGrid");
+    const badge = document.getElementById("sessionsCountBadge");
+    if (!grid) return;
+
+    grid.innerHTML = '<div style="color: var(--muted); font-size: 13px; padding: 10px; grid-column: 1/-1;">লোড হচ্ছে...</div>';
+
+    DB.ref("users").once("value", function(snapshot) {
+        if (!snapshot.exists()) {
+            grid.innerHTML = '<div style="color: var(--muted); font-size: 13px; padding: 10px; grid-column: 1/-1;">কোনো active session পাওয়া যায়নি।</div>';
+            if (badge) badge.textContent = "০ জন";
+            return;
+        }
+
+        const onlineUsers = [];
+        snapshot.forEach(function(child) {
+            const u = child.val();
+            // isOnline: true flag দিয়ে logged-in users filter করা
+            if (u && u.isOnline === true) {
+                onlineUsers.push({ uid: child.key, ...u });
+            }
+        });
+
+        if (badge) {
+            badge.textContent = onlineUsers.length + " জন";
+        }
+
+        if (onlineUsers.length === 0) {
+            grid.innerHTML = '<div style="color: var(--muted); font-size: 13px; padding: 10px; grid-column: 1/-1;">বর্তমানে কোনো user logged-in নেই।</div>';
+            return;
+        }
+
+        grid.innerHTML = "";
+
+        onlineUsers.forEach(function(u) {
+            // XSS safe — textContent/setAttribute only
+            const card = document.createElement("div");
+            card.style.cssText = "background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 12px; transition: transform 0.25s ease; backdrop-filter: var(--glass);";
+            card.onmouseover = function() { this.style.transform = "translateY(-3px)"; };
+            card.onmouseout  = function() { this.style.transform = ""; };
+
+            // Avatar
+            const avatarWrap = document.createElement("div");
+            avatarWrap.style.cssText = "position: relative; flex-shrink: 0;";
+
+            const avatar = document.createElement("div");
+            avatar.style.cssText = "width: 46px; height: 46px; border-radius: 50%; background: rgba(0,131,255,0.12); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: var(--pri); overflow: hidden;";
+
+            if (u.photoURL) {
+                const img = document.createElement("img");
+                img.style.cssText = "width: 100%; height: 100%; object-fit: cover; border-radius: 50%;";
+                img.onerror = function() { this.style.display = "none"; };
+                img.src = u.photoURL;
+                avatar.appendChild(img);
+            } else {
+                avatar.textContent = (u.displayName || u.email || "U").charAt(0).toUpperCase();
+            }
+
+            // Online dot
+            const dot = document.createElement("span");
+            dot.style.cssText = "position: absolute; bottom: 1px; right: 1px; width: 12px; height: 12px; background: #10b981; border-radius: 50%; border: 2px solid var(--bg);";
+            dot.title = "Online";
+
+            avatarWrap.appendChild(avatar);
+            avatarWrap.appendChild(dot);
+
+            // Info
+            const info = document.createElement("div");
+            info.style.cssText = "flex: 1; min-width: 0;";
+
+            const name = document.createElement("div");
+            name.style.cssText = "font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;";
+            name.textContent = u.displayName || "User";
+
+            const email = document.createElement("div");
+            email.style.cssText = "font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;";
+            email.textContent = u.email || "";
+
+            const statusRow = document.createElement("div");
+            statusRow.style.cssText = "display: flex; align-items: center; gap: 5px; margin-top: 5px;";
+
+            const statusDot = document.createElement("span");
+            statusDot.style.cssText = "width: 7px; height: 7px; background: #10b981; border-radius: 50%; display: inline-block;";
+
+            const statusText = document.createElement("span");
+            statusText.style.cssText = "font-size: 11px; color: #10b981; font-weight: 600;";
+            statusText.textContent = "Online";
+
+            if (u.isPro) {
+                const proBadge = document.createElement("span");
+                proBadge.style.cssText = "font-size: 10px; background: rgba(255,170,0,0.15); color: #f59e0b; padding: 2px 7px; border-radius: 6px; font-weight: 700; margin-left: 4px;";
+                proBadge.textContent = "👑 PRO";
+                statusRow.appendChild(statusDot);
+                statusRow.appendChild(statusText);
+                statusRow.appendChild(proBadge);
+            } else {
+                statusRow.appendChild(statusDot);
+                statusRow.appendChild(statusText);
+            }
+
+            // Last seen
+            if (u.lastSeenAt) {
+                const lastSeen = document.createElement("div");
+                lastSeen.style.cssText = "font-size: 10px; color: var(--muted); margin-top: 3px;";
+                lastSeen.textContent = "🕒 " + new Date(u.lastSeenAt).toLocaleString("bn-BD", { hour12: true });
+                info.appendChild(name);
+                info.appendChild(email);
+                info.appendChild(statusRow);
+                info.appendChild(lastSeen);
+            } else {
+                info.appendChild(name);
+                info.appendChild(email);
+                info.appendChild(statusRow);
+            }
+
+            card.appendChild(avatarWrap);
+            card.appendChild(info);
+            grid.appendChild(card);
+        });
+    });
+};
+
+// ======================================================
+// ⚡ LIVE ACTIVE USERS ENGINE (PRODUCTION-SAFE)
+// Firebase all_logs/ থেকে গত ১৫ মিনিটের activity check করে।
+// Existing all_logs structure intact রেখে safe read-only extension।
+// ======================================================
+
+const LIVE_ACTIVE_WINDOW_MS = 15 * 60 * 1000; // ১৫ মিনিট
+
+window.loadLiveActiveUsers = function() {
+    const grid = document.getElementById("liveActiveGrid");
+    const badge = document.getElementById("liveActiveCountBadge");
+    if (!grid) return;
+
+    grid.innerHTML = '<div style="color: var(--muted); font-size: 13px; padding: 10px; grid-column: 1/-1;">লোড হচ্ছে...</div>';
+
+    const cutoff = Date.now() - LIVE_ACTIVE_WINDOW_MS;
+
+    // all_logs এ lastActivity field থেকে যারা গত ১৫ মিনিটে active ছিলেন তাদের বের করা
+    // users/ node এ lastActivity save করা থাকলে সেখান থেকেও check করা হবে
+    DB.ref("users").once("value", function(snapshot) {
+        const activeUsers = [];
+
+        if (snapshot.exists()) {
+            snapshot.forEach(function(child) {
+                const u = child.val();
+                if (!u) return;
+                // lastActivity বা lastSeenAt এর যেকোনো একটা থেকে activity check
+                const lastActivity = u.lastActivity || u.lastSeenAt || 0;
+                if (lastActivity >= cutoff) {
+                    activeUsers.push({ uid: child.key, ...u, _lastActivity: lastActivity });
+                }
+            });
+        }
+
+        // যদি users/ এ কোনো data না পাওয়া যায়, all_logs থেকে fallback করা
+        if (activeUsers.length === 0) {
+            DB.ref("all_logs").orderByChild("time").startAt(cutoff).limitToLast(50).once("value", function(logsSnap) {
+                const emailMap = {};
+                if (logsSnap.exists()) {
+                    logsSnap.forEach(function(child) {
+                        const d = child.val();
+                        if (!d || !d.email) return;
+                        const existing = emailMap[d.email];
+                        if (!existing || d.time > existing._lastActivity) {
+                            emailMap[d.email] = {
+                                uid: d.uid || "",
+                                displayName: d.name || "User",
+                                email: d.email,
+                                photoURL: d.photoURL || "",
+                                _lastActivity: d.time || 0,
+                                isOnline: false
+                            };
+                        }
+                    });
+                }
+                const fallbackUsers = Object.values(emailMap);
+                renderLiveActiveGrid(grid, badge, fallbackUsers);
+            });
+        } else {
+            // newest activity first
+            activeUsers.sort((a, b) => b._lastActivity - a._lastActivity);
+            renderLiveActiveGrid(grid, badge, activeUsers);
+        }
+    });
+};
+
+function renderLiveActiveGrid(grid, badge, users) {
+    if (badge) badge.textContent = users.length + " জন";
+
+    if (users.length === 0) {
+        grid.innerHTML = '<div style="color: var(--muted); font-size: 13px; padding: 10px; grid-column: 1/-1;">গত ১৫ মিনিটে কোনো active user পাওয়া যায়নি।</div>';
+        return;
+    }
+
+    grid.innerHTML = "";
+    const now = Date.now();
+
+    users.forEach(function(u) {
+        const diffMs = now - (u._lastActivity || 0);
+        const diffMin = Math.floor(diffMs / 60000);
+        let timeLabel;
+        if (diffMin < 1) {
+            timeLabel = "এইমাত্র";
+        } else if (diffMin < 60) {
+            timeLabel = diffMin + " মিনিট আগে";
+        } else {
+            timeLabel = Math.floor(diffMin / 60) + " ঘণ্টা আগে";
+        }
+
+        const isLive = diffMs < 3 * 60 * 1000; // ৩ মিনিটের মধ্যে = LIVE
+
+        const card = document.createElement("div");
+        card.style.cssText = "background: var(--card); border: 1px solid " + (isLive ? "rgba(16,185,129,0.3)" : "var(--border)") + "; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 12px; transition: transform 0.25s ease; backdrop-filter: var(--glass);";
+        card.onmouseover = function() { this.style.transform = "translateY(-3px)"; };
+        card.onmouseout  = function() { this.style.transform = ""; };
+
+        // Avatar
+        const avatarWrap = document.createElement("div");
+        avatarWrap.style.cssText = "position: relative; flex-shrink: 0;";
+
+        const avatar = document.createElement("div");
+        avatar.style.cssText = "width: 46px; height: 46px; border-radius: 50%; background: " + (isLive ? "rgba(16,185,129,0.12)" : "rgba(0,131,255,0.12)") + "; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: " + (isLive ? "#10b981" : "var(--pri)") + "; overflow: hidden;";
+
+        if (u.photoURL) {
+            const img = document.createElement("img");
+            img.style.cssText = "width: 100%; height: 100%; object-fit: cover; border-radius: 50%;";
+            img.onerror = function() { this.style.display = "none"; };
+            img.src = u.photoURL;
+            avatar.appendChild(img);
+        } else {
+            avatar.textContent = (u.displayName || u.email || "U").charAt(0).toUpperCase();
+        }
+
+        if (isLive) {
+            const livePulse = document.createElement("span");
+            livePulse.style.cssText = "position: absolute; bottom: 1px; right: 1px; width: 12px; height: 12px; background: #10b981; border-radius: 50%; border: 2px solid var(--bg); animation: livePulse 1.4s infinite;";
+            avatarWrap.appendChild(avatar);
+            avatarWrap.appendChild(livePulse);
+        } else {
+            avatarWrap.appendChild(avatar);
+        }
+
+        // Info
+        const info = document.createElement("div");
+        info.style.cssText = "flex: 1; min-width: 0;";
+
+        const name = document.createElement("div");
+        name.style.cssText = "font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;";
+        name.textContent = u.displayName || "User";
+
+        const email = document.createElement("div");
+        email.style.cssText = "font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;";
+        email.textContent = u.email || "";
+
+        const activityRow = document.createElement("div");
+        activityRow.style.cssText = "display: flex; align-items: center; gap: 5px; margin-top: 5px;";
+
+        if (isLive) {
+            const liveBadge = document.createElement("span");
+            liveBadge.style.cssText = "font-size: 11px; background: rgba(16,185,129,0.15); color: #10b981; padding: 2px 8px; border-radius: 6px; font-weight: 700;";
+            liveBadge.textContent = "⚡ LIVE";
+            activityRow.appendChild(liveBadge);
+        }
+
+        const timeEl = document.createElement("span");
+        timeEl.style.cssText = "font-size: 11px; color: var(--muted);";
+        timeEl.textContent = "🕒 " + timeLabel;
+        activityRow.appendChild(timeEl);
+
+        info.appendChild(name);
+        info.appendChild(email);
+        info.appendChild(activityRow);
+
+        if (u.isPro) {
+            const proBadge = document.createElement("span");
+            proBadge.style.cssText = "display: inline-block; margin-top: 4px; font-size: 10px; background: rgba(255,170,0,0.15); color: #f59e0b; padding: 2px 7px; border-radius: 6px; font-weight: 700;";
+            proBadge.textContent = "👑 PRO";
+            info.appendChild(proBadge);
+        }
+
+        card.appendChild(avatarWrap);
+        card.appendChild(info);
+        grid.appendChild(card);
+    });
+}
+</script>
+
+<style>
+/* Live pulse animation for live active dot */
+@keyframes livePulse {
+    0%   { box-shadow: 0 0 0 0 rgba(16,185,129,0.55); }
+    70%  { box-shadow: 0 0 0 7px rgba(16,185,129,0); }
+    100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+}
+/* Notif history custom scrollbar (webkit) */
+#notifHistoryList::-webkit-scrollbar { width: 4px; }
+#notifHistoryList::-webkit-scrollbar-track { background: transparent; }
+#notifHistoryList::-webkit-scrollbar-thumb { background: rgba(0,131,255,0.25); border-radius: 4px; }
+</style>
 
 </body>
 </html>
