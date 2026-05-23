@@ -3345,6 +3345,30 @@ stroke-linejoin="round"/>
                         globalProActivationTime = uData.proStartDate || 0;
                         globalProExpirationTime = uData.proEndDate || 0;
 
+                        // ✅ PRO AUTO-ENABLE: Notification + Sound (শুধু একবার, প্রথম activation-এ)
+                        // notifAutoEnabled flag admin toggleUserPremium() থেকে set হয়
+                        // user একবার দেখার পর flag টি Firebase থেকে remove হয়ে যায়
+                        if (uData.notifAutoEnabled === true) {
+                            // ── Notification Toggle Auto-ON ──
+                            if (localStorage.getItem("peko_notif") !== "on") {
+                                NOTIFICATION_ENABLED = true;
+                                const nTog = document.getElementById("notificationToggle");
+                                if (nTog) nTog.classList.add("active");
+                                localStorage.setItem("peko_notif", "on");
+                            }
+                            // ── Sound Toggle Auto-ON ──
+                            if (localStorage.getItem("peko_sound") !== "on") {
+                                SOUND_ENABLED = true;
+                                const sTog = document.getElementById("soundToggle");
+                                if (sTog) sTog.classList.add("active");
+                                localStorage.setItem("peko_sound", "on");
+                            }
+                            // ── Flag remove: পরবর্তী refresh-এ আর auto-ON হবে না ──
+                            // user পরে manually OFF করলেও পুনরায় ON হবে না
+                            try { DB.ref("users/" + user.uid + "/notifAutoEnabled").remove(); } catch(e) {}
+                        }
+                        // ✅ AUTO-ENABLE BLOCK শেষ
+
                         // কোনো ভুলভাল অটো-টাইম জেনারেট হবে না। এডমিন যা সেট করবে সেটাই দেখাবে।
                         if (globalProExpirationTime > 0) {
                             document.getElementById("proTimerRow").style.display = "block";
