@@ -1837,13 +1837,21 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
             DB.ref(`pro_requests/${requestId}`).update({ status: "active" })
             .then(() => {
                 return DB.ref(`users/${userUid}`).update({ 
-                    isPro: true, proStartDate: now, proEndDate: expireTime
+                    isPro: true,
+                    proStartDate: now,
+                    proEndDate: expireTime,
+                    notifAutoEnabled: true
                 });
             })
             .then(() => {
                 localStorage.setItem(`offline_pro_end_${userUid}`, expireTime);
-                toast(`সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
-                loadProRequests(); // সাথে সাথে পেজ রিফ্রেশ হয়ে Accepted Members-এ চলে যাবে
+                // 🔔 Pro approval personal notification
+                DB.ref(`users/${userUid}/pendingNotif`).set({
+                    title: "👑 PRO Membership Activated!",
+                    message: `আপনার ${amount} ${unitText} এর PRO মেম্বারশিপ এখন একটিভ হয়েছে। 🎉`
+                });
+                toast(`সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
+                loadProRequests(); // সাথে সাথে পেজ রিফ্রেশ হয়ে Accepted Members-এ চলে যাবে
             })
             .catch(() => {
                 toggleElement.checked = false;
@@ -2714,17 +2722,20 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
             DB.ref(`pro_requests/${requestId}`).update({ status: "active" })
             .then(() => {
                 return DB.ref(`users/${userUid}`).update({ 
-                    isPro: true, proStartDate: now, proEndDate: expireTime
+                    isPro: true,
+                    proStartDate: now,
+                    proEndDate: expireTime,
+                    notifAutoEnabled: true
                 });
             })
             .then(() => {
                 localStorage.setItem(`offline_pro_end_${userUid}`, expireTime);
-                // 🔔 প্রো অ্যাপ্রুভাল অটো-নোটিফিকেশন
+                // 🔔 Pro approval personal notification
                 DB.ref(`users/${userUid}/pendingNotif`).set({
                     title: "👑 PRO Membership Activated!",
-                    message: `আপনার ${amount} ${unitText} এর PRO মেম্বারশিপ এখন একটিভ হয়েছে। 🎉`
+                    message: `আপনার ${amount} ${unitText} এর PRO মেম্বারশিপ এখন একটিভ হয়েছে। 🎉`
                 });
-                toast(`সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
+                toast(`সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
                 loadProRequests(); 
             })
             .catch(() => {
