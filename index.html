@@ -1918,6 +1918,11 @@ transparent
             to   { width: 0%; }
         }
 
+        @keyframes playLoaderSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         </style>
 </head>
 
@@ -2059,10 +2064,242 @@ transparent
             
             <div style="margin: 12px 0; text-align: center;">
                 <p style="font-weight: 600; font-size: 12px; margin-bottom: 8px; text-align: left; color: var(--text);">📱 সরাসরি অ্যাপে ওপেন করুন:</p>
-                <div style="display: flex; gap: 8px; justify-content: center; margin-bottom: 12px;">
-                    <a href="bkash://intl" target="_blank" onclick="playSound('click')" style="flex: 1; text-decoration: none; background: #e2136e; color: white; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; display: inline-block;">bKash App</a>
-                    <a href="nagad://intl" target="_blank" onclick="playSound('click')" style="flex: 1; text-decoration: none; background: #ff4500; color: white; padding: 10px; border-radius: 10px; font-size: 12px; font-weight: 700; display: inline-block;">Nagad App</a>
-                </div>
+
+
+
+
+
+<div style="
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin:18px 0 22px 0;
+width:100%;
+">
+
+<!-- bKash -->
+
+<a
+href="https://play.google.com/store/apps/details?id=com.bKash.customerapp"
+target="_blank"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+min-width:0;
+"
+>
+
+<div style="
+width:74px;
+height:74px;
+border-radius:22px;
+background:rgba(255,255,255,.55);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+border:1px solid rgba(0,0,0,.05);
+box-shadow:0 8px 24px rgba(0,0,0,.06);
+transition:.25s;
+">
+
+<img
+src=https://drive.google.com/thumbnail?id=1HbnNugRMaCyn5iGqOMQdoY0EOrJsP-MG&sz=w1000"
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+>
+
+</div>
+
+<span style="
+margin-top:8px;
+font-size:13px;
+font-weight:700;
+color:#e2136e;
+text-align:center;
+">
+bKash
+</span>
+
+</a>
+
+<!-- Nagad -->
+
+<a
+href="https://play.google.com/store/apps/details?id=com.konasl.nagad"
+target="_blank"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+min-width:0;
+"
+>
+
+<div style="
+width:74px;
+height:74px;
+border-radius:22px;
+background:rgba(255,255,255,.55);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+border:1px solid rgba(0,0,0,.05);
+box-shadow:0 8px 24px rgba(0,0,0,.06);
+transition:.25s;
+">
+
+<img
+src="https://drive.google.com/thumbnail?id=1bfSz-877ASuHVDCi5qtW6nqgQuygcbJq&sz=w1000"
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+>
+
+</div>
+
+<span style="
+margin-top:8px;
+font-size:13px;
+font-weight:700;
+color:#ff6a00;
+text-align:center;
+">
+Nagad
+</span>
+
+</a>
+
+<!-- Rocket -->
+
+<a
+href="https://play.google.com/store/apps/details?id=com.dbbl.mbs.apps.main"
+target="_blank"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+min-width:0;
+"
+>
+
+<div style="
+width:74px;
+height:74px;
+border-radius:22px;
+background:rgba(255,255,255,.55);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+border:1px solid rgba(0,0,0,.05);
+box-shadow:0 8px 24px rgba(0,0,0,.06);
+transition:.25s;
+">
+
+<img
+src="https://drive.google.com/thumbnail?id=1YbZwWfDBwpMLu78QSME9lsmJhqdfJ-ky&sz=w1000"
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+>
+
+</div>
+
+<span style="
+margin-top:8px;
+font-size:13px;
+font-weight:700;
+color:#7d35b2;
+text-align:center;
+">
+Rocket
+</span>
+
+</a>
+
+<!-- TapTap -->
+
+<a
+href="https://play.google.com/store/apps/details?id=com.taptapsend.android"
+target="_blank"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+min-width:0;
+"
+>
+
+<div style="
+width:74px;
+height:74px;
+border-radius:22px;
+background:rgba(255,255,255,.55);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+border:1px solid rgba(0,0,0,.05);
+box-shadow:0 8px 24px rgba(0,0,0,.06);
+transition:.25s;
+">
+
+<img
+src="https://drive.google.com/thumbnail?id=1obVJO6H93MIORALgsr0oemuzzvvVSjNY&sz=w1000"
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+>
+
+</div>
+
+<span style="
+margin-top:8px;
+font-size:13px;
+font-weight:700;
+color:#0a8f43;
+text-align:center;
+">
+TapTap
+</span>
+
+</a>
+
+</div>
+
+
+
+
+
+
                 <div style="background: rgba(0,0,0,0.04); padding: 8px; border-radius: 10px; font-size: 13px; font-weight: 700; margin-bottom: 15px; border: 1px dashed var(--border);">
                     📞 আমাদের পার্সোনাল নাম্বার: 017XXXXXXXX
                 </div>
@@ -2075,10 +2312,59 @@ transparent
                 <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px; color: var(--text);">📸 পেমেন্টের স্ক্রিনশট আপলোড করুন:</label>
                 <input type="file" id="proScreenshot" accept="image/*" style="width: 100%; font-size: 12px;">
             </div>
+            <div id="previewBox"
+style="
+margin-top:12px;
+display:none;
+justify-content:center;
+">
+
+<img
+id="previewImage"
+style="
+width:110px;
+height:auto;
+border-radius:14px;
+object-fit:cover;
+box-shadow:0 8px 22px rgba(0,0,0,.12);
+border:2px solid #fff;
+"
+/>
+
+</div>
             
             <button id="proSubmitBtn" class="reportSubmitBtn" onclick="submitProRequest()" style="background: linear-gradient(135deg, #0083ff, #005fbc); width: 100%;">Submit Premium Request</button>
         </div>
+
+        <div class="reportPopup" id="processingSection" style="max-width: 420px; width: 90%; display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; padding: 40px 20px; overflow: hidden;">
+            <div style="position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 200px; height: 200px; background: rgba(0,131,255,0.12); filter: blur(40px); border-radius: 50%; z-index: 0; pointer-events: none;"></div>
+            
+            <div style="position: relative; z-index: 1;">
+                <div style="margin-bottom: 24px; position: relative; display: inline-flex; align-items: center; justify-content: center; width: 84px; height: 84px;">
+                    <svg viewBox="0 0 50 50" style="position: absolute; width: 100%; height: 100%; animation: playLoaderSpin 1.2s linear infinite;">
+                        <circle cx="25" cy="25" r="20" fill="none" stroke="var(--pri)" stroke-width="3" stroke-linecap="round" stroke-dasharray="90" stroke-dashoffset="60" style="opacity: 0.9;"></circle>
+                        <circle cx="25" cy="25" r="20" fill="none" stroke="rgba(0,131,255,0.1)" stroke-width="3"></circle>
+                    </svg>
+                    <div style="background: rgba(0,131,255,0.08); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V11C20 9.89543 19.1046 9 18 9H6C4.89543 9 4 9.89543 4 11V19C4 20.1046 4.89543 21 6 21ZM16 9V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V9H16Z" stroke="var(--pri)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;">
+                    <img src="https://drive.google.com/thumbnail?id=1oWPTahVStySbJDHygtN5EuINqLSy5wyp&sz=w4000" style="width: 24px; height: 24px; border-radius: 50%;">
+                    <div style="font-size: 19px; font-weight: 700; color: var(--pri); letter-spacing: 0.5px;">Processing...</div>
+                </div>
+                <div style="font-size: 13.5px; color: var(--muted); line-height: 1.6; padding: 0 10px; font-weight: 600;">১২ থেকে ২৪ ঘণ্টার মধ্যে আপনার Pro Membership সক্রিয় হয়ে যাবে</div>
+            </div>
+        </div>
     </div>
+
+
+
+
+
 
 
     <div id="proWarningOverlay" class="reportOverlay" style="z-index: 100005;">
@@ -3328,7 +3614,23 @@ stroke-linejoin="round"/>
                 document.getElementById("accountPhoto").src = user.photoURL || "";
                 document.getElementById("sideUserName").textContent = "Settings";
 
-                // 🔥 ফায়ারবেস 'users' নোড থেকে রিয়েলটাইম প্রো স্ট্যাটাস চেক করা হচ্ছে (নিখুঁত কাউন্টডাউন ফিক্সড)
+                // ✅ PRESENCE SYSTEM — login হলে Firebase-এ isOnline: true লিখি
+                (function writePresence(u) {
+                    try {
+                        var presenceRef = DB.ref("users/" + u.uid);
+                        presenceRef.update({
+                            isOnline: true,
+                            lastSeenAt: Date.now(),
+                            lastActivity: Date.now(),
+                            displayName: u.displayName || "",
+                            email: u.email || "",
+                            photoURL: u.photoURL || ""
+                        });
+                        presenceRef.child("isOnline").onDisconnect().set(false);
+                        presenceRef.child("lastSeenAt").onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
+                    } catch(e) {}
+                })(user);
+
                 let proClockInterval = null;
                 let globalProActivationTime = 0;
                 let globalProExpirationTime = 0;
@@ -3652,6 +3954,12 @@ logoutMenuBtn.onclick = () => {
 
     closeSideMenu();
 
+    // ✅ PRESENCE: logout হলে isOnline: false লিখি
+    try {
+        if (USER && USER.uid) {
+            DB.ref("users/" + USER.uid).update({ isOnline: false, lastSeenAt: Date.now() });
+        }
+    } catch(e) {}
     AUTH.signOut();
 
     toast("Logged out");
@@ -5467,7 +5775,11 @@ setTimeout(() => {
             };
 
             DB.ref("all_logs").push(payload)
-                .then(() => console.log("SAVE OK"))
+                .then(() => {
+                    console.log("SAVE OK");
+                    // ✅ LIVE ACTIVITY: chat পাঠালে lastActivity update হয়
+                    try { if (USER && USER.uid) DB.ref("users/" + USER.uid + "/lastActivity").set(Date.now()); } catch(e) {}
+                })
                 .catch(err => console.error("SAVE ERROR:", err));
 
         }
@@ -5650,15 +5962,36 @@ function submitProRequest() {
     }
 
     const file = fileInput.files[0];
-    const submitBtn = document.getElementById("proSubmitBtn");
-    
-    submitBtn.disabled = true;
-    submitBtn.innerText = "Uploading Request...";
-    playSound("send");
+        const submitBtn = document.getElementById("proSubmitBtn");
+        
+        submitBtn.disabled = true;
+        playSound("send");
 
-    // ফাইলটি ডাটাবেজে ট্র্যাক করার জন্য ট্রানজেকশন রেফারেন্সে ফাইল রিডার কনভার্ট করা হচ্ছে (Base64 বা ডিরেক্ট স্ট্রিং মেথড)
-    const reader = new FileReader();
-    reader.onload = function(e) {
+        // --- TRANSITION ANIMATION: SLIDE LEFT OUT & SLIDE RIGHT IN ---
+        const paymentSection = document.getElementById("paymentFormSection");
+        const processingSection = document.getElementById("processingSection");
+
+        paymentSection.style.transition = "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease";
+        paymentSection.style.transform = "translate(-150%, -50%)"; 
+        paymentSection.style.opacity = "0";
+
+        setTimeout(() => {
+            paymentSection.style.display = "none";
+            processingSection.style.display = "block";
+            processingSection.style.transform = "translate(50%, -50%)"; 
+            processingSection.style.opacity = "0";
+            processingSection.style.transition = "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease";
+
+            void processingSection.offsetWidth; // Trigger reflow
+
+            processingSection.style.transform = "translate(-50%, -50%)";
+            processingSection.style.opacity = "1";
+        }, 350); 
+
+        // ফাইলটি ডাটাবেজে ট্র্যাক করার জন্য ট্রানজেকশন রেফারেন্সে ফাইল রিডার কনভার্ট করা হচ্ছে (Base64 বা ডিরেক্ট স্ট্রিং মেথড)
+        const reader = new FileReader();
+        reader.onload = function(e) {
+
         const screenshotData = e.target.result; // স্ক্রিনশটের ইমেজ ডাটা স্ট্রিং
 
         const proPayload = {
@@ -5672,28 +6005,32 @@ function submitProRequest() {
             time: Date.now()
         };
 
-        // ফায়ারবেসের 'pro_requests' নোডে পুশ করা হচ্ছে
+       // ফায়ারবেসের 'pro_requests' নোডে পুশ করা হচ্ছে
         DB.ref("pro_requests").push(proPayload)
             .then(() => {
-                // 🔥 ৫ সেকেন্ডের জন্য সাকসেস মেসেজ টোস্ট এক্টিভেশন
-                let toastEl = document.getElementById("toast");
-                if (toastEl) {
-                    toastEl.innerText = "অনুরোধ সফল হয়েছে! ১২ থেকে ২৪ ঘণ্টার মধ্যে প্রো অ্যাক্টিভ হবে ইনশাল্লাহ।";
-                    toastEl.classList.add("show");
-                    playSound("login"); // সাকসেস টিউন
+                setTimeout(() => { // 🔥 Simulate premium processing screen time
+                    playSound("login"); // শুধুমাত্র সাকসেস সাউন্ড প্লে হবে, নিচের কালো টোস্ট রিমুভ করা হয়েছে
                     
-                    // এক্সাক্ট ৫ সেকেন্ড (৫০০০ মিলিসেকেন্ড) পর নোটিফিকেশন গায়েব হবে
+                    proOverlay.classList.remove("show");
+                    
+                    // Reset UI forms back to original state hiddenly safely
                     setTimeout(() => {
-                        toastEl.classList.remove("show");
-                    }, 5000);
-                }
-                proOverlay.classList.remove("show");
+                        document.getElementById("paymentFormSection").style.transform = "translate(-50%, -50%)";
+                        document.getElementById("paymentFormSection").style.opacity = "1";
+                        document.getElementById("processingSection").style.display = "none";
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = "Submit Premium Request";
+                    }, 500);
+                }, 4500); // 🔥 Timeout 2800ms থেকে বাড়িয়ে 4500ms করা হয়েছে (Premium processing feel)
             })
             .catch((err) => {
                 console.error(err);
                 toast("ত্রুটি! আবার চেষ্টা করুন।");
-            })
-            .finally(() => {
+                // Reset UI on error safely
+                document.getElementById("processingSection").style.display = "none";
+                document.getElementById("paymentFormSection").style.display = "block";
+                document.getElementById("paymentFormSection").style.transform = "translate(-50%, -50%)";
+                document.getElementById("paymentFormSection").style.opacity = "1";
                 submitBtn.disabled = false;
                 submitBtn.innerText = "Submit Premium Request";
             });
@@ -6154,9 +6491,17 @@ function startPekoNotificationSystem(user) {
             const sched = n.scheduledDate || 0;
             if (sched > 0 && now < sched) return;
 
-            // Target check — "pro" হলে শুধু pro member দেখবে
+            // Target check — "pro" হলে শুধু pro member দেখবে; "custom" হলে email match করবে
             const target = n.target || "all";
             if (target === "pro" && !window.IS_PRO_MEMBER) return;
+            if (target === "custom") {
+                // targetEmails array-এ current user email থাকলেই দেখাবে
+                if (!user || !user.email) return;
+                const targets = n.targetEmails;
+                if (!Array.isArray(targets) || targets.length === 0) return;
+                const userEmail = user.email.trim().toLowerCase();
+                if (!targets.includes(userEmail)) return;
+            }
 
             // Mark seen প্রথমে (duplicate prevention)
             pekoMarkNotifSeen(nId);
@@ -6204,6 +6549,52 @@ function startPekoNotificationSystem(user) {
         }
     });
 })();
+
+
+
+
+
+
+
+
+
+
+const fileInput =
+document.querySelector('input[type="file"]');
+
+const previewBox =
+document.getElementById("previewBox");
+
+const previewImage =
+document.getElementById("previewImage");
+
+if(fileInput){
+
+    fileInput.addEventListener("change",(e)=>{
+
+        const file = e.target.files[0];
+
+        if(file){
+
+            const reader = new FileReader();
+
+            reader.onload = function(event){
+
+                previewImage.src =
+                event.target.result;
+
+                previewBox.style.display =
+                "flex";
+
+            };
+
+            reader.readAsDataURL(file);
+
+        }
+
+    });
+
+}
 
 </script>
 
