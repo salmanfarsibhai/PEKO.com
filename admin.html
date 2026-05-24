@@ -145,51 +145,111 @@ inset 0 1px 0 rgba(255,255,255,0.2);
         #grid::-webkit-scrollbar { display: none; }
         #grid { scrollbar-width: none; -ms-overflow-style: none; }
 
-        /* ===== CLEAN PREMIUM FILTER (STABLE VERSION) ===== */
-
-        #timeFilter {
+      /* ===== 🌟 ENTERPRISE CUSTOM DROPDOWN (SAAS GRADE) ===== */
+        .premium-select-wrapper {
+            position: relative;
             width: 200px;
-            padding: 8px 12px;
-
-            border-radius: 10px;
+            user-select: none;
+            font-family: "Hind Siliguri", system-ui, sans-serif;
+        }
+        
+        /* Dropdown Trigger Button */
+        .premium-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.02);
             border: 1px solid var(--border);
-
-            background: var(--card);
+            border-radius: 10px;
             color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            backdrop-filter: var(--glass);
+        }
+        .dark .premium-select-trigger {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .premium-select-wrapper.open .premium-select-trigger {
+            border-color: var(--pri);
+            box-shadow: 0 0 0 3px rgba(0, 131, 255, 0.15);
+        }
+        
+        .premium-select-trigger svg {
+            color: var(--muted);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .premium-select-wrapper.open .premium-select-trigger svg {
+            transform: rotate(180deg);
+        }
 
+        /* Dropdown Options Menu */
+        .premium-select-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+        
+        /* Dark Mode Menu (Matching your screenshot) */
+        .dark .premium-select-menu {
+            background: #1e293b; 
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        .premium-select-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Individual Option */
+        .premium-option {
+            padding: 10px 14px;
             font-size: 13px;
             font-weight: 500;
-
-            backdrop-filter: var(--glass);
-
+            color: var(--text);
             cursor: pointer;
-
-            transition: border 0.2s ease, box-shadow 0.2s ease;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .dark .premium-option {
+            color: #cbd5e1;
         }
 
-        /* subtle hover (no movement) */
-        #timeFilter:hover {
-            border-color: var(--pri);
+        .premium-option:hover {
+            background: rgba(0, 131, 255, 0.05);
+            color: var(--pri);
         }
-
-        /* clean focus */
-        #timeFilter:focus {
-            outline: none;
-            border-color: var(--pri);
-            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
-        }
-
-        /* dropdown menu (important) */
-        #timeFilter option {
-            background: #0f172a;
+        .dark .premium-option:hover {
+            background: rgba(255, 255, 255, 0.05);
             color: #ffffff;
-            font-size: 13px;
         }
 
-        /* dark mode adjust */
-        .dark #timeFilter {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        /* Active Option (Exact screenshot highlight) */
+        .premium-option.active {
+            background: var(--pri);
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .premium-option.active:hover {
+            background: #0066cc; /* Slightly darker blue on hover */
         }
 
 
@@ -1002,7 +1062,7 @@ inset 0 1px 0 rgba(255,255,255,0.2);
         }
 
 
-        /* ===== 🔔 ADMIN NOTIFICATION PANEL CSS ===== */
+       /* ===== 🔔 ADMIN NOTIFICATION PANEL CSS (SaaS UPGRADE) ===== */
         .notifFormGroup {
             display: flex;
             flex-direction: column;
@@ -1014,25 +1074,50 @@ inset 0 1px 0 rgba(255,255,255,0.2);
             font-weight: 600;
             color: var(--muted);
         }
+        
+        /* 🔥 PREMIUM DARK MODE FORM FIX */
+        .notif-premium-input {
+            background: #ffffff;
+            color: #0f172a;
+            border: 1px solid var(--border) !important;
+            transition: all 0.25s ease !important;
+        }
+        .dark .notif-premium-input {
+            background: rgba(15, 23, 42, 0.4) !important; /* Soft Dark Background */
+            color: #e2e8f0 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1) !important;
+        }
+        .dark .notif-premium-input::placeholder {
+            color: rgba(255, 255, 255, 0.2) !important;
+        }
+        .dark .notif-premium-input:focus {
+            border-color: var(--pri) !important;
+            box-shadow: 0 0 0 3px rgba(0, 131, 255, 0.15), inset 0 2px 4px rgba(0,0,0,0.2) !important;
+            background: rgba(15, 23, 42, 0.6) !important;
+        }
+
         .notifTextarea {
             width: 100%;
             padding: 12px 14px;
             border-radius: 12px;
-            border: none !important;
             outline: none !important;
-            background: #ffffff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
             font-size: 14px;
             resize: vertical;
             min-height: 100px;
             font-family: "Hind Siliguri", system-ui, sans-serif;
-            color: #000000;
-            transition: box-shadow 0.25s ease;
         }
         .notifTextarea:focus {
-            box-shadow: 0 8px 22px rgba(0,131,255,0.18), 0 2px 6px rgba(0,0,0,0.05);
             transform: translateY(-1px);
         }
+        
+        /* Date picker icon inverting for dark mode */
+        .dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) opacity(0.6);
+            cursor: pointer;
+        }
+
         .notifTargetGroup {
             display: flex;
             gap: 10px;
@@ -1053,12 +1138,16 @@ inset 0 1px 0 rgba(255,255,255,0.2);
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
         }
+        .dark .notifTargetBtn {
+            background: rgba(255, 255, 255, 0.02);
+        }
         .notifTargetBtn.notifSelected {
             background: var(--pri);
             color: white;
             border: none;
-            box-shadow: 0 4px 12px rgba(0,131,255,0.25);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 4px 12px rgba(0,131,255,0.25);
         }
+        
         .notifSendBtn {
             width: 100%;
             padding: 14px;
@@ -1070,19 +1159,16 @@ inset 0 1px 0 rgba(255,255,255,0.2);
             font-size: 15px;
             cursor: pointer;
             transition: 0.25s;
-            box-shadow: 0 6px 18px rgba(0,131,255,0.3);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 6px 18px rgba(0,131,255,0.3);
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             will-change: transform, box-shadow;
         }
         .notifSendBtn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 24px rgba(0,131,255,0.4);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 10px 24px rgba(0,131,255,0.4);
         }
-        #notifScheduleInput {
-            color: var(--text);
-            background: #ffffff;
-        }
+        
         .notifHistoryCard {
             background: rgba(0,0,0,0.02);
             border: 1px solid var(--border);
@@ -1098,6 +1184,100 @@ inset 0 1px 0 rgba(255,255,255,0.2);
         }
         .notifHistoryCard:hover {
             transform: translateY(-2px);
+        }
+
+       /* 📱 PREMIUM TWO-COLUMN DASHBOARD LAYOUT */
+        .notif-dashboard-layout {
+            grid-template-columns: 1fr;
+        }
+        @media (min-width: 900px) {
+            .notif-dashboard-layout {
+                grid-template-columns: 1.25fr 1fr; /* ফর্মটি সামান্য চওড়া এবং হিস্ট্রি ডান দিকে */
+            }
+        }
+
+        /* 🔥 PREMIUM INTERNAL SCROLL SYSTEM */
+        .premium-notif-scroll-area {
+            overflow-y: auto;
+            padding-right: 6px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0,131,255,0.3) transparent;
+        }
+        .premium-notif-scroll-area::-webkit-scrollbar {
+            width: 6px;
+        }
+        .premium-notif-scroll-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .premium-notif-scroll-area::-webkit-scrollbar-thumb {
+            background: rgba(0,131,255,0.25);
+            border-radius: 10px;
+        }
+        .premium-notif-scroll-area::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,131,255,0.4);
+        }
+
+        /* =======================================
+           ✨ PREMIUM ENTERPRISE ICON TABS CSS
+           ======================================= */
+        .admin-tabs-bar {
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            gap: 12px !important;
+        }
+        
+        .admin-tabs-bar button {
+            width: 44px !important;
+            height: 44px !important;
+            padding: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 12px !important;
+            flex-shrink: 0 !important;
+            transition: all 0.25s ease !important;
+            background: rgba(0, 0, 0, 0.02) !important;
+        }
+        
+        .dark .admin-tabs-bar button {
+            background: rgba(255, 255, 255, 0.03) !important;
+        }
+
+        .admin-tabs-bar button svg {
+            width: 20px !important;
+            height: 20px !important;
+            transition: all 0.25s ease !important;
+            color: var(--muted) !important;
+        }
+
+        /* 🔘 Subtle Hover for Inactive Tabs */
+        .admin-tabs-bar button:not([style*="background: var(--pri)"]):hover {
+            background: rgba(0, 131, 255, 0.04) !important;
+            border-color: rgba(0, 131, 255, 0.3) !important;
+        }
+        
+        .admin-tabs-bar button:not([style*="background: var(--pri)"]):hover svg {
+            transform: scale(1.08) !important;
+            color: var(--pri) !important;
+        }
+
+        /* 🔵 Luxurious Glass Elevation (Premium Active State) */
+        .admin-tabs-bar button[style*="background: var(--pri)"] {
+            background: var(--pri) !important;
+            border: 1px solid rgba(0, 0, 0, 0.1) !important;
+            box-shadow: 
+                inset 0 1px 1px rgba(255, 255, 255, 0.3), /* Glass highlight */
+                inset 0 -1px 2px rgba(0, 0, 0, 0.1), /* Soft inner depth */
+                0 4px 12px rgba(0, 131, 255, 0.25), /* Outer elegant glow */
+                0 1px 3px rgba(0, 131, 255, 0.1) !important;
+            transform: translateY(-1px) !important;
+        }
+        
+        .admin-tabs-bar button[style*="background: var(--pri)"] svg {
+            color: #ffffff !important;
+            transform: scale(1.05) !important;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)) !important;
         }
     </style>
 </head>
@@ -1176,38 +1356,101 @@ stroke-linejoin="round">
 
 
    <div class="admin-tabs-bar" style="display: flex; gap: 12px; margin: 20px auto; max-width: 1100px; padding: 0 20px;">
-        <button id="btn-space-chats" onclick="toggleAdminSpace('chats')" style="padding: 10px 20px; border: none; border-radius: 12px; background: var(--pri); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);">User Chats</button>
-        <button id="btn-space-reports" onclick="toggleAdminSpace('reports')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">User Reports</button>
-        <button id="btn-space-pro" onclick="toggleAdminSpace('pro-members')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Pro Members</button>
-        <button id="btn-space-help" onclick="toggleAdminSpace('help-center')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">🛠️ Help Logs</button>
-        <button id="btn-space-notifications" onclick="toggleAdminSpace('notifications')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">🔔 Notifications</button>
-        <button id="btn-space-sessions" onclick="toggleAdminSpace('sessions')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">👥 Online Sessions</button>
-        <button id="btn-space-live" onclick="toggleAdminSpace('live-active')" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">⚡ Live Active</button>
-
-
+        <button id="btn-space-chats" onclick="toggleAdminSpace('chats')" title="User Chats" style="padding: 10px 20px; border: none; border-radius: 12px; background: var(--pri); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M9 10h6M9 14h3" opacity="0.4"/></svg>
+        </button>
+        <button id="btn-space-reports" onclick="toggleAdminSpace('reports')" title="User Reports" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 2v6h6" opacity="0.4"/><path d="M9 14h6M9 18h4" opacity="0.4"/></svg>
+        </button>
+        <button id="btn-space-pro" onclick="toggleAdminSpace('pro-members')" title="Pro Members" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16l2.5-10 4 4.5L12 3l2.5 7.5 4-4.5L21 16H3z"/><path d="M3 20h18" opacity="0.4"/><circle cx="12" cy="3" r="1" opacity="0.4"/></svg>
+        </button>
+        <button id="btn-space-help" onclick="toggleAdminSpace('help-center')" title="Help Logs" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2" opacity="0.4"/><circle cx="12" cy="12" r="3" opacity="0.4"/></svg>
+        </button>
+        <button id="btn-space-notifications" onclick="toggleAdminSpace('notifications')" title="Notifications" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0" opacity="0.4"/><circle cx="18" cy="5" r="2" opacity="0.4"/></svg>
+        </button>
+        <button id="btn-space-sessions" onclick="toggleAdminSpace('sessions')" title="Online Sessions" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87" opacity="0.4"/><path d="M16 3.13a4 4 0 0 1 0 7.75" opacity="0.4"/></svg>
+        </button>
+        <button id="btn-space-live" onclick="toggleAdminSpace('live-active')" title="Live Active" style="padding: 10px 20px; border: 1px solid var(--border); border-radius: 12px; background: transparent; color: var(--text); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h8"/><path d="M12 22l10-12h-8" opacity="0.4"/></svg>
+        </button>
     </div>
 
     <div id="chats-space-wrapper" style="display: block;">
-        <div class="container">
-            <select id="timeFilter" onchange="render()" style="padding:10px;border-radius:10px;">
-                <option value="all">All</option>
-                <option value="today">Today</option>
-                <option value="7d">Last 7 Days</option>
-                <option value="1m">Last Month</option>
-                <option value="1y">Last Year</option>
-            </select>
+        <div class="container" style="position: relative; z-index: 50;">
+            
+            <div class="premium-select-wrapper" id="timeFilterWrapper">
+                <div class="premium-select-trigger" onclick="toggleTimeFilter(event)">
+                    <span id="timeFilterLabel">All</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+                
+                <div class="premium-select-menu" id="timeFilterMenu">
+                    <div class="premium-option active" onclick="applyTimeFilter('all', 'All', this)">All</div>
+                    <div class="premium-option" onclick="applyTimeFilter('today', 'Today', this)">Today</div>
+                    <div class="premium-option" onclick="applyTimeFilter('7d', 'Last 7 Days', this)">Last 7 Days</div>
+                    <div class="premium-option" onclick="applyTimeFilter('1m', 'Last Month', this)">Last Month</div>
+                    <div class="premium-option" onclick="applyTimeFilter('1y', 'Last Year', this)">Last Year</div>
+                </div>
+                
+                <input type="hidden" id="timeFilter" value="all">
+            </div>
+            
         </div>
         <div class="container" id="grid"></div>
     </div>
 
+    <script>
+        function toggleTimeFilter(e) {
+            e.stopPropagation(); // Prevents instant closing
+            const menu = document.getElementById('timeFilterMenu');
+            const wrapper = document.getElementById('timeFilterWrapper');
+            menu.classList.toggle('show');
+            wrapper.classList.toggle('open');
+        }
+
+        function applyTimeFilter(value, label, el) {
+            // 1. Update Hidden Input for existing `render()` compatibility
+            document.getElementById('timeFilter').value = value;
+            
+            // 2. Update visible Label
+            document.getElementById('timeFilterLabel').innerText = label;
+            
+            // 3. Update active blue styling
+            const options = document.querySelectorAll('#timeFilterMenu .premium-option');
+            options.forEach(opt => opt.classList.remove('active'));
+            el.classList.add('active');
+            
+            // 4. Close the menu smoothly
+            document.getElementById('timeFilterMenu').classList.remove('show');
+            document.getElementById('timeFilterWrapper').classList.remove('open');
+            
+            // 5. Fire your original render function!
+            if(typeof render === 'function') {
+                render();
+            }
+        }
+
+        // Close dropdown securely when clicking anywhere outside
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('timeFilterWrapper');
+            const menu = document.getElementById('timeFilterMenu');
+            if (wrapper && !wrapper.contains(e.target)) {
+                if (menu) menu.classList.remove('show');
+                wrapper.classList.remove('open');
+            }
+        });
+    </script>
+
     <div id="reports-space-wrapper" style="display: none; padding: 0 20px;">
-        <div class="card" style="margin-bottom: 30px; width: 100%;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                <span style="font-size: 20px;">📋</span>
-                <h2 style="font-size: 18px; font-weight: 700; margin: 0;">User Reports & Feedbacks</h2>
-            </div>
+        <div class="card" style="margin-bottom: 30px; width: 100%; border: none; background: transparent; box-shadow: none;">
             <div id="reportsList" class="reportsContainer">
-                <div style="color: var(--muted); font-size: 14px; padding: 10px;">লোডিং রিপোর্টস...</div>
+                <div style="color: var(--muted); font-size: 14px; padding: 10px; text-align: center;">লোডিং রিপোর্টস...</div>
             </div>
         </div>
     </div>
@@ -1227,56 +1470,90 @@ stroke-linejoin="round">
 
 
     <div id="notifications-space-wrapper" style="display: none; padding: 0 20px;">
-        <div class="card" style="margin-bottom: 30px; width: 100%; max-width: 640px; margin: 0 auto 30px auto;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-                <span style="font-size: 22px;">🔔</span>
-                <h2 style="font-size: 18px; font-weight: 700; margin: 0;">Broadcast Notification</h2>
+        <div class="notif-dashboard-layout" style="display: grid; gap: 24px; width: 100%; max-width: 1050px; margin: 0 auto 30px auto;">
+            
+            <div class="card" style="margin-bottom: 0; width: 100%; height: fit-content;">
+                
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 24px;">
+                    <div style="width: 36px; height: 36px; background: rgba(0, 131, 255, 0.1); color: var(--pri); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0" opacity="0.4"></path><path d="M21.5 3.5l-3 3" opacity="0.4"></path><path d="M22 6h-3" opacity="0.4"></path></svg>
+                    </div>
+                    <h2 style="font-size: 18px; font-weight: 700; margin: 0;">Broadcast Notification</h2>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 18px;">
+
+                    <div class="notifFormGroup">
+                        <label class="notifLabel" style="display: flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px; color: var(--muted);"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" opacity="0.4"></path></svg>
+                            Notification Title
+                        </label>
+                        <input id="notifTitleInput" class="inputBox notif-premium-input" placeholder="e.g. নতুন আপডেট এসেছে!" autocomplete="off">
+                    </div>
+
+                    <div class="notifFormGroup">
+                        <label class="notifLabel" style="display: flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px; color: var(--muted);"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M9 10h6M9 14h3" opacity="0.4"></path></svg>
+                            Notification Message
+                        </label>
+                        <textarea id="notifMessageInput" class="notifTextarea notif-premium-input" placeholder="ইউজারদের জন্য বিস্তারিত মেসেজ লিখুন..."></textarea>
+                    </div>
+
+                    <div class="notifFormGroup">
+                        <label class="notifLabel" style="display: flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px; color: var(--muted);"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6" opacity="0.4"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                            Target Audience
+                        </label>
+                        <div class="notifTargetGroup">
+                            <button class="notifTargetBtn notifSelected" id="notifTargetAll" onclick="selectNotifTarget('all')">All Users</button>
+                            <button class="notifTargetBtn" id="notifTargetPro" onclick="selectNotifTarget('pro')">Pro Users Only</button>
+                            <button class="notifTargetBtn" id="notifTargetCustom" onclick="selectNotifTarget('custom')">Custom Users</button>
+                        </div>
+                    </div>
+
+                    <div class="notifFormGroup" id="notifCustomEmailGroup" style="display: none;">
+                        <label class="notifLabel" style="display: flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px; color: var(--muted);"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6" opacity="0.4"></polyline></svg>
+                            Target Emails <span style="font-weight: 400; color: var(--muted); font-size: 12px;">(comma দিয়ে আলাদা করুন)</span>
+                        </label>
+                        <textarea id="notifCustomEmailInput" class="notifTextarea notif-premium-input" placeholder="user1@gmail.com, user2@gmail.com, user3@gmail.com" style="min-height: 80px; font-size: 13px;"></textarea>
+                        <div style="font-size: 11px; color: var(--muted); margin-top: 4px; display: flex; gap: 6px;">
+                            <span style="color: var(--pri);">ℹ️</span> শুধুমাত্র এই email দিয়ে login করা users-রা notification পাবে।
+                        </div>
+                    </div>
+
+                    <div class="notifFormGroup">
+                        <label class="notifLabel" style="display: flex; align-items: center; gap: 6px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 15px; height: 15px; color: var(--muted);"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10" opacity="0.4"></line></svg>
+                            Schedule <span style="font-weight: 400; color: var(--muted); font-size: 12px;">(optional — খালি রাখলে সাথে সাথে যাবে)</span>
+                        </label>
+                        <input id="notifScheduleInput" type="datetime-local" class="inputBox notif-premium-input">
+                    </div>
+
+                    <button class="notifSendBtn" onclick="sendAdminNotification()" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        Send Notification
+                    </button>
+                </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 18px;">
-
-                <div class="notifFormGroup">
-                    <label class="notifLabel">📝 Notification Title</label>
-                    <input id="notifTitleInput" class="inputBox" placeholder="e.g. নতুন আপডেট এসেছে!" autocomplete="off">
+            <div class="card" style="margin-bottom: 0; width: 100%; display: flex; flex-direction: column; height: 600px; max-height: 80vh;">
+                
+                <div style="font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--text); display: flex; align-items: center; gap: 8px; padding-bottom: 14px; border-bottom: 1px solid var(--border); flex-shrink: 0;">
+                    <div style="width: 32px; height: 32px; background: rgba(0, 0, 0, 0.04); color: var(--muted); border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14" opacity="0.5"></polyline></svg>
+                    </div>
+                    Sent Notifications History
                 </div>
-
-                <div class="notifFormGroup">
-                    <label class="notifLabel">💬 Notification Message</label>
-                    <textarea id="notifMessageInput" class="notifTextarea" placeholder="ইউজারদের জন্য বিস্তারিত মেসেজ লিখুন..."></textarea>
-                </div>
-
-                <div class="notifFormGroup">
-                    <label class="notifLabel">🎯 Target Audience</label>
-                    <div class="notifTargetGroup">
-                        <button class="notifTargetBtn notifSelected" id="notifTargetAll" onclick="selectNotifTarget('all')">👥 All Users</button>
-                        <button class="notifTargetBtn" id="notifTargetPro" onclick="selectNotifTarget('pro')">👑 Pro Users Only</button>
-                        <button class="notifTargetBtn" id="notifTargetCustom" onclick="selectNotifTarget('custom')">✉️ Custom Users</button>
+                
+                <div class="premium-notif-scroll-area" style="flex: 1; overflow-y: auto; min-height: 0;">
+                    <div id="notifHistoryList" style="display: flex; flex-direction: column; gap: 12px; padding-bottom: 20px;">
+                        <div style="color: var(--muted); font-size: 13px; padding: 10px;">লোড হচ্ছে...</div>
                     </div>
                 </div>
 
-                <div class="notifFormGroup" id="notifCustomEmailGroup" style="display: none;">
-                    <label class="notifLabel">📧 Target Emails <span style="font-weight: 400; color: var(--muted); font-size: 12px;">(comma দিয়ে আলাদা করুন)</span></label>
-                    <textarea id="notifCustomEmailInput" class="notifTextarea" placeholder="user1@gmail.com, user2@gmail.com, user3@gmail.com" style="min-height: 80px; font-size: 13px;"></textarea>
-                    <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">⚠️ শুধুমাত্র এই email দিয়ে login করা users-রা notification পাবে।</div>
-                </div>
-
-                <div class="notifFormGroup">
-                    <label class="notifLabel">📅 Schedule (optional — খালি রাখলে সাথে সাথে যাবে)</label>
-                    <input id="notifScheduleInput" type="datetime-local" class="inputBox" id="notifScheduleInput">
-                </div>
-
-                <button class="notifSendBtn" onclick="sendAdminNotification()">
-                    🔔 Send Notification
-                </button>
             </div>
 
-            <!-- Sent History -->
-            <div style="margin-top: 28px; border-top: 1px solid var(--border); padding-top: 20px;">
-                <div style="font-size: 14px; font-weight: 700; margin-bottom: 14px; color: var(--text);">📜 Sent Notifications History</div>
-                <div id="notifHistoryList" style="display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; scrollbar-color: rgba(0,131,255,0.3) transparent; -webkit-overflow-scrolling: touch;">
-                    <div style="color: var(--muted); font-size: 13px; padding: 10px;">লোড হচ্ছে...</div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -1329,22 +1606,31 @@ stroke-linejoin="round">
 <div id="pro-space-wrapper" style="display: none; padding: 0 20px;">
         <div class="card" style="margin-bottom: 30px; width: 100%;">
 
-           <div style="display: flex; gap: 10px; margin: 10px 0 20px 0; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap;">
-    <button id="tabNewRequests" onclick="switchProTab('pending')" style="background: var(--pri); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px;">📥 New Requests</button>
+           <div class="pro-tabs-container" style="display: flex; gap: 12px; margin: 10px 0 20px 0; border-bottom: 1px solid var(--border); padding-bottom: 16px; flex-wrap: wrap;">
+    <button id="tabNewRequests" class="pro-tab-btn" onclick="switchProTab('pending')" style="background: var(--pri); color: white; border: none; transition: 0.2s;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        New Requests
+    </button>
     
-    <button id="tabAcceptedMembers" onclick="switchProTab('active')" style="background: transparent; color: var(--text); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px;">✅ Active Members</button>
+    <button id="tabAcceptedMembers" class="pro-tab-btn" onclick="switchProTab('active')" style="background: transparent; color: var(--text); border: 1px solid var(--border); transition: 0.2s;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+        Active Members
+    </button>
     
-    <button id="tabExpiredMembers" onclick="switchProTab('expired')" style="background: transparent; color: var(--text); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 13px;">🔴 Expired Members</button>
+    <button id="tabExpiredMembers" class="pro-tab-btn" onclick="switchProTab('expired')" style="background: transparent; color: var(--text); border: 1px solid var(--border); transition: 0.2s;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>
+        Expired Members
+    </button>
 </div>
 
-            <div style="overflow-x: auto; width: 100%;">
-                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+            <div class="pro-scroll-container">
+                <table class="pro-data-table">
                     <thead>
-                        <tr style="border-bottom: 2px solid var(--border); color: var(--muted); background: rgba(0,0,0,0.02);">
-                            <th style="padding: 12px 8px;">ইউজার ডিটেইলস</th>
-                            <th style="padding: 12px 8px;">প্ল্যান ও সময়</th>
-                            <th style="padding: 12px 8px; text-align: center;">পেমেন্ট স্ক্রিনশট</th>
-                            <th style="padding: 12px 8px; text-align: center;">অ্যাক্টিভেশন স্ট্যাটাস</th>
+                        <tr>
+                            <th>ইউজার ডিটেইলস</th>
+                            <th>প্ল্যান ও সময়</th>
+                            <th style="text-align: center;">পেমেন্ট স্ক্রিনশট</th>
+                            <th style="text-align: center;">অ্যাক্টিভেশন স্ট্যাটাস</th>
                         </tr>
                     </thead>
                     <tbody id="proMembersListContainer">
@@ -2140,6 +2426,10 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
                 });
                 // ২. রিপোর্ট লিসেনার অটো-রান
                 listenToReports();
+                // ৩. নোটিফিকেশন হিস্ট্রি রিয়েল-টাইম লিসেনার
+                if (typeof window.listenToNotifHistory === "function") {
+                    window.listenToNotifHistory();
+                }
             }
         });
 
@@ -2212,7 +2502,16 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
                 reportsListContainer.innerHTML = "";
 
                 if (!snapshot.exists()) {
-                    reportsListContainer.innerHTML = `<div style="color: var(--muted); font-size: 14px; padding: 10px;">কোনো রিপোর্ট পাওয়া যায়নি।</div>`;
+                    reportsListContainer.innerHTML = `
+                        <div class="pro-empty-state-container">
+                            <svg class="pro-empty-state-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                            </svg>
+                            <p class="pro-empty-state-text">কোন রিপোর্ট পাওয়া যায়নি</p>
+                        </div>
+                    `;
                     return;
                 }
 
@@ -2435,9 +2734,12 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
                 DELETE_ID = "ALL_REPORTS";
                 document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবেই সব ইউজার রিপোর্ট ডিলিট করতে চান?";
             } else if (window.ACTIVE_SPACE === "help-center") {
-                // 🔥 হেল্প লগসের ডিলিট অল কমান্ড যোগ করা হলো
                 DELETE_ID = "ALL_HELP_LOGS";
                 document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবেই সব ইউজারের হেল্প সেশন ডিলিট করতে চান?";
+            } else if (window.ACTIVE_SPACE === "notifications") {
+                // 🔥 নোটিফিকেশন সেকশনের জন্য ডিলিট অল কনফার্মেশন
+                DELETE_ID = "ALL_NOTIFS";
+                document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবেই সব নোটিফিকেশন হিস্ট্রি ডিলিট করতে চান?";
             }
             document.getElementById("confirmBox").style.display = "flex";
         }
@@ -2453,8 +2755,13 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
                 DB.ref("all_reports").remove().then(() => { toast("All Reports Deleted"); listenToReports(); });
             }
             else if (DELETE_ID === "ALL_HELP_LOGS") {
-                // 🔥 সব হেল্প সেশন ডাটাবেজ থেকে ক্লিন করা
                 DB.ref("help_logs").remove().then(() => { toast("All Help Logs Deleted"); listenToHelpLogs(); });
+            }
+            else if (DELETE_ID === "ALL_NOTIFS") {
+                // 🔥 সব নোটিফিকেশন ডাটাবেজ থেকে রিমুভ
+                DB.ref("notifications").remove().then(() => { 
+                    toast("All Notifications Deleted 🗑"); 
+                });
             }
             else if (DELETE_ID && DELETE_ID.startsWith("HELP_")) {
                 // 🔥 নির্দিষ্ট একটি ইউজারের হেল্প সেশন ডিলিট করা
@@ -2465,12 +2772,16 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
                 const reportKey = DELETE_ID.replace("REP_", "");
                 DB.ref("all_reports/" + reportKey).remove().then(() => toast("Report Deleted"));
             }
+            else if (DELETE_ID === "ALL_NOTIFS") {
+                DB.ref("notifications").remove().then(() => { 
+                    toast("All Notifications Deleted 🗑"); 
+                });
+            }
             else if (DELETE_ID && DELETE_ID.startsWith("NOTIF_")) {
                 // 🔔 নির্দিষ্ট একটি notification ডিলিট করা
                 const nId = DELETE_ID.replace("NOTIF_", "");
                 DB.ref("notifications/" + nId).remove().then(() => {
                     toast("Notification Deleted 🗑");
-                    loadNotifHistory();
                 });
             }
             else if (DELETE_ID) {
@@ -3054,10 +3365,10 @@ window.toggleAdminSpace = function(spaceType) {
         "live-active": document.getElementById("btn-space-live")
     };
 
-    // ডিলিট অল বাটন লক মেকানিজম
+    // ডিলিট অল বাটন লক মেকানিজম (নোটিফিকেশন সেকশনে এখন বাটন সচল)
     const deleteAllBtn = document.querySelector(".header button[onclick='delAll()']");
     if (deleteAllBtn) {
-        if (spaceType === "pro-members" || spaceType === "notifications" || spaceType === "sessions" || spaceType === "live-active") {
+        if (spaceType === "pro-members" || spaceType === "sessions" || spaceType === "live-active") {
             deleteAllBtn.style.opacity = "0.35";
             deleteAllBtn.style.cursor = "not-allowed";
             deleteAllBtn.style.pointerEvents = "none";
@@ -3270,7 +3581,7 @@ window.sendAdminNotification = function() {
         if (msgEl)          msgEl.value          = "";
         if (schedEl)        schedEl.value        = "";
         if (customEmailEl)  customEmailEl.value  = "";
-        loadNotifHistory();
+        // 🔥 loadNotifHistory() ম্যানুয়ালি ডাকার দরকার নেই, কারণ রিয়েল-টাইম .on() লিসেনার অটোমেটিক আপডেট করবে
     })
     .catch(err => toast("❌ Error: " + err.message));
 };
@@ -3283,104 +3594,119 @@ window.deleteNotification = function(notifId) {
     document.getElementById("confirmBox").style.display = "flex";
 };
 
-// Load notification history in the panel
-window.loadNotifHistory = function() {
+// 👑 REALTIME NOTIFICATION HISTORY ENGINE (MASTER FIXED)
+let NOTIFS_RAW = []; // গ্লোবাল অ্যারে মেমোরি
+
+window.listenToNotifHistory = function() {
+        // ⚡ .on("value") ব্যবহার করে ডাটাবেজের সাথে সার্বক্ষণিক লাইভ কানেকশন তৈরি করা হলো
+        DB.ref("notifications").orderByChild("createdAt").limitToLast(50).on("value", (snapshot) => {
+            NOTIFS_RAW = [];
+            if (snapshot.exists()) {
+                // 🔥 MASTER FIX: ফায়ারবেস লুপ ব্রেক ঠেকানোর জন্য ব্র্যাকেট যুক্ত করা হলো
+                snapshot.forEach(child => {
+                    NOTIFS_RAW.push({ id: child.key, ...child.val() });
+                });
+            }
+            // যদি ইউজার নোটিফিকেশন ট্যাবে থাকেন, তবেই সাথে সাথে রেন্ডার হবে
+            if (window.ACTIVE_SPACE === "notifications") {
+                window.renderNotifHistory();
+            }
+        });
+    };
+
+window.renderNotifHistory = function() {
     const container = document.getElementById("notifHistoryList");
     if (!container) return;
 
-    DB.ref("notifications").orderByChild("createdAt").limitToLast(30).once("value", (snapshot) => {
-        container.innerHTML = "";
+    container.innerHTML = "";
 
-        if (!snapshot.exists()) {
-            container.innerHTML = '<div style="color: var(--muted); font-size: 13px; padding: 10px;">কোনো notification পাঠানো হয়নি।</div>';
-            return;
+    if (NOTIFS_RAW.length === 0) {
+        container.innerHTML = '<div style="color: var(--muted); font-size: 13px; padding: 10px;">কোনো notification পাঠানো হয়নি।</div>';
+        return;
+    }
+
+    // ডাটাবেজের সিরিয়াল ঠিক রেখে সবচেয়ে নতুনটি উপরে আনার জন্য reverse করা
+    const items = [...NOTIFS_RAW].reverse(); 
+
+    items.forEach(n => {
+        const dateStr  = new Date(n.createdAt).toLocaleString("bn-BD");
+        const schedStr = n.scheduledDate ? new Date(n.scheduledDate).toLocaleString("bn-BD") : "সাথে সাথে";
+        let targetLabel;
+        if (n.target === "pro") {
+            targetLabel = "👑 Pro Only";
+        } else if (n.target === "custom") {
+            const emailCount = (n.targetEmails && Array.isArray(n.targetEmails)) ? n.targetEmails.length : 0;
+            targetLabel = "✉️ Custom (" + emailCount + " users)";
+        } else {
+            targetLabel = "👥 All Users";
         }
 
-        let items = [];
-        snapshot.forEach(child => items.push({ id: child.key, ...child.val() }));
-        items.reverse(); // সবচেয়ে নতুনটা উপরে
+        const card = document.createElement("div");
+        card.className = "notifHistoryCard";
 
-        items.forEach(n => {
-            const dateStr  = new Date(n.createdAt).toLocaleString("bn-BD");
-            const schedStr = n.scheduledDate ? new Date(n.scheduledDate).toLocaleString("bn-BD") : "সাথে সাথে";
-            let targetLabel;
-            if (n.target === "pro") {
-                targetLabel = "👑 Pro Only";
-            } else if (n.target === "custom") {
-                const emailCount = (n.targetEmails && Array.isArray(n.targetEmails)) ? n.targetEmails.length : 0;
-                targetLabel = "✉️ Custom (" + emailCount + " users)";
-            } else {
-                targetLabel = "👥 All Users";
-            }
+        const titleDiv = document.createElement("div");
+        titleDiv.style.cssText = "font-weight: 700; font-size: 14px; color: var(--text);";
+        titleDiv.textContent = n.title || "";
 
-            const card = document.createElement("div");
-            card.className = "notifHistoryCard";
+        const msgDiv = document.createElement("div");
+        msgDiv.style.cssText = "font-size: 13px; color: var(--muted); line-height: 1.5; white-space: pre-wrap; word-break: break-word;";
+        msgDiv.textContent = n.message || "";
 
-            const titleDiv = document.createElement("div");
-            titleDiv.style.cssText = "font-weight: 700; font-size: 14px; color: var(--text);";
-            titleDiv.textContent = n.title || "";
+        const meta = document.createElement("div");
+        meta.style.cssText = "display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 6px; border-top: 1px solid var(--border); padding-top: 8px;";
 
-            const msgDiv = document.createElement("div");
-            msgDiv.style.cssText = "font-size: 13px; color: var(--muted); line-height: 1.5; white-space: pre-wrap; word-break: break-word;";
-            msgDiv.textContent = n.message || "";
+        const metaLeft = document.createElement("div");
+        metaLeft.style.cssText = "display: flex; gap: 8px; flex-wrap: wrap; align-items: center;";
 
-            const meta = document.createElement("div");
-            meta.style.cssText = "display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 6px; border-top: 1px solid var(--border); padding-top: 8px;";
+        const targetBadge = document.createElement("span");
+        targetBadge.style.cssText = "font-size: 11px; background: rgba(0,131,255,0.1); color: var(--pri); padding: 3px 8px; border-radius: 6px; font-weight: 600;";
+        targetBadge.textContent = targetLabel;
 
-            const metaLeft = document.createElement("div");
-            metaLeft.style.cssText = "display: flex; gap: 8px; flex-wrap: wrap; align-items: center;";
+        const dateBadge = document.createElement("span");
+        dateBadge.style.cssText = "font-size: 11px; color: var(--muted);";
+        dateBadge.textContent = "🕒 " + dateStr;
 
-            const targetBadge = document.createElement("span");
-            targetBadge.style.cssText = "font-size: 11px; background: rgba(0,131,255,0.1); color: var(--pri); padding: 3px 8px; border-radius: 6px; font-weight: 600;";
-            targetBadge.textContent = targetLabel;
+        if (n.scheduledDate) {
+            const schedBadge = document.createElement("span");
+            schedBadge.style.cssText = "font-size: 11px; color: #f59e0b;";
+            schedBadge.textContent = "📅 " + schedStr;
+            metaLeft.appendChild(schedBadge);
+        }
 
-            const dateBadge = document.createElement("span");
-            dateBadge.style.cssText = "font-size: 11px; color: var(--muted);";
-            dateBadge.textContent = "🕒 " + dateStr;
+        metaLeft.appendChild(targetBadge);
+        metaLeft.appendChild(dateBadge);
 
-            if (n.scheduledDate) {
-                const schedBadge = document.createElement("span");
-                schedBadge.style.cssText = "font-size: 11px; color: #f59e0b;";
-                schedBadge.textContent = "📅 " + schedStr;
-                metaLeft.appendChild(schedBadge);
-            }
+        const delBtn = document.createElement("button");
+        delBtn.style.cssText = "background: rgba(239,68,68,0.1); color: #ef4444; border: none; padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.2s;";
+        delBtn.textContent = "Delete";
+        // 🔥 পারফেক্ট ডিলিট ইভেন্ট লিসেনার
+        delBtn.onclick = function() { window.deleteNotification(n.id); };
 
-            metaLeft.appendChild(targetBadge);
-            metaLeft.appendChild(dateBadge);
+        meta.appendChild(metaLeft);
+        meta.appendChild(delBtn);
 
-            const delBtn = document.createElement("button");
-            delBtn.style.cssText = "background: rgba(239,68,68,0.1); color: #ef4444; border: none; padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.2s;";
-            delBtn.textContent = "Delete";
-            delBtn.onclick = (function(nId) { return function() { window.deleteNotification(nId); }; })(n.id);
+        card.appendChild(titleDiv);
+        card.appendChild(msgDiv);
 
-            meta.appendChild(metaLeft);
-            meta.appendChild(delBtn);
+        if (n.target === "custom" && n.targetEmails && Array.isArray(n.targetEmails) && n.targetEmails.length > 0) {
+            const emailListDiv = document.createElement("div");
+            emailListDiv.style.cssText = "font-size: 11px; color: var(--muted); background: rgba(0,131,255,0.06); border-radius: 8px; padding: 6px 10px; word-break: break-all; line-height: 1.6; margin-top: 6px;";
+            const emailLabel = document.createElement("span");
+            emailLabel.style.cssText = "font-weight: 600; color: var(--pri); margin-right: 4px;";
+            emailLabel.textContent = "✉️ Targets:";
+            emailListDiv.appendChild(emailLabel);
+            emailListDiv.appendChild(document.createTextNode(" " + n.targetEmails.join(", ")));
+            card.appendChild(emailListDiv);
+        }
 
-            card.appendChild(titleDiv);
-            card.appendChild(msgDiv);
-
-            // Custom target হলে email list দেখানো
-            if (n.target === "custom" && n.targetEmails && Array.isArray(n.targetEmails) && n.targetEmails.length > 0) {
-                const emailListDiv = document.createElement("div");
-                emailListDiv.style.cssText = "font-size: 11px; color: var(--muted); background: rgba(0,131,255,0.06); border-radius: 8px; padding: 6px 10px; word-break: break-all; line-height: 1.6;";
-                const emailLabel = document.createElement("span");
-                emailLabel.style.cssText = "font-weight: 600; color: var(--pri); margin-right: 4px;";
-                emailLabel.textContent = "✉️ Targets:";
-                emailListDiv.appendChild(emailLabel);
-                // email গুলো textNode হিসেবে যোগ করা — XSS safe
-                emailListDiv.appendChild(document.createTextNode(" " + n.targetEmails.join(", ")));
-                card.appendChild(emailListDiv);
-            }
-
-            card.appendChild(meta);
-            container.appendChild(card);
-        });
+        card.appendChild(meta);
+        container.appendChild(card);
     });
 };
 
-// Panel initialization: notifications tab click করলে call হয়
+// Panel initialization
 window.initNotificationPanel = function() {
-    loadNotifHistory();
+    window.renderNotifHistory();
 };
 
 </script>
@@ -3428,13 +3754,12 @@ window.loadOnlineSessions = function() {
         grid.innerHTML = "";
 
         onlineUsers.forEach(function(u) {
-            // XSS safe — textContent/setAttribute only
             const card = document.createElement("div");
             card.style.cssText = "background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 12px; transition: transform 0.25s ease; backdrop-filter: var(--glass);";
             card.onmouseover = function() { this.style.transform = "translateY(-3px)"; };
             card.onmouseout  = function() { this.style.transform = ""; };
 
-            // Avatar
+            // Avatar with Google photo
             const avatarWrap = document.createElement("div");
             avatarWrap.style.cssText = "position: relative; flex-shrink: 0;";
 
@@ -3444,69 +3769,68 @@ window.loadOnlineSessions = function() {
             if (u.photoURL) {
                 const img = document.createElement("img");
                 img.style.cssText = "width: 100%; height: 100%; object-fit: cover; border-radius: 50%;";
-                img.onerror = function() { this.style.display = "none"; };
+                img.onerror = function() { this.style.display = "none"; avatar.textContent = (u.displayName || u.email || "U").charAt(0).toUpperCase(); };
                 img.src = u.photoURL;
                 avatar.appendChild(img);
             } else {
                 avatar.textContent = (u.displayName || u.email || "U").charAt(0).toUpperCase();
             }
 
-            // Online dot
+            // Green dot (রাখা হলো)
             const dot = document.createElement("span");
             dot.style.cssText = "position: absolute; bottom: 1px; right: 1px; width: 12px; height: 12px; background: #10b981; border-radius: 50%; border: 2px solid var(--bg);";
-            dot.title = "Online";
+            dot.title = "Session Active";
 
             avatarWrap.appendChild(avatar);
             avatarWrap.appendChild(dot);
 
-            // Info
+            // Info section
             const info = document.createElement("div");
             info.style.cssText = "flex: 1; min-width: 0;";
 
+            // Name
             const name = document.createElement("div");
             name.style.cssText = "font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;";
             name.textContent = u.displayName || "User";
 
+            // Gmail
             const email = document.createElement("div");
             email.style.cssText = "font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;";
             email.textContent = u.email || "";
 
-            const statusRow = document.createElement("div");
-            statusRow.style.cssText = "display: flex; align-items: center; gap: 5px; margin-top: 5px;";
+            // প্রথম লগইনের তারিখ
+            const firstLoginTs = u.createdAt || u.firstLoginAt || u.registeredAt || u.joinedAt || null;
+            const fallbackTs = u.lastSeenAt || u.lastActivity || null;
+            const loginDateEl = document.createElement("div");
+            loginDateEl.style.cssText = "font-size: 10px; color: var(--muted); margin-top: 4px;";
+            if (firstLoginTs) {
+                loginDateEl.textContent = "📅 প্রথম লগইন: " + new Date(firstLoginTs).toLocaleString("bn-BD", { hour12: true });
+            } else if (fallbackTs) {
+                loginDateEl.textContent = "🕒 সর্বশেষ লগইন: " + new Date(fallbackTs).toLocaleString("bn-BD", { hour12: true });
+            } else {
+                loginDateEl.textContent = "📅 লগইন তথ্য নেই";
+            }
 
-            const statusDot = document.createElement("span");
-            statusDot.style.cssText = "width: 7px; height: 7px; background: #10b981; border-radius: 50%; display: inline-block;";
-
-            const statusText = document.createElement("span");
-            statusText.style.cssText = "font-size: 11px; color: #10b981; font-weight: 600;";
-            statusText.textContent = "Online";
+            // PRO / Free badge
+            const badgeRow = document.createElement("div");
+            badgeRow.style.cssText = "display: flex; align-items: center; gap: 5px; margin-top: 5px;";
 
             if (u.isPro) {
                 const proBadge = document.createElement("span");
-                proBadge.style.cssText = "font-size: 10px; background: rgba(255,170,0,0.15); color: #f59e0b; padding: 2px 7px; border-radius: 6px; font-weight: 700; margin-left: 4px;";
-                proBadge.textContent = "👑 PRO";
-                statusRow.appendChild(statusDot);
-                statusRow.appendChild(statusText);
-                statusRow.appendChild(proBadge);
+                proBadge.style.cssText = "font-size: 10px; background: rgba(255,170,0,0.15); color: #f59e0b; padding: 2px 7px; border-radius: 6px; font-weight: 700;";
+                proBadge.textContent = "👑 PRO Member";
+                badgeRow.appendChild(proBadge);
             } else {
-                statusRow.appendChild(statusDot);
-                statusRow.appendChild(statusText);
+                const freeBadge = document.createElement("span");
+                freeBadge.style.cssText = "font-size: 10px; background: rgba(100,116,139,0.12); color: var(--muted); padding: 2px 7px; border-radius: 6px; font-weight: 600;";
+                freeBadge.textContent = "Free Member";
+                badgeRow.appendChild(freeBadge);
             }
 
-            // Last seen
-            if (u.lastSeenAt) {
-                const lastSeen = document.createElement("div");
-                lastSeen.style.cssText = "font-size: 10px; color: var(--muted); margin-top: 3px;";
-                lastSeen.textContent = "🕒 " + new Date(u.lastSeenAt).toLocaleString("bn-BD", { hour12: true });
-                info.appendChild(name);
-                info.appendChild(email);
-                info.appendChild(statusRow);
-                info.appendChild(lastSeen);
-            } else {
-                info.appendChild(name);
-                info.appendChild(email);
-                info.appendChild(statusRow);
-            }
+            info.appendChild(name);
+            info.appendChild(email);
+            info.appendChild(loginDateEl);
+            info.appendChild(badgeRow);
 
             card.appendChild(avatarWrap);
             card.appendChild(info);
@@ -3693,6 +4017,154 @@ function renderLiveActiveGrid(grid, badge, users) {
 #notifHistoryList::-webkit-scrollbar { width: 4px; }
 #notifHistoryList::-webkit-scrollbar-track { background: transparent; }
 #notifHistoryList::-webkit-scrollbar-thumb { background: rgba(0,131,255,0.25); border-radius: 4px; }
+
+/* =======================================
+   🌟 PRO MEMBERS TAB BUTTONS (SaaS GRADE)
+   ======================================= */
+.pro-tab-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 10px 16px !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    font-family: inherit !important;
+    transition: all 0.25s ease !important;
+    cursor: pointer !important;
+    backdrop-filter: var(--glass) !important;
+    background: rgba(0,0,0,0.02) !important;
+    color: var(--muted) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: none !important;
+}
+.dark .pro-tab-btn { background: rgba(255,255,255,0.02) !important; }
+
+.pro-tab-btn svg {
+    width: 16px !important;
+    height: 16px !important;
+    stroke-width: 2.2 !important;
+    transition: transform 0.25s ease !important;
+}
+
+.pro-tab-btn:hover {
+    background: rgba(0,0,0,0.05) !important;
+    color: var(--text) !important;
+    transform: translateY(-1px) !important;
+}
+.pro-tab-btn:hover svg { transform: scale(1.1) !important; }
+
+/* 🔵 Pending/New Requests Active State Overlay */
+.pro-tab-btn[style*="var(--pri)"], .pro-tab-btn[style*="0, 131, 255"] {
+    background: rgba(0, 131, 255, 0.08) !important;
+    color: var(--pri) !important;
+    border: 1px solid rgba(0, 131, 255, 0.3) !important;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 4px 10px rgba(0, 131, 255, 0.1) !important;
+}
+
+/* 🟢 Active Members Active State Overlay */
+.pro-tab-btn[style*="#10b981"], .pro-tab-btn[style*="16, 185, 129"] {
+    background: rgba(16, 185, 129, 0.08) !important;
+    color: #10b981 !important;
+    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 4px 10px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* 🔴 Expired Members Active State Overlay */
+.pro-tab-btn[style*="#ef4444"], .pro-tab-btn[style*="239, 68, 68"] {
+    background: rgba(239, 68, 68, 0.08) !important;
+    color: #ef4444 !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 4px 10px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* =======================================
+   📜 INTERNAL SCROLL SYSTEM (ENTERPRISE)
+   ======================================= */
+.pro-scroll-container {
+    width: 100%;
+    max-height: calc(100vh - 250px); /* Smart height limit based on screen */
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,131,255,0.3) transparent;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dark .pro-scroll-container { background: rgba(30, 41, 59, 0.5); }
+
+/* Premium Thin Scrollbar */
+.pro-scroll-container::-webkit-scrollbar { width: 6px; height: 6px; }
+.pro-scroll-container::-webkit-scrollbar-track { background: transparent; }
+.pro-scroll-container::-webkit-scrollbar-thumb { 
+    background: rgba(0, 131, 255, 0.25); 
+    border-radius: 10px; 
+}
+.pro-scroll-container::-webkit-scrollbar-thumb:hover { background: rgba(0, 131, 255, 0.4); }
+
+/* Sticky Table Header */
+.pro-data-table {
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 0;
+    text-align: left;
+    font-size: 13px;
+}
+
+.pro-data-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #f8fafc; /* Light mode header bg */
+    padding: 14px 12px;
+    font-weight: 600;
+    color: var(--muted);
+    border-bottom: 2px solid var(--border);
+    backdrop-filter: blur(8px);
+}
+.dark .pro-data-table thead th {
+    background: #1e293b; /* Dark mode header bg */
+    color: #cbd5e1;
+}
+
+/* =======================================
+   ✨ PURE MINIMAL EMPTY STATE UI (REPORTS)
+   ======================================= */
+.pro-empty-state-container {
+    grid-column: 1 / -1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh; /* 🔥 Perfectly centered vertically in the container */
+    width: 100%;
+    background: transparent;
+    animation: proFadeIn 0.4s ease-out;
+}
+
+/* 🔥 MASTER FIX: Force hide the JS injected icon forever */
+.pro-empty-state-icon {
+    display: none !important;
+}
+
+.pro-empty-state-text {
+    font-family: 'Hind Siliguri', system-ui, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+/* Smooth entry animation */
+@keyframes proFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 </style>
 
 </body>
