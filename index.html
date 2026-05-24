@@ -1766,8 +1766,9 @@ transparent
         #pekoNotifPopup {
             position: fixed;
             top: 20px;
-            right: 20px;
-            width: 340px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 380px;
             max-width: calc(100vw - 40px);
             z-index: 99990;
             pointer-events: none;
@@ -1809,13 +1810,13 @@ transparent
         }
 
         @keyframes pekoNotifIn {
-            from { opacity: 0; transform: translateX(70px) scale(0.88); }
-            to   { opacity: 1; transform: translateX(0)    scale(1); }
+            from { opacity: 0; transform: translateY(-28px) scale(0.92); }
+            to   { opacity: 1; transform: translateY(0)     scale(1); }
         }
 
         @keyframes pekoNotifOut {
-            from { opacity: 1; transform: translateX(0)    scale(1); }
-            to   { opacity: 0; transform: translateX(70px) scale(0.88); }
+            from { opacity: 1; transform: translateY(0)     scale(1); }
+            to   { opacity: 0; transform: translateY(-28px) scale(0.92); }
         }
 
         @media (max-width: 600px) {
@@ -3458,7 +3459,7 @@ stroke-linejoin="round"/>
 <div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
     <button id="helpCenterBtn" class="reportMenuBtn">
         <div class="themeSelected" style="justify-content: space-between; width: 100%;">
-            <span id="helpCenterTextLabel" style="color: var(--text); font-weight: 600;">🛠️ Help Center</span>
+            <span id="helpCenterTextLabel" style="color: var(--text); font-weight: 600;">Help Center</span>
             <span class="themeArrow">➔</span>
         </div>
     </button>
@@ -3467,7 +3468,7 @@ stroke-linejoin="round"/>
 <div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
     <button id="privacyPolicyBtn" class="reportMenuBtn">
         <div class="themeSelected" style="justify-content: space-between; width: 100%;">
-            <span id="privacyPolicyTextLabel" style="color: var(--text); font-weight: 600;">🔒 Privacy Policy</span>
+            <span id="privacyPolicyTextLabel" style="color: var(--text); font-weight: 600;">Privacy Policy</span>
             <span class="themeArrow">➔</span>
         </div>
     </button>
@@ -3476,7 +3477,7 @@ stroke-linejoin="round"/>
 <div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
     <button id="termsOfUseBtn" class="reportMenuBtn">
         <div class="themeSelected" style="justify-content: space-between; width: 100%;">
-            <span id="termsOfUseTextLabel" style="color: var(--text); font-weight: 600;">📄 Terms of Use</span>
+            <span id="termsOfUseTextLabel" style="color: var(--text); font-weight: 600;">Terms of Use</span>
             <span class="themeArrow">➔</span>
         </div>
     </button>
@@ -3487,7 +3488,7 @@ stroke-linejoin="round"/>
 <div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
     <button id="appVersionBtn" class="reportMenuBtn">
         <div class="themeSelected" style="justify-content: space-between; width: 100%;">
-            <span id="appVersionTextLabel" style="color: var(--text); font-weight: 600;">⚙️ App Version</span>
+            <span id="appVersionTextLabel" style="color: var(--text); font-weight: 600;">App Version</span>
             <span class="themeArrow">➔</span>
         </div>
     </button>
@@ -3615,21 +3616,28 @@ stroke-linejoin="round"/>
                 document.getElementById("sideUserName").textContent = "Settings";
 
                 // ✅ PRESENCE SYSTEM — login হলে Firebase-এ isOnline: true লিখি
-                (function writePresence(u) {
-                    try {
-                        var presenceRef = DB.ref("users/" + u.uid);
-                        presenceRef.update({
-                            isOnline: true,
-                            lastSeenAt: Date.now(),
-                            lastActivity: Date.now(),
-                            displayName: u.displayName || "",
-                            email: u.email || "",
-                            photoURL: u.photoURL || ""
-                        });
-                        presenceRef.child("isOnline").onDisconnect().set(false);
-                        presenceRef.child("lastSeenAt").onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
-                    } catch(e) {}
-                })(user);
+(function writePresence(u) {
+    try {
+        var presenceRef = DB.ref("users/" + u.uid);
+        presenceRef.update({
+            isOnline: true,
+            lastSeenAt: Date.now(),
+            lastActivity: Date.now(),
+            displayName: u.displayName || "",
+            email: u.email || "",
+            photoURL: u.photoURL || ""
+        });
+        presenceRef.child("isOnline").onDisconnect().set(false);
+        presenceRef.child("lastSeenAt").onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
+
+        // 🔥 প্রথম লগইনের তারিখ — শুধু একবার সেভ হবে, পরে overwrite হবে না
+        presenceRef.child("createdAt").once("value", function(snap) {
+            if (!snap.exists()) {
+                presenceRef.child("createdAt").set(Date.now());
+            }
+        });
+    } catch(e) {}
+})(user);
 
                 let proClockInterval = null;
                 let globalProActivationTime = 0;
