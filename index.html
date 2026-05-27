@@ -2277,13 +2277,14 @@ transparent
         @media (max-width: 600px) {
             #pekoNotifPopup {
                 top: 16px;
-                right: 50%;
-                transform: translateX(50%);
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
                 width: calc(100vw - 32px);
                 max-width: 400px;
             }
         }
-
+        
         .peko-notif-card {
             position: relative;
             overflow: hidden;
@@ -5421,12 +5422,6 @@ let msg = clearMsgs[currentLang] || clearMsgs["default"];
 add(msg, "ai");
                     playSound("notification"); // রিসিভ নোটিফিকেশন সাউন্ড
                 }, 400);
-            }
-            const currentLang = localStorage.getItem("peko_lang") || "default";
-            if (currentLang === "en") {
-                toast("Chat Cleared Successfully ✨");
-            } else {
-                toast("চ্যাট ক্লিয়ার করা হয়েছে ✨");
             }
         } catch (error) {
             console.error("Clear Chat Error:", error);
