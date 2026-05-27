@@ -142,8 +142,52 @@ inset 0 1px 0 rgba(255,255,255,0.2);
             -webkit-overflow-scrolling: touch; 
         }
         
-        #grid::-webkit-scrollbar { display: none; }
-        #grid { scrollbar-width: none; -ms-overflow-style: none; }
+        /* 📜 MASTER INTERNAL SCROLL FIX FOR ALL SECTIONS */
+        #grid, #reportsList, #helpLogsContainer, #sessionsGrid, #liveActiveGrid {
+            max-height: calc(100vh - 220px) !important; /* স্ক্রিনের মাপ অনুযায়ী অটোমেটিক হাইট ঠিক করবে */
+            overflow-y: auto !important;
+            padding-right: 8px !important;
+            -webkit-overflow-scrolling: touch; /* মোবাইলে একদম স্মুথ স্ক্রোল হবে */
+        }
+
+        /* 💎 Premium Scrollbar Design (Chat, Reports, Help, Sessions, Live) */
+        #grid, #reportsList, #helpLogsContainer, #sessionsGrid, #liveActiveGrid {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0,131,255,0.3) transparent;
+        }
+
+        #grid::-webkit-scrollbar, 
+        #reportsList::-webkit-scrollbar, 
+        #helpLogsContainer::-webkit-scrollbar, 
+        #sessionsGrid::-webkit-scrollbar, 
+        #liveActiveGrid::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #grid::-webkit-scrollbar-track, 
+        #reportsList::-webkit-scrollbar-track, 
+        #helpLogsContainer::-webkit-scrollbar-track, 
+        #sessionsGrid::-webkit-scrollbar-track, 
+        #liveActiveGrid::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #grid::-webkit-scrollbar-thumb, 
+        #reportsList::-webkit-scrollbar-thumb, 
+        #helpLogsContainer::-webkit-scrollbar-thumb, 
+        #sessionsGrid::-webkit-scrollbar-thumb, 
+        #liveActiveGrid::-webkit-scrollbar-thumb {
+            background: rgba(0, 131, 255, 0.25);
+            border-radius: 10px;
+        }
+
+        #grid::-webkit-scrollbar-thumb:hover, 
+        #reportsList::-webkit-scrollbar-thumb:hover, 
+        #helpLogsContainer::-webkit-scrollbar-thumb:hover, 
+        #sessionsGrid::-webkit-scrollbar-thumb:hover, 
+        #liveActiveGrid::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 131, 255, 0.4);
+        }
 
       /* ===== 🌟 ENTERPRISE CUSTOM DROPDOWN (SAAS GRADE) ===== */
         .premium-select-wrapper {
@@ -864,6 +908,8 @@ inset 0 1px 0 rgba(255,255,255,0.2);
             margin-top: 24px;
             width: 100%;
         }
+        
+        
 
         .reportCard {
             background: var(--card);
@@ -1279,6 +1325,13 @@ inset 0 1px 0 rgba(255,255,255,0.2);
             transform: scale(1.05) !important;
             filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)) !important;
         }
+
+
+
+
+
+
+        
     </style>
 </head>
 
@@ -2737,9 +2790,11 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
                 DELETE_ID = "ALL_HELP_LOGS";
                 document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবেই সব ইউজারের হেল্প সেশন ডিলিট করতে চান?";
             } else if (window.ACTIVE_SPACE === "notifications") {
-                // 🔥 নোটিফিকেশন সেকশনের জন্য ডিলিট অল কনফার্মেশন
                 DELETE_ID = "ALL_NOTIFS";
                 document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবেই সব নোটিফিকেশন হিস্ট্রি ডিলিট করতে চান?";
+            } else if (window.ACTIVE_SPACE === "pro-members" && window.currentProTab === "expired") {
+                DELETE_ID = "ALL_EXPIRED_MEMBERS";
+                document.getElementById("confirmMessage").innerText = "আপনি কি নিশ্চিতভাবে সব Expired মেম্বার একসাথে মুছে ফেলতে চান?";
             }
             document.getElementById("confirmBox").style.display = "flex";
         }
@@ -2777,6 +2832,22 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
                     toast("All Notifications Deleted 🗑"); 
                 });
             }
+            else if (DELETE_ID === "ALL_EXPIRED_MEMBERS") {
+                DB.ref("pro_requests").once("value").then((snapshot) => {
+                    if (!snapshot.exists()) { toast("কোনো Expired ডাটা নেই।"); return; }
+                    let deletePromises = [];
+                    snapshot.forEach((child) => {
+                        if (child.val().status === "expired") {
+                            deletePromises.push(DB.ref("pro_requests/" + child.key).remove());
+                        }
+                    });
+                    Promise.all(deletePromises).then(() => {
+                        toast("সব Expired মেম্বার সফলভাবে ডিলিট হয়েছে! 🗑");
+                        loadProRequests();
+                    }).catch(() => toast("ডিলিট করতে সমস্যা হয়েছে।"));
+                });
+            }
+
             else if (DELETE_ID && DELETE_ID.startsWith("NOTIF_")) {
                 // 🔔 নির্দিষ্ট একটি notification ডিলিট করা
                 const nId = DELETE_ID.replace("NOTIF_", "");
@@ -3049,9 +3120,23 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
         </div>
     </div>
     <script>
+
+
+
+// 🔥 AUTO-DETECT: ইউজারের প্ল্যান অনুযায়ী সময় বের করার ফাংশন
+function parsePlanDuration(planName) {
+    if (!planName) return { amount: 7, unit: "days" };
+    const lower = planName.toLowerCase();
+    if (lower.includes("2 week")) return { amount: 14, unit: "days" };
+    if (lower.includes("1 week"))  return { amount: 7,  unit: "days" };
+    if (lower.includes("1 month")) return { amount: 1,  unit: "months" };
+    return { amount: 7, unit: "days" };
+}
 // 👑 মাস্টার ফিক্স: পপআপ দ্বিতীয়বার না আসার এবং টগল আটকে যাওয়ার ১০০% সমাধান
 
-function showCustomDaysPrompt(onSuccessCallback, onCancelCallback) {
+function showCustomDaysPrompt(onSuccessCallback, onCancelCallback, defaultAmount, defaultUnit) {
+    defaultAmount = defaultAmount || 7;
+    defaultUnit = defaultUnit || "days";
     let promptModal = document.getElementById("customPromptModal");
     if (!promptModal) {
         promptModal = document.createElement("div");
@@ -3066,12 +3151,12 @@ function showCustomDaysPrompt(onSuccessCallback, onCancelCallback) {
         <div style="background:#ffffff; padding:28px 24px; border-radius:24px; width:100%; max-width:400px; text-align:center; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);" class="custom-white-prompt-card">
             <div style="font-weight:700; color:#0f172a; font-size:17px;">👑 মেম্বারশিপ মেয়াদ নির্ধারণ করুন</div>
             <div style="font-size:12px; color:#64748b; line-height:1.4;">এই ইউজারকে কত সময়ের জন্য PRO মেম্বারশিপ দিতে চান? সংখ্যা লিখে ইউনিট সিলেক্ট করুন।</div>
-            <input type="number" id="customPromptValueInput" value="7" min="1" style="width:100%; padding:12px; border-radius:12px; border:1px solid rgba(0,0,0,0.08); background:rgba(0,0,0,0.03); color:#000; font-weight:700; text-align:center; font-size:18px; outline:none;">
+            <input type="number" id="customPromptValueInput" value="${defaultAmount}" min="1" style="width:100%; padding:12px; border-radius:12px; border:1px solid rgba(0,0,0,0.08); background:rgba(0,0,0,0.03); color:#000; font-weight:700; text-align:center; font-size:18px; outline:none;">
             <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width:100%;">
-                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid rgba(0,0,0,0.08); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:#0f172a;" id="lbl-min"><input type="radio" name="timeUnit" value="minutes" style="display:none;" onchange="updateCustomUnitStyle('minutes')"> ⏱ মিনিট</label>
-                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid rgba(0,0,0,0.08); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:#0f172a;" id="lbl-hr"><input type="radio" name="timeUnit" value="hours" style="display:none;" onchange="updateCustomUnitStyle('hours')"> ⏰ ঘণ্টা</label>
-                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:none; border-radius:12px; font-size:12.5px; font-weight:700; background:var(--pri); color:white; box-shadow:0 4px 10px rgba(79, 70, 229, 0.2);" id="lbl-day"><input type="radio" name="timeUnit" value="days" checked style="display:none;" onchange="updateCustomUnitStyle('days')"> 📅 দিন</label>
-                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; border:1px solid rgba(0,0,0,0.08); border-radius:12px; font-size:12.5px; font-weight:600; background:rgba(0,0,0,0.02); color:#0f172a;" id="lbl-mon"><input type="radio" name="timeUnit" value="months" style="display:none;" onchange="updateCustomUnitStyle('months')"> 🚀 মাস</label>
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; ${defaultUnit==='minutes'?'border:none; background:var(--pri); color:white; font-weight:700; box-shadow:0 4px 10px rgba(79,70,229,0.2);':'border:1px solid rgba(0,0,0,0.08); background:rgba(0,0,0,0.02); color:#0f172a; font-weight:600;'} border-radius:12px; font-size:12.5px;" id="lbl-min"><input type="radio" name="timeUnit" value="minutes" ${defaultUnit==='minutes'?'checked':''} style="display:none;" onchange="updateCustomUnitStyle('minutes')"> ⏱ মিনিট</label>
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; ${defaultUnit==='hours'?'border:none; background:var(--pri); color:white; font-weight:700; box-shadow:0 4px 10px rgba(79,70,229,0.2);':'border:1px solid rgba(0,0,0,0.08); background:rgba(0,0,0,0.02); color:#0f172a; font-weight:600;'} border-radius:12px; font-size:12.5px;" id="lbl-hr"><input type="radio" name="timeUnit" value="hours" ${defaultUnit==='hours'?'checked':''} style="display:none;" onchange="updateCustomUnitStyle('hours')"> ⏰ ঘণ্টা</label>
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; ${defaultUnit==='days'?'border:none; background:var(--pri); color:white; font-weight:700; box-shadow:0 4px 10px rgba(79,70,229,0.2);':'border:1px solid rgba(0,0,0,0.08); background:rgba(0,0,0,0.02); color:#0f172a; font-weight:600;'} border-radius:12px; font-size:12.5px;" id="lbl-day"><input type="radio" name="timeUnit" value="days" ${defaultUnit==='days'?'checked':''} style="display:none;" onchange="updateCustomUnitStyle('days')"> 📅 দিন</label>
+                <label style="cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; padding:10px; ${defaultUnit==='months'?'border:none; background:var(--pri); color:white; font-weight:700; box-shadow:0 4px 10px rgba(79,70,229,0.2);':'border:1px solid rgba(0,0,0,0.08); background:rgba(0,0,0,0.02); color:#0f172a; font-weight:600;'} border-radius:12px; font-size:12.5px;" id="lbl-mon"><input type="radio" name="timeUnit" value="months" ${defaultUnit==='months'?'checked':''} style="display:none;" onchange="updateCustomUnitStyle('months')"> 🚀 মাস</label>
             </div>
             <div style="display:flex; gap:12px; justify-content:center; width:100%;">
                 <button id="promptCancelBtn" style="flex:1; background:rgba(0,0,0,0.05); color:#0f172a; border:none; padding:11px 16px; border-radius:12px; font-weight:600; cursor:pointer; font-size:13.5px; min-height:40px;">Cancel</button>
@@ -3129,38 +3214,61 @@ function toggleUserPremium(requestId, userUid, toggleElement) {
     const isActivating = toggleElement.checked;
 
     if (isActivating) {
-        showCustomDaysPrompt((durationMiliseconds, amount, unit) => {
-            const now = Date.now();
-            const expireTime = now + durationMiliseconds;
-            let unitText = unit === "minutes" ? "মিনিট" : unit === "hours" ? "ঘণ্টা" : unit === "months" ? "মাস" : "দিন";
+        // 🔥 AUTO-DETECT: requestedPlan থেকে সময় বের করা হচ্ছে
+        DB.ref(`pro_requests/${requestId}`).once("value").then((snap) => {
+            const reqData = snap.val() || {};
+            const detected = parsePlanDuration(reqData.requestedPlan || "");
 
-            DB.ref(`pro_requests/${requestId}`).update({ status: "active" })
-            .then(() => {
-                return DB.ref(`users/${userUid}`).update({ 
-                    isPro: true,
-                    proStartDate: now,
-                    proEndDate: expireTime,
-                    notifAutoEnabled: true
+            showCustomDaysPrompt((durationMiliseconds, amount, unit) => {
+                const now = Date.now();
+                const expireTime = now + durationMiliseconds;
+                let unitText = unit === "minutes" ? "মিনিট" : unit === "hours" ? "ঘণ্টা" : unit === "months" ? "মাস" : "দিন";
+
+                DB.ref(`pro_requests/${requestId}`).update({ status: "active" })
+                .then(() => {
+                    return DB.ref(`users/${userUid}`).update({ 
+                        isPro: true,
+                        proStartDate: now,
+                        proEndDate: expireTime,
+                        notifAutoEnabled: true
+                    });
+                })
+                .then(() => {
+                    localStorage.setItem(`offline_pro_end_${userUid}`, expireTime);
+                    DB.ref(`users/${userUid}/pendingNotif`).set({
+                        title: "👑 PRO Membership Activated!",
+                        message: `আপনার ${amount} ${unitText} এর PRO মেম্বারশিপ এখন একটিভ হয়েছে। 🎉`
+                    });
+                    toast(`সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
+                    loadProRequests(); 
+                })
+                .catch(() => {
+                    toggleElement.checked = false;
+                    toast("ডাটাবেজ আপডেট ব্যর্থ হয়েছে");
                 });
-            })
-            .then(() => {
-                localStorage.setItem(`offline_pro_end_${userUid}`, expireTime);
-                // 🔔 Pro approval personal notification
-                DB.ref(`users/${userUid}/pendingNotif`).set({
-                    title: "👑 PRO Membership Activated!",
-                    message: `আপনার ${amount} ${unitText} এর PRO মেম্বারশিপ এখন একটিভ হয়েছে। 🎉`
-                });
-                toast(`সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
-                loadProRequests(); 
-            })
-            .catch(() => {
+            }, () => {
                 toggleElement.checked = false;
-                toast("ডাটাবেজ আপডেট ব্যর্থ হয়েছে");
-            });
-        }, () => {
-            toggleElement.checked = false;
+            }, detected.amount, detected.unit);
+
+        }).catch(() => {
+            showCustomDaysPrompt((durationMiliseconds, amount, unit) => {
+                const now = Date.now();
+                const expireTime = now + durationMiliseconds;
+                let unitText = unit === "minutes" ? "মিনিট" : unit === "hours" ? "ঘণ্টা" : unit === "months" ? "মাস" : "দিন";
+                DB.ref(`pro_requests/${requestId}`).update({ status: "active" })
+                .then(() => DB.ref(`users/${userUid}`).update({ isPro: true, proStartDate: now, proEndDate: expireTime, notifAutoEnabled: true }))
+                .then(() => {
+                    localStorage.setItem(`offline_pro_end_${userUid}`, expireTime);
+                    DB.ref(`users/${userUid}/pendingNotif`).set({ title: "👑 PRO Membership Activated!", message: `আপনার ${amount} ${unitText} এর PRO মেম্বারশিপ এখন একটিভ হয়েছে। 🎉` });
+                    toast(`সফলভাবে ${amount} ${unitText} এর জন্য PRO করা হয়েছে! 👑`);
+                    loadProRequests();
+                })
+                .catch(() => { toggleElement.checked = false; toast("ডাটাবেজ আপডেট ব্যর্থ হয়েছে"); });
+            }, () => { toggleElement.checked = false; });
         });
     } else {
+
+        
         DB.ref(`pro_requests/${requestId}`).update({
             status: "expired"
         })
@@ -3205,10 +3313,25 @@ window.switchProTab = function(tabName) {
     } else if (tabName === "expired" && btnExpired) {
         btnExpired.style.background = "#ef4444"; btnExpired.style.color = "white"; btnExpired.style.border = "none";
     }
-    loadProRequests(); 
+    // 🔥 Delete বাটন স্মার্ট কন্ট্রোল: Expired ট্যাবে Enable, বাকি সবে Disable
+        const deleteAllBtn = document.querySelector(".header button[onclick='delAll()']");
+        if (deleteAllBtn) {
+            if (tabName === "expired") {
+                deleteAllBtn.style.opacity = "1";
+                deleteAllBtn.style.cursor = "pointer";
+                deleteAllBtn.style.pointerEvents = "auto";
+                deleteAllBtn.style.background = "#ef4444";
+            } else {
+                deleteAllBtn.style.opacity = "0.35";
+                deleteAllBtn.style.cursor = "not-allowed";
+                deleteAllBtn.style.pointerEvents = "none";
+                deleteAllBtn.style.background = "rgba(239, 68, 68, 0.4)";
+            }
+        }
+        loadProRequests(); 
 };
 
-// 👑 MASTER DATA LOADER (NEW ROUTING & AUTO-EXPIRE FIX)
+// 👑 MASTER DATA LOADER(NEW ROUTING & AUTO-EXPIRE FIX)
 window.loadProRequests = function() {
     const container = document.getElementById("proMembersListContainer");
     if (!container) return;
@@ -3259,6 +3382,9 @@ window.loadProRequests = function() {
                 <td style="padding: 12px 8px; line-height: 1.5;">
                     <div style="font-weight: 600; color: var(--text); font-size: 14px;">${data.name || 'Unknown'}</div>
                     <div style="font-size: 11px; color: var(--muted);">${data.email || 'No Email'}</div>
+                    <div style="font-size: 12px; font-weight: 700; margin-top: 4px;">
+                        <a href="tel:${data.phone}" style="color: var(--pri); text-decoration: none;">📞 ${data.phone || 'No Number'}</a>
+                    </div>
                 </td>
                 <td style="padding: 12px 8px; color: var(--text); vertical-align: middle;">
                     <span style="background: rgba(79, 70, 229, 0.1); color: var(--pri); padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: bold;">
@@ -3368,7 +3494,7 @@ window.toggleAdminSpace = function(spaceType) {
     // ডিলিট অল বাটন লক মেকানিজম (নোটিফিকেশন সেকশনে এখন বাটন সচল)
     const deleteAllBtn = document.querySelector(".header button[onclick='delAll()']");
     if (deleteAllBtn) {
-        if (spaceType === "pro-members" || spaceType === "sessions" || spaceType === "live-active") {
+        if ((spaceType === "pro-members" && window.currentProTab !== "expired") || spaceType === "sessions" || spaceType === "live-active") {
             deleteAllBtn.style.opacity = "0.35";
             deleteAllBtn.style.cursor = "not-allowed";
             deleteAllBtn.style.pointerEvents = "none";
