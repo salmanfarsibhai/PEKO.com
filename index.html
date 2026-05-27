@@ -30,6 +30,437 @@
             border: 1px solid rgba(239, 68, 68, 0.3) !important;
             color: #ff9999 !important; 
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body:not(.pro-user) .fontSizeItem[data-is-pro="true"] .themeCheck {
+    display: none !important;
+}
+body:not(.pro-user) .fontSizeItem[data-is-pro="true"] .proThemeLock {
+    display: flex !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* ===== GEMINI PRO BUTTON BORDER ANIMATION ===== */
+@keyframes geminiRotate {
+    from { transform: rotate(0turn) translate(-50%, -50%); }
+    to   { transform: rotate(1turn) translate(-50%, -50%); }
+}
+
+#upgradeProWrap {
+    position: relative;
+    padding: 2px;
+    border-radius: 17px;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    background: transparent;
+    isolation: isolate;
+    animation: wrapGlow 3s linear infinite;
+}
+
+@keyframes wrapGlow {
+    0%   { box-shadow: 0 4px 18px rgba(66, 133, 244, 0.45), 0 6px 28px rgba(66, 133, 244, 0.2); }
+    25%  { box-shadow: 0 4px 18px rgba(52, 168, 83, 0.45),  0 6px 28px rgba(52, 168, 83, 0.2); }
+    50%  { box-shadow: 0 4px 18px rgba(251, 188, 5, 0.45),  0 6px 28px rgba(251, 188, 5, 0.2); }
+    75%  { box-shadow: 0 4px 18px rgba(234, 67, 53, 0.45),  0 6px 28px rgba(234, 67, 53, 0.2); }
+    100% { box-shadow: 0 4px 18px rgba(66, 133, 244, 0.45), 0 6px 28px rgba(66, 133, 244, 0.2); }
+}
+
+#upgradeProWrap::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250%;
+    aspect-ratio: 1;
+    background: conic-gradient(
+        from 0turn,
+        #4285f4 0%,
+        #34a853 12%,
+        #fbbc05 25%,
+        #ea4335 37%,
+        #4285f4 50%,
+        transparent 50%,
+        transparent 100%
+    );
+    animation: geminiRotate 3s linear infinite;
+    z-index: 0;
+    will-change: transform;
+    filter: blur(4px);
+box-shadow: 0 4px 20px rgba(66, 133, 244, 0.35), 0 8px 32px rgba(234, 67, 53, 0.2);
+    border-radius: 50%;
+    transform-origin: 0 0;
+}
+
+#upgradeProWrap::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 15px;
+    background: white;
+    z-index: 1;
+}
+
+body.dark #upgradeProWrap::after {
+    background: #0f172a;
+}
+
+.upgradeProInner {
+    position: relative;
+    z-index: 2;
+    border-radius: 14px;
+    overflow: hidden;
+    background: transparent;
+    margin: 0;
+}
+
+#upgradeProBtn {
+    background: white !important;
+    box-shadow: none !important;
+}
+
+body.dark #upgradeProBtn {
+    background: #0f172a !important;
+}
+
+#upgradeProWrap.pro-active::before {
+    animation: none;
+    background: none;
+    display: none;
+}
+
+#upgradeProWrap.pro-active::after {
+    background: transparent;
+}
+
+#upgradeProWrap.pro-active #upgradeProBtn {
+    animation: none !important;
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== PREMIUM PRO PLANS MODAL ===== */
+#planBoxSection {
+    padding: 28px 24px 24px !important;
+    border-radius: 28px !important;
+}
+
+.pro-plans-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0 8px 0;
+    width: 100%;
+}
+
+@media (max-width: 700px) {
+    .pro-plans-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    #planBoxSection {
+        padding: 22px 16px 20px !important;
+        width: 94% !important;
+        max-width: 94% !important;
+    }
+}
+
+.pro-plan-card {
+    position: relative;
+    border-radius: 20px;
+    padding: 24px 20px 22px 20px;
+    text-align: center;
+    background: #ffffff;
+    border: 1.5px solid rgba(0,0,0,0.07);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+body.dark .pro-plan-card {
+    background: #111c2e;
+    border: 1.5px solid rgba(255,255,255,0.07);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+
+.pro-plan-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+}
+
+.pro-plan-card.featured {
+    border: 2px solid #ff6a00;
+    background: linear-gradient(160deg, #fff8f3, #ffffff);
+    box-shadow: 0 8px 32px rgba(255,106,0,0.15);
+}
+
+body.dark .pro-plan-card.featured {
+    background: linear-gradient(160deg, #1e1208, #111c2e);
+    border: 2px solid #ff6a00;
+}
+
+.pro-plan-card.featured:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 44px rgba(255,106,0,0.22);
+}
+
+.pro-badge-wrap {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.pro-badge {
+    background: linear-gradient(135deg, #ff6a00, #ffaa00);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(255,106,0,0.35);
+}
+
+.pro-plan-icon {
+    font-size: 26px;
+    margin-bottom: 2px;
+}
+
+.pro-plan-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.2px;
+}
+
+body.dark .pro-plan-name {
+    color: #ffffff;
+}
+
+.pro-plan-price {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 6px 0 2px 0;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.pro-plan-price.blue { color: var(--pri); }
+.pro-plan-price.orange { color: #ff6a00; }
+
+.pro-plan-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    min-height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+}
+
+.pro-plan-btn {
+    width: 100%;
+    padding: 11px 0;
+    border-radius: 12px;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 12px;
+    letter-spacing: 0.2px;
+    transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+}
+
+.pro-plan-btn:active {
+    transform: scale(0.97);
+}
+
+/* 🔥 THEME SYNCED BUTTONS (NO GRADIENT, SOLID TEXT) */
+.pro-plan-btn.blue-btn {
+    background: var(--pri) !important; /* যেকোনো থিমের আসল সলিড রঙ পাবে */
+    color: #ffffff !important; /* লেখা হবে ধবধবে সাদা */
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--pri) 35%, transparent) !important; /* শ্যাডোও থিমের সাথে বদলাবে */
+}
+
+.pro-plan-btn.blue-btn:hover {
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--pri) 50%, transparent) !important;
+    opacity: 0.93;
+}
+
+.pro-plan-btn.orange-btn {
+    background: linear-gradient(135deg, #ff6a00, #ffaa00);
+    color: white;
+    box-shadow: 0 4px 14px rgba(255,106,0,0.32);
+}
+
+.pro-plan-btn.orange-btn:hover {
+    box-shadow: 0 6px 20px rgba(255,106,0,0.42);
+    opacity: 0.93;
+}
+
+.pro-plans-title {
+    text-align: center;
+    font-size: 19px;
+    font-weight: 800;
+    color: #ff6a00;
+    letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.pro-plans-subtitle {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+/* ===== END PREMIUM PRO PLANS ===== */
+
+
+
+
+
+
+
+
+
+
+
+/* ===== NEW PREMIUM SOUND LOCK ICON ===== */
+.soundLockNew {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--pri) 10%, transparent);
+    flex-shrink: 0;
+    margin-left: auto;
+    margin-right: 6px;
+}
+
+.soundLockNew svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+}
+
+/* ===== SOUND LOCK HIDE FOR PRO USERS ===== */
+.soundLockNew.hide {
+    display: none !important;
+}
+/* ===== END SOUND LOCK HIDE ===== */
+
+
+/* ===== END PREMIUM SOUND LOCK ICON ===== */
+
+/* 🔥 PREMIUM THEME AUTO-LOCK SYSTEM */
+body:not(.pro-user) .themeItem[data-is-pro="true"] .themeCheck {
+    display: none !important; /* সাবস্ক্রিপশন না থাকলে টিক চিহ্ন লুকাবে */
+}
+body:not(.pro-user) .themeItem[data-is-pro="true"] .proThemeLock {
+    display: flex !important; /* সাবস্ক্রিপশন না থাকলে লক আইকন দেখাবে */
+}
+
+body:not(.pro-user) .languageItem[data-is-pro="true"] .themeCheck {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+body:not(.pro-user) .languageItem[data-is-pro="true"] .proThemeLock {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+body.pro-user .languageItem[data-is-pro="true"] .themeCheck {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+body.pro-user .languageItem[data-is-pro="true"].activeLanguage .themeCheck {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+body.pro-user .languageItem[data-is-pro="true"] .proThemeLock {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
     </style>
 
     <style>
@@ -475,10 +906,64 @@ font-weight: 400;
             transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* focus effect */
-        textarea:focus {
-    border-color: transparent;
-    box-shadow:0 0 10px var(--pri);
+        /* 🔥 FOCUS EFFECT & GOOGLE MAGIC BORDER (100% FIXED BY MASTER DEV) */
+textarea:focus {
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.inputWrap {
+    flex: 1;
+    position: relative;
+    border-radius: 15px; 
+    isolation: isolate;
+    display: flex;
+    overflow: hidden;
+    background: transparent;
+}
+
+.inputWrap::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%; /* বক্স লম্বা হলেও যেন কালার কভার করে */
+    aspect-ratio: 1;
+    background: conic-gradient(from 0turn, #4285f4 0%, #34a853 12%, #fbbc05 25%, #ea4335 37%, #4285f4 50%, transparent 50%, transparent 100%);
+    animation: geminiRotate 3s linear infinite;
+    z-index: 0;
+    filter: blur(3px); /* প্রিমিয়াম সফট গ্লো */
+    transform-origin: 0 0;
+    opacity: 0; /* ক্লিক না করলে লুকানো থাকবে */
+    transition: opacity 0.3s ease;
+}
+
+.inputWrap::after {
+    content: '';
+    position: absolute;
+    inset: 2px; /* বর্ডারের সাইজ ২ পিক্সেল */
+    border-radius: 14px; 
+    background: #fff; /* লাইট মোডের ব্যাকগ্রাউন্ড */
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+body.dark .inputWrap::after {
+    background: #162033; /* ডার্ক মোডে ডার্ক ব্যাকগ্রাউন্ড */
+}
+
+/* 🎯 ম্যাজিক: যখন বক্সে ক্লিক করবে (কার্সর লাফাবে) তখন অটোমেটিক অ্যানিমেশন চালু হবে */
+.inputWrap:focus-within::before,
+.inputWrap:focus-within::after {
+    opacity: 1;
+}
+
+.inputWrap textarea {
+    position: relative;
+    z-index: 2; /* টেক্সট সবসময় অ্যানিমেশনের উপরে সুরক্ষিত থাকবে */
+    width: 100%;
 }
 
         /* 🔥 SCROLLBAR HIDE (CHROME, EDGE, SAFARI) */
@@ -675,9 +1160,10 @@ body.dark .reportPopup {
 }
 
 .reportHeader {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     margin-bottom: 16px;
 }
 
@@ -688,6 +1174,9 @@ body.dark .reportPopup {
 }
 
 .reportCloseBtn {
+
+    position:absolute;
+right:0;
     border: none;
     background: rgba(0, 0, 0, 0.05);
     width: 32px;
@@ -1362,6 +1851,14 @@ body.dark .themeDropdown{
     left:29px;
 }
 
+
+
+
+
+
+
+
+
 .logoutMenuBtn {
             margin: 0 0 0 auto !important; /* 🔥 ম্যাজিক ফিক্স: এটি বাটনটিকে জোর করে একদম ডান পাশে লক করে দেবে */
             width: 48px;  /* বক্সের সাথে মানানসই করার জন্য সাইজ একটু কিউট করা হলো */
@@ -1971,7 +2468,7 @@ transparent
         <div id="loginBox" class="loginBox">
             <div class="loginCard">
                 <h3>Welcome</h3>
-                <p>Google দিয়ে লগইন করে শুরু করুন</p>
+                <p id="loginSubText">Google দিয়ে লগইন করে শুরু করুন</p>
                 <button class="btn btnPrimary" onclick="login()">
                     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18">
                     Continue with Google
@@ -1982,7 +2479,9 @@ transparent
         <div id="chat" class="chat" style="display:none"></div>
 
         <div id="inputBox" class="inputBox" style="display:none">
-            <textarea id="input" placeholder="PEKO কে জিজ্ঞেস করুন…" rows="1"></textarea>
+            <div class="inputWrap">
+                <textarea id="input" placeholder="PEKO কে জিজ্ঞেস করুন…" rows="1"></textarea>
+            </div>
             <button class="btn send" id="sendBtn">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                     <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="white" stroke-width="2" stroke-linecap="round"
@@ -1999,72 +2498,636 @@ transparent
     <div id="reportOverlay" class="reportOverlay">
         <div class="reportPopup">
             <div class="reportHeader">
-                <div class="reportTitle" id="reportModalTitle">Report Issue</div>
+                <div class="reportTitle" id="reportModalTitle" style="color: var(--pri);">Report Issue</div>
                 <button id="reportCloseBtn" class="reportCloseBtn">✕</button>
             </div>
             <textarea id="reportInput" class="reportTextarea" placeholder="আপনার সমস্যা বা মতামতটি বিস্তারিত বাংলায় লিখুন..."></textarea>
-            <button id="reportSubmitBtn" class="reportSubmitBtn">Submit Report</button>
+            <button id="reportSubmitBtn" class="reportSubmitBtn"><span id="reportSubmitText">Submit Report</span></button>
         </div>
     </div>
 
     <div id="socialOverlay" class="reportOverlay">
-        <div class="reportPopup" style="max-width: 360px; text-align: center;">
+        <div class="reportPopup" style="
+max-width: 520px;
+width: 92%;
+text-align: center;
+padding: 28px;
+border-radius: 30px;
+">
             <div class="reportHeader">
                 <div class="reportTitle" id="socialModalTitle">Our Community</div>
                 <button id="socialCloseBtn" class="reportCloseBtn">✕</button>
             </div>
             <p style="font-size: 13px; opacity: 0.8; margin-bottom: 20px; text-align: center; line-height: 1.5;" id="socialModalDesc">আমাদের অফিশিয়াল সোশ্যাল মিডিয়া প্ল্যাটফর্মে যুক্ত হয়ে PEKO AI এর সাথে কানেক্টেড থাকুন।</p>
             
-            <div style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
-                <a href="https://youtube.com/@YOUR_CHANNEL_LINK" target="_blank" onclick="playSound('click')" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; background: #ef4444; color: white; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); transition: transform 0.2s;">
-                    <span>📺</span> YouTube Channel
-                </a>
-                
-                <a href="https://facebook.com/YOUR_PAGE_LINK" target="_blank" onclick="playSound('click')" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; background: #1877f2; color: white; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(24, 119, 242, 0.2); transition: transform 0.2s;">
-                    <span>📘</span> Facebook Page
-                </a>
-            </div>
+           <div style="
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+gap:18px;
+width:100%;
+padding-top:6px;
+">
+
+<!-- YOUTUBE -->
+
+<a href="https://youtube.com/@YOUR_CHANNEL"
+target="_blank"
+onclick="playSound('click')"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+">
+
+<div style="
+width:64px;
+height:64px;
+border-radius:50%;
+overflow:hidden;
+background:#ffffff;
+border: 4px solid #ffffff; /* padding এর বদলে border ব্যবহার করা হয়েছে */
+display: flex; /* মূল সিস্টেমের মতো সেন্টারিং */
+align-items: center;
+justify-content: center;
+box-shadow: 0 0 10px color-mix(in srgb, var(--pri) 35%, transparent);
+transition:.25s;
+">
+
+<img
+src='https://drive.google.com/thumbnail?id=1qEqaGwFTX-Z1JM0JsADeARB3_5EiJZRk&sz=w4000'
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+> </div>
+
+<span style="
+font-size:13px;
+font-weight:700;
+color: var(--pri); /* এটি থিমের রঙ অনুযায়ী অটোমেটিক পাল্টাবে */
+">
+YouTube
+</span>
+
+</a>
+
+<!-- FACEBOOK -->
+
+<a href="https://youtube.com/@YOUR_CHANNEL"
+target="_blank"
+onclick="playSound('click')"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+">
+
+<div style="
+width:64px;
+height:64px;
+border-radius:50%;
+overflow:hidden;
+background:#ffffff;
+border: 4px solid #ffffff; /* padding এর বদলে border ব্যবহার করা হয়েছে */
+display: flex; /* মূল সিস্টেমের মতো সেন্টারিং */
+align-items: center;
+justify-content: center;
+box-shadow: 0 0 10px color-mix(in srgb, var(--pri) 35%, transparent);
+transition:.25s;
+">
+
+<img
+src='https://drive.google.com/thumbnail?id=10ZkMEDLJPDVjDboAKuQDMzZgh72VgVOU&sz=w4000'
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+> </div>
+
+<span style="
+font-size:13px;
+font-weight:700;
+color: var(--pri); /* এটি থিমের রঙ অনুযায়ী অটোমেটিক পাল্টাবে */
+">
+Facebook
+</span>
+
+</a>
+
+<!-- INSTAGRAM -->
+
+<a href="https://youtube.com/@YOUR_CHANNEL"
+target="_blank"
+onclick="playSound('click')"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+">
+
+<div style="
+width:64px;
+height:64px;
+border-radius:50%;
+overflow:hidden;
+background:#ffffff;
+border: 4px solid #ffffff; /* padding এর বদলে border ব্যবহার করা হয়েছে */
+display: flex; /* মূল সিস্টেমের মতো সেন্টারিং */
+align-items: center;
+justify-content: center;
+box-shadow: 0 0 10px color-mix(in srgb, var(--pri) 35%, transparent);
+transition:.25s;
+">
+
+<img
+src='https://drive.google.com/thumbnail?id=15rQgEnqQwPjgh4c1iPPxC1lLlOQr9N28&sz=w4000'
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+> </div>
+
+<span style="
+font-size:13px;
+font-weight:700;
+color: var(--pri); /* এটি থিমের রঙ অনুযায়ী অটোমেটিক পাল্টাবে */
+">
+Instagram
+</span>
+
+</a>
+
+<!-- Telegram -->
+
+<a href="https://youtube.com/@YOUR_CHANNEL"
+target="_blank"
+onclick="playSound('click')"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+">
+
+<div style="
+width:64px;
+height:64px;
+border-radius:50%;
+overflow:hidden;
+background:#ffffff;
+border: 4px solid #ffffff; /* padding এর বদলে border ব্যবহার করা হয়েছে */
+display: flex; /* মূল সিস্টেমের মতো সেন্টারিং */
+align-items: center;
+justify-content: center;
+box-shadow: 0 0 10px color-mix(in srgb, var(--pri) 35%, transparent);
+transition:.25s;
+">
+
+<img
+src='https://drive.google.com/thumbnail?id=1mZnbgVvnNTWNjAXHYECuHpuSlW01Bj_P&sz=w4000'
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+> </div>
+
+<span style="
+font-size:13px;
+font-weight:700;
+color: var(--pri); /* এটি থিমের রঙ অনুযায়ী অটোমেটিক পাল্টাবে */
+">
+Telegram
+</span>
+
+</a>
+
+<!-- WhatsApp -->
+
+<a href="https://youtube.com/@YOUR_CHANNEL"
+target="_blank"
+onclick="playSound('click')"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+">
+
+<div style="
+width:64px;
+height:64px;
+border-radius:50%;
+overflow:hidden;
+background:#ffffff;
+border: 4px solid #ffffff; /* padding এর বদলে border ব্যবহার করা হয়েছে */
+display: flex; /* মূল সিস্টেমের মতো সেন্টারিং */
+align-items: center;
+justify-content: center;
+box-shadow: 0 0 10px color-mix(in srgb, var(--pri) 35%, transparent);
+transition:.25s;
+">
+
+<img
+src='https://drive.google.com/thumbnail?id=1Kt0R_XZdFmRx8XjqKJGIYNw_84Onx-RR&sz=w4000'
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+> </div>
+
+<span style="
+font-size:13px;
+font-weight:700;
+color: var(--pri); /* এটি থিমের রঙ অনুযায়ী অটোমেটিক পাল্টাবে */
+">
+WhatsApp
+</span>
+
+</a>
+
+<!-- Threads -->
+
+<a href="https://youtube.com/@YOUR_CHANNEL"
+target="_blank"
+onclick="playSound('click')"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+">
+
+<div style="
+width:64px;
+height:64px;
+border-radius:50%;
+overflow:hidden;
+background:#ffffff;
+border: 4px solid #ffffff; /* padding এর বদলে border ব্যবহার করা হয়েছে */
+display: flex; /* মূল সিস্টেমের মতো সেন্টারিং */
+align-items: center;
+justify-content: center;
+box-shadow: 0 0 10px color-mix(in srgb, var(--pri) 35%, transparent);
+transition:.25s;
+">
+
+<img
+src='https://drive.google.com/thumbnail?id=1OehTZjhA7f5w8cpsCkJd036ASrGhxmaj&sz=w4000'
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+> </div>
+
+<span style="
+font-size:13px;
+font-weight:700;
+color: var(--pri); /* এটি থিমের রঙ অনুযায়ী অটোমেটিক পাল্টাবে */
+">
+Threads
+</span>
+
+</a>
+
+<!-- X -->
+
+<a href="https://youtube.com/@YOUR_CHANNEL"
+target="_blank"
+onclick="playSound('click')"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+">
+
+<div style="
+width:64px;
+height:64px;
+border-radius:50%;
+overflow:hidden;
+background:#ffffff;
+border: 4px solid #ffffff; /* padding এর বদলে border ব্যবহার করা হয়েছে */
+display: flex; /* মূল সিস্টেমের মতো সেন্টারিং */
+align-items: center;
+justify-content: center;
+box-shadow: 0 0 10px color-mix(in srgb, var(--pri) 35%, transparent);
+transition:.25s;
+">
+
+<img
+src='https://drive.google.com/thumbnail?id=1AlnKOiA_dq55e07g-mmDIT5b0rq7k7hu&sz=w4000'
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+> </div>
+
+<span style="
+font-size:13px;
+font-weight:700;
+color: var(--pri); /* এটি থিমের রঙ অনুযায়ী অটোমেটিক পাল্টাবে */
+">
+X (Twitter)
+</span>
+
+</a>
+
+
+
+<!-- TIKTOK -->
+
+<a href="https://youtube.com/@YOUR_CHANNEL"
+target="_blank"
+onclick="playSound('click')"
+style="
+text-decoration:none;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+">
+
+<div style="
+width:64px;
+height:64px;
+border-radius:50%;
+overflow:hidden;
+background:#ffffff;
+border: 4px solid #ffffff; /* padding এর বদলে border ব্যবহার করা হয়েছে */
+display: flex; /* মূল সিস্টেমের মতো সেন্টারিং */
+align-items: center;
+justify-content: center;
+box-shadow: 0 0 10px color-mix(in srgb, var(--pri) 35%, transparent);
+transition:.25s;
+">
+
+<img
+src='https://drive.google.com/thumbnail?id=1DH353N8fWRwoZA9HvNmlCdhRPbYTvODG&sz=w4000'
+style="
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+"
+> </div>
+
+<span style="
+font-size:13px;
+font-weight:700;
+color: var(--pri); /* এটি থিমের রঙ অনুযায়ী অটোমেটিক পাল্টাবে */
+">
+TikTok
+</span>
+
+</a>
+
+</div>
         </div>
     </div>
 
     <div id="proOverlay" class="reportOverlay" style="overflow-y: auto; padding: 20px 0;">
-        <div class="reportPopup" id="planBoxSection" style="max-width: 850px; width: 95%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s;">
-            <div class="reportHeader">
-                <div class="reportTitle" style="color: #ff6a00; font-size: 20px; font-weight: 700;">⭐ PEKO PRO Premium Plans</div>
-                <button id="proCloseBtn" class="reportCloseBtn">✕</button>
+        <div class="reportPopup" id="planBoxSection" style="max-width: 820px; width: 95%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: 0.3s;">
+    <div class="reportHeader" style="margin-bottom: 2px;">
+        <div class="pro-plans-title">⭐ PEKO Pro Plans</div>
+        <button id="proCloseBtn" class="reportCloseBtn">✕</button>
+    </div>
+    <p class="pro-plans-subtitle">আপনার প্রয়োজন অনুযায়ী প্ল্যান বেছে নিন</p>
+
+    <style>
+    .pro-plans-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 20px 0 8px 0;
+        width: 100%;
+    }
+    @media (max-width: 800px) {
+        .pro-plans-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+    }
+    .gpt-plan-card {
+        background: #ffffff;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 18px;
+        padding: 24px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+    }
+    body.dark .gpt-plan-card {
+        background: #111c2e;
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+    .gpt-plan-card:hover {
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        transform: translateY(-2px);
+    }
+    body.dark .gpt-plan-card:hover {
+        box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    }
+    .gpt-plan-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
+    }
+    .gpt-plan-price {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--pri); /* 🔥 ম্যাজিক: টাকার রঙ অটোমেটিক থিমের রঙের হবে */
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+        letter-spacing: -0.5px;
+    }
+    .gpt-plan-price span {
+        font-size: 14px;
+        color: var(--muted);
+        font-weight: 500;
+    }
+    .gpt-get-pro-btn {
+        background: var(--pri); /* 🔥 ম্যাজিক: বাটন থিমের রঙের হবে */
+        color: #ffffff;
+        border: none;
+        padding: 14px;
+        border-radius: 14px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: 0.2s;
+        box-shadow: 0 4px 15px color-mix(in srgb, var(--pri) 30%, transparent); /* 🔥 প্রিমিয়াম শ্যাডো */
+    }
+    .gpt-get-pro-btn:hover {
+        box-shadow: 0 6px 20px color-mix(in srgb, var(--pri) 40%, transparent);
+        opacity: 0.95;
+    }
+    .gpt-get-pro-btn:active {
+        transform: scale(0.97);
+    }
+    .gpt-features {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 4px;
+    }
+    .gpt-feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 13.5px;
+        color: var(--text);
+        font-weight: 600;
+        line-height: 1.4;
+    }
+    .gpt-check {
+        color: var(--pri); /* 🔥 ম্যাজিক: টিক চিহ্নগুলো থিমের রঙের হবে */
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    .gpt-footer-text {
+        font-size: 12px;
+        color: var(--muted);
+        text-align: left;
+        line-height: 1.5;
+        margin-top: 10px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(0,0,0,0.06);
+    }
+    body.dark .gpt-footer-text {
+        border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .gpt-featured-badge {
+        position: absolute;
+        top: -12px;
+        right: 20px;
+        background: linear-gradient(135deg, var(--pri), color-mix(in srgb, var(--pri) 60%, black));
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        box-shadow: 0 4px 10px color-mix(in srgb, var(--pri) 30%, transparent);
+    }
+    </style>
+
+    <div class="pro-plans-grid">
+        
+        <div class="gpt-plan-card">
+            <div class="gpt-plan-title">1 Week Premium</div>
+            <div class="gpt-plan-price">২০৳ <span>/ সপ্তাহ</span></div>
+            <button class="gpt-get-pro-btn" onclick="selectPlan('1 Week - 20 Taka')">Get Pro</button>
+            <div class="gpt-features">
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>ডার্ক মোড অফ/অন করার সিস্টেম</span>
+                </div>
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>প্রিমিয়াম সাউন্ড সিস্টেম</span>
+                </div>
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>সকল ল্যাঙ্গুয়েজ ফ্রি অ্যাক্সেস</span>
+                </div>
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>সমস্ত প্রো ফিচার আনলক</span>
+                </div>
             </div>
-            
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin: 20px 0;">
-                <div style="border: 2px solid var(--border); padding: 20px; border-radius: 18px; text-align: center; background: rgba(0,0,0,0.02);">
-                    <h3 style="font-size: 16px;">1 Week Starter</h3>
-                    <h2 style="font-size: 26px; margin: 10px 0; color: var(--pri);">২০ ৳</h2>
-                    <p style="font-size: 12px; color: var(--muted);">সীমিত চ্যাট অ্যাক্সেস ও বেসিক থিম</p>
-                    <button class="reportSubmitBtn" onclick="selectPlan('1 Week - 20 Taka')" style="margin-top: 15px; background: var(--pri);">Choose Plan</button>
-                </div>
-                <div style="border: 2px solid var(--border); padding: 20px; border-radius: 18px; text-align: center; background: rgba(0,0,0,0.02);">
-                    <h3 style="font-size: 16px;">2 Weeks Boost</h3>
-                    <h2 style="font-size: 26px; margin: 10px 0; color: var(--pri);">৩০ ৳</h2>
-                    <p style="font-size: 12px; color: var(--muted);">সবগুলো কালার থিম ও আনলক ফিচার</p>
-                    <button class="reportSubmitBtn" onclick="selectPlan('2 Weeks - 30 Taka')" style="margin-top: 15px; background: var(--pri);">Choose Plan</button>
-                </div>
-                <div style="border: 2px solid #ff6a00; padding: 20px; border-radius: 18px; text-align: center; background: rgba(255,106,0,0.05); position: relative;">
-                    <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #ff6a00; color: white; padding: 2px 10px; border-radius: 10px; font-size: 10px; font-weight: 700;">BEST VALUE</span>
-                    <h3 style="font-size: 16px;">1 Month Ultimate</h3>
-                    <h2 style="font-size: 26px; margin: 10px 0; color: #ff6a00;">৫০ ৳</h2>
-                    <p style="font-size: 12px; color: var(--muted);">সাউন্ড অন/অফ এবং সমস্ত প্রো ফিচার আনলক</p>
-                    <button class="reportSubmitBtn" onclick="selectPlan('1 Month - 50 Taka')" style="margin-top: 15px; background: linear-gradient(135deg, #ffaa00, #ff6a00);">Choose Plan</button>
-                </div>
-            </div>
+            <div class="gpt-footer-text">প্রতি সপ্তাহে ২০৳ চার্জ প্রযোজ্য।<br>যেকোনো সময় বাতিলযোগ্য।</div>
         </div>
 
-        <div class="reportPopup" id="paymentFormSection" style="max-width: 420px; width: 90%; display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            <div class="reportHeader">
-                <div class="reportTitle" id="selectedPlanTitle" style="font-size: 15px; color: var(--pri); font-weight: 700;">Payment Info</div>
-                <button onclick="backToPlans()" class="reportCloseBtn">←</button>
+        <div class="gpt-plan-card">
+            <div class="gpt-plan-title">2 Weeks Premium</div>
+            <div class="gpt-plan-price">৩০৳ <span>/ ২ সপ্তাহ</span></div>
+            <button class="gpt-get-pro-btn" onclick="selectPlan('2 Weeks - 30 Taka')">Get Pro</button>
+            <div class="gpt-features">
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>ডার্ক মোড অফ/অন করার সিস্টেম</span>
+                </div>
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>প্রিমিয়াম সাউন্ড সিস্টেম</span>
+                </div>
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>সকল ল্যাঙ্গুয়েজ ফ্রি অ্যাক্সেস</span>
+                </div>
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>সমস্ত প্রো ফিচার আনলক</span>
+                </div>
             </div>
-            
+            <div class="gpt-footer-text">প্রতি ২ সপ্তাহে ৩০৳ চার্জ প্রযোজ্য।<br>যেকোনো সময় বাতিলযোগ্য।</div>
+        </div>
+
+        <div class="gpt-plan-card" style="border: 2px solid var(--pri);">
+            <div class="gpt-featured-badge">Best Value</div>
+            <div class="gpt-plan-title">1 Month Premium</div>
+            <div class="gpt-plan-price">৫০৳ <span>/ মাস</span></div>
+            <button class="gpt-get-pro-btn" onclick="selectPlan('1 Month - 50 Taka')">Get Pro</button>
+            <div class="gpt-features">
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>ডার্ক মোড অফ/অন করার সিস্টেম</span>
+                </div>
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>প্রিমিয়াম সাউন্ড সিস্টেম</span>
+                </div>
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>সকল ল্যাঙ্গুয়েজ ফ্রি অ্যাক্সেস</span>
+                </div>
+                <div class="gpt-feature-item">
+                    <svg class="gpt-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    <span>সমস্ত প্রো ফিচার আনলক</span>
+                </div>
+            </div>
+            <div class="gpt-footer-text">প্রতি মাসে ৫০৳ চার্জ প্রযোজ্য।<br>যেকোনো সময় বাতিলযোগ্য।</div>
+        </div>
+
+    </div>
+</div>
+
+        <div class="reportPopup" id="paymentFormSection" style="max-width: 420px; width: 90%; display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+           <div class="reportHeader" style="justify-content: center; position: relative;">
+                <div class="reportTitle" id="selectedPlanTitle" style="font-size: 15px; color: var(--pri); font-weight: 700; text-align: center; width: 100%;">Payment Info</div>
+                <button onclick="proOverlay.classList.remove('show')" class="reportCloseBtn" style="position: absolute; right: 0;">✕</button>
+            </div>
             <div style="margin: 12px 0; text-align: center;">
-                <p style="font-weight: 600; font-size: 12px; margin-bottom: 8px; text-align: left; color: var(--text);">📱 সরাসরি অ্যাপে ওপেন করুন:</p>
+             <p style="font-weight: 600; font-size: 12px; margin-bottom: 8px; text-align: center; color: var(--text);">💳 নিচের যেকোনো একটি পেমেন্ট মেথড দিয়ে পেমেন্ট করুন</p>
 
 
 
@@ -2306,32 +3369,97 @@ TapTap
                 </div>
             </div>
             
-            <input id="proName" class="reportTextarea" style="min-height:40px!important; height:40px!important; margin-bottom:10px; display: block; width: 100%;" placeholder="আপনার নাম">
-            <input id="proPhone" class="reportTextarea" style="min-height:40px!important; height:40px!important; margin-bottom:10px; display: block; width: 100%;" placeholder="আপনার মোবাইল নাম্বার">
+            <input id="proName" class="reportTextarea" style="min-height:40px!important; height:40px!important; margin-bottom:10px; display: block; width: 100%;" placeholder="প্রেরক একাউন্টধারীর নাম">
+<div style="display:flex; gap:8px; margin-bottom:10px; align-items:center;">
+
+    <div style="position:relative; min-width:160px; max-width:160px; flex-shrink:0;">
+    <div id="countryDisplay" onclick="toggleCountryDrop()" style="height:40px; padding:0 12px; border:1px solid #d1d5db; border-radius:12px; font-size:13px; background:#f8fafc; color:#000; display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none;">
+        <span id="countryName" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:13px;">Bangladesh</span>
+        <span id="countryCodeDisplay" style="font-size:12px; color:#555; white-space:nowrap; margin-left:2px;">+880</span>
+       <span style="color:#999; display:flex; align-items:center; margin-left:auto;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#999" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+    <div id="countryDropList" style="display:none; position:absolute; top:44px; left:0; width:260px; max-height:220px; overflow-y:auto; background:#fff; border:1px solid #e5e7eb; border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,0.12); z-index:99999;">
+        <input type="text" id="countrySearch" placeholder="দেশ খুঁজুন..." oninput="filterCountries()" style="width:100%; padding:10px 14px; border:none; border-bottom:1px solid #f0f0f0; font-size:13px; outline:none; border-radius:14px 14px 0 0; box-sizing:border-box;">
+        <div id="countryListItems"></div>
+    </div>
+    <input type="hidden" id="proCountryCode" value="+880">
+</div>
+
+    <input id="proPhone" class="reportTextarea" style="
+        min-height:40px !important;
+        height:40px !important;
+        margin-bottom:0 !important;
+        flex:1;
+        display:block;
+    " placeholder="প্রেরক একাউন্টের নাম্বার" type="tel">
+
+</div>
             
             <div style="text-align: left; margin-bottom: 15px;">
                 <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 5px; color: var(--text);">📸 পেমেন্টের স্ক্রিনশট আপলোড করুন:</label>
-                <input type="file" id="proScreenshot" accept="image/*" style="width: 100%; font-size: 12px;">
+                <label for="proScreenshot" style="display:flex; align-items:center; gap:10px; background:#f1f5f9; border:1.5px dashed #cbd5e1; border-radius:12px; padding:11px 16px; cursor:pointer; font-size:13px; font-weight:600; color:var(--pri); width:100%; box-sizing:border-box; transition:0.2s;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 16V8m0 0l-3 3m3-3l3 3M6 20h12a2 2 0 002-2v-6a2 2 0 00-2-2h-1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span id="fileLabel">স্ক্রিনশট আপলোড করুন</span>
+</label>
+<input type="file" id="proScreenshot" accept="image/*" style="display:none;">
             </div>
             <div id="previewBox"
 style="
-margin-top:12px;
+margin-top:16px;
 display:none;
 justify-content:center;
+flex-direction:column;
+align-items:center;
+gap:10px;
 ">
 
+<div style="
+width:100%;
+background:linear-gradient(135deg,rgba(0,131,255,0.06),rgba(0,131,255,0.02));
+border:1.5px solid rgba(0,131,255,0.18);
+border-radius:18px;
+padding:14px;
+box-shadow:0 8px 28px rgba(0,131,255,0.10);
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+box-sizing:border-box;
+">
+
+<div style="
+display:flex;
+align-items:center;
+gap:7px;
+font-size:12px;
+font-weight:700;
+color:var(--pri);
+">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="var(--pri)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="10" stroke="var(--pri)" stroke-width="2"/></svg>
+পেমেন্ট স্ক্রিনশট আপলোড হয়েছে
+</div>
+
+<div style="
+width:100%;
+border-radius:13px;
+box-shadow:0 6px 20px rgba(0,0,0,0.13);
+border:2px solid rgba(0,131,255,0.15);
+background:#f8fafc;
+overflow:hidden;
+">
 <img
 id="previewImage"
 style="
-width:110px;
+width:100%;
 height:auto;
-border-radius:14px;
-object-fit:cover;
-box-shadow:0 8px 22px rgba(0,0,0,.12);
-border:2px solid #fff;
+border-radius:12px;
+object-fit:contain;
+display:block;
 "
 />
+</div>
 
+</div>
 </div>
             
             <button id="proSubmitBtn" class="reportSubmitBtn" onclick="submitProRequest()" style="background: linear-gradient(135deg, #0083ff, #005fbc); width: 100%;">Submit Premium Request</button>
@@ -2357,7 +3485,7 @@ border:2px solid #fff;
                     <img src="https://drive.google.com/thumbnail?id=1oWPTahVStySbJDHygtN5EuINqLSy5wyp&sz=w4000" style="width: 24px; height: 24px; border-radius: 50%;">
                     <div style="font-size: 19px; font-weight: 700; color: var(--pri); letter-spacing: 0.5px;">Processing...</div>
                 </div>
-                <div style="font-size: 13.5px; color: var(--muted); line-height: 1.6; padding: 0 10px; font-weight: 600;">১২ থেকে ২৪ ঘণ্টার মধ্যে আপনার Pro Membership সক্রিয় হয়ে যাবে</div>
+                <div id="processingSubText" style="font-size: 13.5px; color: var(--muted); line-height: 1.6; padding: 0 10px; font-weight: 600;">১২ থেকে ২৪ ঘণ্টার মধ্যে আপনার Pro Membership সক্রিয় হয়ে যাবে</div>
             </div>
         </div>
     </div>
@@ -2430,9 +3558,9 @@ border:2px solid #fff;
                 </div>
 
             <div style="padding: 10px 16px; display: flex; gap: 8px; overflow-x: auto; white-space: nowrap; border-top: 1px solid rgba(0,0,0,0.05); background: white; scrollbar-width: none;" id="helpSuggestions">
-                <button onclick="askPekoAgent('কীভাবে প্রো প্ল্যান কিনবো?')" style="background: rgba(0, 131, 255, 0.1); color: var(--pri); border: 1px solid rgba(0, 131, 255, 0.2); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; flex-shrink: 0; transition: 0.2s;">💎 প্রো প্ল্যান কেনা</button>
-                <button onclick="askPekoAgent('অ্যাকাউন্ট লক দেখাচ্ছে কেন?')" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; flex-shrink: 0; transition: 0.2s;">🔒 অ্যাকাউন্ট লক</button>
-                <button onclick="askPekoAgent('অ্যাডমিনের সাথে কথা বলতে চাই')" style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; flex-shrink: 0; transition: 0.2s;">👨‍💻 অ্যাডমিন সাপোর্ট</button>
+                <button id="helpSug1" onclick="askPekoAgent(this.innerText)" style="background: rgba(0, 131, 255, 0.1); color: var(--pri); border: 1px solid rgba(0, 131, 255, 0.2); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; flex-shrink: 0; transition: 0.2s;">💎 প্রো প্ল্যান কেনা</button>
+                <button id="helpSug2" onclick="askPekoAgent(this.innerText)" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; flex-shrink: 0; transition: 0.2s;">🔒 অ্যাকাউন্ট লক</button>
+                <button id="helpSug3" onclick="askPekoAgent(this.innerText)" style="background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; flex-shrink: 0; transition: 0.2s;">👨‍💻 অ্যাডমিন সাপোর্ট</button>
             </div>
 
             <div style="padding: 12px 16px; display: flex; gap: 10px; background: white; border-top: 1px solid rgba(0,0,0,0.05); align-items: center;">
@@ -2448,18 +3576,56 @@ border:2px solid #fff;
     <div id="privacyOverlay" class="reportOverlay">
         <div class="reportPopup" style="max-width: 450px; width: 92%;">
             <div class="reportHeader">
-                <div class="reportTitle" style="font-weight: 700;">🔒 Privacy Policy</div>
+                <div class="reportTitle" style="display:flex;align-items:center;gap:8px;">
+
+<svg
+width="18"
+height="18"
+viewBox="0 0 24 24"
+xmlns="http://www.w3.org/2000/svg"
+style="flex-shrink:0;"
+>
+
+<path
+d="M8 10V7.8C8 5.15 9.95 3.2 12 3.2C14.05 3.2 16 5.15 16 7.8V10"
+fill="none"
+stroke="var(--pri)"
+stroke-width="2.8"
+stroke-linecap="round"
+/>
+
+<rect
+x="5"
+y="9"
+width="14"
+height="12"
+rx="3.4"
+fill="var(--pri)"
+/>
+
+<circle
+cx="12"
+cy="15"
+r="1.7"
+fill="white"
+/>
+
+</svg>
+
+<span id="privacyTitleText">Privacy Policy</span>
+
+</div>
                 <button id="privacyCloseBtn" class="reportCloseBtn">✕</button>
             </div>
             <div style="max-height: 350px; overflow-y: auto; text-align: left; font-size: 13px; line-height: 1.6; padding-right: 5px; color: var(--text);">
-                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">১. ডাটা নিরাপত্তা ও গোপনীয়তা</p>
-                <p style="margin-bottom: 12px; opacity: 0.85;">PEKO AI-তে আপনার প্রদান করা সমস্ত তথ্য এবং চ্যাট হিস্ট্রি সম্পূর্ণ নিরাপদ। আমরা আপনার কোনো ব্যক্তিগত তথ্য বা চ্যাট হিস্ট্রি থার্ড-পার্টি বা অন্য কোনো পাবলিক ডোমেইনে শেয়ার করি না।</p>
+                <p id="privH1" style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">১. ডাটা নিরাপত্তা ও গোপনীয়তা</p>
+                <p id="privD1" style="margin-bottom: 12px; opacity: 0.85;">PEKO AI-তে আপনার প্রদান করা সমস্ত তথ্য এবং চ্যাট হিস্ট্রি সম্পূর্ণ নিরাপদ। আমরা আপনার কোনো ব্যক্তিগত তথ্য বা চ্যাট হিস্ট্রি থার্ড-পার্টি বা অন্য কোনো পাবলিক ডোমেইনে শেয়ার করি না।</p>
                 
-                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">২. লোকাল মেমোরি ডেটা</p>
-                <p style="margin-bottom: 12px; opacity: 0.85;">আপনার থিম সেটিংস, সাউন্ড অপশন ও নোটিফিকেশন স্ট্যাটাসসমূহ আপনার ডিভাইসের LocalStorage-এ সুরক্ষিতভাবে সেভ থাকে।</p>
+                <p id="privH2" style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">২. লোকাল মেমোরি ডেটা</p>
+                <p id="privD2" style="margin-bottom: 12px; opacity: 0.85;">আপনার থিম সেটিংস, সাউন্ড অপশন ও নোটিফিকেশন স্ট্যাটাসসমূহ আপনার ডিভাইসের LocalStorage-এ সুরক্ষিতভাবে সেভ থাকে।</p>
                 
-                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">৩. পেমেন্ট ডাটা সুরক্ষা</p>
-                <p style="margin-bottom: 6px; opacity: 0.85;">প্রো অ্যাকাউন্টের জন্য পাঠানো আপনার নাম, ফোন নাম্বার এবং পেমেন্ট স্ক্রিনশট শুধুমাত্র ভেরিফিকেশনের জন্য আমাদের ব্যাকএন্ড সার্ভারে অত্যন্ত সুরক্ষিতভাবে সংরক্ষিত হয়।</p>
+                <p id="privH3" style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">৩. পেমেন্ট ডাটা সুরক্ষা</p>
+                <p id="privD3" style="margin-bottom: 6px; opacity: 0.85;">প্রো অ্যাকাউন্টের জন্য পাঠানো আপনার নাম, ফোন নাম্বার এবং পেমেন্ট স্ক্রিনশট শুধুমাত্র ভেরিফিকেশনের জন্য আমাদের ব্যাকএন্ড সার্ভারে অত্যন্ত সুরক্ষিতভাবে সংরক্ষিত হয়।</p>
             </div>
         </div>
     </div>
@@ -2467,18 +3633,70 @@ border:2px solid #fff;
     <div id="termsOverlay" class="reportOverlay">
         <div class="reportPopup" style="max-width: 450px; width: 92%;">
             <div class="reportHeader">
-                <div class="reportTitle" style="font-weight: 700;">📄 Terms of Use</div>
+                <div class="reportTitle" style="display:flex;align-items:center;gap:10px;">
+
+<svg
+width="22"
+height="22"
+viewBox="0 0 24 24"
+xmlns="http://www.w3.org/2000/svg"
+style="flex-shrink:0;"
+>
+
+<path
+d="M7 3.5H14L18.5 8V19C18.5 20.1 17.6 21 16.5 21H7.5C6.4 21 5.5 20.1 5.5 19V5.5C5.5 4.4 6.4 3.5 7.5 3.5H7Z"
+fill="var(--pri)"
+/>
+
+<path
+d="M14 3.5V8H18.5"
+fill="var(--pri)"
+opacity="0.6"
+/>
+
+<rect
+x="8.2"
+y="10"
+width="6.8"
+height="1.5"
+rx="0.8"
+fill="white"
+/>
+
+<rect
+x="8.2"
+y="13"
+width="5.8"
+height="1.5"
+rx="0.8"
+fill="white"
+/>
+
+<rect
+x="8.2"
+y="16"
+width="4.5"
+height="1.5"
+rx="0.8"
+fill="white"
+/>
+
+</svg>
+
+<span id="termsTitleText">Terms of Use</span>
+
+</div>
                 <button id="termsCloseBtn" class="reportCloseBtn">✕</button>
             </div>
-            <div style="max-height: 350px; overflow-y: auto; text-align: left; font-size: 13px; line-height: 1.6; padding-right: 5px; color: var(--text);">
-                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">১. ব্যবহারের নিয়মাবলী</p>
-                <p style="margin-bottom: 12px; opacity: 0.85;">PEKO AI একটি কৃত্রিম বুদ্ধিমত্তা সম্পন্ন চ্যাটবক্স। এটি ব্যবহারের সময় কোনো প্রকার বেআইনি, ক্ষতিকর, আপত্তিকর বা স্প্যামিং মূলক টেক্সট পাঠানো সম্পূর্ণ নিষিদ্ধ।</p>
+           <div style="max-height: 350px; overflow-y: auto; text-align: left; font-size: 13px; line-height: 1.6; padding-right: 5px; color: var(--text);">
+                <p id="termsH1" style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">১. ব্যবহারের নিয়মাবলী</p>
+                <p id="termsD1" style="margin-bottom: 12px; opacity: 0.85;">PEKO AI একটি কৃত্রিম বুদ্ধিমত্তা সম্পন্ন চ্যাটবক্স। এটি ব্যবহারের সময় কোনো প্রকার বেআইনি, ক্ষতিকর, আপত্তিকর বা স্প্যামিং মূলক টেক্সট পাঠানো সম্পূর্ণ নিষিদ্ধ।</p>
                 
-                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">২. প্রো সাবস্ক্রিপশন ও রিফান্ড নীতি</p>
-                <p style="margin-bottom: 12px; opacity: 0.85;">ম্যানুয়াল পেমেন্ট করার পর তথ্য যাচাই করতে ১২ থেকে ২৪ ঘণ্টা সময় লাগতে পারে। একবার সাবস্ক্রিপশন সফলভাবে সক্রিয় হয়ে গেলে তা অফেরতযোগ্য বা নন-রিফান্ডেবল হিসেবে গণ্য হবে।</p>
+                <p id="termsH2" style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">২. প্রো সাবস্ক্রিপশন ও রিফান্ড নীতি</p>
+                <p id="termsD2" style="margin-bottom: 12px; opacity: 0.85;">ম্যানুয়াল পেমেন্ট করার পর তথ্য যাচাই করতে ১২ থেকে ২৪ ঘণ্টা সময় লাগতে পারে। একবার সাবস্ক্রিপশন সফলভাবে সক্রিয় হয়ে গেলে তা অফেরতযোগ্য বা নন-রিফান্ডেবল হিসেবে গণ্য হবে।</p>
                 
-                <p style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">৩. মেয়াদের সীমাবদ্ধতা</p>
-                <p style="margin-bottom: 6px; opacity: 0.85;">আপনার কেনা প্ল্যানটির মেয়াদ (১ সপ্তাহ, ২ সপ্তাহ বা ১ মাস) শেষ হওয়ার সাথে সাথে আপনার প্রো ফিচারসমূহ স্বয়ংক্রিয়ভাবে লক হয়ে যাবে। পুনরায় ব্যবহার করতে নতুন করে প্ল্যান সাবমিট করতে হবে।</p>
+                <p id="termsH3" style="font-weight: 700; margin-bottom: 6px; color: var(--pri);">৩. মেয়াদের সীমাবদ্ধতা</p>
+                <p id="termsD3" style="margin-bottom: 6px; opacity: 0.85;">আপনার কেনা প্ল্যানটির মেয়াদ (১ সপ্তাহ, ২ সপ্তাহ বা ১ মাস) শেষ হওয়ার সাথে সাথে আপনার প্রো ফিচারসমূহ স্বয়ংক্রিয়ভাবে লক হয়ে যাবে। পুনরায় ব্যবহার করতে নতুন করে প্ল্যান সাবমিট করতে হবে।</p>
             </div>
        </div>
     </div>
@@ -2494,28 +3712,28 @@ border:2px solid #fff;
             
             <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; text-align: left;">
                 
-                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0, 131, 255, 0.08); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0, 131, 255, 0.15);">
+                <div style="display: flex; justify-content: space-between; align-items: center; background: color-mix(in srgb, var(--pri) 8%, transparent); padding: 12px 16px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--pri) 15%, transparent);">
                     <span style="font-weight: 700; color: var(--pri); font-size: 14.5px; letter-spacing: 0.3px;">PEKO v1.0 — Genesis</span>
                     <span style="font-size: 11px; background: var(--pri); color: white; padding: 3px 10px; border-radius: 20px; font-weight: 700; letter-spacing: 0.2px;">Active</span>
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.55;">
-                    <span style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
+                    <span class="unpubText" style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
                     <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Coming Soon</span>
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.55;">
-                    <span style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
+                    <span class="unpubText" style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
                     <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Coming Soon</span>
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.55;">
-                    <span style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
+                    <span class="unpubText" style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
                     <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Coming Soon</span>
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.55;">
-                    <span style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
+                    <span class="unpubText" style="font-weight: 600; color: var(--text); font-size: 14px; letter-spacing: 0.3px;">অপ্রকাশিত</span>
                     <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Coming Soon</span>
                 </div>
                 
@@ -2526,63 +3744,75 @@ border:2px solid #fff;
     </div>
 
     <div id="comingSoonOverlay" class="reportOverlay">
-        <div class="reportPopup" style="max-width: 420px; width: 92%; border-radius: 24px;">
-            <div class="reportHeader">
-                <div class="reportTitle" style="color: #ff6a00; font-size: 20px; font-weight: 700;">🚀 Upcoming Features</div>
-                <button id="comingSoonCloseBtn" class="reportCloseBtn">✕</button>
-            </div>
-            
-            <p style="font-size: 13px; opacity: 0.8; margin-bottom: 18px; line-height: 1.5;">
-                PEKO AI কে আরও শক্তিশালী ও আকর্ষণীয় করতে খুব শীঘ্রই আমাদের প্ল্যাটফর্মে নিচের দুর্দান্ত ফিচারগুলো যুক্ত হতে যাচ্ছে:
-            </p>
-            
-            <div style="max-height: 280px; overflow-y: auto; text-align: left; font-size: 13px; line-height: 1.6; padding-right: 5px; color: var(--text);">
-                <div style="background: rgba(255,106,0,0.06); padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid #ff6a00;">
-                    <p style="font-weight: 700; margin: 0; color: #ff6a00;">🎙️ Voice Interactive Assistant</p>
-                    <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.8;">টাইপ না করেই সরাসরি মুখের কথায় PEKO এর সাথে রিয়েল-টাইম ভয়েস চ্যাট করার সুবিধা।</p>
-                </div>
-                
-                <div style="background: rgba(0,131,255,0.06); padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid var(--pri);">
-                    <p style="font-weight: 700; margin: 0; color: var(--pri);">🎨 AI Image Generator Engine</p>
-                    <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.8;">আপনার মনের কল্পনা টেক্সট আকারে লিখে দিলেই মুহূর্তের মধ্যে হাই-কোয়ালিটি ইমেজ বা লোগো তৈরি।</p>
-                </div>
-                
-                <div style="background: rgba(16,185,129,0.06); padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid #10b981;">
-                    <p style="font-weight: 700; margin: 0; color: #10b981;">📁 File & Document Analyzer</p>
-                    <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.8;">যেকোনো PDF, Text বা কোডিং ফাইল আপলোড করে এক ক্লিকে সম্পূর্ণ সামারি এবং সমাধান বের করা।</p>
-                </div>
+    <div class="reportPopup" style="max-width: 380px; width: 90%; border-radius: 24px; text-align: center; position: relative; padding: 24px;">
 
-                <div style="background: rgba(195,162,246,0.08); padding: 10px 14px; border-radius: 12px; border-left: 4px solid #c3a2f6;">
-                    <p style="font-weight: 700; margin: 0; color: #b084f4;">👥 Premium Group Chat Mod</p>
-                    <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.8;">একাধিক কাস্টম এআই ক্যারেক্টারকে একসাথে এক স্ক্রিনে এনে গ্রুপ ডিস্কাশন করার মেগা প্যানেল।</p>
-                </div>
-            </div>
-            
-            <button id="comingSoonOkBtn" class="reportSubmitBtn" style="background: linear-gradient(135deg, #ffaa00, #ff6a00); width: 100%; margin-top: 18px; border-radius: 14px;">Awesome, Can't Wait! ✨</button>
+        <button id="comingSoonCloseBtn" class="reportCloseBtn" style="position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.04); border: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); font-weight: bold; font-size: 11px; z-index: 10;">✕</button>
+
+        <div class="reportHeader" style="justify-content: center; margin-bottom: 20px; border: none; padding: 0;">
+            <div id="comingSoonPopupTitle" class="reportTitle" style="color: var(--pri); font-size: 19px; font-weight: 700; width: 100%; text-align: center; letter-spacing: -0.3px;">🚀 Upcoming Features</div>
         </div>
+
+        <p id="comingSoonPopupDesc" style="font-size: 13px; opacity: 0.8; margin-bottom: 20px; line-height: 1.5; text-align: left;">
+            PEKO AI কে আরও শক্তিশালী ও আকর্ষণীয় করতে খুব শীঘ্রই আমাদের প্ল্যাটফর্মে নিচের দুর্দান্ত ফিচারগুলো যুক্ত হতে যাচ্ছে:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; text-align: left;">
+
+            <div style="display: flex; justify-content: space-between; align-items: center; background: color-mix(in srgb, var(--pri) 8%, transparent); padding: 12px 16px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--pri) 15%, transparent);">
+                <span id="cs1Title" style="font-weight: 700; color: var(--pri); font-size: 13.5px; letter-spacing: 0.2px;">🎙️ Voice Interactive Assistant</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.7;">
+                <span id="cs2Title" style="font-weight: 600; color: var(--text); font-size: 13.5px;">🎨 AI Image Generator Engine</span>
+                <span id="cs2Badge" style="font-size: 11px; color: var(--muted); font-weight: 600; white-space: nowrap; margin-left: 8px;">Coming Soon</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.7;">
+                <span id="cs3Title" style="font-weight: 600; color: var(--text); font-size: 13.5px;">📁 File & Document Analyzer</span>
+                <span id="cs3Badge" style="font-size: 11px; color: var(--muted); font-weight: 600; white-space: nowrap; margin-left: 8px;">Coming Soon</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.7;">
+                <span id="cs4Title" style="font-weight: 600; color: var(--text); font-size: 13.5px;">👥 Premium Group Chat Mod</span>
+                <span id="cs4Badge" style="font-size: 11px; color: var(--muted); font-weight: 600; white-space: nowrap; margin-left: 8px;">Coming Soon</span>
+            </div>
+
+        </div>
+
+        <button id="comingSoonOkBtn" class="reportSubmitBtn" style="background: linear-gradient(135deg, var(--pri), var(--pri2)); width: 100%; border-radius: 12px; font-weight: 600; box-shadow: 0 4px 12px color-mix(in srgb, var(--pri) 25%, transparent); padding: 12px; border: none; color: white; cursor: pointer; font-size: 14px; min-height: 44px; display: flex; align-items: center; justify-content: center;">
+            <span id="comingSoonOkText">Awesome, Can't Wait! ✨</span>
+        </button>
     </div>
+</div>
 
 <div id="proInfoOverlay" class="reportOverlay">
-        <div class="reportPopup" style="max-width: 380px; width: 90%; border-radius: 22px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-            <div class="reportHeader">
-                <div class="reportTitle" style="color: #10b981; font-size: 18px; font-weight: 700;">👑 Premium Membership Info</div>
-                <button id="proInfoCloseBtn" class="reportCloseBtn">✕</button>
+    <div class="reportPopup" style="max-width: 380px; width: 90%; border-radius: 22px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+        <div class="reportHeader">
+            <div class="reportTitle" style="color: #10b981; font-size: 18px; font-weight: 700;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:6px;"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Premium Membership Info
             </div>
-            
-            <div style="margin: 20px 0; font-size: 14px; line-height: 1.6; color: var(--text);">
-                <div style="background: rgba(16, 185, 129, 0.06); padding: 12px; border-radius: 14px; margin-bottom: 18px; font-weight: 600; color: #10b981; text-align: center;">
-                    🎉 আপনার প্রো অ্যাকাউন্টটি বর্তমানে সক্রিয় আছে!
-                </div>
-                <p style="margin: 8px 0; opacity: 0.9; text-align: left; font-size: 13px;">📅 <b style="color: var(--text);">শুরুর সময়:</b> <span id="proActivationDateText" style="font-weight: 600; color: #10b981;">--/--/----</span></p>
-                <p style="margin: 8px 0; opacity: 0.9; text-align: left; font-size: 13px;">⌛ <b style="color: var(--text);">শেষের সময়:</b> <span id="proExpirationDateText" style="font-weight: 600; color: #ef4444;">--/--/----</span></p>
-                <p style="margin: 14px 0 0 0; font-size: 12px; color: var(--muted); text-align: left; border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 10px; line-height: 1.4;">
-                    💡 নির্ধারিত মেয়াদ শেষ হওয়ার পর প্রো ফিচারসমূহ স্বয়ংক্রিয়ভাবে লক হয়ে যাবে। যেকোনো প্রয়োজনে হেল্প সেন্টারে যোগাযোগ করুন।
-                </p>
-            </div>
-            
-            <button id="proInfoOkBtn" class="reportSubmitBtn" style="background: linear-gradient(135deg, #10b981, #059669); width: 100%; border-radius: 12px; font-weight: 600;">ঠিক আছে</button>
         </div>
+        
+        <div style="margin: 20px 0; font-size: 14px; line-height: 1.6; color: var(--text);">
+            <div style="background: rgba(16, 185, 129, 0.06); padding: 12px; border-radius: 14px; margin-bottom: 18px; font-weight: 600; color: #10b981; text-align: center;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:6px;"><circle cx="12" cy="12" r="10" fill="#10b981"/><path d="M7.5 12L10.5 15L16.5 9" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>আপনার প্রো অ্যাকাউন্টটি বর্তমানে সক্রিয় আছে!
+            </div>
+            <p style="margin: 8px 0; opacity: 0.9; text-align: center; font-size: 13px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:5px;"><rect x="3" y="4" width="18" height="18" rx="3" stroke="#10b981" stroke-width="2"/><path d="M3 9h18M8 2v4M16 2v4" stroke="#10b981" stroke-width="2" stroke-linecap="round"/></svg>
+                <b style="color: var(--text);">শুরুর সময়:</b> <span id="proActivationDateText" style="font-weight: 600; color: #10b981;">--/--/----</span>
+            </p>
+            <p style="margin: 8px 0; opacity: 0.9; text-align: center; font-size: 13px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:5px;"><circle cx="12" cy="12" r="9" stroke="#ef4444" stroke-width="2"/><path d="M12 7v5l3 3" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <b style="color: var(--text);">শেষের সময়:</b> <span id="proExpirationDateText" style="font-weight: 600; color: #ef4444;">--/--/----</span>
+            </p>
+            <p style="margin: 14px 0 0 0; font-size: 12px; color: var(--muted); text-align: left; border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 10px; line-height: 1.4;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:5px;"><circle cx="12" cy="12" r="10" stroke="#94a3b8" stroke-width="2"/><path d="M12 11v5" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1" fill="#94a3b8"/></svg>নির্ধারিত মেয়াদ শেষ হওয়ার পর প্রো ফিচারসমূহ স্বয়ংক্রিয়ভাবে লক হয়ে যাবে। যেকোনো প্রয়োজনে হেল্প সেন্টারে যোগাযোগ করুন।
+            </p>
+        </div>
+        
+        <button id="proInfoOkBtn" class="reportSubmitBtn" style="background: linear-gradient(135deg, #10b981, #059669); width: 100%; border-radius: 12px; font-weight: 600;">ঠিক আছে</button>
     </div>
+</div>
 
 <div id="sideMenu" class="sideMenu">
 
@@ -2616,6 +3846,15 @@ class="profileImg"
         <div class="darkModeRow">
 
             <span>Dark Mode</span>
+
+            <div id="darkLock" class="soundLockNew">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="11" width="14" height="10" rx="3" fill="var(--pri)" opacity="0.15"/>
+                <rect x="5" y="11" width="14" height="10" rx="3" stroke="var(--pri)" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M8 11V7.5C8 5.567 9.79 4 12 4C14.21 4 16 5.567 16 7.5V11" stroke="var(--pri)" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="12" cy="16" r="1.5" fill="var(--pri)"/>
+              </svg>
+            </div>
 
             <div id="darkToggle" class="darkToggle">
 
@@ -2966,7 +4205,12 @@ stroke-linejoin="round"/>
 <div id="languageDropdown"
      class="themeDropdown">
 
-    <div class="languageItem activeLanguage"
+     <div class="languageItem activeLanguage" data-lang="default">
+        <div class="themeLeft"><span>Default</span></div>
+        <span class="themeCheck"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 12.5L10 16L18 8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </div>
+
+   <div class="languageItem"
          data-lang="en">
 
         <div class="themeLeft">
@@ -3033,7 +4277,8 @@ stroke-linejoin="round"/>
     </div>
 
     <div class="languageItem"
-     data-lang="jp">
+         data-lang="jp"
+         data-is-pro="true">
 
     <div class="themeLeft">
 
@@ -3043,6 +4288,8 @@ stroke-linejoin="round"/>
 
     </div>
 
+    <span class="proThemeLock" style="display:none; color: #94a3b8; margin-left: auto; align-items: center; justify-content: center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="3" fill="currentColor" opacity="0.15"/><rect x="5" y="11" width="14" height="10" rx="3" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11V7.5C8 5.567 9.79 4 12 4C14.21 4 16 5.567 16 7.5V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></span>
+
     <span class="themeCheck">
 
 <svg
@@ -3068,7 +4315,8 @@ stroke-linejoin="round"/>
 
 
 <div class="languageItem"
-     data-lang="cn">
+     data-lang="cn"
+     data-is-pro="true">
 
     <div class="themeLeft">
 
@@ -3078,6 +4326,8 @@ stroke-linejoin="round"/>
 
     </div>
 
+    <span class="proThemeLock" style="display:none; color: #94a3b8; margin-left: auto; align-items: center; justify-content: center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="3" fill="currentColor" opacity="0.15"/><rect x="5" y="11" width="14" height="10" rx="3" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11V7.5C8 5.567 9.79 4 12 4C14.21 4 16 5.567 16 7.5V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></span>
+
     <span class="themeCheck">
 
 <svg
@@ -3103,7 +4353,8 @@ stroke-linejoin="round"/>
 
 
 <div class="languageItem"
-     data-lang="kr">
+     data-lang="kr"
+     data-is-pro="true">
 
     <div class="themeLeft">
 
@@ -3113,6 +4364,8 @@ stroke-linejoin="round"/>
 
     </div>
 
+    <span class="proThemeLock" style="display:none; color: #94a3b8; margin-left: auto; align-items: center; justify-content: center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="3" fill="currentColor" opacity="0.15"/><rect x="5" y="11" width="14" height="10" rx="3" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11V7.5C8 5.567 9.79 4 12 4C14.21 4 16 5.567 16 7.5V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></span>
+
     <span class="themeCheck">
 
 <svg
@@ -3137,7 +4390,8 @@ stroke-linejoin="round"/>
 
 
 <div class="languageItem"
-     data-lang="ar">
+     data-lang="ar"
+     data-is-pro="true">
 
     <div class="themeLeft">
 
@@ -3146,6 +4400,8 @@ stroke-linejoin="round"/>
         </span>
 
     </div>
+
+    <span class="proThemeLock" style="display:none; color: #94a3b8; margin-left: auto; align-items: center; justify-content: center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="3" fill="currentColor" opacity="0.15"/><rect x="5" y="11" width="14" height="10" rx="3" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11V7.5C8 5.567 9.79 4 12 4C14.21 4 16 5.567 16 7.5V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></span>
 
     <span class="themeCheck">
 
@@ -3219,158 +4475,31 @@ stroke-linejoin="round"/>
 
 <!-- FONT SIZE DROPDOWN -->
 
-<div id="fontSizeDropdown"
-     class="themeDropdown">
+<div id="fontSizeDropdown" class="themeDropdown">
 
+        <div class="fontSizeItem" data-size="14px" data-is-pro="true">
+            <div class="themeLeft"><span>Small</span></div>
+            <span class="proThemeLock" style="display:none; color: #94a3b8; margin-left: auto; align-items: center; justify-content: center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="3" fill="currentColor" opacity="0.15"/><rect x="5" y="11" width="14" height="10" rx="3" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11V7.5C8 5.567 9.79 4 12 4C14.21 4 16 5.567 16 7.5V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></span>
+            <span class="themeCheck"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 12.5L10 16L18 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
 
+        <div class="fontSizeItem activeFontSize" data-size="16px">
+            <div class="themeLeft"><span>Default</span></div>
+            <span class="themeCheck"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 12.5L10 16L18 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
 
+        <div class="fontSizeItem" data-size="18px" data-is-pro="true">
+            <div class="themeLeft"><span>Medium</span></div>
+            <span class="proThemeLock" style="display:none; color: #94a3b8; margin-left: auto; align-items: center; justify-content: center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="3" fill="currentColor" opacity="0.15"/><rect x="5" y="11" width="14" height="10" rx="3" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11V7.5C8 5.567 9.79 4 12 4C14.21 4 16 5.567 16 7.5V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></span>
+            <span class="themeCheck"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 12.5L10 16L18 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
 
-<div class="fontSizeItem activeFontSize"
-     data-size="14px">
-
-    <div class="themeLeft">
-
-        <span>
-            Small
-        </span>
-
+        <div class="fontSizeItem" data-size="20px" data-is-pro="true">
+            <div class="themeLeft"><span>Large</span></div>
+            <span class="proThemeLock" style="display:none; color: #94a3b8; margin-left: auto; align-items: center; justify-content: center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="3" fill="currentColor" opacity="0.15"/><rect x="5" y="11" width="14" height="10" rx="3" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11V7.5C8 5.567 9.79 4 12 4C14.21 4 16 5.567 16 7.5V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></span>
+            <span class="themeCheck"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 12.5L10 16L18 8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
     </div>
-
-
-    <span class="themeCheck">
-
-<svg
-width="18"
-height="18"
-viewBox="0 0 24 24"
-fill="none"
-xmlns="http://www.w3.org/2000/svg">
-
-<path
-d="M6 12.5L10 16L18 8"
-stroke="currentColor"
-stroke-width="2.6"
-stroke-linecap="round"
-stroke-linejoin="round"/>
-
-</svg>
-
-</span>
-
-</div>
-
-
-
-
-
-<div class="fontSizeItem"
-     data-size="16px">
-
-    <div class="themeLeft">
-
-        <span>
-            Default
-        </span>
-
-    </div>
-
-    <span class="themeCheck">
-
-<svg
-width="18"
-height="18"
-viewBox="0 0 24 24"
-fill="none"
-xmlns="http://www.w3.org/2000/svg">
-
-<path
-d="M6 12.5L10 16L18 8"
-stroke="currentColor"
-stroke-width="2.6"
-stroke-linecap="round"
-stroke-linejoin="round"/>
-
-</svg>
-
-</span>
-
-</div>
-
-
-
-
-
-<div class="fontSizeItem"
-     data-size="18px">
-
-    <div class="themeLeft">
-
-        <span>
-            Medium
-        </span>
-
-    </div>
-
-    <span class="themeCheck">
-
-<svg
-width="18"
-height="18"
-viewBox="0 0 24 24"
-fill="none"
-xmlns="http://www.w3.org/2000/svg">
-
-<path
-d="M6 12.5L10 16L18 8"
-stroke="currentColor"
-stroke-width="2.6"
-stroke-linecap="round"
-stroke-linejoin="round"/>
-
-</svg>
-
-</span>
-
-</div>
-
-
-
-
-
-<div class="fontSizeItem"
-     data-size="20px">
-
-    <div class="themeLeft">
-
-        <span>
-            Large
-        </span>
-
-    </div>
-
-    <span class="themeCheck">
-
-<svg
-width="18"
-height="18"
-viewBox="0 0 24 24"
-fill="none"
-xmlns="http://www.w3.org/2000/svg">
-
-<path
-d="M6 12.5L10 16L18 8"
-stroke="currentColor"
-stroke-width="2.6"
-stroke-linecap="round"
-stroke-linejoin="round"/>
-
-</svg>
-
-</span>
-
-</div>
-
-</div>
 
 <!-- SOUND EFFECT ROW -->
 
@@ -3379,6 +4508,14 @@ stroke-linejoin="round"/>
     <span>
         Sound Effects
     </span>
+    <div id="soundLock" class="soundLockNew">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="5" y="11" width="14" height="10" rx="3" fill="var(--pri)" opacity="0.15"/>
+    <rect x="5" y="11" width="14" height="10" rx="3" stroke="var(--pri)" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M8 11V7.5C8 5.567 9.79 4 12 4C14.21 4 16 5.567 16 7.5V11" stroke="var(--pri)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="12" cy="16" r="1.5" fill="var(--pri)"/>
+  </svg>
+</div>
 
     <div id="soundToggle"
          class="darkToggle">
@@ -3436,12 +4573,23 @@ stroke-linejoin="round"/>
 </div>
 
 <div class="themeRow" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(0,0,0,0.05);">
-    <button id="upgradeProBtn" class="reportMenuBtn" style="background: linear-gradient(135deg, #ffaa00, #ff6a00); padding: 12px; border-radius: 14px; box-shadow: 0 4px 15px rgba(255,106,0,0.35); width: 100%; border: none; cursor: pointer;">
-        <div class="themeSelected" style="justify-content: space-between; width: 100%; color: white; display: flex; align-items: center;">
-            <span id="upgradeProTextLabel" style="font-weight: 700; letter-spacing: 0.5px;">⭐ Upgrade to Pro</span>
-            <span class="themeArrow" style="color: white;">➔</span>
+    <div id="upgradeProWrap">
+        <div class="upgradeProInner">
+            <button id="upgradeProBtn" class="reportMenuBtn" style="background: linear-gradient(135deg, #ffaa00, #ff6a00); padding: 12px; border-radius: 14px; width: 100%; border: none; cursor: pointer;">
+                <div class="themeSelected" style="justify-content: space-between; width: 100%; color: white; display: flex; align-items: center;">
+                   <span id="upgradeProTextLabel" class="upgradeProText"
+style="
+font-weight:700;
+letter-spacing:.5px;
+color:#0083ff;
+">
+Upgrade to Pro
+</span>
+                    <span class="themeArrow" style="color: white;">➔</span>
+                </div>
+            </button>
         </div>
-    </button>
+    </div>
 </div>
 
 <div id="proTimerRow" class="themeRow" style="margin-top: 14px; padding: 0; width: 100%; display: none; box-sizing: border-box;">
@@ -3500,10 +4648,10 @@ stroke-linejoin="round"/>
 
 
 <div class="themeRow" style="margin-top: 22px; padding: 0; width: 100%; box-sizing: border-box; display: block;">
-    <button id="comingSoonBtn" class="reportMenuBtn" style="background: linear-gradient(135deg, rgba(0, 131, 255, 0.08), rgba(0, 131, 255, 0.02)); border: 1px solid rgba(0, 131, 255, 0.22); border-radius: 16px !important; width: 100%; aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: all 0.25s ease; box-shadow: 0 4px 15px rgba(0, 131, 255, 0.04); padding: 20px; box-sizing: border-box; margin: 0; cursor: pointer;">
+    <button id="comingSoonBtn" class="reportMenuBtn" style="background: linear-gradient(135deg, color-mix(in srgb, var(--pri) 8%, transparent), color-mix(in srgb, var(--pri) 2%, transparent)); border: 1px solid color-mix(in srgb, var(--pri) 22%, transparent); border-radius: 16px !important; width: 100%; aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; transition: all 0.25s ease; box-shadow: 0 4px 15px color-mix(in srgb, var(--pri) 4%, transparent); padding: 20px; box-sizing: border-box; margin: 0; cursor: pointer;">
         <span id="comingSoonTextLabel" style="color: var(--pri); font-weight: 700; font-size: 17px; text-align: center; line-height: 1.4; white-space: normal; display: block; width: 100%; letter-spacing: 0.5px;">Coming Soon</span>
         
-        <div class="themeArrow" style="color: var(--pri); display: flex; align-items: center; justify-content: center; background: rgba(0, 131, 255, 0.1); width: 42px; height: 42px; border-radius: 50%; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0, 131, 255, 0.15);">
+        <div class="themeArrow" style="color: var(--pri); display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--pri) 10%, transparent); width: 42px; height: 42px; border-radius: 50%; transition: all 0.2s ease; box-shadow: 0 2px 8px color-mix(in srgb, var(--pri) 15%, transparent);">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -3613,7 +4761,8 @@ stroke-linejoin="round"/>
                 document.getElementById("accountName").textContent = user.displayName || "User";
                 document.getElementById("accountEmail").textContent = user.email || "";
                 document.getElementById("accountPhoto").src = user.photoURL || "";
-                document.getElementById("sideUserName").textContent = "Settings";
+                const _curLang = localStorage.getItem("peko_lang") || "default";
+document.getElementById("sideUserName").textContent = (LANG[_curLang] && LANG[_curLang].settingsTitle) ? LANG[_curLang].settingsTitle : "Settings";
 
                 // ✅ PRESENCE SYSTEM — login হলে Firebase-এ isOnline: true লিখি
 (function writePresence(u) {
@@ -3647,10 +4796,32 @@ stroke-linejoin="round"/>
                     if (proClockInterval) clearInterval(proClockInterval);
                     
                     if (snapshot.exists() && snapshot.val().isPro === true) {
-                        window.IS_PRO_MEMBER = true;
-                        document.getElementById("upgradeProTextLabel").innerHTML = "⭐ PEKO PRO Active 👑";
-                        document.getElementById("upgradeProBtn").style.background = "linear-gradient(135deg, #10b981, #059669)"; 
-                        
+    window.IS_PRO_MEMBER = true;
+    document.body.classList.add("pro-user"); // 🔥 প্রো ইউজার ক্লাস অ্যাড করা হলো
+
+    // ── PRO Active Label Update ──
+    const proLabel = document.getElementById("upgradeProTextLabel");
+    if (proLabel) {
+        proLabel.innerHTML = "⭐ PEKO PRO Active 👑";
+        proLabel.style.color = "#ffffff";
+    }
+
+    // ── PRO Button Style Update ──
+    document.getElementById("upgradeProBtn").style.background = "linear-gradient(135deg, #10b981, #059669)";
+
+    // ── PRO Wrap Border Animation Stop ──
+    const proWrap = document.getElementById("upgradeProWrap");
+    if (proWrap) proWrap.classList.add("pro-active");
+
+    // ── Lock Icon Hide (PRO হলে lock সবসময় hide) ──
+    const sLockEl = document.getElementById("soundLock");
+    if (sLockEl) sLockEl.classList.add("hide");
+
+
+    const dLockEl = document.getElementById("darkLock");
+    if (dLockEl) dLockEl.classList.add("hide");
+
+
                         const uData = snapshot.val();
                         globalProActivationTime = uData.proStartDate || 0;
                         globalProExpirationTime = uData.proEndDate || 0;
@@ -3722,18 +4893,76 @@ stroke-linejoin="round"/>
 
                     } else {
                         window.IS_PRO_MEMBER = false;
+                        document.body.classList.remove("pro-user"); // 🔥 প্রো ইউজার ক্লাস রিমুভ করা হলো
+
+
+// ── Lock Icon Show (নন-প্রো হলে lock আবার দেখাবে) ──
+const sLockEl = document.getElementById("soundLock");
+if(sLockEl) sLockEl.classList.remove("hide");
+
+const dLockEl = document.getElementById("darkLock");
+    if (dLockEl) dLockEl.classList.remove("hide");
+
+
                         document.getElementById("upgradeProTextLabel").innerHTML = "⭐ Upgrade to Pro";
+document.getElementById("upgradeProTextLabel").style.color = "var(--pri)";
                         document.getElementById("upgradeProBtn").style.background = "linear-gradient(135deg, #ffaa00, #ff6a00)";
+                        const proWrap2 = document.getElementById("upgradeProWrap");
+if(proWrap2) proWrap2.classList.remove("pro-active");
                         document.getElementById("proTimerRow").style.display = "none";
                         if (proClockInterval) clearInterval(proClockInterval);
                         
                         SOUND_ENABLED = false;
                         document.getElementById("soundToggle").classList.remove("active");
                         localStorage.setItem("peko_sound", "off");
-                        
-                        applyTheme("#0083ff");
-                        localStorage.setItem("peko_theme", "#0083ff");
-                        localStorage.setItem("peko_theme_name", "Blue");
+
+                        // 🔥 DARK MODE AUTO-RESET
+if (document.body.classList.contains("dark")) {
+    document.body.classList.remove("dark");
+    darkToggle.classList.remove("active");
+    localStorage.setItem("peko_dark", "off");
+}
+
+// 🔥 THEME AUTO-RESET (pro theme হলে Blue তে ফিরবে)
+const proThemeColors = ["#ff66ad","#fb6a22","#c3a2f6","#7f7f7f"];
+const currentTheme = localStorage.getItem("peko_theme") || "";
+if (proThemeColors.includes(currentTheme)) {
+    applyTheme("#0083ff");
+    localStorage.setItem("peko_theme", "#0083ff");
+    localStorage.setItem("peko_theme_name", "Blue");
+    document.getElementById("selectedThemeDot").style.background = "#0083ff";
+    document.getElementById("selectedThemeText").textContent = "Blue";
+    document.querySelectorAll(".themeItem").forEach(i => {
+        i.classList.remove("activeTheme");
+        if (i.dataset.color === "#0083ff") i.classList.add("activeTheme");
+    });
+}
+
+// 🔥 LANGUAGE AUTO-RESET (pro language হলে Default তে ফিরবে)
+const proLangs = ["jp","cn","kr","ar"];
+const currentLang = localStorage.getItem("peko_lang") || "default";
+if (proLangs.includes(currentLang)) {
+    localStorage.setItem("peko_lang", "default");
+    applyLanguage("default");
+    document.querySelectorAll(".languageItem").forEach(i => {
+        i.classList.remove("activeLanguage");
+        if (i.dataset.lang === "default") i.classList.add("activeLanguage");
+    });
+}
+
+// 🔥 FONT SIZE AUTO-RESET (pro font হলে Default 16px তে ফিরবে)
+const proFontSizes = ["14px","18px","20px"];
+const currentFontSize = localStorage.getItem("peko_font_size") || "16px";
+if (proFontSizes.includes(currentFontSize)) {
+    applyFontSize("16px");
+    localStorage.setItem("peko_font_size", "16px");
+    document.getElementById("selectedFontSizeText").textContent = "Default";
+    document.querySelectorAll(".fontSizeItem").forEach(i => {
+        i.classList.remove("activeFontSize");
+        if (i.dataset.size === "16px") i.classList.add("activeFontSize");
+    });
+}
+    
                     }
                 });
 
@@ -3773,7 +5002,19 @@ stroke-linejoin="round"/>
                 if (sessionStorage.getItem("peko_welcomed") !== "yes") {
                     sessionStorage.setItem("peko_welcomed", "yes");
                     setTimeout(() => {
-                        add(`${user.displayName || "বন্ধু"} \n😊 আজকের দিনটা ভালো কাটুক_মনে যা আছে বলুন, আমি শুনছি।`, "ai");
+                        const currentLang = localStorage.getItem("peko_lang") || "default";
+        const welcomeMsgs = {
+    default: `${user.displayName || "বন্ধু"} \n😊 আজকের দিনটা ভালো কাটুক — মনে যা আছে বলুন, আমি শুনছি।`,
+    bn: `${user.displayName || "বন্ধু"} \n😊 আজকের দিনটা ভালো কাটুক — মনে যা আছে বলুন, আমি শুনছি।`,
+    en: `${user.displayName || "Friend"} \n😊 Have a great day! Tell me what's on your mind, I'm listening.`,
+    jp: `${user.displayName || "友達"} \n😊 今日も良い一日を！何でも話しかけてください。`,
+    cn: `${user.displayName || "朋友"} \n😊 祝您今天愉快！请告诉我您的想法。`,
+    kr: `${user.displayName || "친구"} \n😊 좋은 하루 되세요! 무엇이든 말씀해 주세요.`,
+    ar: `${user.displayName || "صديق"} \n😊 أتمنى لك يوماً رائعاً! أخبرني بما تريد.`
+};
+let msg = welcomeMsgs[currentLang] || welcomeMsgs["default"];
+
+        add(msg, "ai");
                     }, 1200);
                 }
             } else {
@@ -3887,11 +5128,7 @@ setTimeout(() => {
             e.stopPropagation();
             playSound("click");
             
-            if (window.IS_PRO_MEMBER !== true) {
-                toast("⭐ এই ফিচারটি শুধুমাত্র PRO মেম্বারদের জন্য!");
-                playSound("popup");
-                return;
-            }
+           
 
             // বাকি ২টা ড্রপডাউন বন্ধ করা হচ্ছে
             if(languageDropdown) languageDropdown.classList.remove("show");
@@ -3979,6 +5216,18 @@ logoutMenuBtn.onclick = () => {
 // 🔥 WORLD'S MOST STABLE WEB AUDIO API SYNTHESIZER ENGINE (100% WORKING)
 // =======================================================================
 const soundToggle = document.getElementById("soundToggle");
+const soundLock =
+document.getElementById("soundLock");
+
+if(localStorage.getItem("peko_pro") === "true"){
+
+    soundLock.classList.add("hide");
+
+}else{
+
+    soundLock.classList.remove("hide");
+
+}
 let SOUND_ENABLED = localStorage.getItem("peko_sound") !== "off";
 
 if (SOUND_ENABLED) {
@@ -4157,12 +5406,28 @@ if (clearChatBtn) {
                 
                 // স্ক্রিন যেন একদম ফাঁকা বা কুৎসিত না লাগে, তাই ইউজারকে আবার মিষ্টি করে স্বাগত জানানো
                 setTimeout(() => {
-                    const welcomeName = (USER && USER.displayName) ? USER.displayName : "বন্ধু";
-                    add(`${welcomeName} \n😊 চ্যাট ক্লিয়ার করা হয়েছে। নতুন করে মনে যা আছে বলুন, আমি শুনছি।`, "ai");
+                   const currentLang = localStorage.getItem("peko_lang") || "default";
+const welcomeName = (USER && USER.displayName) ? USER.displayName : (currentLang === "en" ? "Friend" : "বন্ধু");
+const clearMsgs = {
+    default: `${welcomeName} \n😊 চ্যাট ক্লিয়ার করা হয়েছে। নতুন করে মনে যা আছে বলুন, আমি শুনছি।`,
+    bn: `${welcomeName} \n😊 চ্যাট ক্লিয়ার করা হয়েছে। নতুন করে মনে যা আছে বলুন, আমি শুনছি।`,
+    en: `${welcomeName} \n😊 Chat cleared successfully. Tell me what's on your mind, I'm listening.`,
+    jp: `${welcomeName} \n😊 チャットをクリアしました。何でも話しかけてください、聞いています。`,
+    cn: `${welcomeName} \n😊 聊天已清除。请告诉我您的想法，我在听。`,
+    kr: `${welcomeName} \n😊 채팅이 삭제되었습니다. 무엇이든 말씀해 주세요, 듣고 있습니다.`,
+    ar: `${welcomeName} \n😊 تم مسح المحادثة. أخبرني بما تريد، أنا أستمع.`
+};
+let msg = clearMsgs[currentLang] || clearMsgs["default"];
+add(msg, "ai");
                     playSound("notification"); // রিসিভ নোটিফিকেশন সাউন্ড
                 }, 400);
             }
-            toast("Chat Cleared Successfully ✨");
+            const currentLang = localStorage.getItem("peko_lang") || "default";
+            if (currentLang === "en") {
+                toast("Chat Cleared Successfully ✨");
+            } else {
+                toast("চ্যাট ক্লিয়ার করা হয়েছে ✨");
+            }
         } catch (error) {
             console.error("Clear Chat Error:", error);
         }
@@ -4393,6 +5658,13 @@ if(localStorage.getItem("peko_dark")==="on"){
 
 darkToggle.onclick = () => {
 
+    // 🔥 প্রো ভেরিফিকেশন চেক (ইউজার প্রো মেম্বার না হলে ডার্ক মোড অন করতে দেবে না)
+    if (window.IS_PRO_MEMBER !== true) {
+        toast("⭐ ডার্ক মোড ব্যবহার করতে আগে PRO অ্যাকাউন্ট একটিভ করুন!");
+        playSound("popup");
+        return;
+    }
+
     // 🔥 আগে sound play হবে
 
     if(document.body.classList.contains("dark")){
@@ -4503,9 +5775,22 @@ if(savedTheme){
 
 // CLICK SELECT
 
-themeItems.forEach(item=>{
+themeItems.forEach((item, index) => {
+
+    // 🔥 ম্যাজিক: প্রথম ৩টি থিমের পর বাকি সবগুলোতে অটোমেটিক প্রো-লক সিস্টেম বসানো হলো
+    if (index >= 3) {
+        item.dataset.isPro = "true";
+        item.insertAdjacentHTML('beforeend', `<span class="proThemeLock" style="display:none; color: #94a3b8; margin-left: auto; align-items: center; justify-content: center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="3" fill="currentColor" opacity="0.15"/><rect x="5" y="11" width="14" height="10" rx="3" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11V7.5C8 5.567 9.79 4 12 4C14.21 4 16 5.567 16 7.5V11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg></span>`);
+    }
 
     item.onclick = ()=>{
+
+        // 🔥 প্রো ভেরিফিকেশন চেক (প্রো থিম হলে আনলক ছাড়া ক্লিক করতে দেবে না)
+        if (item.dataset.isPro === "true" && window.IS_PRO_MEMBER !== true) {
+            toast("⭐ এই প্রিমিয়াম থিমটি ব্যবহার করতে PRO অ্যাকাউন্ট একটিভ করুন!");
+            playSound("popup");
+            return;
+        }
 
         playSound("click");
 
@@ -4527,8 +5812,9 @@ themeItems.forEach(item=>{
             name
         );
 
-        selectedThemeText.textContent =
-        name;
+        const _tLang = localStorage.getItem("peko_lang") || "default";
+        const _tName = (LANG[_tLang] && LANG[_tLang][name]) ? LANG[_tLang][name] : name;
+        selectedThemeText.textContent = _tName;
 
         document.getElementById(
             "selectedThemeDot"
@@ -4595,6 +5881,76 @@ languageBtn.onclick = ()=>{
 
 const LANG = {
 
+
+
+default: {
+        settings: "Settings",
+        darkmode: "Dark Mode",
+        webtheme: "Web Theme",
+        language: "Language",
+        ask: "PEKO কে জিজ্ঞেস করুন...",
+        Blue: "Blue",
+        Green: "Green",
+        Yellow: "Yellow",
+        Pink: "Pink",
+        Orange: "Orange",
+        Purple: "Purple",
+        Gray: "Gray",
+        notifLabel: "Notifications",
+        deleteChatLabel: "Delete Chat",
+        loginSub: "Google দিয়ে লগইন করে শুরু করুন",
+        limitMsg: "এত লেখা পাঠানো যাবে না",
+        reportPlace: "আপনার সমস্যা বা মতামতটি বিস্তারিত বাংলায় লিখুন...",
+        socialDesc: "আমাদের অফিশিয়াল সোশ্যাল মিডিয়া প্ল্যাটফর্মে যুক্ত হয়ে PEKO AI এর সাথে কানেক্টেড থাকুন।",
+        processingSub: "১২ থেকে ২৪ ঘণ্টার মধ্যে আপনার Pro Membership সক্রিয় হয়ে যাবে",
+        privH1: "১. ডাটা নিরাপত্তা ও গোপনীয়তা",
+        privD1: "PEKO AI-তে আপনার প্রদান করা সমস্ত তথ্য এবং চ্যাট হিস্ট্রি সম্পূর্ণ নিরাপদ। আমরা আপনার কোনো ব্যক্তিগত তথ্য বা চ্যাট হিস্ট্রি থার্ড-পার্টি বা অন্য কোনো পাবলিক ডোমেইনে শেয়ার করি না।",
+        privH2: "২. লোকাল মেমোরি ডেটা",
+        privD2: "আপনার থিম সেটিংস, সাউন্ড অপশন ও নোটিফিকেশন স্ট্যাটাসসমূহ আপনার ডিভাইসের LocalStorage-এ সুরক্ষিতভাবে সেভ থাকে।",
+        privH3: "৩. পেমেন্ট ডাটা সুরক্ষা",
+        privD3: "প্রো অ্যাকাউন্টের জন্য পাঠানো আপনার নাম, ফোন নাম্বার এবং পেমেন্ট স্ক্রিনশট শুধুমাত্র ভেরিফিকেশনের জন্য আমাদের ব্যাকএন্ড সার্ভারে অত্যন্ত সুরক্ষিতভাবে সংরক্ষিত হয়।",
+        termsH1: "১. ব্যবহারের নিয়মাবলী",
+        termsD1: "PEKO AI একটি কৃত্রিম বুদ্ধিমত্তা সম্পন্ন চ্যাটবক্স। এটি ব্যবহারের সময় কোনো প্রকার বেআইনি, ক্ষতিকর, আপত্তিকর বা স্প্যামিং মূলক টেক্সট পাঠানো সম্পূর্ণ নিষিদ্ধ।",
+        termsH2: "২. প্রো সাবস্ক্রিপশন ও রিফান্ড নীতি",
+        termsD2: "ম্যানুয়াল পেমেন্ট করার পর তথ্য যাচাই করতে ১২ থেকে ২৪ ঘণ্টা সময় লাগতে পারে। একবার সাবস্ক্রিপশন সফলভাবে সক্রিয় হয়ে গেলে তা অফেরতযোগ্য বা নন-রিফান্ডেবল হিসেবে গণ্য হবে।",
+        termsH3: "৩. মেয়াদের সীমাবদ্ধতা",
+        termsD3: "আপনার কেনা প্ল্যানটির মেয়াদ (১ সপ্তাহ, ২ সপ্তাহ বা ১ মাস) শেষ হওয়ার সাথে সাথে আপনার প্রো ফিচারসমূহ স্বয়ংক্রিয়ভাবে লক হয়ে যাবে। পুনরায় ব্যবহার করতে নতুন করে প্ল্যান সাবমিট করতে হবে।",
+        unpub: "অপ্রকাশিত",
+        helpInput: "PEKO Agent কে মেসেজ করুন...",
+        helpS1: "💎 প্রো প্ল্যান কেনা",
+        helpS2: "🔒 অ্যাকাউন্ট লক",
+        helpS3: "👨‍💻 অ্যাডমিন সাপোর্ট",
+        socialLabel: "Our Community",
+        upgradeProLabel: "Upgrade to Pro",
+        helpCenterLabel: "Help Center",
+        privacyLabel: "Privacy Policy",
+        termsLabel: "Terms of Use",
+        appVersionLabel: "App Version",
+        comingSoonLabel: "Coming Soon",
+        csPopupTitle: "🚀 Upcoming Features",
+csPopupDesc: "PEKO AI কে আরও শক্তিশালী করতে শীঘ্রই নিচের ফিচারগুলো আসছে:",
+cs1: "🎙️ Voice Interactive Assistant",
+cs2: "🎨 AI Image Generator Engine",
+cs3: "📁 File & Document Analyzer",
+cs4: "👥 Premium Group Chat Mod",
+csComingSoon: "Coming Soon",
+csOkBtn: "Awesome, Can't Wait! ✨",
+        reportLabel: "Report Issue",
+        fontSizeLabel: "Font Size",
+        soundLabel: "Sound Effects",
+        fontSmall: "Small",
+        fontDefault: "Default",
+        fontMedium: "Medium",
+        fontLarge: "Large",
+        privacyTitle: "Privacy Policy",
+        termsTitle: "Terms of Use",
+        communityTitle: "Our Community",
+        reportTitle: "Report Issue",
+        reportSubmit: "Submit Report",
+        appVersionTitle: "App Version",
+        settingsTitle: "Settings"
+    },
+
     en: {
 
         settings: "Settings",
@@ -4622,8 +5978,58 @@ const LANG = {
         Gray: "Gray",
         
         notifLabel: "Notifications",
-        
-        deleteChatLabel: "Delete Chat"
+        deleteChatLabel: "Delete Chat",
+        loginSub: "Log in with Google to start",
+        limitMsg: "You cannot send this much text",
+        reportPlace: "Write your issue or feedback in detail...",
+        socialDesc: "Stay connected with PEKO AI by joining our official social media platforms.",
+        processingSub: "Your Pro Membership will be activated within 12 to 24 hours.",
+        privH1: "1. Data Security & Privacy",
+        privD1: "All info and chat history you provide to PEKO AI are completely secure. We do not share your personal data with third parties or in any public domain.",
+        privH2: "2. Local Memory Data",
+        privD2: "Your theme settings, sound options, and notification statuses are securely saved in your device's LocalStorage.",
+        privH3: "3. Payment Data Security",
+        privD3: "Your name, phone number, and payment screenshots sent for Pro accounts are highly secured on our backend server solely for verification.",
+        termsH1: "1. Terms of Use",
+        termsD1: "PEKO AI is an AI chatbot. Sending any illegal, harmful, offensive, or spamming texts while using it is strictly prohibited.",
+        termsH2: "2. Pro Subscription & Refund",
+        termsD2: "Verification may take 12 to 24 hours after manual payment. Once a subscription is successfully activated, it is non-refundable.",
+        termsH3: "3. Duration Limitations",
+        termsD3: "As soon as your purchased plan expires, your Pro features will automatically lock. You must submit a new plan to use them again.",
+        unpub: "Unpublished",
+        helpInput: "Message PEKO Agent...",
+        helpS1: "💎 Buy Pro Plan",
+        helpS2: "🔒 Account Locked",
+        helpS3: "👨‍💻 Admin Support",
+        socialLabel: "Our Community",
+        upgradeProLabel: "⭐ Upgrade to Pro",
+        helpCenterLabel: "Help Center",
+        privacyLabel: "Privacy Policy",
+        termsLabel: "Terms of Use",
+        appVersionLabel: "App Version",
+        comingSoonLabel: "Coming Soon",
+        csPopupTitle: "🚀 Upcoming Features",
+csPopupDesc: "Exciting new features are coming to PEKO AI very soon:",
+cs1: "🎙️ Voice Interactive Assistant",
+cs2: "🎨 AI Image Generator Engine",
+cs3: "📁 File & Document Analyzer",
+cs4: "👥 Premium Group Chat Mod",
+csComingSoon: "Coming Soon",
+csOkBtn: "Awesome, Can't Wait! ✨",
+        reportLabel: "Report Issue",
+        fontSizeLabel: "Font Size",
+        soundLabel: "Sound Effects",
+        fontSmall: "Small",
+        fontDefault: "Default",
+        fontMedium: "Medium",
+        fontLarge: "Large",
+        privacyTitle: "Privacy Policy",
+        termsTitle: "Terms of Use",
+        communityTitle: "Our Community",
+        reportTitle: "Report Issue",
+        reportSubmit: "Submit Report",
+        appVersionTitle: "App Version",
+        settingsTitle: "Settings"
     },
 
     bn: {
@@ -4655,116 +6061,298 @@ const LANG = {
        notifLabel: "নোটিফিকেশন",
         
         deleteChatLabel: "চ্যাট মুছুন",
-        
-        comingSoonLabel: "কামিং সুন"
+        comingSoonLabel: "কামিং সুন",
+        loginSub: "Google দিয়ে লগইন করে শুরু করুন",
+        limitMsg: "এত লেখা পাঠানো যাবে না",
+        reportPlace: "আপনার সমস্যা বা মতামতটি বিস্তারিত বাংলায় লিখুন...",
+        socialDesc: "আমাদের অফিশিয়াল সোশ্যাল মিডিয়া প্ল্যাটফর্মে যুক্ত হয়ে PEKO AI এর সাথে কানেক্টেড থাকুন।",
+        processingSub: "১২ থেকে ২৪ ঘণ্টার মধ্যে আপনার Pro Membership সক্রিয় হয়ে যাবে",
+        privH1: "১. ডাটা নিরাপত্তা ও গোপনীয়তা",
+        privD1: "PEKO AI-তে আপনার প্রদান করা সমস্ত তথ্য এবং চ্যাট হিস্ট্রি সম্পূর্ণ নিরাপদ। আমরা আপনার কোনো ব্যক্তিগত তথ্য বা চ্যাট হিস্ট্রি থার্ড-পার্টি বা অন্য কোনো পাবলিক ডোমেইনে শেয়ার করি না।",
+        privH2: "২. লোকাল মেমোরি ডেটা",
+        privD2: "আপনার থিম সেটিংস, সাউন্ড অপশন ও নোটিফিকেশন স্ট্যাটাসসমূহ আপনার ডিভাইসের LocalStorage-এ সুরক্ষিতভাবে সেভ থাকে।",
+        privH3: "৩. পেমেন্ট ডাটা সুরক্ষা",
+        privD3: "প্রো অ্যাকাউন্টের জন্য পাঠানো আপনার নাম, ফোন নাম্বার এবং পেমেন্ট স্ক্রিনশট শুধুমাত্র ভেরিফিকেশনের জন্য আমাদের ব্যাকএন্ড সার্ভারে অত্যন্ত সুরক্ষিতভাবে সংরক্ষিত হয়।",
+        termsH1: "১. ব্যবহারের নিয়মাবলী",
+        termsD1: "PEKO AI একটি কৃত্রিম বুদ্ধিমত্তা সম্পন্ন চ্যাটবক্স। এটি ব্যবহারের সময় কোনো প্রকার বেআইনি, ক্ষতিকর, আপত্তিকর বা স্প্যামিং মূলক টেক্সট পাঠানো সম্পূর্ণ নিষিদ্ধ।",
+        termsH2: "২. প্রো সাবস্ক্রিপশন ও রিফান্ড নীতি",
+        termsD2: "ম্যানুয়াল পেমেন্ট করার পর তথ্য যাচাই করতে ১২ থেকে ২৪ ঘণ্টা সময় লাগতে পারে। একবার সাবস্ক্রিপশন সফলভাবে সক্রিয় হয়ে গেলে তা অফেরতযোগ্য বা নন-রিফান্ডেবল হিসেবে গণ্য হবে।",
+        termsH3: "৩. মেয়াদের সীমাবদ্ধতা",
+        termsD3: "আপনার কেনা প্ল্যানটির মেয়াদ (১ সপ্তাহ, ২ সপ্তাহ বা ১ মাস) শেষ হওয়ার সাথে সাথে আপনার প্রো ফিচারসমূহ স্বয়ংক্রিয়ভাবে লক হয়ে যাবে। পুনরায় ব্যবহার করতে নতুন করে প্ল্যান সাবমিট করতে হবে।",
+        unpub: "অপ্রকাশিত",
+        helpInput: "PEKO Agent কে মেসেজ করুন...",
+        helpS1: "💎 প্রো প্ল্যান কেনা",
+        helpS2: "🔒 অ্যাকাউন্ট লক",
+        helpS3: "👨‍💻 অ্যাডমিন সাপোর্ট",
+        socialLabel: "আমাদের কমিউনিটি",
+        upgradeProLabel: "⭐ প্রো তে আপগ্রেড",
+        helpCenterLabel: "হেল্প সেন্টার",
+        privacyLabel: "প্রাইভেসি পলিসি",
+        termsLabel: "ব্যবহারের শর্তাবলী",
+        appVersionLabel: "অ্যাপ ভার্সন",
+        comingSoonLabel: "শীঘ্রই আসছে",
+        csPopupTitle: "🚀 আসন্ন ফিচারসমূহ",
+csPopupDesc: "PEKO AI কে আরও শক্তিশালী করতে শীঘ্রই নিচের ফিচারগুলো আসছে:",
+cs1: "🎙️ ভয়েস ইন্টারেক্টিভ অ্যাসিস্ট্যান্ট",
+cs2: "🎨 এআই ইমেজ জেনারেটর",
+cs3: "📁 ফাইল ও ডকুমেন্ট এনালাইজার",
+cs4: "👥 প্রিমিয়াম গ্রুপ চ্যাট মড",
+csComingSoon: "শীঘ্রই আসছে",
+csOkBtn: "দুর্দান্ত, অপেক্ষায় আছি! ✨",
+        reportLabel: "রিপোর্ট ইস্যু",
+        fontSizeLabel: "ফন্ট সাইজ",
+        soundLabel: "সাউন্ড ইফেক্ট",
+        fontSmall: "ছোট",
+        fontDefault: "ডিফল্ট",
+        fontMedium: "মাঝারি",
+        fontLarge: "বড়",
+        privacyTitle: "গোপনীয়তা নীতি",
+        termsTitle: "ব্যবহারের শর্তাবলী",
+        communityTitle: "আমাদের কমিউনিটি",
+        reportTitle: "রিপোর্ট ইস্যু",
+        reportSubmit: "রিপোর্ট জমা দিন",
+        appVersionTitle: "অ্যাপ ভার্সন",
+        settingsTitle: "সেটিংস"
     },
 
     jp: {
-
     settings: "設定",
-
     darkmode: "ダークモード",
-
     webtheme: "ウェブテーマ",
-
     language: "言語",
-
     ask: "PEKO に質問してください...",
-
-    Blue: "ブルー",
-
-    Green: "グリーン",
-
-    Yellow: "イエロー",
-
-    Pink: "ピンク",
-
-    Orange: "オレンジ",
-
-    Purple: "パープル",
-
-    Gray: "グレー"
+    Blue: "ブルー", Green: "グリーン", Yellow: "イエロー",
+    Pink: "ピンク", Orange: "オレンジ", Purple: "パープル", Gray: "グレー",
+    notifLabel: "通知",
+    deleteChatLabel: "チャットを削除",
+    loginSub: "Googleでログインして開始",
+    limitMsg: "テキストが長すぎます",
+    reportPlace: "問題や意見を詳しく書いてください...",
+    socialDesc: "公式SNSでPEKO AIとつながりましょう。",
+    processingSub: "12〜24時間以内にProメンバーシップが有効になります",
+    privH1: "1. データセキュリティとプライバシー",
+    privD1: "PEKO AIに提供されたすべての情報とチャット履歴は完全に安全です。個人情報やチャット履歴を第三者と共有することはありません。",
+    privH2: "2. ローカルメモリデータ",
+    privD2: "テーマ設定、サウンドオプション、通知ステータスはデバイスのLocalStorageに安全に保存されます。",
+    privH3: "3. 支払いデータの保護",
+    privD3: "Proアカウント用に送信された名前、電話番号、支払いスクリーンショットは、確認のためにのみバックエンドサーバーに安全に保存されます。",
+    termsH1: "1. 利用規約",
+    termsD1: "PEKO AIはAIチャットボットです。違法、有害、不快、またはスパム的なテキストの送信は固く禁じられています。",
+    termsH2: "2. Proサブスクリプションと返金",
+    termsD2: "手動支払い後、確認に12〜24時間かかる場合があります。サブスクリプションが有効になると、返金不可となります。",
+    termsH3: "3. 有効期限",
+    termsD3: "購入したプランの有効期限が切れると、Pro機能は自動的にロックされます。再利用するには新しいプランを申請する必要があります。",
+    unpub: "未公開",
+    helpInput: "PEKOエージェントにメッセージ...",
+    helpS1: "💎 Proプランを購入",
+    helpS2: "🔒 アカウントロック",
+    helpS3: "👨‍💻 管理者サポート",
+    socialLabel: "コミュニティ",
+    upgradeProLabel: "⭐ Proにアップグレード",
+    helpCenterLabel: "ヘルプセンター",
+    privacyLabel: "プライバシーポリシー",
+    termsLabel: "利用規約",
+    appVersionLabel: "アプリバージョン",
+    comingSoonLabel: "近日公開",
+    csPopupTitle: "🚀 近日公開予定",
+csPopupDesc: "PEKO AIをより強力にする新機能が近日登場します：",
+cs1: "🎙️ 音声インタラクティブアシスタント",
+cs2: "🎨 AI画像生成エンジン",
+cs3: "📁 ファイル＆ドキュメント解析",
+cs4: "👥 プレミアムグループチャット",
+csComingSoon: "近日公開",
+csOkBtn: "素晴らしい、楽しみ！ ✨",
+    reportLabel: "問題を報告",
+    fontSizeLabel: "フォントサイズ",
+    soundLabel: "サウンドエフェクト",
+    fontSmall: "小", fontDefault: "デフォルト", fontMedium: "中", fontLarge: "大",
+    privacyTitle: "プライバシーポリシー",
+    termsTitle: "利用規約",
+    communityTitle: "コミュニティ",
+    reportTitle: "問題を報告",
+    reportSubmit: "報告を送信",
+    appVersionTitle: "アプリバージョン",
+    settingsTitle: "設定"
 },
 
 cn: {
-
     settings: "设置",
-
     darkmode: "深色模式",
-
     webtheme: "网页主题",
-
     language: "语言",
-
     ask: "向 PEKO 提问...",
-
-    Blue: "蓝色",
-
-    Green: "绿色",
-
-    Yellow: "黄色",
-
-    Pink: "粉色",
-
-    Orange: "橙色",
-
-    Purple: "紫色",
-
-    Gray: "灰色"
+    Blue: "蓝色", Green: "绿色", Yellow: "黄色",
+    Pink: "粉色", Orange: "橙色", Purple: "紫色", Gray: "灰色",
+    notifLabel: "通知",
+    deleteChatLabel: "删除聊天",
+    loginSub: "使用Google登录开始",
+    limitMsg: "文字太长，无法发送",
+    reportPlace: "请详细描述您的问题或反馈...",
+    socialDesc: "加入我们的官方社交媒体平台，与PEKO AI保持联系。",
+    processingSub: "您的Pro会员将在12至24小时内激活",
+    privH1: "1. 数据安全与隐私",
+    privD1: "您在PEKO AI中提供的所有信息和聊天记录均完全安全。我们不会与第三方共享您的个人信息或聊天记录。",
+    privH2: "2. 本地内存数据",
+    privD2: "您的主题设置、声音选项和通知状态安全保存在设备的LocalStorage中。",
+    privH3: "3. 支付数据保护",
+    privD3: "为Pro账户发送的姓名、电话号码和支付截图仅用于验证，安全存储在我们的后端服务器上。",
+    termsH1: "1. 使用条款",
+    termsD1: "PEKO AI是一款AI聊天机器人。严禁发送任何违法、有害、冒犯性或垃圾内容。",
+    termsH2: "2. Pro订阅与退款",
+    termsD2: "手动付款后，验证可能需要12至24小时。订阅成功激活后，概不退款。",
+    termsH3: "3. 有效期限制",
+    termsD3: "您购买的套餐到期后，Pro功能将自动锁定。如需再次使用，需重新提交套餐。",
+    unpub: "未发布",
+    helpInput: "向PEKO客服发消息...",
+    helpS1: "💎 购买Pro套餐",
+    helpS2: "🔒 账户锁定",
+    helpS3: "👨‍💻 管理员支持",
+    socialLabel: "我们的社区",
+    upgradeProLabel: "⭐ 升级到Pro",
+    helpCenterLabel: "帮助中心",
+    privacyLabel: "隐私政策",
+    termsLabel: "使用条款",
+    appVersionLabel: "应用版本",
+    comingSoonLabel: "即将推出",
+    csPopupTitle: "🚀 即将推出",
+csPopupDesc: "以下强大新功能即将加入PEKO AI：",
+cs1: "🎙️ 语音交互助手",
+cs2: "🎨 AI图像生成引擎",
+cs3: "📁 文件与文档分析",
+cs4: "👥 高级群聊模块",
+csComingSoon: "即将推出",
+csOkBtn: "太棒了，期待！ ✨",
+    reportLabel: "报告问题",
+    fontSizeLabel: "字体大小",
+    soundLabel: "音效",
+    fontSmall: "小", fontDefault: "默认", fontMedium: "中", fontLarge: "大",
+    privacyTitle: "隐私政策",
+    termsTitle: "使用条款",
+    communityTitle: "我们的社区",
+    reportTitle: "报告问题",
+    reportSubmit: "提交报告",
+    appVersionTitle: "应用版本",
+    settingsTitle: "设置"
 },
 
 kr: {
-
     settings: "설정",
-
     darkmode: "다크 모드",
-
     webtheme: "웹 테마",
-
     language: "언어",
-
     ask: "PEKO에게 질문하세요...",
-
-    Blue: "블루",
-
-    Green: "그린",
-
-    Yellow: "옐로우",
-
-    Pink: "핑크",
-
-    Orange: "오렌지",
-
-    Purple: "퍼플",
-
-    Gray: "그레이"
+    Blue: "블루", Green: "그린", Yellow: "옐로우",
+    Pink: "핑크", Orange: "오렌지", Purple: "퍼플", Gray: "그레이",
+    notifLabel: "알림",
+    deleteChatLabel: "채팅 삭제",
+    loginSub: "Google로 로그인하여 시작하세요",
+    limitMsg: "텍스트가 너무 깁니다",
+    reportPlace: "문제나 의견을 자세히 작성해 주세요...",
+    socialDesc: "공식 소셜 미디어 플랫폼에 참여하여 PEKO AI와 연결하세요.",
+    processingSub: "12~24시간 이내에 Pro 멤버십이 활성화됩니다",
+    privH1: "1. 데이터 보안 및 개인정보",
+    privD1: "PEKO AI에 제공된 모든 정보와 채팅 기록은 완전히 안전합니다. 개인정보나 채팅 기록을 제3자와 공유하지 않습니다.",
+    privH2: "2. 로컬 메모리 데이터",
+    privD2: "테마 설정, 사운드 옵션 및 알림 상태는 기기의 LocalStorage에 안전하게 저장됩니다.",
+    privH3: "3. 결제 데이터 보호",
+    privD3: "Pro 계정을 위해 전송된 이름, 전화번호 및 결제 스크린샷은 확인 목적으로만 백엔드 서버에 안전하게 저장됩니다.",
+    termsH1: "1. 이용 약관",
+    termsD1: "PEKO AI는 AI 챗봇입니다. 불법, 유해, 불쾌하거나 스팸성 텍스트를 전송하는 것은 엄격히 금지됩니다.",
+    termsH2: "2. Pro 구독 및 환불",
+    termsD2: "수동 결제 후 확인에 12~24시간이 걸릴 수 있습니다. 구독이 성공적으로 활성화되면 환불이 불가합니다.",
+    termsH3: "3. 유효 기간 제한",
+    termsD3: "구매한 플랜의 유효 기간이 만료되면 Pro 기능이 자동으로 잠깁니다. 재사용하려면 새 플랜을 제출해야 합니다.",
+    unpub: "미공개",
+    helpInput: "PEKO 에이전트에게 메시지...",
+    helpS1: "💎 Pro 플랜 구매",
+    helpS2: "🔒 계정 잠김",
+    helpS3: "👨‍💻 관리자 지원",
+    socialLabel: "우리 커뮤니티",
+    upgradeProLabel: "⭐ Pro로 업그레이드",
+    helpCenterLabel: "헬프 센터",
+    privacyLabel: "개인정보 처리방침",
+    termsLabel: "이용 약관",
+    appVersionLabel: "앱 버전",
+    comingSoonLabel: "출시 예정",
+    csPopupTitle: "🚀 출시 예정 기능",
+csPopupDesc: "PEKO AI를 더욱 강력하게 만들 새 기능이 곧 출시됩니다:",
+cs1: "🎙️ 음성 인터랙티브 어시스턴트",
+cs2: "🎨 AI 이미지 생성 엔진",
+cs3: "📁 파일 & 문서 분석기",
+cs4: "👥 프리미엄 그룹 채팅",
+csComingSoon: "출시 예정",
+csOkBtn: "훌륭해, 기대돼! ✨",
+    reportLabel: "문제 신고",
+    fontSizeLabel: "글자 크기",
+    soundLabel: "사운드 효과",
+    fontSmall: "소", fontDefault: "기본", fontMedium: "중", fontLarge: "대",
+    privacyTitle: "개인정보 처리방침",
+    termsTitle: "이용 약관",
+    communityTitle: "우리 커뮤니티",
+    reportTitle: "문제 신고",
+    reportSubmit: "신고 제출",
+    appVersionTitle: "앱 버전",
+    settingsTitle: "설정"
 },
 
 ar: {
-
     settings: "الإعدادات",
-
     darkmode: "الوضع الداكن",
-
     webtheme: "مظهر الويب",
-
     language: "اللغة",
-
     ask: "اسأل PEKO...",
-
-    Blue: "أزرق",
-
-    Green: "أخضر",
-
-    Yellow: "أصفر",
-
-    Pink: "وردي",
-
-    Orange: "برتقالي",
-
-    Purple: "بنفسجي",
-
-    Gray: "رمادي"
+    Blue: "أزرق", Green: "أخضر", Yellow: "أصفر",
+    Pink: "وردي", Orange: "برتقالي", Purple: "بنفسجي", Gray: "رمادي",
+    notifLabel: "الإشعارات",
+    deleteChatLabel: "حذف المحادثة",
+    loginSub: "سجّل الدخول بـ Google للبدء",
+    limitMsg: "النص طويل جدًا، لا يمكن إرساله",
+    reportPlace: "اكتب مشكلتك أو ملاحظاتك بالتفصيل...",
+    socialDesc: "انضم إلى منصاتنا الرسمية على وسائل التواصل الاجتماعي وابق على تواصل مع PEKO AI.",
+    processingSub: "سيتم تفعيل عضوية Pro خلال 12 إلى 24 ساعة",
+    privH1: "١. أمان البيانات والخصوصية",
+    privD1: "جميع المعلومات وسجلات المحادثات التي تقدمها في PEKO AI آمنة تمامًا. لن نشارك بياناتك الشخصية أو سجلات المحادثات مع أي طرف ثالث.",
+    privH2: "٢. بيانات الذاكرة المحلية",
+    privD2: "يتم حفظ إعدادات المظهر وخيارات الصوت وحالات الإشعارات بأمان في LocalStorage الخاص بجهازك.",
+    privH3: "٣. حماية بيانات الدفع",
+    privD3: "يتم تخزين اسمك ورقم هاتفك وصورة الدفع المرسلة لحساب Pro بشكل آمن على خادمنا للتحقق فقط.",
+    termsH1: "١. شروط الاستخدام",
+    termsD1: "PEKO AI هو روبوت محادثة بالذكاء الاصطناعي. يُحظر تمامًا إرسال أي نصوص غير قانونية أو ضارة أو مسيئة أو مزعجة.",
+    termsH2: "٢. اشتراك Pro وسياسة الاسترداد",
+    termsD2: "قد يستغرق التحقق من الدفع اليدوي من 12 إلى 24 ساعة. بمجرد تفعيل الاشتراك بنجاح، يُعتبر غير قابل للاسترداد.",
+    termsH3: "٣. قيود المدة",
+    termsD3: "عند انتهاء صلاحية الخطة المشتراة، سيتم قفل ميزات Pro تلقائيًا. يجب تقديم خطة جديدة لإعادة الاستخدام.",
+    unpub: "غير منشور",
+    helpInput: "أرسل رسالة إلى PEKO Agent...",
+    helpS1: "💎 شراء خطة Pro",
+    helpS2: "🔒 الحساب مقفل",
+    helpS3: "👨‍💻 دعم المسؤول",
+    socialLabel: "مجتمعنا",
+    upgradeProLabel: "⭐ الترقية إلى Pro",
+    helpCenterLabel: "مركز المساعدة",
+    privacyLabel: "سياسة الخصوصية",
+    termsLabel: "شروط الاستخدام",
+    appVersionLabel: "إصدار التطبيق",
+    comingSoonLabel: "قريبًا",
+    csPopupTitle: "🚀 الميزات القادمة",
+csPopupDesc: "ميزات رائعة ستنضم إلى PEKO AI قريبًا:",
+cs1: "🎙️ المساعد الصوتي التفاعلي",
+cs2: "🎨 محرك توليد الصور بالذكاء الاصطناعي",
+cs3: "📁 محلل الملفات والمستندات",
+cs4: "👥 وضع المحادثة الجماعية المميزة",
+csComingSoon: "قريبًا",
+csOkBtn: "رائع، أتطلع إليه! ✨",
+    reportLabel: "الإبلاغ عن مشكلة",
+    fontSizeLabel: "حجم الخط",
+    soundLabel: "المؤثرات الصوتية",
+    fontSmall: "صغير", fontDefault: "افتراضي", fontMedium: "متوسط", fontLarge: "كبير",
+    privacyTitle: "سياسة الخصوصية",
+    termsTitle: "شروط الاستخدام",
+    communityTitle: "مجتمعنا",
+    reportTitle: "الإبلاغ عن مشكلة",
+    reportSubmit: "إرسال البلاغ",
+    appVersionTitle: "إصدار التطبيق",
+    settingsTitle: "الإعدادات"
 }
 
 };
@@ -4795,6 +6383,32 @@ function applyLanguage(lang){
 
     $("input").placeholder =
     t.ask;
+    if(document.getElementById("loginSubText")) document.getElementById("loginSubText").textContent = t.loginSub;
+    if(document.getElementById("limitPopup")) document.getElementById("limitPopup").textContent = t.limitMsg;
+    if(document.getElementById("reportInput")) document.getElementById("reportInput").placeholder = t.reportPlace;
+    if(document.getElementById("socialModalDesc")) document.getElementById("socialModalDesc").textContent = t.socialDesc;
+    if(document.getElementById("processingSubText")) document.getElementById("processingSubText").textContent = t.processingSub;
+
+    if(document.getElementById("privH1")) document.getElementById("privH1").textContent = t.privH1;
+    if(document.getElementById("privD1")) document.getElementById("privD1").textContent = t.privD1;
+    if(document.getElementById("privH2")) document.getElementById("privH2").textContent = t.privH2;
+    if(document.getElementById("privD2")) document.getElementById("privD2").textContent = t.privD2;
+    if(document.getElementById("privH3")) document.getElementById("privH3").textContent = t.privH3;
+    if(document.getElementById("privD3")) document.getElementById("privD3").textContent = t.privD3;
+
+    if(document.getElementById("termsH1")) document.getElementById("termsH1").textContent = t.termsH1;
+    if(document.getElementById("termsD1")) document.getElementById("termsD1").textContent = t.termsD1;
+    if(document.getElementById("termsH2")) document.getElementById("termsH2").textContent = t.termsH2;
+    if(document.getElementById("termsD2")) document.getElementById("termsD2").textContent = t.termsD2;
+    if(document.getElementById("termsH3")) document.getElementById("termsH3").textContent = t.termsH3;
+    if(document.getElementById("termsD3")) document.getElementById("termsD3").textContent = t.termsD3;
+
+    document.querySelectorAll(".unpubText").forEach(el => el.textContent = t.unpub);
+
+    if(document.getElementById("helpInputText")) document.getElementById("helpInputText").placeholder = t.helpInput;
+    if(document.getElementById("helpSug1")) document.getElementById("helpSug1").textContent = t.helpS1;
+    if(document.getElementById("helpSug2")) document.getElementById("helpSug2").textContent = t.helpS2;
+    if(document.getElementById("helpSug3")) document.getElementById("helpSug3").textContent = t.helpS3;
 
     document.querySelectorAll(
         ".themeItem"
@@ -4811,37 +6425,75 @@ function applyLanguage(lang){
     // 🔥 MASTER LANGUAGE RE-SYNC (ফাংশনের ভেতরে সুরক্ষিতভাবে যুক্ত করা হলো)
     if($("notificationTextLabel")) $("notificationTextLabel").textContent = t.notifLabel || "Notifications";
     if($("deleteChatTextLabel")) $("deleteChatTextLabel").textContent = t.deleteChatLabel || "Delete Chat";
-
-    if(lang === "bn"){
-
-    selectedLanguageText.textContent =
-    "বাংলা";
-
-}else if(lang === "jp"){
-
-    selectedLanguageText.textContent =
-    "日本語";
-
-}else if(lang === "cn"){
-
-    selectedLanguageText.textContent =
-    "中文";
-
-}else if(lang === "kr"){
-
-    selectedLanguageText.textContent =
-    "한국어";
+    if($("socialTextLabel")) $("socialTextLabel").textContent = t.socialLabel || "Our Community";
+    if($("upgradeProTextLabel") && window.IS_PRO_MEMBER !== true) $("upgradeProTextLabel").textContent = t.upgradeProLabel || "Upgrade to Pro";
+    if($("helpCenterTextLabel")) $("helpCenterTextLabel").textContent = t.helpCenterLabel || "Help Center";
+    if($("privacyPolicyTextLabel")) $("privacyPolicyTextLabel").textContent = t.privacyLabel || "Privacy Policy";
+    if($("termsOfUseTextLabel")) $("termsOfUseTextLabel").textContent = t.termsLabel || "Terms of Use";
+    if($("appVersionTextLabel")) $("appVersionTextLabel").textContent = t.appVersionLabel || "App Version";
+    if($("comingSoonTextLabel")) $("comingSoonTextLabel").textContent = t.comingSoonLabel || "Coming Soon";
+    if($("comingSoonPopupTitle")) $("comingSoonPopupTitle").textContent = t.csPopupTitle || "🚀 Upcoming Features";
+if($("comingSoonPopupDesc")) $("comingSoonPopupDesc").textContent = t.csPopupDesc || "Exciting new features are coming soon:";
+if($("cs1Title")) $("cs1Title").textContent = t.cs1 || "🎙️ Voice Interactive Assistant";
+if($("cs2Title")) $("cs2Title").textContent = t.cs2 || "🎨 AI Image Generator Engine";
+if($("cs3Title")) $("cs3Title").textContent = t.cs3 || "📁 File & Document Analyzer";
+if($("cs4Title")) $("cs4Title").textContent = t.cs4 || "👥 Premium Group Chat Mod";
+if($("cs2Badge")) $("cs2Badge").textContent = t.csComingSoon || "Coming Soon";
+if($("cs3Badge")) $("cs3Badge").textContent = t.csComingSoon || "Coming Soon";
+if($("cs4Badge")) $("cs4Badge").textContent = t.csComingSoon || "Coming Soon";
+if($("comingSoonOkText")) $("comingSoonOkText").textContent = t.csOkBtn || "Awesome, Can't Wait! ✨";
+    if($("reportTextLabel")) $("reportTextLabel").textContent = t.reportLabel || "Report Issue";
     
-}else if(lang === "ar"){
+    // Font Size row label
+    const fontSizeRows = document.querySelectorAll(".themeRow span");
+fontSizeRows.forEach(el => {
+    const txt = el.textContent.trim();
+    if(["Font Size","ফন্ট সাইজ","フォントサイズ","字体大小","글자 크기","حجم الخط"].includes(txt)) {
+        el.textContent = t.fontSizeLabel || "Font Size";
+    }
+    if(["Sound Effects","সাউন্ড ইফেক্ট","サウンドエフェクト","音效","사운드 효과","المؤثرات الصوتية"].includes(txt)) {
+        el.textContent = t.soundLabel || "Sound Effects";
+    }
+});
 
-    selectedLanguageText.textContent =
-    "العربية";
+    // Popup titles & buttons
+    if(t.settingsTitle) $("sideUserName").textContent = t.settingsTitle;
+    if(document.getElementById("privacyTitleText")) document.getElementById("privacyTitleText").textContent = t.privacyTitle || "Privacy Policy";
+    if(document.getElementById("termsTitleText")) document.getElementById("termsTitleText").textContent = t.termsTitle || "Terms of Use";
+    if(document.getElementById("socialModalTitle")) document.getElementById("socialModalTitle").textContent = t.communityTitle || "Our Community";
+    if(document.getElementById("reportModalTitle")) document.getElementById("reportModalTitle").textContent = t.reportTitle || "Report Issue";
+    if(document.getElementById("reportSubmitText")) document.getElementById("reportSubmitText").textContent = t.reportSubmit || "Submit Report";
+    if(document.getElementById("versionOverlay")) { const vTitle = document.querySelector("#versionOverlay .reportTitle"); if(vTitle) vTitle.textContent = t.appVersionTitle || "App Version"; }
 
-}else{
+    // Font Size Dropdown item labels
+    if(t.fontSmall || t.fontDefault) {
+        const fontItems = document.querySelectorAll(".fontSizeItem");
+        fontItems.forEach(item => {
+            const span = item.querySelector(".themeLeft span");
+            if(!span) return;
+            if(item.dataset.size === "14px" && t.fontSmall) span.textContent = t.fontSmall;
+            else if(item.dataset.size === "16px" && t.fontDefault) span.textContent = t.fontDefault;
+            else if(item.dataset.size === "18px" && t.fontMedium) span.textContent = t.fontMedium;
+            else if(item.dataset.size === "20px" && t.fontLarge) span.textContent = t.fontLarge;
+        });
+        // Selected font size text update
+        const curSize = localStorage.getItem("peko_font_size") || "16px";
+        const selFontEl = document.getElementById("selectedFontSizeText");
+        if(selFontEl) {
+            if(curSize === "14px") selFontEl.textContent = t.fontSmall || "Small";
+            else if(curSize === "18px") selFontEl.textContent = t.fontMedium || "Medium";
+            else if(curSize === "20px") selFontEl.textContent = t.fontLarge || "Large";
+            else selFontEl.textContent = t.fontDefault || "Default";
+        }
+    }
 
-    selectedLanguageText.textContent =
-    "English";
-}
+    if(lang === "default"){ selectedLanguageText.textContent = "Default"; }
+else if(lang === "bn"){ selectedLanguageText.textContent = "বাংলা"; }
+else if(lang === "jp"){ selectedLanguageText.textContent = "日本語"; }
+else if(lang === "cn"){ selectedLanguageText.textContent = "中文"; }
+else if(lang === "kr"){ selectedLanguageText.textContent = "한국어"; }
+else if(lang === "ar"){ selectedLanguageText.textContent = "العربية"; }
+else { selectedLanguageText.textContent = "English"; }
 }
 
 
@@ -4850,7 +6502,7 @@ function applyLanguage(lang){
 const savedLanguage =
 localStorage.getItem(
     "peko_lang"
-) || "en";
+) || "default";
 
 applyLanguage(savedLanguage);
 
@@ -4877,6 +6529,13 @@ languageItems.forEach(item=>{
 languageItems.forEach(item=>{
 
     item.onclick = ()=>{
+
+        if (item.dataset.isPro === "true" && window.IS_PRO_MEMBER !== true) {
+            toast("⭐ এই ভাষাটি ব্যবহার করতে PRO অ্যাকাউন্ট একটিভ করুন!");
+            playSound("popup");
+            return;
+        }
+
         playSound("click");
 
         const lang =
@@ -5023,52 +6682,29 @@ fontSizeItems.forEach(item=>{
 
 // SELECT
 
-fontSizeItems.forEach(item=>{
-
-    item.onclick = ()=>{
-        playSound("click");
-
-        const size =
-        item.dataset.size;
-
-        applyFontSize(size);
-
-        localStorage.setItem(
-            "peko_font_size",
-            size
-        );
-
-        if(size === "14px"){
-
-            selectedFontSizeText.textContent =
-            "Small";
-
-        }else if(size === "18px"){
-
-            selectedFontSizeText.textContent =
-            "Medium";
-
-        }else if(size === "20px"){
-
-            selectedFontSizeText.textContent =
-            "Large";
-
-        }else{
-
-            selectedFontSizeText.textContent =
-            "Default";
+// SELECT
+fontSizeItems.forEach(item => {
+    item.onclick = () => {
+        // 🔥 প্রো চেক (যদি সাবস্ক্রিপশন না থাকে এবং এটি ডিফল্ট না হয়)
+        if (window.IS_PRO_MEMBER !== true && item.dataset.size !== "16px") {
+            toast("⭐ ফন্ট সাইজ পরিবর্তনের জন্য PRO অ্যাকাউন্ট একটিভ করুন!");
+            playSound("popup");
+            return;
         }
+        
+        playSound("click");
+        const size = item.dataset.size;
+        applyFontSize(size);
+        localStorage.setItem("peko_font_size", size);
 
-        fontSizeItems.forEach(i=>{
+        // টেক্সট আপডেট
+        if(size === "14px") selectedFontSizeText.textContent = "Small";
+        else if(size === "18px") selectedFontSizeText.textContent = "Medium";
+        else if(size === "20px") selectedFontSizeText.textContent = "Large";
+        else selectedFontSizeText.textContent = "Default";
 
-            i.classList.remove(
-                "activeFontSize"
-            );
-        });
-
-        item.classList.add(
-            "activeFontSize"
-        );
+        fontSizeItems.forEach(i => i.classList.remove("activeFontSize"));
+        item.classList.add("activeFontSize");
     };
 });
 
@@ -5848,6 +7484,12 @@ if (upgradeProBtn && proOverlay) {
         playSound("click");
         closeSideMenu();
         proOverlay.classList.add("show");
+        
+        // 🔥 ম্যাজিক ফিক্স: আবার ওপেন করলে যেন প্ল্যান বক্সটি আগের জায়গায় ঠিক থাকে
+        planBoxSection.style.transition = "none";
+        planBoxSection.style.transform = "translate(-50%, -50%)";
+        planBoxSection.style.opacity = "1";
+        
         planBoxSection.style.display = "block";
         paymentFormSection.style.display = "none";
     };
@@ -5877,10 +7519,33 @@ function selectPlan(planName) {
 
 
 // পেমেন্ট পেজ ওপেন করার মেইন ফাংশন
+// পেমেন্ট পেজ ওপেন করার মেইন ফাংশন (🔥 Smooth Slide Animation)
 function proceedToPayment() {
     document.getElementById("selectedPlanTitle").innerText = "Plan: " + SELECTED_PLAN_NAME;
-    document.getElementById("planBoxSection").style.display = "none";
-    document.getElementById("paymentFormSection").style.display = "block";
+    
+    const planBox = document.getElementById("planBoxSection");
+    const payBox = document.getElementById("paymentFormSection");
+    
+    // ১. প্ল্যান বক্সটি স্মুথলি বাম দিকে স্লাইড হয়ে চলে যাবে
+    planBox.style.transition = "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease";
+    planBox.style.transform = "translate(-150%, -50%)"; 
+    planBox.style.opacity = "0";
+
+    // ২. ০.৩ সেকেন্ড পর পেমেন্ট বক্স ডান দিক থেকে স্লাইড হয়ে আসবে
+    setTimeout(() => {
+        planBox.style.display = "none";
+        
+        payBox.style.display = "block";
+        payBox.style.transition = "none";
+        payBox.style.transform = "translate(50%, -50%)"; // ডান দিকে প্রস্তুত রাখা
+        payBox.style.opacity = "0";
+        
+        void payBox.offsetWidth; // ব্রাউজারকে রিফ্রেশ করতে বলা (অ্যানিমেশন ট্রিক)
+        
+        payBox.style.transition = "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease";
+        payBox.style.transform = "translate(-50%, -50%)"; // একদম মাঝখানে নিয়ে আসা
+        payBox.style.opacity = "1";
+    }, 300);
 }
 
 // পপআপ ১: "না, বাতিল"
@@ -5954,12 +7619,89 @@ function backToPlans() {
 }
 
 function submitProRequest() {
-    const name = (document.getElementById("proName").value || "").trim();
-    const phone = (document.getElementById("proPhone").value || "").trim();
+    const nameEl = document.getElementById("proName");
+    const phoneEl = document.getElementById("proPhone");
     const fileInput = document.getElementById("proScreenshot");
 
-    if (!name || !phone || !fileInput || fileInput.files.length === 0) {
-        toast("সবগুলো তথ্য এবং স্ক্রিনশট সঠিকভাবে দিন!");
+    const name = (nameEl.value || "").trim();
+    const phone = (phoneEl.value || "").trim();
+
+    // ── Error helper ──
+    function setError(el, msg) {
+        el.style.border = "2px solid #ef4444";
+        el.style.background = "rgba(239,68,68,0.06)";
+        let errEl = el.nextElementSibling;
+        if (!errEl || !errEl.classList.contains("pro-field-err")) {
+            errEl = document.createElement("div");
+            errEl.className = "pro-field-err";
+            errEl.style.cssText = "color:#ef4444;font-size:12px;margin-top:4px;margin-bottom:6px;font-weight:600;";
+            el.parentNode.insertBefore(errEl, el.nextSibling);
+        }
+        errEl.textContent = msg;
+    }
+
+    function clearError(el) {
+        el.style.border = "";
+        el.style.background = "";
+        const errEl = el.nextElementSibling;
+        if (errEl && errEl.classList.contains("pro-field-err")) errEl.remove();
+    }
+
+    // ── Clear previous errors ──
+    clearError(nameEl);
+    const pErrOld = document.getElementById("proPhoneError"); if(pErrOld) pErrOld.remove(); phoneEl.style.border = ""; phoneEl.style.background = "";
+    clearError(phoneEl);
+
+    let hasError = false;
+
+    if (!name) {
+        setError(nameEl, "⚠️ আপনার নাম লিখুন");
+        hasError = true;
+    }
+    if (!phone) {
+        phoneEl.style.border = "2px solid #ef4444";
+        phoneEl.style.background = "rgba(239,68,68,0.06)";
+        let pErr = document.getElementById("proPhoneError");
+        if (!pErr) {
+            pErr = document.createElement("div");
+            pErr.id = "proPhoneError";
+            pErr.style.cssText = "color:#ef4444;font-size:12px;margin-top:4px;font-weight:600;display:block;width:100%;";
+            phoneEl.parentNode.parentNode.insertBefore(pErr, phoneEl.parentNode.nextSibling);
+        }
+        pErr.textContent = "⚠️ আপনার মোবাইল নাম্বার লিখুন";
+        hasError = true;
+    } else {
+        phoneEl.style.border = "";
+        phoneEl.style.background = "";
+        const pErr = document.getElementById("proPhoneError");
+        if (pErr) pErr.remove();
+    }
+    if (!fileInput || fileInput.files.length === 0) {
+        playSound("popup");
+        const fileLabel = fileInput ? fileInput.previousElementSibling : null;
+        // file area কে লাল করা
+        if (fileInput) {
+            fileInput.style.outline = "2px solid #ef4444";
+            fileInput.style.borderRadius = "6px";
+            let errEl = fileInput.nextElementSibling;
+            if (!errEl || !errEl.classList.contains("pro-field-err")) {
+                errEl = document.createElement("div");
+                errEl.className = "pro-field-err";
+                errEl.style.cssText = "color:#ef4444;font-size:12px;margin-top:4px;font-weight:600;";
+                fileInput.parentNode.insertBefore(errEl, fileInput.nextSibling);
+            }
+            errEl.textContent = "⚠️ পেমেন্টের স্ক্রিনশট আপলোড করুন";
+        }
+        hasError = true;
+    } else {
+        if (fileInput) {
+            fileInput.style.outline = "";
+            const errEl = fileInput.nextElementSibling;
+            if (errEl && errEl.classList.contains("pro-field-err")) errEl.remove();
+        }
+    }
+
+    if (hasError) {
         playSound("popup");
         return;
     }
@@ -6006,7 +7748,7 @@ function submitProRequest() {
             uid: USER.uid,
             name: name,
             email: USER.email.toLowerCase(),
-            phone: phone,
+            phone: (document.getElementById("proCountryCode").value + phone),
             screenshot: screenshotData, // এই ডাটা সরাসরি এডমিন প্যানেলে ছবি হিসেবে ভেসে উঠবে!
             requestedPlan: SELECTED_PLAN_NAME,
             status: "pending",
@@ -6019,7 +7761,14 @@ function submitProRequest() {
                 setTimeout(() => { // 🔥 Simulate premium processing screen time
                     playSound("login"); // শুধুমাত্র সাকসেস সাউন্ড প্লে হবে, নিচের কালো টোস্ট রিমুভ করা হয়েছে
                     
-                    proOverlay.classList.remove("show");
+                    // ── Form Reset: পরের বার সাবমিটের জন্য পরিষ্কার করা ──
+document.getElementById("proName").value = "";
+document.getElementById("proPhone").value = "";
+document.getElementById("proScreenshot").value = "";
+document.getElementById("previewBox").style.display = "none";
+document.getElementById("previewImage").src = "";
+
+proOverlay.classList.remove("show");
                     
                     // Reset UI forms back to original state hiddenly safely
                     setTimeout(() => {
@@ -6256,32 +8005,57 @@ document.getElementById("helpCenterBtn").onclick = () => {
     closeSideMenu();
     helpCenterScreenPanel.classList.add("show");
     
-    currentHelpSession = []; // নতুন সেশন শুরু হলে মেমোরি ক্লিয়ার
+    currentHelpSession = [];
+
+    // 🔥 প্রতিবার ওপেনে ভাষা অনুযায়ী suggestion buttons আপডেট
+    const lang = localStorage.getItem("peko_lang") || "default";
+    const t = LANG[lang] || LANG["default"];
+
+    if(document.getElementById("helpSug1")) document.getElementById("helpSug1").textContent = t.helpS1;
+    if(document.getElementById("helpSug2")) document.getElementById("helpSug2").textContent = t.helpS2;
+    if(document.getElementById("helpSug3")) document.getElementById("helpSug3").textContent = t.helpS3;
+    if(document.getElementById("helpInputText")) document.getElementById("helpInputText").placeholder = t.helpInput;
 
     if (helpChatBodyPanel.children.length === 0) {
-        appendHelpMsg("🤖 <b>স্বাগতম! আমি PEKO Agent.</b><br>আপনার অ্যাপ ব্যবহারে কোনো সমস্যা হচ্ছে? নিচের বাটনগুলো থেকে সিলেক্ট করুন অথবা লিখে জানান। আমি সাহায্য করার চেষ্টা করছি!", "ai");
+        const welcomeMsgs = {
+            default: "🤖 <b>স্বাগতম! আমি PEKO Agent.</b><br>আপনার অ্যাপ ব্যবহারে কোনো সমস্যা হচ্ছে? নিচের বাটনগুলো থেকে সিলেক্ট করুন অথবা লিখে জানান। আমি সাহায্য করার চেষ্টা করছি!",
+            bn: "🤖 <b>স্বাগতম! আমি PEKO Agent.</b><br>আপনার অ্যাপ ব্যবহারে কোনো সমস্যা হচ্ছে? নিচের বাটনগুলো থেকে সিলেক্ট করুন অথবা লিখে জানান। আমি সাহায্য করার চেষ্টা করছি!",
+            en: "🤖 <b>Welcome! I am PEKO Agent.</b><br>Having issues with the app? Select from the buttons below or write to me. I'm trying to help!",
+            jp: "🤖 <b>ようこそ！PEKO Agentです。</b><br>アプリに問題がありますか？下のボタンから選ぶか、メッセージを送ってください。",
+            cn: "🤖 <b>欢迎！我是PEKO Agent。</b><br>使用应用时遇到问题了吗？请从下方按钮选择或直接留言，我来帮您！",
+            kr: "🤖 <b>환영합니다! 저는 PEKO Agent입니다.</b><br>앱 사용에 문제가 있으신가요? 아래 버튼에서 선택하거나 메시지를 보내주세요.",
+            ar: "🤖 <b>مرحباً! أنا PEKO Agent.</b><br>هل تواجه مشكلة في التطبيق؟ اختر من الأزرار أدناه أو أرسل رسالة، وسأحاول مساعدتك!"
+        };
+        appendHelpMsg(welcomeMsgs[lang] || welcomeMsgs["default"], "ai");
     }
 };
 
 // 💾 ডাটাবেজে পুরো চ্যাট হিস্ট্রি একসাথে সেভ করার ইঞ্জিন
 function saveHelpSessionToDB() {
     if (currentHelpSession.length > 0 && USER) {
+        // 🔥 ফিক্স: এখন ডাটা সঠিকভাবে শুধুমাত্র ৪ নম্বর সেকশনে (help_logs) যাবে, রিপোর্ট সেকশনে যাবে না!
         DB.ref("help_logs").push({
             uid: USER.uid,
             name: USER.displayName || "User",
             email: USER.email || "No Email",
-            session_data: currentHelpSession, // পুরো চ্যাটের লিস্ট একসাথে পাঠানো হলো
+            session_data: currentHelpSession, 
             time: Date.now()
         });
         currentHelpSession = []; // সেভ করার পর মেমোরি ক্লিয়ার
     }
 }
 
-// উইন্ডো কেটে দেওয়ার সময় চ্যাট সেভ হবে
+
+// উইন্ডো কেটে দেওয়ার সময় চ্যাট সেভ হবে এবং ক্লিয়ার হবে
 document.getElementById("helpCloseBtn").onclick = () => {
     playSound("click");
     helpCenterScreenPanel.classList.remove("show");
     saveHelpSessionToDB(); // 🟢 পপআপ কাটার সাথে সাথে অ্যাডমিনের কাছে ডাটা চলে যাবে
+    
+    // 🔥 ফিক্স ২: ক্রস এ ক্লিক করলেই চ্যাট হিস্ট্রি মুছে যাবে (যাতে আবার ঢুকলে নতুন দেখায়)
+    if (helpChatBodyPanel) {
+        helpChatBodyPanel.innerHTML = "";
+    }
 };
 
 function appendHelpMsg(text, sender) {
@@ -6321,7 +8095,7 @@ if(helpInputText){
 
 function askPekoAgent(userQuestion) {
     if (!USER) {
-        toast("দয়া করে আগে লগইন করুন!");
+        toast("দয়া করে আগে লগইন করুন!");
         return;
     }
 
@@ -6331,20 +8105,84 @@ function askPekoAgent(userQuestion) {
     setTimeout(() => {
         playSound("notification");
         let botReply = "";
-        
-        if (userQuestion.includes("প্রো প্ল্যান") || userQuestion.includes("কিনবো")) {
-            botReply = "<b>💎 প্রো প্ল্যান কেনার নিয়ম:</b><br>মেনু থেকে 'Upgrade to Pro' বাটনে ক্লিক করুন। সেখানে আপনি বিকাশ ও নগদ নম্বর পাবেন। পেমেন্ট করে স্ক্রিনশট সাবমিট করুন। ১২-২৪ ঘণ্টার মধ্যে অ্যাক্টিভ হয়ে যাবে ইনশাল্লাহ।";
-        } else if (userQuestion.includes("লক") || userQuestion.includes("অ্যাকাউন্ট")) {
-            botReply = "<b>🔒 অ্যাকাউন্ট লক ইনফো:</b><br>প্রো মেম্বারশিপের মেয়াদ শেষ হয়ে গেলে অ্যাকাউন্টটি সাময়িক লক দেখায়। আপনি যদি মনে করেন এটি ভুলবশত হয়েছে, তবে আমি আপনার এই মেসেজটি অ্যাডমিনের কাছে পাঠিয়ে দিচ্ছি। দ্রুত চেক করা হবে।";
-        } else if (userQuestion.includes("অ্যাডমিন") || userQuestion.includes("কথা")) {
-            botReply = "<b>👨‍💻 অ্যাডমিন সাপোর্ট:</b><br>আমি আপনার মেসেজটি নোট করেছি এবং সরাসরি অ্যাডমিন প্যানেলে পাঠিয়ে দিয়েছি। অ্যাডমিন ফ্রি হলে খুব শীঘ্রই আপনার ইমেইলে অথবা এখানে যোগাযোগ করবে।";
+        const lang = localStorage.getItem("peko_lang") || "default";
+
+        // ── PRO PLAN keywords ──
+        const isProPlan = userQuestion.includes("প্রো প্ল্যান") || userQuestion.includes("কিনবো") ||
+            userQuestion.includes("Pro Plan") || userQuestion.toLowerCase().includes("buy") ||
+            userQuestion.includes("شراء") || userQuestion.includes("خطة") ||
+            userQuestion.includes("Proプラン") || userQuestion.includes("Pro套餐") ||
+            userQuestion.includes("Pro 플랜") || userQuestion.includes("구매") ||
+            userQuestion.includes("购买") || userQuestion.includes("購入");
+
+        // ── ACCOUNT LOCK keywords ──
+        const isLocked = userQuestion.includes("লক") || userQuestion.includes("অ্যাকাউন্ট") ||
+            userQuestion.includes("Locked") || userQuestion.includes("Account") ||
+            userQuestion.includes("مقفل") || userQuestion.includes("الحساب") ||
+            userQuestion.includes("ロック") || userQuestion.includes("アカウント") ||
+            userQuestion.includes("锁定") || userQuestion.includes("账户") ||
+            userQuestion.includes("잠김") || userQuestion.includes("계정");
+
+        // ── ADMIN SUPPORT keywords ──
+        const isAdmin = userQuestion.includes("অ্যাডমিন") || userQuestion.includes("কথা") ||
+            userQuestion.includes("Admin") || userQuestion.includes("Support") ||
+            userQuestion.includes("المسؤول") || userQuestion.includes("دعم") ||
+            userQuestion.includes("管理者") || userQuestion.includes("サポート") ||
+            userQuestion.includes("管理员") || userQuestion.includes("支持") ||
+            userQuestion.includes("관리자") || userQuestion.includes("지원");
+
+        // ── REPLY MAP ──
+        const replies = {
+            proPlan: {
+                default: "<b>💎 প্রো প্ল্যান কেনার নিয়ম:</b><br>মেনু থেকে 'Upgrade to Pro' বাটনে ক্লিক করুন। বিকাশ ও নগদ নম্বর পাবেন। পেমেন্ট করে স্ক্রিনশট সাবমিট করুন। ১২-২৪ ঘণ্টায় অ্যাক্টিভ হবে।",
+                bn: "<b>💎 প্রো প্ল্যান কেনার নিয়ম:</b><br>মেনু থেকে 'Upgrade to Pro' বাটনে ক্লিক করুন। বিকাশ ও নগদ নম্বর পাবেন। পেমেন্ট করে স্ক্রিনশট সাবমিট করুন। ১২-২৪ ঘণ্টায় অ্যাক্টিভ হবে।",
+                en: "<b>💎 How to buy Pro Plan:</b><br>Click 'Upgrade to Pro' from the menu. You will find bKash and Nagad numbers. Make the payment and submit a screenshot. It will be activated within 12-24 hours.",
+                jp: "<b>💎 Proプランの購入方法：</b><br>メニューから「Upgrade to Pro」をタップしてください。支払い番号が表示されます。支払い後、スクリーンショットを送信してください。12〜24時間以内に有効になります。",
+                cn: "<b>💎 如何购买Pro套餐：</b><br>点击菜单中的「升级到Pro」。您将看到支付号码。付款后提交截图，12-24小时内将激活。",
+                kr: "<b>💎 Pro 플랜 구매 방법：</b><br>메뉴에서 '업그레이드' 버튼을 탭하세요. 결제 번호가 표시됩니다. 결제 후 스크린샷을 제출하세요. 12~24시간 내에 활성화됩니다.",
+                ar: "<b>💎 كيفية شراء خطة Pro：</b><br>انقر على زر 'الترقية إلى Pro' من القائمة. ستجد أرقام الدفع. أرسل لقطة الشاشة بعد الدفع. سيتم تفعيلها خلال 12-24 ساعة."
+            },
+            locked: {
+                default: "<b>🔒 অ্যাকাউন্ট লক ইনফো:</b><br>প্রো মেম্বারশিপের মেয়াদ শেষ হলে লক হয়। Report Issue-এ বিস্তারিত লিখুন, অ্যাডমিন দ্রুত ঠিক করবে।",
+                bn: "<b>🔒 অ্যাকাউন্ট লক ইনফো:</b><br>প্রো মেম্বারশিপের মেয়াদ শেষ হলে লক হয়। Report Issue-এ বিস্তারিত লিখুন, অ্যাডমিন দ্রুত ঠিক করবে।",
+                en: "<b>🔒 Account Lock Info:</b><br>When the pro membership expires, the account is temporarily locked. Write details in Report Issue and Admin will fix it quickly.",
+                jp: "<b>🔒 アカウントロック情報：</b><br>Proメンバーシップが期限切れになるとロックされます。「問題を報告」に詳細を書いてください。管理者がすぐに対応します。",
+                cn: "<b>🔒 账户锁定信息：</b><br>Pro会员到期后账户会被锁定。请在「报告问题」中写明详情，管理员会尽快处理。",
+                kr: "<b>🔒 계정 잠금 안내：</b><br>Pro 멤버십이 만료되면 계정이 잠깁니다. '문제 신고'에 자세한 내용을 작성하시면 관리자가 빠르게 처리합니다.",
+                ar: "<b>🔒 معلومات قفل الحساب：</b><br>يتم قفل الحساب عند انتهاء عضوية Pro. اكتب التفاصيل في 'الإبلاغ عن مشكلة' وسيتم حلها سريعاً."
+            },
+            admin: {
+                default: "<b>👨‍💻 অ্যাডমিন সাপোর্ট:</b><br>আপনার মেসেজটি অ্যাডমিন প্যানেলে পাঠানো হয়েছে। শীঘ্রই যোগাযোগ করা হবে।",
+                bn: "<b>👨‍💻 অ্যাডমিন সাপোর্ট:</b><br>আপনার মেসেজটি অ্যাডমিন প্যানেলে পাঠানো হয়েছে। শীঘ্রই যোগাযোগ করা হবে।",
+                en: "<b>👨‍💻 Admin Support:</b><br>Your message has been sent to the Admin panel. Admin will contact you via email or here soon.",
+                jp: "<b>👨‍💻 管理者サポート：</b><br>メッセージが管理者パネルに送られました。まもなくメールまたはここで返信があります。",
+                cn: "<b>👨‍💻 管理员支持：</b><br>您的消息已发送到管理员面板。管理员将通过邮件或此处与您联系。",
+                kr: "<b>👨‍💻 관리자 지원：</b><br>메시지가 관리자 패널로 전송되었습니다. 이메일 또는 여기서 곧 연락드릴 예정입니다.",
+                ar: "<b>👨‍💻 دعم المسؤول：</b><br>تم إرسال رسالتك إلى لوحة الإدارة. سيتواصل معك المسؤول قريباً عبر البريد الإلكتروني أو هنا."
+            },
+            general: {
+                default: "আপনার মেসেজটি নোট করা হয়েছে এবং অ্যাডমিন প্যানেলে পাঠানো হয়েছে। আরও কিছু জানাতে চাইলে লিখুন। 🤖",
+                bn: "আপনার মেসেজটি নোট করা হয়েছে এবং অ্যাডমিন প্যানেলে পাঠানো হয়েছে। আরও কিছু জানাতে চাইলে লিখুন। 🤖",
+                en: "Your message has been noted and sent to the Admin panel. Write if you have any other queries. 🤖",
+                jp: "メッセージを受け取り、管理者パネルに送りました。他にご質問があればお気軽にどうぞ。🤖",
+                cn: "您的消息已被记录并发送到管理员面板。如有其他问题，请随时告诉我。🤖",
+                kr: "메시지를 확인하여 관리자 패널에 전달했습니다. 다른 문의사항이 있으시면 언제든지 말씀해 주세요. 🤖",
+                ar: "لقد تلقيت رسالتك وأرسلتها إلى لوحة الإدارة. إذا كان لديك أي استفسار آخر، فلا تتردد في الكتابة. 🤖"
+            }
+        };
+
+        if (isProPlan) {
+            botReply = replies.proPlan[lang] || replies.proPlan["default"];
+        } else if (isLocked) {
+            botReply = replies.locked[lang] || replies.locked["default"];
+        } else if (isAdmin) {
+            botReply = replies.admin[lang] || replies.admin["default"];
         } else {
-            botReply = "আপনার মেসেজটি আমি নোট করেছি এবং অ্যাডমিন প্যানেলে পাঠিয়ে দিয়েছি। আপনার আর কোনো জিজ্ঞাসা থাকলে লিখে জানাতে পারেন। 🤖";
+            botReply = replies.general[lang] || replies.general["default"];
         }
-        
+
         appendHelpMsg("🤖 " + botReply, "ai");
         
-        // 💾 ফায়ারবেসে না পাঠিয়ে শুধু সেশন মেমোরিতে সেভ রাখা হচ্ছে
         currentHelpSession.push({
             user_msg: userQuestion,
             bot_reply: botReply
@@ -6569,6 +8407,7 @@ function startPekoNotificationSystem(user) {
 
 const fileInput =
 document.querySelector('input[type="file"]');
+const fileLabelEl = document.getElementById("fileLabel");
 
 const previewBox =
 document.getElementById("previewBox");
@@ -6593,6 +8432,7 @@ if(fileInput){
 
                 previewBox.style.display =
                 "flex";
+                if(fileLabelEl) fileLabelEl.textContent = "✅ আপলোড হয়েছে";
 
             };
 
@@ -6603,6 +8443,246 @@ if(fileInput){
     });
 
 }
+
+
+
+
+
+
+
+
+const COUNTRIES = [
+    {flag:"🇧🇩",name:"Bangladesh",code:"+880"},
+    {flag:"🇺🇸",name:"United States",code:"+1"},
+    {flag:"🇬🇧",name:"United Kingdom",code:"+44"},
+    {flag:"🇮🇳",name:"India",code:"+91"},
+    {flag:"🇵🇰",name:"Pakistan",code:"+92"},
+    {flag:"🇸🇦",name:"Saudi Arabia",code:"+966"},
+    {flag:"🇦🇪",name:"United Arab Emirates",code:"+971"},
+    {flag:"🇶🇦",name:"Qatar",code:"+974"},
+    {flag:"🇰🇼",name:"Kuwait",code:"+965"},
+    {flag:"🇴🇲",name:"Oman",code:"+968"},
+    {flag:"🇧🇭",name:"Bahrain",code:"+973"},
+    {flag:"🇲🇾",name:"Malaysia",code:"+60"},
+    {flag:"🇸🇬",name:"Singapore",code:"+65"},
+    {flag:"🇦🇺",name:"Australia",code:"+61"},
+    {flag:"🇩🇪",name:"Germany",code:"+49"},
+    {flag:"🇫🇷",name:"France",code:"+33"},
+    {flag:"🇮🇹",name:"Italy",code:"+39"},
+    {flag:"🇪🇸",name:"Spain",code:"+34"},
+    {flag:"🇳🇱",name:"Netherlands",code:"+31"},
+    {flag:"🇸🇪",name:"Sweden",code:"+46"},
+    {flag:"🇳🇴",name:"Norway",code:"+47"},
+    {flag:"🇩🇰",name:"Denmark",code:"+45"},
+    {flag:"🇫🇮",name:"Finland",code:"+358"},
+    {flag:"🇨🇭",name:"Switzerland",code:"+41"},
+    {flag:"🇦🇹",name:"Austria",code:"+43"},
+    {flag:"🇧🇪",name:"Belgium",code:"+32"},
+    {flag:"🇵🇹",name:"Portugal",code:"+351"},
+    {flag:"🇬🇷",name:"Greece",code:"+30"},
+    {flag:"🇵🇱",name:"Poland",code:"+48"},
+    {flag:"🇷🇺",name:"Russia",code:"+7"},
+    {flag:"🇨🇳",name:"China",code:"+86"},
+    {flag:"🇯🇵",name:"Japan",code:"+81"},
+    {flag:"🇰🇷",name:"South Korea",code:"+82"},
+    {flag:"🇹🇭",name:"Thailand",code:"+66"},
+    {flag:"🇮🇩",name:"Indonesia",code:"+62"},
+    {flag:"🇵🇭",name:"Philippines",code:"+63"},
+    {flag:"🇻🇳",name:"Vietnam",code:"+84"},
+    {flag:"🇲🇲",name:"Myanmar",code:"+95"},
+    {flag:"🇱🇰",name:"Sri Lanka",code:"+94"},
+    {flag:"🇳🇵",name:"Nepal",code:"+977"},
+    {flag:"🇲🇻",name:"Maldives",code:"+960"},
+    {flag:"🇧🇹",name:"Bhutan",code:"+975"},
+    {flag:"🇲🇳",name:"Mongolia",code:"+976"},
+    {flag:"🇰🇭",name:"Cambodia",code:"+855"},
+    {flag:"🇱🇦",name:"Laos",code:"+856"},
+    {flag:"🇪🇬",name:"Egypt",code:"+20"},
+    {flag:"🇳🇬",name:"Nigeria",code:"+234"},
+    {flag:"🇿🇦",name:"South Africa",code:"+27"},
+    {flag:"🇰🇪",name:"Kenya",code:"+254"},
+    {flag:"🇬🇭",name:"Ghana",code:"+233"},
+    {flag:"🇹🇿",name:"Tanzania",code:"+255"},
+    {flag:"🇺🇬",name:"Uganda",code:"+256"},
+    {flag:"🇨🇲",name:"Cameroon",code:"+237"},
+    {flag:"🇩🇿",name:"Algeria",code:"+213"},
+    {flag:"🇲🇦",name:"Morocco",code:"+212"},
+    {flag:"🇹🇳",name:"Tunisia",code:"+216"},
+    {flag:"🇱🇾",name:"Libya",code:"+218"},
+    {flag:"🇸🇩",name:"Sudan",code:"+249"},
+    {flag:"🇪🇹",name:"Ethiopia",code:"+251"},
+    {flag:"🇧🇷",name:"Brazil",code:"+55"},
+    {flag:"🇲🇽",name:"Mexico",code:"+52"},
+    {flag:"🇦🇷",name:"Argentina",code:"+54"},
+    {flag:"🇨🇱",name:"Chile",code:"+56"},
+    {flag:"🇨🇴",name:"Colombia",code:"+57"},
+    {flag:"🇳🇿",name:"New Zealand",code:"+64"},
+    {flag:"🇨🇦",name:"Canada",code:"+1"},
+    {flag:"🇹🇷",name:"Turkey",code:"+90"},
+    {flag:"🇮🇷",name:"Iran",code:"+98"},
+    {flag:"🇮🇶",name:"Iraq",code:"+964"},
+    {flag:"🇸🇾",name:"Syria",code:"+963"},
+    {flag:"🇯🇴",name:"Jordan",code:"+962"},
+    {flag:"🇱🇧",name:"Lebanon",code:"+961"},
+    {flag:"🇮🇱",name:"Israel",code:"+972"},
+    {flag:"🇾🇪",name:"Yemen",code:"+967"},
+    {flag:"🇦🇿",name:"Azerbaijan",code:"+994"},
+    {flag:"🇬🇪",name:"Georgia",code:"+995"},
+    {flag:"🇦🇲",name:"Armenia",code:"+374"},
+    {flag:"🇰🇿",name:"Kazakhstan",code:"+7"},
+    {flag:"🇺🇿",name:"Uzbekistan",code:"+998"},
+    {flag:"🇹🇲",name:"Turkmenistan",code:"+993"},
+    {flag:"🇹🇯",name:"Tajikistan",code:"+992"},
+    {flag:"🇰🇬",name:"Kyrgyzstan",code:"+996"},
+    {flag:"🇦🇫",name:"Afghanistan",code:"+93"},
+    {flag:"🇮🇪",name:"Ireland",code:"+353"},
+    {flag:"🇭🇺",name:"Hungary",code:"+36"},
+    {flag:"🇷🇴",name:"Romania",code:"+40"},
+    {flag:"🇨🇿",name:"Czech Republic",code:"+420"},
+    {flag:"🇸🇰",name:"Slovakia",code:"+421"},
+    {flag:"🇭🇷",name:"Croatia",code:"+385"},
+    {flag:"🇷🇸",name:"Serbia",code:"+381"},
+    {flag:"🇧🇦",name:"Bosnia & Herzegovina",code:"+387"},
+    {flag:"🇦🇱",name:"Albania",code:"+355"},
+    {flag:"🇲🇰",name:"North Macedonia",code:"+389"},
+    {flag:"🇺🇦",name:"Ukraine",code:"+380"},
+    {flag:"🇧🇬",name:"Bulgaria",code:"+359"},
+    {flag:"🇱🇹",name:"Lithuania",code:"+370"},
+    {flag:"🇱🇻",name:"Latvia",code:"+371"},
+    {flag:"🇪🇪",name:"Estonia",code:"+372"},
+    {flag:"🇲🇩",name:"Moldova",code:"+373"},
+    {flag:"🇧🇾",name:"Belarus",code:"+375"},
+    {flag:"🇵🇪",name:"Peru",code:"+51"},
+    {flag:"🇻🇪",name:"Venezuela",code:"+58"},
+    {flag:"🇪🇨",name:"Ecuador",code:"+593"},
+    {flag:"🇧🇴",name:"Bolivia",code:"+591"},
+    {flag:"🇵🇾",name:"Paraguay",code:"+595"},
+    {flag:"🇺🇾",name:"Uruguay",code:"+598"},
+    {flag:"🇯🇲",name:"Jamaica",code:"+1-876"},
+    {flag:"🇹🇹",name:"Trinidad & Tobago",code:"+1-868"},
+    {flag:"🇨🇺",name:"Cuba",code:"+53"},
+    {flag:"🇵🇦",name:"Panama",code:"+507"},
+    {flag:"🇨🇷",name:"Costa Rica",code:"+506"},
+    {flag:"🇬🇹",name:"Guatemala",code:"+502"},
+    {flag:"🇭🇳",name:"Honduras",code:"+504"},
+    {flag:"🇸🇻",name:"El Salvador",code:"+503"},
+    {flag:"🇳🇮",name:"Nicaragua",code:"+505"},
+    {flag:"🇩🇴",name:"Dominican Republic",code:"+1-809"},
+    {flag:"🇵🇷",name:"Puerto Rico",code:"+1-787"},
+    {flag:"🇿🇲",name:"Zambia",code:"+260"},
+    {flag:"🇿🇼",name:"Zimbabwe",code:"+263"},
+    {flag:"🇲🇿",name:"Mozambique",code:"+258"},
+    {flag:"🇲🇬",name:"Madagascar",code:"+261"},
+    {flag:"🇳🇦",name:"Namibia",code:"+264"},
+    {flag:"🇧🇼",name:"Botswana",code:"+267"},
+    {flag:"🇸🇳",name:"Senegal",code:"+221"},
+    {flag:"🇨🇮",name:"Côte d'Ivoire",code:"+225"},
+    {flag:"🇲🇱",name:"Mali",code:"+223"},
+    {flag:"🇧🇫",name:"Burkina Faso",code:"+226"},
+    {flag:"🇳🇪",name:"Niger",code:"+227"},
+    {flag:"🇹🇩",name:"Chad",code:"+235"},
+    {flag:"🇸🇸",name:"South Sudan",code:"+211"},
+    {flag:"🇸🇴",name:"Somalia",code:"+252"},
+    {flag:"🇩🇯",name:"Djibouti",code:"+253"},
+    {flag:"🇪🇷",name:"Eritrea",code:"+291"},
+    {flag:"🇷🇼",name:"Rwanda",code:"+250"},
+    {flag:"🇧🇮",name:"Burundi",code:"+257"},
+    {flag:"🇲🇼",name:"Malawi",code:"+265"},
+    {flag:"🇱🇸",name:"Lesotho",code:"+266"},
+    {flag:"🇸🇿",name:"Eswatini",code:"+268"},
+    {flag:"🇨🇬",name:"Congo",code:"+242"},
+    {flag:"🇨🇩",name:"DR Congo",code:"+243"},
+    {flag:"🇬🇦",name:"Gabon",code:"+241"},
+    {flag:"🇬🇶",name:"Equatorial Guinea",code:"+240"},
+    {flag:"🇸🇹",name:"São Tomé & Príncipe",code:"+239"},
+    {flag:"🇨🇻",name:"Cape Verde",code:"+238"},
+    {flag:"🇬🇳",name:"Guinea",code:"+224"},
+    {flag:"🇬🇼",name:"Guinea-Bissau",code:"+245"},
+    {flag:"🇬🇲",name:"Gambia",code:"+220"},
+    {flag:"🇸🇱",name:"Sierra Leone",code:"+232"},
+    {flag:"🇱🇷",name:"Liberia",code:"+231"},
+    {flag:"🇲🇷",name:"Mauritania",code:"+222"},
+    {flag:"🇧🇯",name:"Benin",code:"+229"},
+    {flag:"🇹🇬",name:"Togo",code:"+228"},
+    {flag:"🇲🇺",name:"Mauritius",code:"+230"},
+    {flag:"🇸🇨",name:"Seychelles",code:"+248"},
+    {flag:"🇰🇲",name:"Comoros",code:"+269"},
+    {flag:"🇫🇯",name:"Fiji",code:"+679"},
+    {flag:"🇵🇬",name:"Papua New Guinea",code:"+675"},
+    {flag:"🇸🇧",name:"Solomon Islands",code:"+677"},
+    {flag:"🇻🇺",name:"Vanuatu",code:"+678"},
+    {flag:"🇼🇸",name:"Samoa",code:"+685"},
+    {flag:"🇹🇴",name:"Tonga",code:"+676"},
+    {flag:"🇰🇮",name:"Kiribati",code:"+686"},
+    {flag:"🇳🇷",name:"Nauru",code:"+674"},
+    {flag:"🇵🇼",name:"Palau",code:"+680"},
+    {flag:"🇫🇲",name:"Micronesia",code:"+691"},
+    {flag:"🇲🇭",name:"Marshall Islands",code:"+692"},
+    {flag:"🇸🇲",name:"San Marino",code:"+378"},
+    {flag:"🇲🇨",name:"Monaco",code:"+377"},
+    {flag:"🇱🇮",name:"Liechtenstein",code:"+423"},
+    {flag:"🇦🇩",name:"Andorra",code:"+376"},
+    {flag:"🇻🇦",name:"Vatican City",code:"+379"},
+    {flag:"🇲🇹",name:"Malta",code:"+356"},
+    {flag:"🇨🇾",name:"Cyprus",code:"+357"},
+    {flag:"🇮🇸",name:"Iceland",code:"+354"},
+    {flag:"🇱🇺",name:"Luxembourg",code:"+352"},
+    {flag:"🇸🇮",name:"Slovenia",code:"+386"},
+    {flag:"🇪🇪",name:"Estonia",code:"+372"},
+    {flag:"🇲🇪",name:"Montenegro",code:"+382"},
+    {flag:"🇽🇰",name:"Kosovo",code:"+383"},
+    {flag:"🇬🇮",name:"Gibraltar",code:"+350"},
+    {flag:"🇧🇳",name:"Brunei",code:"+673"},
+    {flag:"🇹🇱",name:"Timor-Leste",code:"+670"},
+    {flag:"🇵🇫",name:"French Polynesia",code:"+689"},
+    {flag:"🇳🇨",name:"New Caledonia",code:"+687"}
+];
+
+function renderCountryList(list) {
+    const container = document.getElementById("countryListItems");
+    container.innerHTML = "";
+    list.forEach(c => {
+        const item = document.createElement("div");
+        item.style.cssText = "display:flex; align-items:center; gap:10px; padding:10px 14px; cursor:pointer; font-size:13px; color:#000; transition:background 0.15s;";
+        item.innerHTML = `<span style="font-size:18px;">${c.flag}</span><span style="flex:1;">${c.name}</span><span style="color:#888; font-size:12px;">${c.code}</span>`;
+        item.onmouseover = () => item.style.background = "#f5f5f5";
+        item.onmouseout = () => item.style.background = "";
+        item.onclick = () => {
+    const flagEl = document.getElementById("countryFlag");
+    if(flagEl) flagEl.textContent = c.flag;
+    document.getElementById("countryName").textContent = c.name;
+            document.getElementById("proCountryCode").value = c.code;
+            document.getElementById("countryCodeDisplay").textContent = c.code;
+            document.getElementById("countryDropList").style.display = "none";
+        };
+        container.appendChild(item);
+    });
+}
+
+function filterCountries() {
+    const q = document.getElementById("countrySearch").value.toLowerCase();
+    renderCountryList(COUNTRIES.filter(c => c.name.toLowerCase().includes(q) || c.code.includes(q)));
+}
+
+function toggleCountryDrop() {
+    const drop = document.getElementById("countryDropList");
+    if (drop.style.display === "none" || !drop.style.display) {
+        drop.style.display = "block";
+        renderCountryList(COUNTRIES);
+        document.getElementById("countrySearch").value = "";
+        document.getElementById("countrySearch").focus();
+    } else {
+        drop.style.display = "none";
+    }
+}
+
+document.addEventListener("click", e => {
+    const wrap = document.getElementById("countryDisplay");
+    const drop = document.getElementById("countryDropList");
+    if (drop && wrap && !wrap.contains(e.target) && !drop.contains(e.target)) {
+        drop.style.display = "none";
+    }
+});
 
 </script>
 
