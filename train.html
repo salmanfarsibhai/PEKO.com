@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PEKO Brain • Training Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #f0f4ff;
+    --card: rgba(255,255,255,0.85);
+    --pri: #0083ff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: rgba(0,0,0,0.08);
+    --green: #10b981;
+    --red: #ef4444;
+}
+.dark {
+    --bg: #07111f;
+    --card: rgba(15,23,42,0.85);
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: rgba(255,255,255,0.07);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: "Hind Siliguri", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* ===== HEADER ===== */
+.header {
+    background: linear-gradient(135deg, var(--pri), #005fbc);
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,131,255,0.3);
+}
+.header h1 { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.header .actions { display: flex; gap: 10px; align-items: center; }
+.themeBtn {
+    background: rgba(255,255,255,0.18);
+    border: none;
+    color: white;
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* ===== STATS BAR ===== */
+.statsBar {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 20px 24px 0;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.statCard {
+    flex: 1;
+    min-width: 140px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    backdrop-filter: blur(18px);
+    text-align: center;
+}
+.statCard .num { font-size: 28px; font-weight: 800; color: var(--pri); }
+.statCard .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 600; }
+
+/* ===== MAIN LAYOUT ===== */
+.main {
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 0 24px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+@media(max-width: 768px) {
+    .main { grid-template-columns: 1fr; padding: 0 16px 40px; }
+    .statsBar { padding: 16px 16px 0; }
+}
+
+/* ===== CARDS ===== */
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+.card h2 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--pri);
+}
+
+/* ===== FORM ELEMENTS ===== */
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 6px;
+    margin-top: 14px;
+}
+label:first-child { margin-top: 0; }
+textarea, input[type="text"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(0,0,0,0.02);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.dark textarea, .dark input[type="text"] {
+    background: rgba(255,255,255,0.04);
+}
+textarea:focus, input[type="text"]:focus {
+    border-color: var(--pri);
+    box-shadow: 0 0 0 3px rgba(0,131,255,0.12);
+}
+textarea { min-height: 90px; }
+
+/* Tags input */
+.tagInput {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: rgba(0,0,0,0.02);
+    min-height: 46px;
+    align-items: center;
+    cursor: text;
+}
+.dark .tagInput { background: rgba(255,255,255,0.04); }
+.tag {
+    background: rgba(0,131,255,0.12);
+    color: var(--pri);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: default;
+}
+.tag button {
+    background: none;
+    border: none;
+    color: var(--pri);
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
+    line-height: 1;
+    opacity: 0.7;
+}
+.tagInput input {
+    border: none;
+    background: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--text);
+    min-width: 80px;
+    flex: 1;
+    padding: 2px 4px;
+}
+
+/* Buttons */
+.btnPrimary {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, var(--pri), #005fbc);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 18px;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0,131,255,0.3);
+}
+.btnPrimary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,131,255,0.4); }
+.btnPrimary:active { transform: scale(0.97); }
+
+.btnDanger {
+    background: rgba(239,68,68,0.12);
+    color: var(--red);
+    border: none;
+    padding: 7px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    font-family: inherit;
+}
+.btnDanger:hover { background: var(--red); color: white; }
+
+.btnEdit {
+    background: rgba(0,131,255,0.1);
+    color: var(--pri);
+    border: none;
+    padding: 7px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    font-family: inherit;
+}
+.btnEdit:hover { background: var(--pri); color: white; }
+
+/* ===== DATA LIST ===== */
+.dataList {
+    grid-column: 1 / -1;
+}
+.searchBox {
+    position: relative;
+    margin-bottom: 16px;
+}
+.searchBox input {
+    padding-left: 40px;
+    background: var(--card);
+}
+.searchBox svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+}
+.qaItem {
+    background: rgba(0,0,0,0.02);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    transition: 0.2s;
+}
+.dark .qaItem { background: rgba(255,255,255,0.02); }
+.qaItem:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+.qaItem .q { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.qaItem .a {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 60px;
+    overflow: hidden;
+    position: relative;
+}
+.qaItem .a.expanded { max-height: none; }
+.qaItem .meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+.metaBadge {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    background: rgba(0,131,255,0.08);
+    color: var(--pri);
+}
+.metaBadge.green { background: rgba(16,185,129,0.1); color: var(--green); }
+.metaBadge.orange { background: rgba(245,158,11,0.1); color: #f59e0b; }
+.qaActions { display: flex; gap: 8px; margin-left: auto; }
+
+/* ===== BULK IMPORT ===== */
+.bulkHelper {
+    font-size: 12px;
+    color: var(--muted);
+    background: rgba(0,131,255,0.06);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: 10px;
+    line-height: 1.6;
+    border-left: 3px solid var(--pri);
+}
+.bulkHelper code {
+    background: rgba(0,0,0,0.06);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+/* ===== TOAST ===== */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #111;
+    color: white;
+    padding: 11px 20px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 9999;
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+    opacity: 0;
+    pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* ===== EMPTY STATE ===== */
+.emptyState {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+}
+.emptyState svg { width: 60px; height: 60px; opacity: 0.3; margin-bottom: 12px; }
+.emptyState p { font-size: 14px; }
+
+/* ===== LOGIN ===== */
+#authBox {
+    position: fixed;
+    inset: 0;
+    background: #071120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+.loginCard {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 36px 28px;
+    width: 340px;
+    max-width: 90%;
+    text-align: center;
+    color: white;
+}
+.loginCard h2 { font-size: 22px; margin-bottom: 8px; }
+.loginCard p { font-size: 13px; opacity: 0.7; margin-bottom: 24px; }
+.loginCard input {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: white;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+.loginCard input::placeholder { color: rgba(255,255,255,0.35); }
+.loginCard .loginBtn {
+    width: 100%;
+    padding: 13px;
+    background: var(--pri);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: 0.2s;
+}
+.loginCard .loginBtn:hover { opacity: 0.9; transform: translateY(-1px); }
+.errMsg { color: #ff7070; font-size: 12px; margin-top: 8px; display: none; }
+
+/* No select */
+* { -webkit-tap-highlight-color: transparent; }
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="authBox">
+    <div class="loginCard">
+        <h2>🧠 PEKO Brain</h2>
+        <p>Training Panel-এ লগইন করুন</p>
+        <input id="trainPass" type="password" placeholder="Password লিখুন..." autocomplete="off">
+        <button class="loginBtn" onclick="trainLogin()">প্রবেশ করুন</button>
+        <div id="trainErrMsg" class="errMsg">❌ ভুল পাসওয়ার্ড!</div>
+    </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+    <h1>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4"/>
+            <path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+        </svg>
+        PEKO Brain Training Panel
+    </h1>
+    <div class="actions">
+        <button class="themeBtn" onclick="toggleTheme()">🌙</button>
+    </div>
+</div>
+
+<!-- STATS -->
+<div class="statsBar">
+    <div class="statCard"><div class="num" id="totalQA">0</div><div class="lbl">মোট QA জোড়া</div></div>
+    <div class="statCard"><div class="num" id="totalUsed">0</div><div class="lbl">মোট ব্যবহার</div></div>
+    <div class="statCard"><div class="num" id="totalTags">0</div><div class="lbl">ট্যাগ ক্যাটেগরি</div></div>
+    <div class="statCard"><div class="num" id="lastUpdated">—</div><div class="lbl">সর্বশেষ আপডেট</div></div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- ADD SINGLE QA -->
+    <div class="card">
+        <h2>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            নতুন QA যোগ করুন
+        </h2>
+
+        <label>প্রশ্ন (Question) *</label>
+        <textarea id="qInput" placeholder="যেমন: PEKO কে তৈরি করেছে? বা Who made PEKO?" rows="3"></textarea>
+
+        <label>উত্তর (Answer) *</label>
+        <textarea id="aInput" placeholder="সম্পূর্ণ উত্তরটি বিস্তারিতভাবে লিখুন..." rows="4"></textarea>
+
+        <label>ট্যাগ (Tags) — Enter চেপে যোগ করুন</label>
+        <div class="tagInput" id="tagContainer" onclick="document.getElementById('tagRealInput').focus()">
+            <input type="text" id="tagRealInput" placeholder="ট্যাগ লিখুন..." onkeydown="handleTagInput(event)">
+        </div>
+        <div style="font-size:11px; color:var(--muted); margin-top:5px;">যেমন: পরিচয়, about, creator, peko</div>
+
+        <label>বিকল্প প্রশ্ন (Alternate Questions) — একাধিক হলে লাইন ভেঙে লিখুন</label>
+        <textarea id="altInput" placeholder="PEKO বানিয়েছে কে?&#10;পেকো কে বানিয়েছে?&#10;who created peko?" rows="3"></textarea>
+
+        <button class="btnPrimary" onclick="saveQA()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            ডাটাবেজে সেভ করুন
+        </button>
+    </div>
+
+    <!-- BULK IMPORT -->
+    <div class="card">
+        <h2>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Bulk Import (JSON)
+        </h2>
+
+        <div class="bulkHelper">
+            <strong>JSON ফরম্যাট:</strong><br>
+            <code>[{"question":"প্রশ্ন","answer":"উত্তর","tags":["ট্যাগ১","ট্যাগ২"]}]</code><br><br>
+            একসাথে অনেকগুলো QA যোগ করতে উপরের ফরম্যাটে JSON লিখুন বা পেস্ট করুন।
+        </div>
+
+        <label style="margin-top:14px;">JSON ডাটা পেস্ট করুন *</label>
+        <textarea id="bulkInput" placeholder='[
+  {
+    "question": "PEKO কি?",
+    "answer": "PEKO একটি বাংলাদেশী AI চ্যাটবট।",
+    "tags": ["পরিচয়", "about"]
+  },
+  {
+    "question": "PEKO কে বানিয়েছে?",
+    "answer": "PEKO তৈরি করেছেন Salman Farsi।",
+    "tags": ["creator", "পরিচয়"]
+  }
+]' style="min-height:180px; font-family:monospace; font-size:12px;"></textarea>
+
+        <button class="btnPrimary" onclick="bulkImport()" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 15px rgba(16,185,129,0.3);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            সব ডাটা Import করুন
+        </button>
+
+        <div style="margin-top:14px; padding: 12px; background: rgba(245,158,11,0.06); border-radius:10px; border-left: 3px solid #f59e0b; font-size: 12px; color: var(--muted); line-height: 1.6;">
+            ⚠️ <strong>সতর্কতা:</strong> Import করলে নতুন ডাটা পুরানো ডাটার সাথে যুক্ত হবে, মুছবে না।
+        </div>
+    </div>
+
+    <!-- DATA LIST (full width) -->
+    <div class="card dataList">
+        <h2>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            সব ট্রেনড ডাটা
+        </h2>
+
+        <div class="searchBox">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="প্রশ্ন বা উত্তর খুঁজুন..." oninput="filterData()">
+        </div>
+
+        <div id="qaList">
+            <div class="emptyState">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+                <p>ডাটা লোড হচ্ছে...</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+// ============================================================
+// CONFIG — আপনার Firebase config এখানে বসান
+// ============================================================
+const firebaseConfig = {
+    apiKey: "AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
+    authDomain: "peko-ai.firebaseapp.com",
+    databaseURL: "https://peko-ai-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "peko-ai"
+};
+firebase.initializeApp(firebaseConfig);
+const DB = firebase.database();
+const BRAIN_REF = "peko_brain/qa_pairs";
+// ট্রেনিং প্যানেলের পাসওয়ার্ড
+const TRAIN_PASSWORD = "peko_train_2025";
+
+// ============================================================
+// LOGIN SYSTEM
+// ============================================================
+let isLoggedIn = false;
+
+function trainLogin() {
+    const pass = document.getElementById("trainPass").value;
+    const err = document.getElementById("trainErrMsg");
+    if (pass === TRAIN_PASSWORD) {
+        document.getElementById("authBox").style.display = "none";
+        isLoggedIn = true;
+        loadAllData();
+    } else {
+        err.style.display = "block";
+        setTimeout(() => err.style.display = "none", 2500);
+    }
+}
+document.getElementById("trainPass").addEventListener("keydown", e => {
+    if (e.key === "Enter") trainLogin();
+});
+
+// ============================================================
+// THEME
+// ============================================================
+if (localStorage.getItem("train_theme") === "dark") document.body.classList.add("dark");
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+    localStorage.setItem("train_theme", document.body.classList.contains("dark") ? "dark" : "light");
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg) {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    setTimeout(() => el.classList.remove("show"), 2500);
+}
+
+// ============================================================
+// TAG INPUT
+// ============================================================
+let currentTags = [];
+function handleTagInput(e) {
+    if (e.key === "Enter" || e.key === ",") {
+        e.preventDefault();
+        const val = e.target.value.trim().replace(/,/g, "");
+        if (val && !currentTags.includes(val)) {
+            currentTags.push(val);
+            renderTags();
+        }
+        e.target.value = "";
+    }
+}
+function renderTags() {
+    const container = document.getElementById("tagContainer");
+    const input = document.getElementById("tagRealInput");
+    container.innerHTML = "";
+    currentTags.forEach((tag, i) => {
+        const el = document.createElement("div");
+        el.className = "tag";
+        el.innerHTML = `${tag}<button onclick="removeTag(${i})">✕</button>`;
+        container.appendChild(el);
+    });
+    container.appendChild(input);
+}
+function removeTag(i) {
+    currentTags.splice(i, 1);
+    renderTags();
+}
+
+// ============================================================
+// SAVE SINGLE QA
+// ============================================================
+function saveQA(editId) {
+    const q = document.getElementById("qInput").value.trim();
+    const a = document.getElementById("aInput").value.trim();
+    const altRaw = document.getElementById("altInput").value.trim();
+
+    if (!q) { toast("❌ প্রশ্ন লিখুন!"); return; }
+    if (!a) { toast("❌ উত্তর লিখুন!"); return; }
+
+    const altQuestions = altRaw
+        ? altRaw.split("\n").map(s => s.trim()).filter(Boolean)
+        : [];
+
+    const payload = {
+        question: q,
+        answer: a,
+        tags: [...currentTags],
+        altQuestions: altQuestions,
+        createdAt: Date.now(),
+        useCount: 0,
+        upvotes: 0,
+        downvotes: 0
+    };
+
+    const ref = editId
+        ? DB.ref(BRAIN_REF + "/" + editId)
+        : DB.ref(BRAIN_REF).push();
+
+    ref.set(payload)
+        .then(() => {
+            toast(editId ? "✅ আপডেট হয়েছে!" : "✅ সেভ হয়েছে!");
+            clearForm();
+            loadAllData();
+        })
+        .catch(() => toast("❌ সেভ করতে সমস্যা হয়েছে!"));
+}
+
+function clearForm() {
+    document.getElementById("qInput").value = "";
+    document.getElementById("aInput").value = "";
+    document.getElementById("altInput").value = "";
+    currentTags = [];
+    renderTags();
+    document.querySelector(".btnPrimary").onclick = saveQA;
+    document.querySelector(".btnPrimary").innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> ডাটাবেজে সেভ করুন`;
+}
+
+// ============================================================
+// BULK IMPORT
+// ============================================================
+function bulkImport() {
+    const raw = document.getElementById("bulkInput").value.trim();
+    if (!raw) { toast("❌ JSON ডাটা লিখুন!"); return; }
+
+    let parsed;
+    try {
+        parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) throw new Error("Array দরকার");
+    } catch {
+        toast("❌ JSON ফরম্যাট ভুল! চেক করুন।");
+        return;
+    }
+
+    let count = 0;
+    const promises = parsed.map(item => {
+        if (!item.question || !item.answer) return Promise.resolve();
+        count++;
+        return DB.ref(BRAIN_REF).push({
+            question: item.question.trim(),
+            answer: item.answer.trim(),
+            tags: Array.isArray(item.tags) ? item.tags : [],
+            altQuestions: Array.isArray(item.altQuestions) ? item.altQuestions : [],
+            createdAt: Date.now(),
+            useCount: 0,
+            upvotes: 0,
+            downvotes: 0
+        });
+    });
+
+    Promise.all(promises)
+        .then(() => {
+            toast(`✅ ${count}টি QA Import হয়েছে!`);
+            document.getElementById("bulkInput").value = "";
+            loadAllData();
+        })
+        .catch(() => toast("❌ Import-এ সমস্যা হয়েছে!"));
+}
+
+// ============================================================
+// LOAD & DISPLAY ALL DATA
+// ============================================================
+let allData = [];
+
+function loadAllData() {
+    DB.ref(BRAIN_REF).on("value", snapshot => {
+        allData = [];
+        let totalUse = 0;
+        const tagSet = new Set();
+
+        if (snapshot.exists()) {
+            snapshot.forEach(child => {
+                const d = child.val();
+                allData.push({ id: child.key, ...d });
+                totalUse += (d.useCount || 0);
+                if (d.tags) d.tags.forEach(t => tagSet.add(t));
+            });
+        }
+
+        // Stats আপডেট
+        document.getElementById("totalQA").textContent = allData.length;
+        document.getElementById("totalUsed").textContent = totalUse;
+        document.getElementById("totalTags").textContent = tagSet.size;
+        const now = new Date();
+        document.getElementById("lastUpdated").textContent =
+            now.getHours().toString().padStart(2,"0") + ":" + now.getMinutes().toString().padStart(2,"0");
+
+        renderList(allData);
+    });
+}
+
+function filterData() {
+    const q = document.getElementById("searchInput").value.toLowerCase().trim();
+    if (!q) { renderList(allData); return; }
+    const filtered = allData.filter(d =>
+        (d.question && d.question.toLowerCase().includes(q)) ||
+        (d.answer && d.answer.toLowerCase().includes(q)) ||
+        (d.tags && d.tags.some(t => t.toLowerCase().includes(q)))
+    );
+    renderList(filtered);
+}
+
+function renderList(data) {
+    const container = document.getElementById("qaList");
+    if (!data || data.length === 0) {
+        container.innerHTML = `<div class="emptyState">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <p>কোনো ডাটা পাওয়া যায়নি।</p>
+        </div>`;
+        return;
+    }
+
+    container.innerHTML = [...data].reverse().map(d => {
+        const tagsHtml = (d.tags || []).map(t =>
+            `<span class="metaBadge">${t}</span>`
+        ).join("");
+
+        return `<div class="qaItem" id="qa_${d.id}">
+            <div class="q">❓ ${d.question || ""}</div>
+            <div class="a" id="ans_${d.id}">${d.answer || ""}</div>
+            ${(d.answer || "").length > 120 ? `<button onclick="toggleExpand('${d.id}')" style="background:none;border:none;color:var(--pri);cursor:pointer;font-size:12px;font-weight:600;padding:2px 0;font-family:inherit;">আরও দেখুন</button>` : ""}
+            <div class="meta">
+                ${tagsHtml}
+                <span class="metaBadge green">👁 ${d.useCount || 0} বার</span>
+                ${(d.upvotes || 0) > 0 ? `<span class="metaBadge orange">👍 ${d.upvotes}</span>` : ""}
+                <div class="qaActions">
+                    <button class="btnEdit" onclick="editQA('${d.id}')">সম্পাদনা</button>
+                    <button class="btnDanger" onclick="deleteQA('${d.id}')">মুছুন</button>
+                </div>
+            </div>
+        </div>`;
+    }).join("");
+}
+
+function toggleExpand(id) {
+    const el = document.getElementById("ans_" + id);
+    el.classList.toggle("expanded");
+}
+
+// ============================================================
+// EDIT & DELETE
+// ============================================================
+function editQA(id) {
+    const item = allData.find(d => d.id === id);
+    if (!item) return;
+
+    document.getElementById("qInput").value = item.question || "";
+    document.getElementById("aInput").value = item.answer || "";
+    document.getElementById("altInput").value = (item.altQuestions || []).join("\n");
+    currentTags = [...(item.tags || [])];
+    renderTags();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    const btn = document.querySelector(".btnPrimary");
+    btn.innerHTML = `✅ আপডেট করুন (ID: ${id.slice(-6)})`;
+    btn.onclick = () => saveQA(id);
+
+    toast("✏️ সম্পাদনা মোডে প্রবেশ করেছেন।");
+}
+
+function deleteQA(id) {
+    if (!confirm("এই QA মুছে ফেলবেন?")) return;
+    DB.ref(BRAIN_REF + "/" + id)
+        .remove()
+        .then(() => toast("🗑 মুছে ফেলা হয়েছে!"))
+        .catch(() => toast("❌ মুছতে সমস্যা হয়েছে!"));
+}
+
+// ============================================================
+// SECURITY
+// ============================================================
+document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("keydown", e => {
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && "IJ".includes(e.key))) e.preventDefault();
+});
+</script>
+</body>
+</html>
