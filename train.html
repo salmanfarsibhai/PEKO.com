@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PEKO Brain • Training Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #f0f4ff;
+    --surface: #ffffff;
+    --card: rgba(255,255,255,0.92);
+    --card2: rgba(248,250,255,0.95);
+    --pri: #0057e7;
+    --pri2: #003db5;
+    --priSoft: rgba(0,87,231,0.1);
+    --priGlow: rgba(0,87,231,0.25);
+    --text: #0d1b3e;
+    --text2: #1e3a6b;
+    --muted: #6b7fa3;
+    --border: rgba(0,0,0,0.07);
+    --border2: rgba(0,87,231,0.15);
+    --green: #00b87a;
+    --greenSoft: rgba(0,184,122,0.1);
+    --red: #e03434;
+    --redSoft: rgba(224,52,52,0.1);
+    --amber: #f59e0b;
+    --amberSoft: rgba(245,158,11,0.1);
+    --shadow: 0 4px 24px rgba(0,30,100,0.08);
+    --shadowHover: 0 12px 40px rgba(0,30,100,0.15);
+    --r: 18px;
+    --rSm: 12px;
+    --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+}
+.dark {
+    --bg: #060d1e;
+    --surface: #0d1830;
+    --card: rgba(13,24,48,0.9);
+    --card2: rgba(10,19,40,0.95);
+    --text: #e8efff;
+    --text2: #a8bde4;
+    --muted: #6b7fa3;
+    --border: rgba(255,255,255,0.06);
+    --border2: rgba(0,120,255,0.2);
+    --shadow: 0 4px 24px rgba(0,0,0,0.3);
+    --shadowHover: 0 12px 40px rgba(0,0,0,0.5);
+    --priSoft: rgba(0,120,255,0.12);
+    --priGlow: rgba(0,100,255,0.2);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: "Hind Siliguri", "Poppins", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background var(--transition), color var(--transition);
+    overflow-x: hidden;
+}
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(0,87,231,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0,180,120,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+.dark body::before {
+    background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(0,87,231,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0,180,120,0.08) 0%, transparent 60%);
+}
+
+/* ===== HEADER ===== */
+.header {
+    background: linear-gradient(135deg, #0057e7 0%, #003db5 100%);
+    padding: 0 28px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    box-shadow: 0 2px 20px rgba(0,57,181,0.35);
+}
+.headerLeft { display: flex; align-items: center; gap: 14px; }
+.headerLogo {
+    width: 34px; height: 34px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+}
+.headerTitle { color: white; font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+.headerTitle span { opacity: 0.65; font-weight: 500; margin-left: 8px; font-size: 13px; }
+.headerActions { display: flex; gap: 8px; align-items: center; }
+.headerBtn {
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: white;
+    height: 34px;
+    padding: 0 14px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    display: flex; align-items: center; gap: 6px;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+.headerBtn:hover { background: rgba(255,255,255,0.24); }
+.headerBtn.icon { padding: 0; width: 34px; }
+
+/* ===== STATS BAR ===== */
+.statsWrap {
+    position: relative; z-index: 1;
+    max-width: 1600px;
+    margin: 24px auto 0;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+.statCard {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 18px 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+.statCard::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--pri), transparent);
+    opacity: 0.4;
+}
+.statCard:hover { box-shadow: var(--shadowHover); transform: translateY(-2px); }
+.statIcon {
+    width: 42px; height: 42px;
+    background: var(--priSoft);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.statIcon svg { color: var(--pri); }
+.statInfo { flex: 1; min-width: 0; }
+.statNum { font-size: 26px; font-weight: 800; color: var(--pri); line-height: 1; }
+.statLbl { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+.statCard.green .statIcon { background: var(--greenSoft); }
+.statCard.green .statIcon svg, .statCard.green .statNum { color: var(--green); }
+.statCard.green::before { background: linear-gradient(90deg, var(--green), transparent); }
+.statCard.amber .statIcon { background: var(--amberSoft); }
+.statCard.amber .statIcon svg, .statCard.amber .statNum { color: var(--amber); }
+.statCard.amber::before { background: linear-gradient(90deg, var(--amber), transparent); }
+
+/* ===== LAYOUT ===== */
+.workspace {
+    position: relative; z-index: 1;
+   max-width: 1600px;
+    margin: 20px auto 40px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 380px 380px 1fr;
+    gap: 20px;
+    align-items: start;
+}
+.leftCol { display: flex; flex-direction: column; gap: 16px; }
+.rightCol { display: flex; flex-direction: column; gap: 16px; }
+
+/* ===== CARD ===== */
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: var(--transition);
+}
+.cardHead {
+    padding: 18px 22px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+}
+.cardTitle {
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+}
+.cardTitle svg { color: var(--pri); }
+.cardBadge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: var(--priSoft);
+    color: var(--pri);
+}
+.cardBadge.green { background: var(--greenSoft); color: var(--green); }
+.cardBody { padding: 20px 22px; }
+
+/* ===== FORM ===== */
+.formGroup { margin-bottom: 16px; }
+.formGroup:last-child { margin-bottom: 0; }
+.formLabel {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 7px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.required { color: var(--red); }
+textarea, input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--rSm);
+    background: var(--card2);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    resize: vertical;
+    transition: border-color var(--transition), box-shadow var(--transition);
+    line-height: 1.6;
+}
+.dark textarea, .dark input[type="text"], .dark input[type="password"] {
+    background: rgba(255,255,255,0.03);
+}
+textarea:focus, input[type="text"]:focus, input[type="password"]:focus {
+    border-color: var(--pri);
+    box-shadow: 0 0 0 3px var(--priGlow);
+}
+textarea { min-height: 80px; }
+.charCount {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    margin-top: 4px;
+    font-weight: 600;
+}
+.charCount.warn { color: var(--amber); }
+
+/* Tag Input */
+.tagWrap {
+    border: 1.5px solid var(--border);
+    border-radius: var(--rSm);
+    background: var(--card2);
+    padding: 8px 10px;
+    min-height: 44px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    cursor: text;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+.dark .tagWrap { background: rgba(255,255,255,0.03); }
+.tagWrap:focus-within {
+    border-color: var(--pri);
+    box-shadow: 0 0 0 3px var(--priGlow);
+}
+.tagChip {
+    background: var(--priSoft);
+    color: var(--pri);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    animation: chipIn 0.15s ease;
+}
+@keyframes chipIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+.tagChip button {
+    background: none; border: none; color: var(--pri);
+    cursor: pointer; font-size: 13px; padding: 0; line-height: 1;
+    opacity: 0.6; transition: opacity 0.15s;
+}
+.tagChip button:hover { opacity: 1; }
+.tagWrap input {
+    border: none; background: none; outline: none;
+    font-family: inherit; font-size: 13px; color: var(--text);
+    min-width: 80px; flex: 1; padding: 2px 4px;
+    box-shadow: none !important;
+}
+
+/* Smart Tag Suggestions */
+.tagSuggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+.tagSugChip {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1.5px dashed var(--border2);
+    color: var(--muted);
+    cursor: pointer;
+    background: none;
+    font-family: inherit;
+    transition: var(--transition);
+}
+.tagSugChip:hover {
+    border-color: var(--pri);
+    color: var(--pri);
+    background: var(--priSoft);
+}
+
+/* ===== BUTTONS ===== */
+.btnRow { display: flex; gap: 10px; margin-top: 18px; }
+.btn {
+    padding: 11px 18px;
+    border-radius: var(--rSm);
+    border: none;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+.btn:active { transform: scale(0.97); }
+.btnPri {
+    background: linear-gradient(135deg, var(--pri), var(--pri2));
+    color: white;
+    flex: 1;
+    box-shadow: 0 4px 14px var(--priGlow);
+}
+.btnPri:hover { transform: translateY(-2px); box-shadow: 0 8px 22px var(--priGlow); }
+.btnPri:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btnGhost {
+    background: var(--card2);
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+}
+.btnGhost:hover { border-color: var(--pri); color: var(--pri); }
+.btnGreen {
+    background: linear-gradient(135deg, var(--green), #009964);
+    color: white;
+    flex: 1;
+    box-shadow: 0 4px 14px rgba(0,184,122,0.25);
+}
+.btnGreen:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,184,122,0.35); }
+.btnDanger {
+    background: var(--redSoft); color: var(--red);
+    border: none; padding: 7px 13px;
+    border-radius: 9px; font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: var(--transition); font-family: inherit;
+}
+.btnDanger:hover { background: var(--red); color: white; }
+.btnEdit {
+    background: var(--priSoft); color: var(--pri);
+    border: none; padding: 7px 13px;
+    border-radius: 9px; font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: var(--transition); font-family: inherit;
+}
+.btnEdit:hover { background: var(--pri); color: white; }
+
+/* Edit Mode Banner */
+.editBanner {
+    display: none;
+    background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.06));
+    border: 1.5px solid rgba(245,158,11,0.3);
+    border-radius: var(--rSm);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--amber);
+    font-weight: 600;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.editBanner.show { display: flex; }
+.editBanner button {
+    margin-left: auto; background: none; border: none;
+    color: var(--amber); cursor: pointer; font-size: 16px; line-height: 1;
+}
+
+/* Keyboard shortcut badge */
+.kbdHint {
+    font-size: 10px; color: var(--muted);
+    background: var(--card2); border: 1px solid var(--border);
+    border-radius: 5px; padding: 1px 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+}
+
+/* ===== BULK IMPORT ===== */
+.codeArea {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    min-height: 160px;
+    line-height: 1.7;
+}
+.jsonHelper {
+    background: rgba(0,57,181,0.05);
+    border: 1px solid var(--border2);
+    border-radius: var(--rSm);
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 14px;
+}
+.jsonHelper code {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--pri);
+}
+.warnBox {
+    background: rgba(245,158,11,0.07);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: var(--rSm);
+    padding: 11px 13px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-top: 12px;
+    display: flex; gap: 8px;
+}
+.warnBox span { flex-shrink: 0; }
+
+/* ===== DATA LIST ===== */
+.listControls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    align-items: center;
+}
+.searchWrap {
+    position: relative;
+    flex: 1;
+}
+.searchWrap svg {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+}
+.searchWrap input { padding-left: 40px; }
+.filterBtn {
+    background: var(--card2);
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+    height: 42px; padding: 0 14px;
+    border-radius: var(--rSm);
+    font-size: 12px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    display: flex; align-items: center; gap: 6px;
+    transition: var(--transition); white-space: nowrap;
+}
+.filterBtn:hover, .filterBtn.active {
+    border-color: var(--pri); color: var(--pri); background: var(--priSoft);
+}
+.listMeta {
+    font-size: 12px; color: var(--muted); font-weight: 600;
+    margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.listMeta .count { color: var(--pri); }
+
+/* QA Items */
+.qaItem {
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    transition: var(--transition);
+    background: var(--card2);
+    position: relative;
+}
+.qaItem:hover {
+    border-color: var(--border2);
+    box-shadow: var(--shadowHover);
+    transform: translateY(-1px);
+}
+.qaItem:last-child { margin-bottom: 0; }
+.qaQ {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 7px;
+    display: flex;
+    gap: 8px;
+    line-height: 1.5;
+}
+.qaQ::before { content: '❓'; flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+.qaA {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 56px;
+    overflow: hidden;
+    position: relative;
+    line-height: 1.6;
+    transition: max-height 0.3s ease;
+}
+.qaA.expanded { max-height: 800px; }
+.qaA:not(.expanded)::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 24px;
+    background: linear-gradient(transparent, var(--card2));
+}
+.qaItemFooter {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+.metaBadge {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: var(--priSoft);
+    color: var(--pri);
+}
+.metaBadge.green { background: var(--greenSoft); color: var(--green); }
+.metaBadge.amber { background: var(--amberSoft); color: var(--amber); }
+.qaActions { display: flex; gap: 6px; margin-left: auto; align-items: center; }
+.expandBtn {
+    background: none; border: none;
+    color: var(--pri); cursor: pointer;
+    font-size: 11px; font-weight: 700;
+    font-family: inherit; padding: 0;
+    display: flex; align-items: center; gap: 3px;
+    transition: var(--transition);
+}
+.expandBtn:hover { opacity: 0.7; }
+
+/* Empty State */
+.emptyState {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--muted);
+}
+.emptyState svg { width: 56px; height: 56px; opacity: 0.2; margin-bottom: 14px; }
+.emptyState p { font-size: 14px; font-weight: 600; }
+.emptyState small { font-size: 12px; opacity: 0.7; }
+
+/* ===== TOAST ===== */
+.toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(90px);
+    background: var(--text);
+    color: var(--surface);
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-size: 13px; font-weight: 700;
+    z-index: 9999;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+    opacity: 0; pointer-events: none;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    white-space: nowrap;
+    max-width: 90vw;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast.success { background: var(--green); }
+.toast.error { background: var(--red); }
+
+/* ===== LOGIN ===== */
+#authBox {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, #050c1e 0%, #071428 100%);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+}
+#authBox::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+        radial-gradient(ellipse 70% 60% at 30% 40%, rgba(0,87,231,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 70% 70%, rgba(0,180,122,0.08) 0%, transparent 60%);
+    pointer-events: none;
+}
+.loginCard {
+    position: relative;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(30px);
+    border-radius: 28px;
+    padding: 44px 36px;
+    width: 380px; max-width: 92vw;
+    text-align: center; color: white;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    animation: loginIn 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes loginIn { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.loginLogo {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, #0057e7, #003db5);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 28px;
+    box-shadow: 0 8px 30px rgba(0,87,231,0.4);
+}
+.loginCard h2 { font-size: 24px; margin-bottom: 6px; font-weight: 800; }
+.loginCard p { font-size: 13px; opacity: 0.55; margin-bottom: 28px; }
+.loginCard input {
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    color: white; width: 100%;
+    border-radius: 12px; padding: 13px 16px;
+    font-size: 14px; margin-bottom: 14px;
+    text-align: center; letter-spacing: 3px;
+}
+.loginCard input::placeholder { color: rgba(255,255,255,0.3); letter-spacing: 0; }
+.loginCard input:focus { border-color: rgba(0,120,255,0.7); box-shadow: 0 0 0 3px rgba(0,87,231,0.25); outline: none; }
+.loginBtn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, #0057e7, #003db5);
+    color: white; border: none; border-radius: 12px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    font-family: inherit; transition: var(--transition);
+    box-shadow: 0 4px 20px rgba(0,87,231,0.4);
+}
+.loginBtn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,87,231,0.5); }
+.errMsg { color: #ff7070; font-size: 12px; margin-top: 12px; min-height: 16px; font-weight: 600; }
+
+/* ===== SHORTCUTS PANEL ===== */
+.shortcutsPanel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 16px 20px;
+    display: flex; gap: 16px; flex-wrap: wrap;
+    align-items: center;
+}
+.shortcutItem {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--muted);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width: 900px) {
+    .workspace { grid-template-columns: 1fr; padding: 0 16px; }
+    .statsWrap { grid-template-columns: repeat(2, 1fr); padding: 0 16px; }
+}
+@media(max-width: 500px) {
+    .statsWrap { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .statNum { font-size: 20px; }
+    .headerTitle span { display: none; }
+}
+
+/* ===== PROGRESS BAR ===== */
+.progressBar {
+    height: 3px;
+    background: var(--priSoft);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 14px;
+    display: none;
+}
+.progressBar.show { display: block; }
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pri), var(--green));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Loading skeleton */
+.skeleton {
+    background: linear-gradient(90deg, var(--border) 25%, var(--card2) 50%, var(--border) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: 8px;
+}
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* Fade in animation */
+.fadeIn { animation: fadeIn 0.35s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== HOW IT WORKS ===== */
+.howItWorks {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(0,87,231,0.06), rgba(0,184,122,0.04));
+    border: 1px solid var(--border2);
+    border-radius: var(--rSm);
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+.howStep {
+    display: flex; align-items: center; gap: 8px; flex: 1; min-width: 120px;
+}
+.howNum {
+    width: 28px; height: 28px;
+    background: var(--pri);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    flex-shrink: 0;
+}
+.howText { font-size: 12px; font-weight: 600; color: var(--muted); line-height: 1.4; }
+.howArrow { font-size: 16px; color: var(--muted); opacity: 0.4; flex-shrink: 0; }
+
+/* ===== BULK ENTRY CARD ===== */
+.bulkEntry {
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: var(--card2);
+    position: relative;
+    transition: var(--transition);
+    animation: fadeIn 0.25s ease;
+}
+.bulkEntry:hover { border-color: var(--border2); }
+.bulkEntry.filled { border-color: rgba(0,184,122,0.3); }
+.bulkEntryHead {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 12px;
+}
+.bulkEntryNum {
+    width: 24px; height: 24px;
+    background: var(--priSoft);
+    color: var(--pri);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800;
+    flex-shrink: 0;
+}
+.bulkEntryNum.done {
+    background: var(--greenSoft);
+    color: var(--green);
+}
+.bulkEntryLabel {
+    font-size: 12px; font-weight: 700;
+    color: var(--text); flex: 1;
+}
+.bulkEntryStatus {
+    font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 10px;
+}
+.bulkEntryStatus.empty { background: var(--amberSoft); color: var(--amber); }
+.bulkEntryStatus.ready { background: var(--greenSoft); color: var(--green); }
+.bulkEntryDel {
+    background: none; border: none;
+    color: var(--muted); cursor: pointer;
+    font-size: 16px; line-height: 1;
+    transition: var(--transition); padding: 2px;
+}
+.bulkEntryDel:hover { color: var(--red); }
+
+.bulkEntryField { margin-bottom: 10px; }
+.bulkEntryField:last-child { margin-bottom: 0; }
+.bulkFieldLabel {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+.bulkFieldLabel .req { color: var(--red); }
+
+/* Tag row inside bulk entry */
+.bulkTagRow {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    align-items: center;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 10px;
+    background: var(--card2);
+    cursor: text;
+    min-height: 38px;
+    transition: border-color var(--transition);
+}
+.bulkTagRow:focus-within { border-color: var(--pri); }
+.bulkTagRow .tagChip { font-size: 11px; padding: 2px 8px; }
+.bulkTagRow input {
+    border: none; background: none; outline: none;
+    font-size: 12px; font-family: inherit;
+    color: var(--text); min-width: 70px; flex: 1;
+    padding: 1px 2px; box-shadow: none !important;
+}
+
+/* Add more button */
+.addMoreBtn {
+    width: 100%;
+    border: 2px dashed var(--border2);
+    background: none;
+    color: var(--pri);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 13px; font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    transition: var(--transition);
+    margin-bottom: 12px;
+}
+.addMoreBtn:hover {
+    background: var(--priSoft);
+    border-color: var(--pri);
+}
+
+/* Bulk preview */
+.bulkPreview {
+    text-align: center;
+    font-size: 13px; font-weight: 700;
+    color: var(--green);
+    background: var(--greenSoft);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 4px;
+}
+.bulkPreview span { font-size: 20px; font-weight: 900; }
+
+/* Advanced toggle */
+.toggleAdvBtn {
+    background: none; border: none;
+    color: var(--muted); cursor: pointer;
+    font-size: 12px; font-weight: 700;
+    font-family: inherit;
+    display: flex; align-items: center; gap: 5px;
+    transition: var(--transition); padding: 0;
+}
+.toggleAdvBtn:hover { color: var(--pri); }
+
+/* ===== SUCCESS OVERLAY on saved item ===== */
+.saveFlash {
+    animation: saveFlash 0.6s ease;
+}
+@keyframes saveFlash {
+    0% { background: var(--greenSoft); }
+    100% { background: var(--card2); }
+}
+
+/* Live update pulse */
+@keyframes pulseBorder {
+    0%, 100% { border-color: rgba(0,184,122,0.3); }
+    50% { border-color: rgba(0,184,122,0.8); }
+}
+#liveUpdateBadge { animation: fadeIn 0.3s ease, pulseBorder 1.5s ease 3; }
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="authBox">
+    <div class="loginCard">
+        <div class="loginLogo">🧠</div>
+        <h2>PEKO Brain</h2>
+        <p>Training Studio-তে প্রবেশ করুন</p>
+        <input id="trainPass" type="password" placeholder="Password..." autocomplete="off">
+        <button class="loginBtn" onclick="trainLogin()">প্রবেশ করুন →</button>
+        <div id="trainErrMsg" class="errMsg"></div>
+    </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="headerLeft">
+        <div class="headerLogo">🧠</div>
+        <div class="headerTitle">
+            PEKO Training Studio
+            <span>Brain Engine v1.0</span>
+        </div>
+    </div>
+    <div class="headerActions">
+        <button class="headerBtn" onclick="clearForm()" title="নতুন এন্ট্রি">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            নতুন
+        </button>
+        <button class="headerBtn icon" onclick="toggleTheme()" id="themeBtn" title="Theme toggle">🌙</button>
+    </div>
+</div>
+
+<!-- STATS -->
+<div class="statsWrap">
+    <div class="statCard">
+        <div class="statIcon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+        </div>
+        <div class="statInfo">
+            <div class="statNum" id="totalQA">—</div>
+            <div class="statLbl">মোট QA</div>
+        </div>
+    </div>
+    <div class="statCard green">
+        <div class="statIcon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="statInfo">
+            <div class="statNum" id="totalUsed">—</div>
+            <div class="statLbl">মোট ব্যবহার</div>
+        </div>
+    </div>
+    <div class="statCard amber">
+        <div class="statIcon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        </div>
+        <div class="statInfo">
+            <div class="statNum" id="totalTags">—</div>
+            <div class="statLbl">ট্যাগ ক্যাটেগরি</div>
+        </div>
+    </div>
+    <div class="statCard">
+        <div class="statIcon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="statInfo">
+            <div class="statNum" id="lastUpdated">—</div>
+            <div class="statLbl">সর্বশেষ আপডেট</div>
+        </div>
+    </div>
+</div>
+
+<!-- WORKSPACE -->
+<div class="workspace">
+
+    <!-- LEFT COLUMN -->
+    <div class="leftCol">
+
+        <!-- ADD/EDIT QA -->
+        <div class="card" id="addCard">
+            <div class="cardHead">
+                <div class="cardTitle">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    নতুন QA যোগ করুন
+                </div>
+                <span class="kbdHint" title="Ctrl+S to save">Ctrl+S</span>
+            </div>
+            <div class="cardBody">
+                <!-- Edit Mode Banner -->
+                <div class="editBanner" id="editBanner">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    <span id="editBannerText">সম্পাদনা মোড</span>
+                    <button onclick="clearForm()" title="বাতিল">✕</button>
+                </div>
+
+                <div class="formGroup">
+                    <label class="formLabel">প্রশ্ন <span class="required">*</span></label>
+                    <textarea id="qInput" placeholder="যেমন: PEKO কে তৈরি করেছে?" rows="3" oninput="onQAInput()"></textarea>
+                    <div class="charCount" id="qCount">0 অক্ষর</div>
+                </div>
+
+                <div class="formGroup">
+                    <label class="formLabel">উত্তর <span class="required">*</span></label>
+                    <textarea id="aInput" placeholder="বিস্তারিত উত্তর লিখুন..." rows="5" oninput="updateCharCount('aInput','aCount')"></textarea>
+                    <div class="charCount" id="aCount">0 অক্ষর</div>
+                </div>
+
+                <div class="formGroup">
+                    <label class="formLabel">ট্যাগ <small style="font-weight:500;text-transform:none;">(Enter বা কমা দিয়ে যোগ করুন)</small></label>
+                    <div class="tagWrap" id="tagContainer" onclick="document.getElementById('tagRealInput').focus()">
+                        <input type="text" id="tagRealInput" placeholder="ট্যাগ লিখুন..." onkeydown="handleTagInput(event)" oninput="onTagTyping(this.value)">
+                    </div>
+                    <div class="tagSuggestions" id="tagSuggestions"></div>
+                </div>
+
+                <div class="formGroup">
+                    <label class="formLabel">বিকল্প প্রশ্নসমূহ <small style="font-weight:500;text-transform:none;">(প্রতিটি আলাদা লাইনে)</small></label>
+                    <textarea id="altInput" placeholder="PEKO বানিয়েছে কে?&#10;পেকো কে বানিয়েছে?&#10;who created peko?" rows="3"></textarea>
+                </div>
+
+                <div class="progressBar" id="saveProgress">
+                    <div class="progressFill" id="saveFill" style="width:0%"></div>
+                </div>
+
+                <div class="btnRow">
+                    <button class="btn btnGhost" onclick="clearForm()" id="clearBtn">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                        ক্লিয়ার
+                    </button>
+                    <button class="btn btnPri" id="saveBtn" onclick="saveQA()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        ডাটাবেজে সেভ করুন
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- সহজ QA ফর্ম -->
+        <div class="card">
+            <div class="cardHead">
+                <div class="cardTitle">✅ সহজে QA যোগ করুন</div>
+            </div>
+            <div class="cardBody">
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <textarea id="easyQ" placeholder="প্রশ্ন লিখুন..." rows="3" style="padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--inputBg);color:var(--text);font-family:inherit;font-size:13px;resize:vertical;width:100%;box-sizing:border-box;"></textarea>
+                    <textarea id="easyA" placeholder="উত্তর লিখুন..." rows="4" style="padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--inputBg);color:var(--text);font-family:inherit;font-size:13px;resize:vertical;width:100%;box-sizing:border-box;"></textarea>
+                    <input type="text" id="easyT" placeholder="ট্যাগ (কমা দিয়ে আলাদা করুন, যেমন: পরিচয়, AI)" style="padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--inputBg);color:var(--text);font-family:inherit;font-size:13px;width:100%;box-sizing:border-box;">
+                    <button class="btn btnGreen" onclick="easyImport()">✅ এই QA যোগ করুন</button>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+    <!-- MIDDLE COLUMN -->
+    <div class="leftCol" style="display:flex;flex-direction:column;gap:16px;">
+
+        <!-- EASY BULK BUILDER -->
+        <div class="card">
+            <div class="cardHead">
+                <div class="cardTitle">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
+                    একসাথে অনেক QA যোগ করুন
+                </div>
+                <div class="cardBadge green">Easy Mode</div>
+            </div>
+            <div class="cardBody">
+
+                <!-- HOW IT WORKS BANNER -->
+                <div class="howItWorks">
+                    <div class="howStep">
+                        <div class="howNum">১</div>
+                        <div class="howText">নিচে প্রশ্ন ও উত্তর লিখুন</div>
+                    </div>
+                    <div class="howArrow">→</div>
+                    <div class="howStep">
+                        <div class="howNum">২</div>
+                        <div class="howText">"+ আরেকটি যোগ করুন" চাপুন</div>
+                    </div>
+                    <div class="howArrow">→</div>
+                    <div class="howStep">
+                        <div class="howNum">৩</div>
+                        <div class="howText">সবুজ বোতাম চেপে সেভ করুন</div>
+                    </div>
+                </div>
+
+                <!-- BULK ENTRY LIST -->
+                <div id="bulkEntries"></div>
+
+                <!-- ADD MORE -->
+                <button class="addMoreBtn" onclick="addBulkEntry()">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    আরেকটি QA যোগ করুন
+                </button>
+
+                <!-- PREVIEW COUNT -->
+                <div class="bulkPreview" id="bulkPreview" style="display:none;">
+                    <span id="bulkReadyCount">০</span> টি QA সেভ করতে প্রস্তুত
+                </div>
+
+                <div class="progressBar" id="importProgress">
+                    <div class="progressFill" id="importFill" style="width:0%"></div>
+                </div>
+
+                <div class="btnRow" style="margin-top:14px;">
+                    <button class="btn btnGhost" onclick="clearAllBulk()">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/></svg>
+                        সব ক্লিয়ার
+                    </button>
+                    <button class="btn btnGreen" onclick="saveBulkEntries()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        সব Firebase-এ সেভ করুন
+                    </button>
+                </div>
+
+                
+                        </div>
+        </div>
+
+        </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="rightCol">
+
+        <!-- DATA LIST -->
+        <div class="card">
+            <div class="cardHead">
+                <div class="cardTitle">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    ট্রেনড ডাটাবেজ
+                </div>
+                <div class="cardBadge" id="listCountBadge">0 টি</div>
+            </div>
+            <div class="cardBody">
+                <!-- Live update badge -->
+                <div id="liveUpdateBadge" style="display:none; background:var(--greenSoft); border:1px solid rgba(0,184,122,0.3); color:var(--green); border-radius:10px; padding:10px 14px; font-size:13px; font-weight:700; margin-bottom:12px; align-items:center; gap:8px; animation: fadeIn 0.3s ease;"></div>
+
+                <div class="listControls">
+                    <div class="searchWrap">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="searchInput" placeholder="প্রশ্ন, উত্তর বা ট্যাগ খুঁজুন..." oninput="filterData()">
+                    </div>
+                    <button class="filterBtn" id="sortBtn" onclick="toggleSort()" title="সর্ট করুন">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+                        নতুন
+                    </button>
+                </div>
+                <div class="listMeta">
+                    <span><span class="count" id="shownCount">0</span> টি দেখাচ্ছে</span>
+                    <span id="filterStatus"></span>
+                </div>
+                <div id="qaList">
+                    <div class="emptyState">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+                        <p>ডাটা লোড হচ্ছে...</p>
+                        <small>Firebase-এর সাথে সংযুক্ত হচ্ছে</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const firebaseConfig = {
+    apiKey: "AIzaSyCRafdTA1UA6uTTcACZNWOf02T1sGcdToQ",
+    authDomain: "peko-ai.firebaseapp.com",
+    databaseURL: "https://peko-ai-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "peko-ai"
+};
+firebase.initializeApp(firebaseConfig);
+const DB = firebase.database();
+const BRAIN_REF = "peko_brain/qa_pairs";
+const TRAIN_PASSWORD = "salman.com";
+
+// ============================================================
+// STATE
+// ============================================================
+let isLoggedIn = false;
+let allData = [];
+let currentTags = [];
+let editingId = null;
+let sortNewest = true;
+
+// ============================================================
+// LOGIN
+// ============================================================
+function trainLogin() {
+    const pass = document.getElementById("trainPass").value;
+    const err = document.getElementById("trainErrMsg");
+    if (pass === TRAIN_PASSWORD) {
+        document.getElementById("authBox").style.display = "none";
+        isLoggedIn = true;
+        loadAllData();
+        initBulkBuilder();
+    } else {
+        err.textContent = "❌ ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।";
+        document.getElementById("trainPass").style.borderColor = "rgba(255,80,80,0.6)";
+        setTimeout(() => {
+            err.textContent = "";
+            document.getElementById("trainPass").style.borderColor = "";
+        }, 2500);
+    }
+}
+document.getElementById("trainPass").addEventListener("keydown", e => {
+    if (e.key === "Enter") trainLogin();
+});
+
+// ============================================================
+// THEME
+// ============================================================
+if (localStorage.getItem("train_theme") === "dark") {
+    document.body.classList.add("dark");
+    document.getElementById("themeBtn").textContent = "☀️";
+}
+function toggleTheme() {
+    const isDark = document.body.classList.toggle("dark");
+    document.getElementById("themeBtn").textContent = isDark ? "☀️" : "🌙";
+    localStorage.setItem("train_theme", isDark ? "dark" : "light");
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+let toastTimer;
+function toast(msg, type = "") {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.className = "toast" + (type ? " " + type : "") + " show";
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 2800);
+}
+
+// ============================================================
+// CHAR COUNT
+// ============================================================
+function updateCharCount(inputId, countId) {
+    const el = document.getElementById(inputId);
+    const cnt = document.getElementById(countId);
+    const len = el.value.length;
+    cnt.textContent = len + " অক্ষর";
+    cnt.className = "charCount" + (len > 800 ? " warn" : "");
+}
+function onQAInput() {
+    updateCharCount("qInput", "qCount");
+    autoSuggestTags();
+}
+
+// ============================================================
+// TAG INPUT
+// ============================================================
+function handleTagInput(e) {
+    if (e.key === "Enter" || e.key === ",") {
+        e.preventDefault();
+        const val = e.target.value.trim().replace(/,/g, "");
+        addTag(val);
+        e.target.value = "";
+        document.getElementById("tagSuggestions").innerHTML = "";
+    }
+}
+function addTag(val) {
+    if (!val) return;
+    const clean = val.toLowerCase().replace(/[^a-z0-9\u0980-\u09ff_-]/g, "").trim();
+    if (!clean || currentTags.includes(clean)) return;
+    currentTags.push(clean);
+    renderTags();
+}
+function renderTags() {
+    const container = document.getElementById("tagContainer");
+    const input = document.getElementById("tagRealInput");
+    container.innerHTML = "";
+    currentTags.forEach((tag, i) => {
+        const el = document.createElement("div");
+        el.className = "tagChip";
+        el.textContent = tag;
+        const btn = document.createElement("button");
+        btn.textContent = "×";
+        btn.onclick = () => removeTag(i);
+        el.appendChild(btn);
+        container.appendChild(el);
+    });
+    container.appendChild(input);
+}
+function removeTag(i) {
+    currentTags.splice(i, 1);
+    renderTags();
+}
+
+// Smart tag suggestions from existing data
+function onTagTyping(val) {
+    if (!val || val.length < 2) {
+        document.getElementById("tagSuggestions").innerHTML = "";
+        return;
+    }
+    const allTags = new Set();
+    allData.forEach(d => (d.tags || []).forEach(t => allTags.add(t)));
+    const matches = [...allTags].filter(t =>
+        t.toLowerCase().includes(val.toLowerCase()) && !currentTags.includes(t)
+    ).slice(0, 6);
+    const wrap = document.getElementById("tagSuggestions");
+    wrap.innerHTML = matches.map(t =>
+        `<button class="tagSugChip" onclick="addTagFromSug('${t}')">${t}</button>`
+    ).join("");
+}
+function addTagFromSug(tag) {
+    addTag(tag);
+    document.getElementById("tagRealInput").value = "";
+    document.getElementById("tagSuggestions").innerHTML = "";
+}
+
+// Auto-suggest tags from question text
+function autoSuggestTags() {
+    const q = document.getElementById("qInput").value.toLowerCase();
+    if (!q || q.length < 4) return;
+    const allTags = new Set();
+    allData.forEach(d => (d.tags || []).forEach(t => allTags.add(t)));
+    const auto = [...allTags].filter(t => q.includes(t) && !currentTags.includes(t)).slice(0, 4);
+    if (auto.length > 0) {
+        const wrap = document.getElementById("tagSuggestions");
+        if (!document.getElementById("tagRealInput").value) {
+            wrap.innerHTML = auto.map(t =>
+                `<button class="tagSugChip" onclick="addTagFromSug('${t}')" title="স্বয়ংক্রিয় পরামর্শ">+ ${t}</button>`
+            ).join("");
+        }
+    }
+}
+
+// ============================================================
+// SAVE QA
+// ============================================================
+function saveQA() {
+    const q = document.getElementById("qInput").value.trim();
+    const a = document.getElementById("aInput").value.trim();
+    const altRaw = document.getElementById("altInput").value.trim();
+
+    if (!q) { toast("❌ প্রশ্ন লিখুন!", "error"); document.getElementById("qInput").focus(); return; }
+    if (!a) { toast("❌ উত্তর লিখুন!", "error"); document.getElementById("aInput").focus(); return; }
+
+    const altQuestions = altRaw
+        ? altRaw.split("\n").map(s => s.trim()).filter(Boolean)
+        : [];
+
+    const payload = {
+        question: q,
+        answer: a,
+        tags: [...currentTags],
+        altQuestions: altQuestions,
+        createdAt: Date.now(),
+        useCount: editingId ? (allData.find(d => d.id === editingId)?.useCount || 0) : 0,
+        upvotes: editingId ? (allData.find(d => d.id === editingId)?.upvotes || 0) : 0,
+        downvotes: editingId ? (allData.find(d => d.id === editingId)?.downvotes || 0) : 0
+    };
+
+    // Show progress
+    const prog = document.getElementById("saveProgress");
+    const fill = document.getElementById("saveFill");
+    prog.classList.add("show");
+    fill.style.width = "40%";
+    document.getElementById("saveBtn").disabled = true;
+
+    const ref = editingId
+        ? DB.ref(BRAIN_REF + "/" + editingId)
+        : DB.ref(BRAIN_REF).push();
+
+    ref.set(payload)
+        .then(() => {
+            fill.style.width = "100%";
+            setTimeout(() => {
+                prog.classList.remove("show");
+                fill.style.width = "0%";
+            }, 600);
+            toast(editingId ? "✅ আপডেট হয়েছে!" : "✅ সেভ হয়েছে!", "success");
+            clearForm();
+        })
+        .catch(() => {
+            fill.style.width = "0%";
+            prog.classList.remove("show");
+            toast("❌ সেভ করতে সমস্যা হয়েছে!", "error");
+        })
+        .finally(() => {
+            document.getElementById("saveBtn").disabled = false;
+        });
+}
+
+function clearForm() {
+    document.getElementById("qInput").value = "";
+    document.getElementById("aInput").value = "";
+    document.getElementById("altInput").value = "";
+    document.getElementById("qCount").textContent = "0 অক্ষর";
+    document.getElementById("aCount").textContent = "0 অক্ষর";
+    document.getElementById("tagSuggestions").innerHTML = "";
+    currentTags = [];
+    renderTags();
+    editingId = null;
+    document.getElementById("editBanner").classList.remove("show");
+    document.getElementById("saveBtn").innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        ডাটাবেজে সেভ করুন`;
+}
+
+// ============================================================
+// BULK EASY BUILDER
+// ============================================================
+let bulkEntries = []; // [{id, q, a, tags, tagList}]
+let bulkIdCounter = 0;
+
+function initBulkBuilder() {
+    addBulkEntry(); // start with one empty entry
+}
+
+function addBulkEntry() {
+    const id = ++bulkIdCounter;
+    bulkEntries.push({ id, q: "", a: "", tagList: [] });
+    renderBulkEntries();
+    // scroll to new entry
+    setTimeout(() => {
+        const el = document.getElementById("bulkEntry_" + id);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 100);
+}
+
+function removeBulkEntry(id) {
+    if (bulkEntries.length === 1) { toast("কমপক্ষে একটি এন্ট্রি থাকতে হবে!", "error"); return; }
+    bulkEntries = bulkEntries.filter(e => e.id !== id);
+    renderBulkEntries();
+    updateBulkPreview();
+}
+
+function renderBulkEntries() {
+    const container = document.getElementById("bulkEntries");
+    container.innerHTML = bulkEntries.map((entry, idx) => {
+        const isFilled = entry.q.trim() && entry.a.trim();
+        const tagsHtml = entry.tagList.map((t, ti) =>
+            `<span class="tagChip">${escHtml(t)}<button type="button" onclick="removeBulkTag(${entry.id},${ti})">×</button></span>`
+        ).join("");
+        return `<div class="bulkEntry${isFilled ? " filled" : ""}" id="bulkEntry_${entry.id}">
+            <div class="bulkEntryHead">
+                <div class="bulkEntryNum${isFilled ? " done" : ""}">${idx + 1}</div>
+                <div class="bulkEntryLabel">QA নম্বর ${idx + 1}</div>
+                <span class="bulkEntryStatus ${isFilled ? "ready" : "empty"}">${isFilled ? "✓ প্রস্তুত" : "অপেক্ষমান"}</span>
+                ${bulkEntries.length > 1 ? `<button class="bulkEntryDel" onclick="removeBulkEntry(${entry.id})" title="মুছুন">✕</button>` : ""}
+            </div>
+            <div class="bulkEntryField">
+                <div class="bulkFieldLabel">❓ প্রশ্ন <span class="req">*</span></div>
+                <textarea rows="2" placeholder="এখানে প্রশ্নটি লিখুন..." oninput="updateBulkField(${entry.id},'q',this.value)" style="min-height:60px;">${escHtml(entry.q)}</textarea>
+            </div>
+            <div class="bulkEntryField">
+                <div class="bulkFieldLabel">💬 উত্তর <span class="req">*</span></div>
+                <textarea rows="3" placeholder="এখানে উত্তরটি লিখুন..." oninput="updateBulkField(${entry.id},'a',this.value)" style="min-height:75px;">${escHtml(entry.a)}</textarea>
+            </div>
+            <div class="bulkEntryField">
+                <div class="bulkFieldLabel">🏷️ ট্যাগ <small style="font-weight:500;text-transform:none;">(Enter চেপে যোগ করুন — ঐচ্ছিক)</small></div>
+                <div class="bulkTagRow" onclick="this.querySelector('input').focus()">
+                    ${tagsHtml}
+                    <input type="text" placeholder="ট্যাগ লিখুন..." onkeydown="bulkTagKeydown(event,${entry.id})">
+                </div>
+            </div>
+        </div>`;
+    }).join("");
+    updateBulkPreview();
+}
+
+function updateBulkField(id, field, val) {
+    const entry = bulkEntries.find(e => e.id === id);
+    if (!entry) return;
+    entry[field] = val;
+    // update status badge & filled class without full re-render
+    const el = document.getElementById("bulkEntry_" + id);
+    if (!el) return;
+    const isFilled = entry.q.trim() && entry.a.trim();
+    const statusEl = el.querySelector(".bulkEntryStatus");
+    const numEl = el.querySelector(".bulkEntryNum");
+    if (statusEl) { statusEl.className = "bulkEntryStatus " + (isFilled ? "ready" : "empty"); statusEl.textContent = isFilled ? "✓ প্রস্তুত" : "অপেক্ষমান"; }
+    if (numEl) { numEl.className = "bulkEntryNum" + (isFilled ? " done" : ""); }
+    el.className = "bulkEntry" + (isFilled ? " filled" : "");
+    updateBulkPreview();
+}
+
+function bulkTagKeydown(e, id) {
+    if (e.key === "Enter" || e.key === ",") {
+        e.preventDefault();
+        const val = e.target.value.trim().replace(/,/g, "");
+        if (!val) return;
+        const clean = val.toLowerCase().replace(/[^a-z0-9\u0980-\u09ff_-]/g, "").trim();
+        if (!clean) return;
+        const entry = bulkEntries.find(en => en.id === id);
+        if (!entry || entry.tagList.includes(clean)) { e.target.value = ""; return; }
+        entry.tagList.push(clean);
+        e.target.value = "";
+        // re-render just that entry's tag row
+        const el = document.getElementById("bulkEntry_" + id);
+        if (el) {
+            const tagRow = el.querySelector(".bulkTagRow");
+            const inputEl = tagRow.querySelector("input");
+            const tagsHtml = entry.tagList.map((t, ti) =>
+                `<span class="tagChip">${escHtml(t)}<button type="button" onclick="removeBulkTag(${id},${ti})">×</button></span>`
+            ).join("");
+            tagRow.innerHTML = tagsHtml + `<input type="text" placeholder="ট্যাগ লিখুন..." onkeydown="bulkTagKeydown(event,${id})">`;
+            tagRow.querySelector("input").focus();
+        }
+    }
+}
+
+function removeBulkTag(entryId, tagIdx) {
+    const entry = bulkEntries.find(e => e.id === entryId);
+    if (!entry) return;
+    entry.tagList.splice(tagIdx, 1);
+    const el = document.getElementById("bulkEntry_" + entryId);
+    if (el) {
+        const tagRow = el.querySelector(".bulkTagRow");
+        const tagsHtml = entry.tagList.map((t, ti) =>
+            `<span class="tagChip">${escHtml(t)}<button type="button" onclick="removeBulkTag(${entryId},${ti})">×</button></span>`
+        ).join("");
+        tagRow.innerHTML = tagsHtml + `<input type="text" placeholder="ট্যাগ লিখুন..." onkeydown="bulkTagKeydown(event,${entryId})">`;
+    }
+}
+
+function updateBulkPreview() {
+    const ready = bulkEntries.filter(e => e.q.trim() && e.a.trim()).length;
+    const preview = document.getElementById("bulkPreview");
+    const countEl = document.getElementById("bulkReadyCount");
+    if (ready > 0) {
+        preview.style.display = "block";
+        countEl.textContent = ready;
+    } else {
+        preview.style.display = "none";
+    }
+}
+
+function clearAllBulk() {
+    if (!confirm("সব এন্ট্রি ক্লিয়ার করবেন?")) return;
+    bulkEntries = [];
+    bulkIdCounter = 0;
+    addBulkEntry();
+    toast("সব ক্লিয়ার হয়েছে।");
+}
+
+function saveBulkEntries() {
+    const valid = bulkEntries.filter(e => e.q.trim() && e.a.trim());
+    if (valid.length === 0) {
+        toast("❌ কমপক্ষে একটি প্রশ্ন ও উত্তর লিখুন!", "error"); return;
+    }
+
+    const prog = document.getElementById("importProgress");
+    const fill = document.getElementById("importFill");
+    prog.classList.add("show");
+    fill.style.width = "15%";
+
+    let done = 0;
+    const promises = valid.map(entry => {
+        return DB.ref(BRAIN_REF).push({
+            question: entry.q.trim(),
+            answer: entry.a.trim(),
+            tags: [...entry.tagList],
+            altQuestions: [],
+            createdAt: Date.now(),
+            useCount: 0, upvotes: 0, downvotes: 0
+        }).then(() => {
+            done++;
+            fill.style.width = (15 + (done / valid.length * 80)) + "%";
+        });
+    });
+
+    Promise.all(promises)
+        .then(() => {
+            fill.style.width = "100%";
+            setTimeout(() => { prog.classList.remove("show"); fill.style.width = "0%"; }, 700);
+            toast(`✅ ${done}টি QA সফলভাবে সেভ হয়েছে! ডানদিকে দেখুন।`, "success");
+            // Clear and reset
+            bulkEntries = [];
+            bulkIdCounter = 0;
+            addBulkEntry();
+        })
+        .catch(() => {
+            prog.classList.remove("show");
+            toast("❌ সেভ করতে সমস্যা হয়েছে!", "error");
+        });
+}
+
+
+
+function easyImport() {
+    const q = document.getElementById("easyQ").value.trim();
+    const a = document.getElementById("easyA").value.trim();
+    const tRaw = document.getElementById("easyT").value.trim();
+    if (!q) { toast("❌ প্রশ্ন লিখুন!", "error"); return; }
+    if (!a) { toast("❌ উত্তর লিখুন!", "error"); return; }
+    const tags = tRaw ? tRaw.split(",").map(t => t.trim()).filter(Boolean) : [];
+    DB.ref(BRAIN_REF).push({
+        question: q, answer: a, tags,
+        altQuestions: [], createdAt: Date.now(),
+        useCount: 0, upvotes: 0, downvotes: 0
+    }).then(() => {
+        toast("✅ QA সফলভাবে যোগ হয়েছে!", "success");
+        document.getElementById("easyQ").value = "";
+        document.getElementById("easyA").value = "";
+        document.getElementById("easyT").value = "";
+    }).catch(() => toast("❌ সমস্যা হয়েছে!", "error"));
+}
+
+function bulkImport() {
+    const raw = document.getElementById("bulkInput").value.trim();
+    if (!raw) { toast("❌ JSON ডাটা লিখুন!", "error"); return; }
+
+    let parsed;
+    try {
+        parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) throw new Error("Array দরকার");
+    } catch {
+        toast("❌ JSON ফরম্যাট ভুল! Validate করুন।", "error");
+        return;
+    }
+
+    const valid = parsed.filter(i => i.question && i.answer);
+    if (valid.length === 0) { toast("❌ কোনো valid QA পাওয়া যায়নি!", "error"); return; }
+
+    const prog = document.getElementById("importProgress");
+    const fill = document.getElementById("importFill");
+    prog.classList.add("show");
+    fill.style.width = "20%";
+
+    let done = 0;
+    const promises = valid.map(item => {
+        return DB.ref(BRAIN_REF).push({
+            question: item.question.trim(),
+            answer: item.answer.trim(),
+            tags: Array.isArray(item.tags) ? item.tags : [],
+            altQuestions: Array.isArray(item.altQuestions) ? item.altQuestions : [],
+            createdAt: Date.now(),
+            useCount: 0, upvotes: 0, downvotes: 0
+        }).then(() => {
+            done++;
+            fill.style.width = (20 + (done / valid.length * 75)) + "%";
+        });
+    });
+
+    Promise.all(promises)
+        .then(() => {
+            fill.style.width = "100%";
+            setTimeout(() => { prog.classList.remove("show"); fill.style.width = "0%"; }, 600);
+            toast(`✅ ${done}টি QA Import সম্পন্ন! ডানদিকে তালিকায় দেখুন।`, "success");
+            document.getElementById("bulkInput").value = "";
+        })
+        .catch(() => {
+            prog.classList.remove("show");
+            toast("❌ Import-এ সমস্যা হয়েছে!", "error");
+        });
+}
+
+// ============================================================
+// LOAD DATA
+// ============================================================
+let lastSavedCount = 0;
+
+function loadAllData() {
+    DB.ref(BRAIN_REF).on("value", snapshot => {
+        const prevCount = allData.length;
+        allData = [];
+        let totalUse = 0;
+        const tagSet = new Set();
+
+        if (snapshot.exists()) {
+            snapshot.forEach(child => {
+                const d = child.val();
+                allData.push({ id: child.key, ...d });
+                totalUse += (d.useCount || 0);
+                if (d.tags) d.tags.forEach(t => tagSet.add(t));
+            });
+        }
+
+        document.getElementById("totalQA").textContent = allData.length;
+        document.getElementById("totalUsed").textContent = totalUse;
+        document.getElementById("totalTags").textContent = tagSet.size;
+        const now = new Date();
+        document.getElementById("lastUpdated").textContent =
+            (now.getHours() % 12 || 12).toString().padStart(2,"0") + ":" +
+            now.getMinutes().toString().padStart(2,"0") + " " +
+            (now.getHours() >= 12 ? "PM" : "AM");
+
+        // Show live update badge if new data arrived
+        if (prevCount > 0 && allData.length > prevCount) {
+            showLiveUpdate(allData.length - prevCount);
+        }
+
+        renderList(getDisplayData());
+    });
+}
+
+function getDisplayData() {
+    let data = [...allData];
+    const q = document.getElementById("searchInput")?.value?.toLowerCase().trim();
+    if (q) {
+        // Date search: 5/28/26 বা 28 বা 05/28 ইত্যাদি লিখলে তারিখ ম্যাচ করবে
+        const isDateQuery = /[\d\/\.\-]/.test(q);
+
+        data = data.filter(d => {
+            const question = (d.question || "").toLowerCase();
+            const answer = (d.answer || "").toLowerCase();
+            const tags = (d.tags || []).map(t => t.toLowerCase()).join(" ");
+
+            // তারিখ ম্যাচ
+            if (isDateQuery && d.createdAt) {
+                const dt = new Date(d.createdAt);
+                const dateStr1 = `${dt.getMonth()+1}/${dt.getDate()}/${String(dt.getFullYear()).slice(-2)}`;
+                const dateStr2 = `${String(dt.getMonth()+1).padStart(2,'0')}/${String(dt.getDate()).padStart(2,'0')}/${dt.getFullYear()}`;
+                const dateStr3 = `${dt.getDate()}/${dt.getMonth()+1}/${dt.getFullYear()}`;
+                const dateStr4 = String(dt.getDate());
+                if (dateStr1.includes(q) || dateStr2.includes(q) || dateStr3.includes(q) || dateStr4 === q) return true;
+            }
+
+            // যেকোনো অক্ষর লিখলে partial match — সামনে থেকে মিলে এমনগুলো আগে আসবে
+            if (question.includes(q) || answer.includes(q) || tags.includes(q)) return true;
+
+            // অক্ষর ছড়িয়ে থাকলেও খুঁজবে (fuzzy)
+            let qi = 0;
+            for (let i = 0; i < question.length && qi < q.length; i++) {
+                if (question[i] === q[qi]) qi++;
+            }
+            if (qi === q.length && q.length >= 2) return true;
+
+            return false;
+        });
+
+        // সামনে থেকে মিলে এমনগুলো উপরে আনো
+        data.sort((a, b) => {
+            const aq = (a.question || "").toLowerCase();
+            const bq = (b.question || "").toLowerCase();
+            const aStarts = aq.startsWith(q) ? 0 : aq.includes(q) ? 1 : 2;
+            const bStarts = bq.startsWith(q) ? 0 : bq.includes(q) ? 1 : 2;
+            return aStarts - bStarts;
+        });
+    }
+    if (sortNewest && !q) data.reverse();
+    return data;
+}
+
+let liveUpdateTimer;
+function showLiveUpdate(count) {
+    const badge = document.getElementById("liveUpdateBadge");
+    if (!badge) return;
+    badge.textContent = `🟢 +${count}টি নতুন QA সেভ হয়েছে! নিচে দেখুন।`;
+    badge.style.display = "flex";
+    clearTimeout(liveUpdateTimer);
+    liveUpdateTimer = setTimeout(() => { badge.style.display = "none"; }, 5000);
+}
+
+let sortTimer;
+function filterData() {
+    clearTimeout(sortTimer);
+    sortTimer = setTimeout(() => renderList(getDisplayData()), 120);
+}
+
+function toggleSort() {
+    sortNewest = !sortNewest;
+    const btn = document.getElementById("sortBtn");
+    btn.textContent = sortNewest ? "নতুন" : "পুরাতন";
+    btn.classList.toggle("active", !sortNewest);
+    renderList(getDisplayData());
+}
+
+// ============================================================
+// RENDER LIST (virtualized for performance)
+// ============================================================
+const PAGE_SIZE = 40;
+let shownCount = PAGE_SIZE;
+
+function renderList(data) {
+    const container = document.getElementById("qaList");
+    document.getElementById("shownCount").textContent = data.length;
+    document.getElementById("listCountBadge").textContent = data.length + " টি";
+
+    if (!data || data.length === 0) {
+        container.innerHTML = `<div class="emptyState fadeIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+            <p>কোনো ডাটা পাওয়া যায়নি</p>
+            <small>অন্য কীওয়ার্ড দিয়ে খুঁজুন</small>
+        </div>`;
+        return;
+    }
+
+    const visible = data.slice(0, shownCount);
+    const html = visible.map(d => {
+        const tagsHtml = (d.tags || []).map(t => `<span class="metaBadge">${escHtml(t)}</span>`).join("");
+        const ansLen = (d.answer || "").length;
+        const needExpand = ansLen > 100;
+
+        return `<div class="qaItem fadeIn" id="qa_${d.id}">
+            <div class="qaQ">${escHtml(d.question || "")}</div>
+            <div class="qaA" id="ans_${d.id}">${escHtml(d.answer || "")}</div>
+            ${needExpand ? `<button class="expandBtn" onclick="toggleExpand('${d.id}')">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                আরও দেখুন
+            </button>` : ""}
+            <div class="qaItemFooter">
+                ${tagsHtml}
+                <span class="metaBadge green">👁 ${d.useCount || 0}</span>
+                ${d.createdAt ? `<span class="metaBadge" style="opacity:0.6;font-size:10px;">📅 ${(()=>{const dt=new Date(d.createdAt);return `${dt.getDate()}/${dt.getMonth()+1}/${dt.getFullYear()} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;})()}</span>` : ""}
+                ${(d.upvotes || 0) > 0 ? `<span class="metaBadge amber">👍 ${d.upvotes}</span>` : ""}
+                <div class="qaActions">
+                    <button class="btnEdit" onclick="editQA('${d.id}')">সম্পাদনা</button>
+                    <button class="btnDanger" onclick="deleteQA('${d.id}')">মুছুন</button>
+                </div>
+            </div>
+        </div>`;
+    }).join("");
+
+    const loadMore = data.length > shownCount
+        ? `<div style="text-align:center;padding:20px;">
+            <button class="btn btnGhost" onclick="loadMore()" style="margin:0 auto;">
+                আরও দেখুন (${data.length - shownCount} টি বাকি)
+            </button>
+           </div>`
+        : "";
+
+    container.innerHTML = html + loadMore;
+}
+
+function loadMore() {
+    shownCount += PAGE_SIZE;
+    renderList(getDisplayData());
+}
+
+function escHtml(str) {
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+function toggleExpand(id) {
+    const el = document.getElementById("ans_" + id);
+    const btn = el.nextElementSibling;
+    if (!el) return;
+    el.classList.toggle("expanded");
+    if (btn && btn.classList.contains("expandBtn")) {
+        btn.innerHTML = el.classList.contains("expanded")
+            ? `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg> কম দেখুন`
+            : `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg> আরও দেখুন`;
+    }
+}
+
+// ============================================================
+// EDIT & DELETE
+// ============================================================
+function editQA(id) {
+    const item = allData.find(d => d.id === id);
+    if (!item) return;
+
+    document.getElementById("qInput").value = item.question || "";
+    document.getElementById("aInput").value = item.answer || "";
+    document.getElementById("altInput").value = (item.altQuestions || []).join("\n");
+    currentTags = [...(item.tags || [])];
+    renderTags();
+    updateCharCount("qInput", "qCount");
+    updateCharCount("aInput", "aCount");
+
+    editingId = id;
+    const banner = document.getElementById("editBanner");
+    banner.classList.add("show");
+    document.getElementById("editBannerText").textContent = `সম্পাদনা মোড — ID: ...${id.slice(-6)}`;
+
+    document.getElementById("saveBtn").innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        আপডেট করুন`;
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => document.getElementById("qInput").focus(), 400);
+    toast("✏️ সম্পাদনা মোডে প্রবেশ করেছেন।");
+}
+
+function deleteQA(id) {
+    if (!confirm("এই QA মুছে ফেলবেন? এটি পূর্বাবস্থায় ফেরানো যাবে না।")) return;
+    DB.ref(BRAIN_REF + "/" + id)
+        .remove()
+        .then(() => toast("🗑️ মুছে ফেলা হয়েছে!", "success"))
+        .catch(() => toast("❌ মুছতে সমস্যা হয়েছে!", "error"));
+}
+
+// ============================================================
+// KEYBOARD SHORTCUTS
+// ============================================================
+document.addEventListener("keydown", e => {
+    if (e.ctrlKey && e.key === "s" && isLoggedIn) {
+        e.preventDefault();
+        saveQA();
+    }
+    if (e.key === "Escape" && editingId) {
+        clearForm();
+    }
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && "IJ".includes(e.key))) {
+        e.preventDefault();
+    }
+});
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+// ============================================================
+// DATE/TIME INTELLIGENCE — সময়, তারিখ, বার, বাংলা ও আরবি মাস
+// ============================================================
+
+// বাংলা মাসের নাম
+const BANGLA_MONTHS = [
+    { start: [4,14], end: [5,14], name: "বৈশাখ" },
+    { start: [5,15], end: [6,14], name: "জ্যৈষ্ঠ" },
+    { start: [6,15], end: [7,15], name: "আষাঢ়" },
+    { start: [7,16], end: [8,15], name: "শ্রাবণ" },
+    { start: [8,16], end: [9,15], name: "ভাদ্র" },
+    { start: [9,16], end: [10,15], name: "আশ্বিন" },
+    { start: [10,16], end: [11,14], name: "কার্তিক" },
+    { start: [11,15], end: [12,14], name: "অগ্রহায়ণ" },
+    { start: [12,15], end: [1,13], name: "পৌষ" },
+    { start: [1,14], end: [2,12], name: "মাঘ" },
+    { start: [2,13], end: [3,13], name: "ফাল্গুন" },
+    { start: [3,14], end: [4,13], name: "চৈত্র" }
+];
+
+function getBanglaMonth(date) {
+    const m = date.getMonth() + 1;
+    const d = date.getDate();
+    for (const bm of BANGLA_MONTHS) {
+        const [sm, sd] = bm.start;
+        const [em, ed] = bm.end;
+        if (
+            (m === sm && d >= sd) ||
+            (m === em && d <= ed) ||
+            (sm > em && (m === sm || m === em)) // পৌষ (ডিসেম্বর-জানুয়ারি)
+        ) return bm.name;
+    }
+    return "অজানা";
+}
+
+function getBanglaYear(date) {
+    const m = date.getMonth() + 1;
+    const d = date.getDate();
+    if (m < 4 || (m === 4 && d < 14)) {
+        return date.getFullYear() - 594;
+    }
+    return date.getFullYear() - 593;
+}
+
+function getHijriInfo(date) {
+    // Accurate Hijri calculation
+    const jd = Math.floor((14 + 153 * (date.getMonth() + 3 - 12 * Math.floor((date.getMonth() + 3) / 12)) + 2) / 5)
+        + 365 * (date.getFullYear() + 4800 - Math.floor((date.getMonth() + 3) / 12))
+        + Math.floor((date.getFullYear() + 4800 - Math.floor((date.getMonth() + 3) / 12)) / 4)
+        - Math.floor((date.getFullYear() + 4800 - Math.floor((date.getMonth() + 3) / 12)) / 100)
+        + Math.floor((date.getFullYear() + 4800 - Math.floor((date.getMonth() + 3) / 12)) / 400)
+        + date.getDate() - 32083;
+    const l = jd - 1948440 + 10632;
+    const n = Math.floor((l - 1) / 10631);
+    const l2 = l - 10631 * n + 354;
+    const j = Math.floor((10985 - l2) / 5316) * Math.floor((50 * l2) / 17719)
+        + Math.floor(l2 / 5670) * Math.floor((43 * l2) / 15238);
+    const l3 = l2 - Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50)
+        - Math.floor(j / 16) * Math.floor((15238 * j) / 43) + 29;
+    const hMonth = Math.floor((24 * l3) / 709);
+    const hDay = l3 - Math.floor((709 * hMonth) / 24);
+    const hYear = 30 * n + j - 30;
+    const hijriMonths = [
+        "মুহাররম","সফর","রবিউল আউয়াল","রবিউস সানি",
+        "জুমাদাল উলা","জুমাদাস সানি","রজব","শাবান",
+        "রমজান","শাওয়াল","জুলকাদা","জুলহিজ্জা"
+    ];
+    return { day: hDay, month: hijriMonths[hMonth - 1], year: hYear };
+}
+
+function getTimeGreeting(hour) {
+    if (hour >= 4 && hour < 12) return "সকাল";
+    if (hour >= 12 && hour < 15) return "দুপুর";
+    if (hour >= 15 && hour < 18) return "বিকাল";
+    if (hour >= 18 && hour < 21) return "সন্ধ্যা";
+    return "রাত";
+}
+
+function getBanglaWeekDay(day) {
+    return ["রবিবার","সোমবার","মঙ্গলবার","বুধবার","বৃহস্পতিবার","শুক্রবার","শনিবার"][day];
+}
+
+function getDateTimeResponse() {
+    const now = new Date();
+    const hour = now.getHours();
+    const min = now.getMinutes();
+    const sec = now.getSeconds();
+    const dayName = getBanglaWeekDay(now.getDay());
+    const date = now.getDate();
+    const enMonth = now.getMonth() + 1;
+    const year = now.getFullYear();
+    const greeting = getTimeGreeting(hour);
+    const banglaMonth = getBanglaMonth(now);
+    const banglaYear = getBanglaYear(now);
+    const hijri = getHijriInfo(now);
+    const minStr = String(min).padStart(2, "0");
+    const secStr = String(sec).padStart(2, "0");
+
+    return {
+        time: `${hour}:${minStr}:${secStr}`,
+        greeting,
+        hour, min,
+        dayName,
+        date,
+        enMonth,
+        year,
+        banglaMonth,
+        banglaYear,
+        hijri,
+        formatted: `${greeting} ${hour}:${minStr}`
+    };
+}
+
+// ============================================================
+// SPAM / DUPLICATE DETECTION
+// ============================================================
+const recentQuestions = {}; // { userId_question: [timestamps] }
+
+const funnyResponses = [
+    "আরে ভাই, এই প্রশ্ন তো একটু আগেই করলেন! 😄 আমি ভুলে যাইনি!",
+    "হাহা, মনে হচ্ছে আপনি পরীক্ষা করছেন? 😊 একটু আগে তো উত্তর দিলাম!",
+    "ওহো! একই প্রশ্ন আবার? 😅 চিন্তা নেই, আমি একই উত্তর দিচ্ছি!",
+    "আপনি কি নিশ্চিত হতে চাইছেন? 😄 উত্তর আগেরটাই!",
+    "এই প্রশ্নটা কিছুক্ষণ আগেও এসেছিল! 😊 তবুও আবার জানাচ্ছি —"
+];
+
+function checkSpam(userId, question) {
+    const key = `${userId}_${question.toLowerCase().trim()}`;
+    const now = Date.now();
+    if (!recentQuestions[key]) recentQuestions[key] = [];
+    // পুরনো entries পরিষ্কার (১ মিনিটের বেশি পুরনো)
+    recentQuestions[key] = recentQuestions[key].filter(t => now - t < 60000);
+    const count = recentQuestions[key].length;
+    recentQuestions[key].push(now);
+    // ৬০ সেকেন্ডের মধ্যে ২+ বার = soft spam
+    if (count >= 1) {
+        return funnyResponses[Math.floor(Math.random() * funnyResponses.length)];
+    }
+    return null;
+}
+
+// ============================================================
+// TIME QUESTION DETECTOR
+// ============================================================
+const timePatterns = [
+    // সময় সম্পর্কিত
+    /এখন\s*কয়টা/i, /কয়টা\s*বাজে/i, /সময়\s*(কত|কতটা|বলো|বলুন|জানাও)/i,
+    /time\s*(কত|বলো|দাও)/i, /ক্লক\s*কত/i, /ঘড়িতে\s*কত/i,
+    /এখন\s*কত\s*টা/i, /বাজে\s*কত/i, /টাইম\s*(কত|বলো|জানাও|দেখাও)/i,
+    /what.*time/i, /কখন\s*এখন/i, /আজকের\s*সময়/i,
+    // তারিখ সম্পর্কিত
+    /আজকে?\s*(কত|কোন)\s*তারিখ/i, /তারিখ\s*(কত|কি|বলো)/i,
+    /আজকের\s*তারিখ/i, /date\s*(কত|কি|বলো)/i, /কত\s*তারিখ/i,
+    /আজ\s*কত/i, /আজকের\s*date/i,
+    // বার সম্পর্কিত
+    /আজকে?\s*কি?\s*বার/i, /বার\s*(কি|কী|বলো)/i, /কোন\s*বার/i,
+    /day\s*(কি|কী)/i, /আজ\s*কি\s*বার/i,
+    // সাল সম্পর্কিত
+    /কত\s*সাল/i, /year\s*(কত|কি)/i, /সাল\s*(কত|কি|বলো)/i,
+    // বাংলা মাস
+    /বাংলা\s*মাস/i, /বাংলা\s*(কত|কোন)\s*মাস/i, /বাংলা\s*তারিখ/i,
+    /বাংলা\s*সন/i, /বাংলা\s*কত/i,
+    // আরবি/হিজরি মাস
+    /(আরবি|ইসলামিক|হিজরি)\s*মাস/i, /(আরবি|ইসলামিক|হিজরি)\s*(কত|কোন)/i,
+    /হিজরি\s*সন/i, /islamicdate/i,
+    // সব একসাথে
+    /আজকে?\s*(কি|কী)\s*বার.*তারিখ/i, /তারিখ.*বার/i,
+    /সময়.*তারিখ/i, /তারিখ.*সময়/i,
+    // দিন/রাত
+    /(দিন|রাত|সকাল|বিকাল|সন্ধ্যা|দুপুর)\s*(কি|কী|না)/i,
+    /এখন\s*(দিন|রাত|সকাল)/i
+];
+
+function isTimeQuestion(text) {
+    return timePatterns.some(p => p.test(text));
+}
+
+function buildTimeAnswer(text) {
+    const dt = getDateTimeResponse();
+    const t = text.toLowerCase();
+
+    // কি চাওয়া হয়েছে detect করো
+    const wantsTime = /কয়টা|বাজে|সময়|time|টাইম|ঘড়ি|ক্লক/.test(t);
+    const wantsDate = /তারিখ|date|কত\s*তারিখ|আজ\s*কত/.test(t);
+    const wantsDay  = /বার|day/.test(t);
+    const wantsYear = /সাল|year/.test(t);
+    const wantsBangla = /বাংলা/.test(t);
+    const wantsHijri = /আরবি|ইসলামিক|হিজরি/.test(t);
+    const wantsDayNight = /দিন|রাত|সকাল|বিকাল|সন্ধ্যা|দুপুর/.test(t);
+
+    let parts = [];
+
+    if (wantsTime || (!wantsDate && !wantsDay && !wantsYear && !wantsBangla && !wantsHijri && !wantsDayNight)) {
+        parts.push(`🕐 এখন ${dt.greeting} ${dt.hour}:${String(dt.min).padStart(2,"0")} বাজে।`);
+    }
+    if (wantsDayNight && !wantsTime) {
+        parts.push(`🌤️ এখন ${dt.greeting}।`);
+    }
+    if (wantsDay) {
+        parts.push(`📅 আজ ${dt.dayName}।`);
+    }
+    if (wantsDate) {
+        parts.push(`🗓️ আজকের তারিখ: ${dt.date}/${dt.enMonth}/${dt.year} ইংরেজি।`);
+    }
+    if (wantsYear) {
+        parts.push(`📆 বর্তমান সাল: ${dt.year} (ইংরেজি)।`);
+    }
+    if (wantsBangla) {
+        parts.push(`🇧🇩 বাংলা: ${dt.banglaMonth} মাস, ${getBanglaYear(new Date())} বঙ্গাব্দ।`);
+    }
+    if (wantsHijri) {
+        parts.push(`☪️ হিজরি: ${dt.hijri.day} ${dt.hijri.month}, ${dt.hijri.year} হিজরি।`);
+    }
+
+    // সব এক সাথে চাইলে বা কিছু না মিললে full info দাও
+    if (parts.length === 0 || /সব|সকল|একসাথে|একসাগে/.test(t)) {
+        return buildFullTimeAnswer(dt);
+    }
+
+    return parts.join("\n");
+}
+
+function buildFullTimeAnswer(dt) {
+    return `🕐 সময়: ${dt.greeting} ${dt.hour}:${String(dt.min).padStart(2,"0")} বাজে
+📅 বার: ${dt.dayName}
+🗓️ তারিখ: ${dt.date}/${dt.enMonth}/${dt.year} (ইংরেজি)
+🇧🇩 বাংলা: ${dt.banglaMonth} মাস, ${getBanglaYear(new Date())} বঙ্গাব্দ
+☪️ হিজরি: ${dt.hijri.day} ${dt.hijri.month}, ${dt.hijri.year} হিজরি`;
+}
+
+// ============================================================
+// MAIN INTERCEPTOR — chatbot এর সাথে integrate করার জন্য
+// এই function টি আপনার chatbot এর answer lookup এর আগে call করুন
+// ============================================================
+window.pekoTimeAndSpamCheck = function(userId, userQuestion) {
+    // ১. Time/Date প্রশ্ন চেক
+    if (isTimeQuestion(userQuestion)) {
+        return {
+            type: "datetime",
+            answer: buildTimeAnswer(userQuestion)
+        };
+    }
+    // ২. Spam চেক
+    const spamMsg = checkSpam(userId, userQuestion);
+    if (spamMsg) {
+        return {
+            type: "spam_warning",
+            prefix: spamMsg
+        };
+    }
+    return null;
+};
+
+</script>
+</body>
+</html>
