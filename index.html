@@ -3731,15 +3731,6 @@ display:block;
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-
     <div id="reportThanksOverlay" class="reportOverlay" style="z-index: 100010; pointer-events: none;">
     <div id="reportThanksBox" class="reportPopup" style="max-width: 400px; width: 90%; border-radius: 24px; text-align: center; padding: 36px 28px; pointer-events: auto; transform: translate(150%, -50%); opacity: 0; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease;">
         <div style="width: 64px; height: 64px; background: linear-gradient(135deg, color-mix(in srgb, var(--pri) 15%, transparent), color-mix(in srgb, var(--pri) 5%, transparent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; border: 2px solid color-mix(in srgb, var(--pri) 30%, transparent);">
@@ -3749,12 +3740,6 @@ display:block;
         <div id="reportThanksMsg" style="font-size: 14px; color: var(--muted); line-height: 1.6; font-weight: 500;">আপনার ফিডব্যাক ও রিপোর্টের জন্য আন্তরিক ধন্যবাদ। আমরা দ্রুত বিষয়টি পর্যালোচনা করব।</div>
     </div>
 </div>
-
-
-
-
-
-
 
     <div id="proWarningOverlay" class="reportOverlay" style="z-index: 100005;">
         <div class="reportPopup" style="max-width: 380px; width: 90%; border-radius: 22px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
@@ -4032,15 +4017,6 @@ fill="white"
                 <div class="reportTitle" style="color: var(--pri); font-size: 19px; font-weight: 700; width: 100%; text-align: center; letter-spacing: -0.3px;">App Version</div>
             </div>
 
-
-
-
-
-
-
-
-            
-            
             <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; text-align: left;">
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; background: color-mix(in srgb, var(--pri) 8%, transparent); padding: 12px 16px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--pri) 15%, transparent);">
@@ -4070,18 +4046,6 @@ fill="white"
                 
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-            
             <button id="versionOkBtn" class="reportSubmitBtn" style="background: linear-gradient(135deg, var(--pri), var(--pri2)); width: 100%; border-radius: 12px; font-weight: 600; box-shadow: 0 4px 12px rgba(0, 131, 255, 0.2); padding: 12px; border: none; color: white; cursor: pointer; font-size: 14px; min-height: 44px; display: flex; align-items: center; justify-content: center;">OK</button>
         </div>
     </div>
@@ -4109,10 +4073,6 @@ fill="white"
         </p>
 
         <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; text-align: left;">
-
-
-
-
 
          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.02); padding: 12px 16px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.04); opacity: 0.7;">
     <span style="display:flex;align-items:center;gap:10px;">
@@ -4187,10 +4147,6 @@ fill="white"
     </span>
     <span id="cs5Badge" style="font-size:11px;color:var(--muted);font-weight:600;white-space:nowrap;margin-left:8px;">Coming Soon</span>
 </div>
-
-
-
-
 
         </div>
 
@@ -6196,20 +6152,26 @@ if (comingSoonOverlay) {
 }
 
 if (privacyPolicyBtn && privacyOverlay) {
-    privacyPolicyBtn.onclick = () => { playSound("click"); closeSideMenu(); privacyOverlay.classList.add("show"); };
+    privacyPolicyBtn.onclick = () => {
+        playSound("click");
+        closeSideMenu();
+        setTimeout(() => { privacyOverlay.classList.add("show"); }, 400);
+    };
 }
 
 if (termsOfUseBtn && termsOverlay) {
-    termsOfUseBtn.onclick = () => { playSound("click"); closeSideMenu(); termsOverlay.classList.add("show"); };
+    termsOfUseBtn.onclick = () => {
+        playSound("click");
+        closeSideMenu();
+        setTimeout(() => { termsOverlay.classList.add("show"); }, 400);
+    };
 }
 
 if (helpCenterBtn && helpCenterScreen) {
     helpCenterBtn.onclick = () => { 
         playSound("click"); 
-        closeSideMenu(); 
-        helpCenterScreen.style.display = "flex"; 
-        // চ্যাট বক্স প্রথমবার ফ্রেশ রাখা
-        helpChatBody.innerHTML = `<div class="msg ai" style="background: #ffffff; color: #000; max-width: 85%;">🤖 <b>PEKO সাপোর্ট বক্সে স্বাগতম!</b><br>আপনার সমস্যাটি নিচে থাকা কাস্টম অপশনগুলো থেকে সিলেক্ট করুন, আমি সমাধান দিচ্ছি।</div>`;
+        closeSideMenu();
+        setTimeout(() => { helpCenterScreen.classList.add("show"); }, 400);
     };
 }
 
@@ -6221,7 +6183,7 @@ if (termsCloseBtn && termsOverlay) {
     termsCloseBtn.onclick = () => { playSound("click"); termsOverlay.classList.remove("show"); };
 }
 if (helpCloseBtn && helpCenterScreen) {
-    helpCloseBtn.onclick = () => { playSound("click"); helpCenterScreen.style.display = "none"; };
+    helpCloseBtn.onclick = () => { playSound("click"); helpCenterScreen.classList.remove("show"); helpCenterScreen.style.display = ""; };
 }
 
 // ওভারলে বাইরে ক্লিক করলে মডাল ক্লোজ
