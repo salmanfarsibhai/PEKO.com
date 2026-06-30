@@ -150,26 +150,7 @@ async function pekoFetchBrainData() {
 // ট্রেনড ডাটা থেকে সবচেয়ে মিলে এমন উত্তর খোঁজে
 // ============================================================
 
-// ============================================================
-// 📚 PEKO STATIC QA — এখানে প্রশ্ন-উত্তর লিখুন
-// নতুন যোগ করতে শুধু নিচে কপি করুন:
-// { q: "প্রশ্ন লিখুন", a: "উত্তর লিখুন" },
-// ============================================================
-const PEKO_STATIC_QA = [
-    { q: "পেকো কি", a: "আমি PEKO AI! সালমান ভাই-এর তৈরি একটি বাংলা AI সহকারী। 🤖" },
-    { q: "তোমাকে কে তৈরি করেছে", a: "আমাকে সালমান ভাই তৈরি করেছেন! 🙌" },
-    { q: "0132", a: "0000000000000000" },
-    // এখানে নতুন লাইন যোগ করুন ↓
-];
-
 async function pekoSearchBrain(userQuestion) {
-    // Static QA চেক — Firebase-এর আগে
-    const normalQ = pekoNormalize(userQuestion);
-    for (const item of PEKO_STATIC_QA) {
-        if (!item.q || !item.a) continue;
-        const score = pekoSimilarityScore(normalQ, pekoNormalize(item.q));
-        if (score >= 0.25) return { answer: item.a, id: null };
-    }
     const allPairs = await pekoFetchBrainData();
     if (!allPairs || allPairs.length === 0) return null;
 
@@ -281,9 +262,9 @@ const loc = _pekoUserCity
             "বিদায়! সুস্থ ও সুন্দর থাকবেন। 👋"
         ],
         unknown: [
-            `${name}, আমি এখনো এটা শিখিনি।`,
+            `${name}, এই বিষয়ে আমাকে আরও শেখানো হয়নি। শীঘ্রই আপডেট আসবে!`,
             "এই প্রশ্নের উত্তর আমার কাছে এখনো নেই, তবে আমি শিখছি!",
-            "আমি এখনো এটা শিখিনি।"
+            "আমি এখনো এটা শিখিনি। আমার ট্রেনারকে বলুন আমাকে শেখাতে! 📚"
         ]
     };
 
